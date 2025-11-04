@@ -1,87 +1,48 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPlane,
   faClipboardList,
   faUtensils,
-  faSuitcaseRolling,
   faExclamationTriangle,
   faCog,
+  faUsers,
+  faCheckCircle,
+  faBox,
+  faMagnifyingGlass,
+  faLock,
+  faWrench,
+  faComment,
+  faFileAlt,
   faEye,
   faHistory,
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 
-interface PaxData {
-  first: string;
-  business: string;
-  premium: string;
-  economy: string;
+import type { Flight } from "../../const/flightData";
+import { useEffect, useRef, useState } from "react";
+
+interface FlightRowProps {
+  flight: Flight;
+  onShowHistory: (flightNumber: string) => void;
 }
 
-export interface Flight {
-  airlineCode: string;
-  route: string;
-  flightNumber: string;
-  type: string;
-  date: string;
-  departure: string;
-  arrival: string;
-  depStation: string;
-  arrStation: string;
-  status: string;
-  acType: string;
-  acReg: string;
-  groundTime: string;
-  plan: string;
-  paxTotal: number;
-  pax: PaxData;
-}
-
-const FlightRow: React.FC<Flight> = ({
-  airlineCode,
-  route,
-  flightNumber,
-  type,
-  date,
-  departure,
-  arrival,
-  depStation,
-  arrStation,
-  status,
-  acType,
-  acReg,
-  groundTime,
-  plan,
-  paxTotal,
-  pax,
+export const FlightRow: React.FC<FlightRowProps> = ({
+  flight,
+  onShowHistory,
 }) => {
-  const logoUrl = `https://content.airhex.com/content/logos/airlines_${airlineCode}_100_100_s.png`;
-
-  const getStatusClasses = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "scheduled":
-      case "on time":
-        return "bg-blue-100 text-blue-700";
-      case "departed":
-        return "bg-green-100 text-green-700";
-      case "delayed":
-        return "bg-yellow-100 text-yellow-700";
-      case "cancelled":
-        return "bg-red-100 text-red-700";
-      default:
-        return "bg-gray-200 text-gray-700";
-    }
-  };
-
-  const [open, setOpen] = useState(false);
+  const logoUrl = `https://content.airhex.com/content/logos/airlines_${flight.airlineCode}_100_100_s.png`;
+  const [open, setOpen] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const handleFlightDetails = () => {
     setOpen(false);
-    navigate(`/flight-details/${flightNumber}`);
+    navigate(`/flight-details/${flight.flightNumber}`);
+  };
+
+  const handleHistory = () => {
+    setOpen(false);
+    onShowHistory(flight.flightNumber);
   };
 
   useEffect(() => {
@@ -95,120 +56,117 @@ const FlightRow: React.FC<Flight> = ({
   }, []);
 
   return (
-    <div
-      className="
-        grid grid-cols-20 items-center border-b border-gray-200 
-        py-1.5 sm:py-2 text-xs sm:text-sm 
-        hover:bg-gray-50 transition-colors 
-        min-w-[1400px]
-      "
-    >
-      <div className="col-span-1 flex justify-center px-1">
-        <img
-          src={logoUrl}
-          alt={airlineCode}
-          className="h-6 w-6 object-contain"
-        />
+    <div className="grid grid-cols-[40px_150px_80px_40px_80px_100px_100px_80px_130px_200px_60px_180px_auto] items-center border-b border-gray-300 hover:bg-gray-50 text-xs bg-white font-arial">
+      <div className="flex justify-center py-2 border-r border-gray-200">
+        <img src={logoUrl} alt={flight.airlineCode} className="h-6 w-6" />
       </div>
-
-      <div className="col-span-1 text-center font-medium">{route}</div>
-
-      <div className="col-span-1 text-center font-bold text-blue-500">
-        {flightNumber}
+      <div className="text-center font-medium py-2 border-r border-gray-200">
+        {flight.route}
       </div>
-
-      <div className="col-span-1 text-center">{type}</div>
-
-      <div className="col-span-1 text-center">{date}</div>
-
-      <div className="col-span-1 text-center">
-        <div className="font-medium">{departure}</div>
-        <div className="text-gray-500 text-[11px]">{depStation}</div>
+      <div className="text-center font-bold text-black py-2 border-r border-gray-200">
+        {flight.flightNumber}
       </div>
-
-      <div className="col-span-1 text-center">
-        <div className="font-medium">{arrival}</div>
-        <div className="text-gray-500 text-[11px]">{arrStation}</div>
+      <div className="text-center py-2 border-r border-gray-200">
+        {flight.type}
       </div>
-
-      <div className="col-span-1 text-center">
-        <span
-          className={`px-2 py-0.5 rounded-full font-medium text-[11px] ${getStatusClasses(
-            status
-          )}`}
-        >
-          {status}
+      <div className="text-center py-2 border-r border-gray-200">
+        {flight.date}
+      </div>
+      <div className="text-center py-2 border-r border-gray-200">
+        <div className="font-bold">{flight.departure}</div>
+        <div className="text-blue-500 font-semibold">{flight.depStation}</div>
+      </div>
+      <div className="text-center py-2 border-r border-gray-200">
+        <div className="font-bold">{flight.arrival}</div>
+        <div className="text-blue-500 font-semibold">{flight.arrStation}</div>
+      </div>
+      <div className="text-center py-2 border-r border-gray-200">
+        <span className={`font-semibold ${flight.status}`}>
+          {flight.status}
         </span>
       </div>
-
-      <div className="col-span-1 text-center">
-        <div className="font-medium">{acType}</div>
-        <div className="text-gray-500 text-[11px]">{acReg}</div>
+      <div className="text-center py-2 border-r border-gray-200">
+        <div className="font-medium">{flight.acType}</div>
+        <div className="text-gray-600">{flight.acReg}</div>
       </div>
-
-      <div className="col-span-1 text-center">{groundTime}</div>
-
-      <div className="col-span-1 text-center">{plan}</div>
-
-      <div className="col-span-1 text-center font-bold text-gray-800">
-        {paxTotal}
+      <div className="px-2 py-2 border-r border-gray-200 text-[11px] text-gray-700 leading-tight">
+        {flight.plan && <div className="mb-1">📄 {flight.plan}</div>}
+        {flight.mealPlan && <div>{flight.mealPlan}</div>}
+        {!flight.mealPlan && <div className="text-red-500">no meal plan</div>}
       </div>
-
-      <div className="col-span-4 text-center ml-2">
-        <div className="grid grid-cols-2 gap-2">
-          <div className="bg-yellow-100 rounded p-1">
-            <div className="text-[10px] text-yellow-600 font-semibold">
-              First Class
-            </div>
-            <div className="font-bold">{pax.first}</div>
+      <div className="text-center py-2 border-r border-gray-200">
+        <div className="flex flex-col items-center justify-center gap-1">
+          <FontAwesomeIcon icon={faUsers} className="text-gray-500" />
+          <span className="font-bold text-sm">{flight.paxTotal}</span>
+        </div>
+      </div>
+      <div className="px-2 py-2 border-r border-gray-200 text-[11px] text-gray-700">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-center">
+          <div>
+            <span className="font-semibold text-gray-900">First</span>
+            <div className="text-blue-600">{flight.pax.first}</div>
           </div>
-          <div className="bg-blue-100 rounded p-1">
-            <div className="text-[10px] text-blue-600 font-semibold">
-              Business Class
-            </div>
-            <div className="font-bold">{pax.business}</div>
+          <div>
+            <span className="font-semibold text-gray-900">Business</span>
+            <div className="text-blue-600">{flight.pax.business}</div>
           </div>
-          <div className="bg-purple-100 rounded p-1">
-            <div className="text-[10px] text-purple-600 font-semibold">
-              Premium Economy
-            </div>
-            <div className="font-bold">{pax.premium}</div>
+          <div>
+            <span className="font-semibold text-gray-900">Premium</span>
+            <div className="text-blue-600">{flight.pax.premium}</div>
           </div>
-          <div className="bg-green-100 rounded p-1">
-            <div className="text-[10px] text-green-600 font-semibold">
-              Economy
-            </div>
-            <div className="font-bold">{pax.economy}</div>
+          <div>
+            <span className="font-semibold text-gray-900">Economy</span>
+            <div className="text-blue-600">{flight.pax.economy}</div>
           </div>
         </div>
       </div>
 
-      <div className="col-span-4 flex gap-2 justify-center text-gray-500 text-center items-center">
+      <div className="flex items-center justify-center gap-2 py-2 text-gray-400">
         <FontAwesomeIcon
           icon={faExclamationTriangle}
           className="hover:text-yellow-500 cursor-pointer"
         />
         <FontAwesomeIcon
           icon={faUtensils}
-          className="hover:text-blue-400 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faClipboardList}
           className="hover:text-green-500 cursor-pointer"
         />
         <FontAwesomeIcon
-          icon={faSuitcaseRolling}
+          icon={faClipboardList}
+          className="hover:text-blue-500 cursor-pointer"
+        />
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
           className="hover:text-purple-500 cursor-pointer"
         />
         <FontAwesomeIcon
-          icon={faPlane}
+          icon={faBox}
+          className="hover:text-orange-500 cursor-pointer"
+        />
+        <FontAwesomeIcon
+          icon={faLock}
+          className="hover:text-red-500 cursor-pointer"
+        />
+        <FontAwesomeIcon
+          icon={faCheckCircle}
+          className="hover:text-green-500 cursor-pointer"
+        />
+        <FontAwesomeIcon
+          icon={faWrench}
           className="hover:text-blue-500 cursor-pointer"
+        />
+        <FontAwesomeIcon
+          icon={faComment}
+          className="hover:text-purple-500 cursor-pointer"
+        />
+        <FontAwesomeIcon
+          icon={faFileAlt}
+          className="hover:text-gray-600 cursor-pointer"
         />
         <div className="relative" ref={menuRef}>
           <FontAwesomeIcon
             icon={faCog}
             className="text-red-500 hover:text-red-700 cursor-pointer"
-            onClick={() => setOpen((prev) => !prev)}
+            onClick={() => setOpen(!open)}
           />
           {open && (
             <div className="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-lg z-50">
@@ -224,7 +182,10 @@ const FlightRow: React.FC<Flight> = ({
                   <FontAwesomeIcon icon={faPen} className="text-green-500" />
                   Edit
                 </li>
-                <li className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer">
+                <li
+                  className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={handleHistory}
+                >
                   <FontAwesomeIcon
                     icon={faHistory}
                     className="text-purple-500"
@@ -239,5 +200,3 @@ const FlightRow: React.FC<Flight> = ({
     </div>
   );
 };
-
-export default FlightRow;

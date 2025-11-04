@@ -10,6 +10,7 @@ import FlightGalleys from "../../components/flight/FlightGalleys";
 import FlightContLoc from "../../components/flight/FlightContLoc";
 import FlightDeliveries from "../../components/flight/FlightDeliveries";
 import FlightLabels from "../../components/flight/FlightLabels";
+import { Breadcrumb } from "../../components/BreadCrumb";
 
 const tabs = [
   "DETAILS",
@@ -44,7 +45,7 @@ function FlightDetails() {
   }
 
   return (
-    <div className="p-2 sm:p-4">
+    <div className="p-2 sm:p-8">
       <nav className="w-full bg-white h-14 sm:h-16 flex items-center justify-between">
         <Button className="bg-blue-400" to="/flight-list">
           <div className="flex flex-row justify-center items-center gap-2">
@@ -54,7 +55,7 @@ function FlightDetails() {
         </Button>
       </nav>
 
-      <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow rounded-xl p-3 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 items-start">
+      {/* <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow rounded-xl p-3 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 items-start">
         <div>
           <h1 className="text-xl sm:text-3xl font-extrabold text-blue-800 mb-1 sm:mb-2">
             Flight {flight.flightNumber}
@@ -77,22 +78,29 @@ function FlightDetails() {
             <span className="font-medium">{flight.arrival}</span>
           </p>
         </div>
-      </div>
+      </div> */}
+
+
+      <Breadcrumb currentScreen="Preparation" />
 
       <div className="overflow-x-auto mt-3 sm:mt-4">
-        <div className="flex gap-2 bg-blue-400 rounded-lg shadow p-1 min-w-max">
-          {tabs.map((tab) => (
-            <button
+        <div className="flex bg-white rounded-lg shadow min-w-max">
+          {tabs.map((tab, index) => (
+            <><button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-center transition-all ${
-                activeTab === tab
-                  ? "bg-blue-100 text-blue-400 shadow-md"
-                  : "text-white hover:bg-blue-300"
-              }`}
+              className={`cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs font-semibold text-center transition-all border border-gray-200 ${activeTab === tab
+                ? "border-b-4 border-b-[#602AF3] text-[#602AF3] shadow-md"
+                : "text-[#4F4B58] hover:bg-[#602AF3] hover:text-white"
+                }`}
             >
-              {tab}
+              <span className={`inline-block w-6 py-1 rounded-full ${activeTab === tab
+                ? "bg-[#602AF3] text-white shadow-md"
+                : "text-[#4F4B58] bg-[#EAE9EC]"} `}>
+                {'0' + (index + 1)}
+              </span> &ensp; {tab}
             </button>
+            </>
           ))}
         </div>
       </div>

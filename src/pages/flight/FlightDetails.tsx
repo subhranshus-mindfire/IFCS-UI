@@ -83,7 +83,7 @@ function FlightDetails() {
 
       <Breadcrumb currentScreen="Preparation" />
 
-      <div className="flex font-rubik gap-4 mt-6">
+      <div className="flex flex-wrap font-rubik gap-4 mt-6">
         <div>
           <span className="text-[#A09CAB] text-sm font-normal">Flight: </span>
           <span className="font-medium text-base text-[#4F4B58]">{flight.flightNumber}</span>

@@ -11,6 +11,7 @@ import FlightContLoc from "../../components/flight/FlightContLoc";
 import FlightDeliveries from "../../components/flight/FlightDeliveries";
 import FlightLabels from "../../components/flight/FlightLabels";
 import { Breadcrumb } from "../../components/BreadCrumb";
+import { useTranslation } from "react-i18next";
 
 const tabKeys = [
   "details",
@@ -213,7 +214,5 @@ function FlightDetails() {
 }
 
 export default FlightDetails;
-function useTranslation(): { t: any; } {
-  throw new Error("Function not implemented.");
-}
+
 

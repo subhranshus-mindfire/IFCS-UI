@@ -31,7 +31,9 @@ function FlightList() {
       <div className="flex-1 overflow-y-auto px-2">
         <div className="bg-white shadow-md rounded-md w-full flex flex-col lg:flex-row justify-between items-center p-2 lg:p-3 gap-6">
           <div className="flex flex-col w-full lg:w-auto">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Flights</h1>
+            <h1 className="text-2xl font-bold text-gray-800 mb-4 font-arial">
+              Flights Hub
+            </h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:flex lg:flex-row lg:gap-6 w-full">
               <div className="flex flex-col">
                 <label className="block text-xs font-semibold text-gray-600 mb-1">

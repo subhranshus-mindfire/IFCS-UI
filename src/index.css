@@ -1,4 +1,13 @@
+@font-face {
+  font-family: arial;
+  src: url('./assets//fonts/ARIAL.TTF') format('truetype');
+}
+
 @import "tailwindcss";
+
+@theme{
+  --font-arial: arial, "sans-serif";
+}
 
 :root {
   --background2: #485aaa;

@@ -10,23 +10,28 @@ import FlightGalleys from "../../components/flight/FlightGalleys";
 import FlightContLoc from "../../components/flight/FlightContLoc";
 import FlightDeliveries from "../../components/flight/FlightDeliveries";
 import FlightLabels from "../../components/flight/FlightLabels";
+import { useTranslation } from "react-i18next";
 
-const tabs = [
-  "DETAILS",
-  "PREPARATIONS",
-  "FOOD ORDERS",
-  "CONTENT LOC'N",
-  "GALLEYS",
-  "LABELS/REPORTS",
-  "DELIVERIES",
-  "INVOICE",
+// Use keys for logic and mapping
+// These keys will match the 'tabs' object in your translation JSON files
+const tabKeys = [
+  "details",
+  "preparations",
+  "food_orders",
+  "content_locn",
+  "galleys",
+  "labels_reports",
+  "deliveries",
+  "invoice",
 ];
 
 function FlightDetails() {
   const { flightNumber } = useParams<{ flightNumber: string }>();
+  const { t } = useTranslation(); // Initialize the translation hook
 
   const [activeTab, setActiveTab] = useState(() => {
-    return localStorage.getItem("activeTab") || "DETAILS";
+    // Default to the first tab key
+    return localStorage.getItem("activeTab") || tabKeys[0];
   });
 
   useEffect(() => {
@@ -38,7 +43,9 @@ function FlightDetails() {
   if (!flight) {
     return (
       <div className="p-6">
-        <h1 className="text-xl font-semibold text-red-600">Flight not found</h1>
+        <h1 className="text-xl font-semibold text-red-600">
+          {t("flightDetails.notFound")}
+        </h1>
       </div>
     );
   }
@@ -49,7 +56,9 @@ function FlightDetails() {
         <Button className="bg-blue-400" to="/flight-list">
           <div className="flex flex-row justify-center items-center gap-2">
             <FontAwesomeIcon icon={faArrowLeft} className="text-white" />
-            <p className="text-sm sm:text-base">Flights</p>
+            <p className="text-sm sm:text-base">
+              {t("flightDetails.backButton")}
+            </p>
           </div>
         </Button>
       </nav>
@@ -57,7 +66,10 @@ function FlightDetails() {
       <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow rounded-xl p-3 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 items-start">
         <div>
           <h1 className="text-xl sm:text-3xl font-extrabold text-blue-800 mb-1 sm:mb-2">
-            Flight {flight.flightNumber}
+            {/* Use interpolation for dynamic values */}
+            {t("flightDetails.info.title", {
+              flightNumber: flight.flightNumber,
+            })}
           </h1>
           <p className="text-sm sm:text-lg text-gray-700 font-medium">
             {flight.airlineCode} • {flight.type}
@@ -68,12 +80,16 @@ function FlightDetails() {
           </p>
         </div>
         <div className="text-left md:text-right">
-          <p className="text-xs sm:text-sm text-gray-500">Route</p>
+          <p className="text-xs sm:text-sm text-gray-500">
+            {t("flightDetails.info.route")}
+          </p>
           <h2 className="text-base sm:text-xl font-semibold text-gray-800">
             {flight.depStation} → {flight.arrStation}
           </h2>
           <p className="text-xs sm:text-sm text-gray-600">
-            Dep <span className="font-medium">{flight.departure}</span> • Arr{" "}
+            {t("flightDetails.info.departure")}{" "}
+            <span className="font-medium">{flight.departure}</span> •{" "}
+            {t("flightDetails.info.arrival")}{" "}
             <span className="font-medium">{flight.arrival}</span>
           </p>
         </div>
@@ -81,28 +97,31 @@ function FlightDetails() {
 
       <div className="overflow-x-auto mt-3 sm:mt-4">
         <div className="flex gap-2 bg-blue-400 rounded-lg shadow p-1 min-w-max">
-          {tabs.map((tab) => (
+          {/* Map over the tab keys */}
+          {tabKeys.map((tabKey) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
+              key={tabKey}
+              onClick={() => setActiveTab(tabKey)}
               className={`flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-center transition-all ${
-                activeTab === tab
+                activeTab === tabKey
                   ? "bg-blue-100 text-blue-400 shadow-md"
                   : "text-white hover:bg-blue-300"
               }`}
             >
-              {tab}
+              {/* Use the key to get the translated display text */}
+              {t(`flightDetails.tabs.${tabKey}`)}
             </button>
           ))}
         </div>
       </div>
 
       <div className="bg-white shadow-lg rounded-xl mt-3 sm:mt-4 p-3 sm:p-6 min-w-full min-h-[250px]">
-        {activeTab === "DETAILS" && (
+        {/* Use the tab keys for conditional rendering */}
+        {activeTab === "details" && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 text-gray-800">
             <div>
               <h3 className="text-xs sm:text-sm font-bold text-gray-500 uppercase">
-                Aircraft
+                {t("flightDetails.detailsPane.aircraft")}
               </h3>
               <p className="text-sm sm:text-lg font-semibold">
                 {flight.acType}
@@ -111,7 +130,7 @@ function FlightDetails() {
             </div>
             <div>
               <h3 className="text-xs sm:text-sm font-bold text-gray-500 uppercase">
-                Ground Time
+                {t("flightDetails.detailsPane.groundTime")}
               </h3>
               <p className="text-sm sm:text-lg font-semibold">
                 {flight.groundTime}
@@ -119,16 +138,16 @@ function FlightDetails() {
             </div>
             <div>
               <h3 className="text-xs sm:text-sm font-bold text-gray-500 uppercase">
-                Plan
+                {t("flightDetails.detailsPane.plan")}
               </h3>
               <p className="text-sm sm:text-lg font-semibold">{flight.plan}</p>
             </div>
             <div>
               <h3 className="text-xs sm:text-sm font-bold text-gray-500 uppercase">
-                Passengers
+                {t("flightDetails.detailsPane.passengers")}
               </h3>
               <p className="text-sm sm:text-lg font-semibold">
-                {flight.paxTotal} total
+                {flight.paxTotal} {t("flightDetails.detailsPane.total")}
               </p>
               <p className="text-xs sm:text-sm text-gray-600 mt-1">
                 <span className="font-medium text-yellow-600">F:</span>{" "}
@@ -143,15 +162,15 @@ function FlightDetails() {
             </div>
           </div>
         )}
-        {activeTab !== "DETAILS" && (
+        {activeTab !== "details" && (
           <div className="flex items-center justify-center w-full h-full">
             <div className="w-full">
-              {activeTab === "PREPARATIONS" && <FlightPreparations />}
-              {activeTab === "FOOD ORDERS" && <FlightFoodOrder />}
-              {activeTab === "GALLEYS" && <FlightGalleys />}
-              {activeTab === "CONTENT LOC'N" && <FlightContLoc />}
-              {activeTab === "DELIVERIES" && <FlightDeliveries />}
-              {activeTab === "LABELS/REPORTS" && <FlightLabels />}
+              {activeTab === "preparations" && <FlightPreparations />}
+              {activeTab === "food_orders" && <FlightFoodOrder />}
+              {activeTab === "galleys" && <FlightGalleys />}
+              {activeTab === "content_locn" && <FlightContLoc />}
+              {activeTab === "deliveries" && <FlightDeliveries />}
+              {activeTab === "labels_reports" && <FlightLabels />}
             </div>
           </div>
         )}

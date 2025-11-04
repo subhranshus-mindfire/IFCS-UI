@@ -83,6 +83,37 @@ function FlightDetails() {
 
       <Breadcrumb currentScreen="Preparation" />
 
+      <div className="flex font-rubik gap-4 mt-6">
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Flight: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.flightNumber}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Route: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.route}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Date: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.date}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Aircraft: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.acType}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">AC Reg.: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.acReg}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Destination: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.departure}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Loading Plan: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.plan}</span>
+        </div>
+      </div>
+
       <div className="overflow-x-auto mt-3 sm:mt-4">
         <div className="flex bg-white rounded-lg shadow min-w-max">
           {tabs.map((tab, index) => (

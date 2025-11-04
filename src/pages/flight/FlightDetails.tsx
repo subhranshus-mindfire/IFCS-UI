@@ -114,17 +114,19 @@ function FlightDetails() {
         </div>
       </div>
 
-      <div className="overflow-x-auto mt-3 sm:mt-4">
-        <div className="flex bg-white rounded-lg shadow min-w-max">
+      <div className="overflow-x-auto my-3 sm:my-4">
+        <div className="flex bg-white rounded-full shadow min-w-max border border-gray-100">
           {tabs.map((tab, index) => (
             <><button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs font-semibold text-center transition-all border border-gray-200 ${activeTab === tab
+              className={`cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs font-semibold text-center transition-all 
+              ${index == 0 ? "rounded-l-full" : ""}
+              ${index == tab.length ? "rounded-r-full" : ""}
+              ${index == 0 || index == tab.length ? "" : "border border-gray-100 "} ${activeTab === tab
                 ? "border-b-4 border-b-[#602AF3] text-[#602AF3] shadow-md"
                 : "text-[#4F4B58] hover:bg-[#602AF3] hover:text-white"
-                }`}
-            >
+              }`}>
               <span className={`inline-block w-6 py-1 rounded-full ${activeTab === tab
                 ? "bg-[#602AF3] text-white shadow-md"
                 : "text-[#4F4B58] bg-[#EAE9EC]"} `}>

@@ -138,7 +138,7 @@ function FlightDetails() {
         </div>
       </div>
 
-      <div className="bg-white shadow-lg rounded-xl mt-3 sm:mt-4 p-3 sm:p-6 min-w-full min-h-[250px]">
+      <div className="bg-white mt-3 sm:mt-4 p-2 min-w-full min-h-[250px]">
         {activeTab === "DETAILS" && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 text-gray-800">
             <div>

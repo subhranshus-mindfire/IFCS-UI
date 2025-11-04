@@ -31,7 +31,7 @@ const Button: FC<ButtonProps> = ({
             return;
           }
           if (typeof props.onClick === "function") {
-            // @ts-ignore: onClick may expect a button event, but we are in an anchor context
+            // @ts-expect-error: onClick may expect a button event, but we are in an anchor context
             props.onClick(e);
           }
         }}

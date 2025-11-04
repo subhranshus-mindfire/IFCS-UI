@@ -12,8 +12,6 @@ import FlightDeliveries from "../../components/flight/FlightDeliveries";
 import FlightLabels from "../../components/flight/FlightLabels";
 import { useTranslation } from "react-i18next";
 
-// Use keys for logic and mapping
-// These keys will match the 'tabs' object in your translation JSON files
 const tabKeys = [
   "details",
   "preparations",
@@ -27,10 +25,9 @@ const tabKeys = [
 
 function FlightDetails() {
   const { flightNumber } = useParams<{ flightNumber: string }>();
-  const { t } = useTranslation(); // Initialize the translation hook
+  const { t } = useTranslation();
 
   const [activeTab, setActiveTab] = useState(() => {
-    // Default to the first tab key
     return localStorage.getItem("activeTab") || tabKeys[0];
   });
 
@@ -66,7 +63,6 @@ function FlightDetails() {
       <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow rounded-xl p-3 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 items-start">
         <div>
           <h1 className="text-xl sm:text-3xl font-extrabold text-blue-800 mb-1 sm:mb-2">
-            {/* Use interpolation for dynamic values */}
             {t("flightDetails.info.title", {
               flightNumber: flight.flightNumber,
             })}
@@ -97,7 +93,6 @@ function FlightDetails() {
 
       <div className="overflow-x-auto mt-3 sm:mt-4">
         <div className="flex gap-2 bg-blue-400 rounded-lg shadow p-1 min-w-max">
-          {/* Map over the tab keys */}
           {tabKeys.map((tabKey) => (
             <button
               key={tabKey}
@@ -116,7 +111,6 @@ function FlightDetails() {
       </div>
 
       <div className="bg-white shadow-lg rounded-xl mt-3 sm:mt-4 p-3 sm:p-6 min-w-full min-h-[250px]">
-        {/* Use the tab keys for conditional rendering */}
         {activeTab === "details" && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 text-gray-800">
             <div>

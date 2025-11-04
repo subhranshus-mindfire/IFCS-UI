@@ -3,10 +3,16 @@
   src: url('./assets//fonts/ARIAL.TTF') format('truetype');
 }
 
+@font-face {
+  font-family: rubik;
+  src: url('./assets//fonts/Rubik.ttf') format('truetype');
+}
+
 @import "tailwindcss";
 
-@theme{
+@theme {
   --font-arial: arial, "sans-serif";
+  --font-rubik: rubik, "sans-serif";
 }
 
 :root {

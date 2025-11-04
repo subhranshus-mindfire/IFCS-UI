@@ -10,6 +10,7 @@ import FlightGalleys from "../../components/flight/FlightGalleys";
 import FlightContLoc from "../../components/flight/FlightContLoc";
 import FlightDeliveries from "../../components/flight/FlightDeliveries";
 import FlightLabels from "../../components/flight/FlightLabels";
+import FlightLegsDisplay from "../../components/flight/FlightLegsDisplay";
 import { useTranslation } from "react-i18next";
 
 // Use keys for logic and mapping
@@ -115,52 +116,67 @@ function FlightDetails() {
         </div>
       </div>
 
-      <div className="bg-white shadow-lg rounded-xl mt-3 sm:mt-4 p-3 sm:p-6 min-w-full min-h-[250px]">
+      <div className="bg-white rounded-xl mt-3 sm:mt-4 p-3 sm:p-3 min-w-full min-h-[250px]">
         {/* Use the tab keys for conditional rendering */}
         {activeTab === "details" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 text-gray-800">
-            <div>
-              <h3 className="text-xs sm:text-sm font-bold text-gray-500 uppercase">
-                {t("flightDetails.detailsPane.aircraft")}
-              </h3>
-              <p className="text-sm sm:text-lg font-semibold">
-                {flight.acType}
-              </p>
-              <p className="text-xs sm:text-sm text-gray-500">{flight.acReg}</p>
-            </div>
-            <div>
-              <h3 className="text-xs sm:text-sm font-bold text-gray-500 uppercase">
-                {t("flightDetails.detailsPane.groundTime")}
-              </h3>
-              <p className="text-sm sm:text-lg font-semibold">
-                {flight.groundTime}
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xs sm:text-sm font-bold text-gray-500 uppercase">
-                {t("flightDetails.detailsPane.plan")}
-              </h3>
-              <p className="text-sm sm:text-lg font-semibold">{flight.plan}</p>
-            </div>
-            <div>
-              <h3 className="text-xs sm:text-sm font-bold text-gray-500 uppercase">
-                {t("flightDetails.detailsPane.passengers")}
-              </h3>
-              <p className="text-sm sm:text-lg font-semibold">
-                {flight.paxTotal} {t("flightDetails.detailsPane.total")}
-              </p>
-              <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                <span className="font-medium text-yellow-600">F:</span>{" "}
-                {flight.pax.first} |{" "}
-                <span className="font-medium text-blue-400">C:</span>{" "}
-                {flight.pax.business} |{" "}
-                <span className="font-medium text-purple-600">P:</span>{" "}
-                {flight.pax.premium} |{" "}
-                <span className="font-medium text-green-600">Y:</span>{" "}
-                {flight.pax.economy}
-              </p>
-            </div>
-          </div>
+          <FlightLegsDisplay
+            legs={[
+              {
+                route: `${flight.depStation}-${flight.arrStation}`,
+                flightNumber: flight.flightNumber,
+                type: flight.type,
+                date: flight.date,
+                depTime: flight.departure,
+                arrTime: flight.arrival,
+                acType: flight.acType,
+                acReg: flight.acReg,
+                direction: "",
+                businessStudio: 0,
+                business: parseInt(flight.pax.business.split("/")[0]) || 4,
+                economy: parseInt(flight.pax.economy.split("/")[0]) || 118,
+                crew: 0,
+                child: 0,
+                crewCount: 0,
+                status: flight.status,
+                loadingPlan: flight.plan,
+                mealPlan: "No Meal Plan",
+                crewFlightReports: ["NA"],
+                alerts: ["NA", "NA"],
+                cutOffTimes: {
+                  meals: "NA",
+                  commissary: "NA",
+                },
+              },
+              {
+                route: `${flight.arrStation}-${flight.depStation}`,
+                flightNumber: flight.flightNumber.replace(/\d+/, (match) =>
+                  (parseInt(match) + 1).toString()
+                ),
+                type: flight.type,
+                date: flight.date,
+                depTime: "01:25",
+                arrTime: "05:40",
+                acType: flight.acType,
+                acReg: flight.acReg,
+                direction: "",
+                businessStudio: 0,
+                business: 7,
+                economy: 108,
+                crew: 0,
+                child: 0,
+                crewCount: 0,
+                status: flight.status,
+                loadingPlan: "",
+                mealPlan: "No Meal Plan",
+                crewFlightReports: ["NA"],
+                alerts: ["NA", "NA"],
+                cutOffTimes: {
+                  meals: "NA",
+                  commissary: "NA",
+                },
+              },
+            ]}
+          />
         )}
         {activeTab !== "details" && (
           <div className="flex items-center justify-center w-full h-full">

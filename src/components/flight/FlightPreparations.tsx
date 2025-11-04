@@ -110,7 +110,7 @@ function FlightPreparations() {
       </div>
 
       {/* Table wrapper for horizontal scroll */}
-      <div ref={tableRef} className="overflow-x-auto">
+      <div ref={tableRef} className="font-rubik overflow-x-auto">
         <div className="max-h-[50vh] overflow-y-auto">
           <table className="min-w-max w-full border border-gray-200 text-sm border-collapse">
             <thead className="bg-gray-100 text-gray-600 uppercase text-xs sticky top-0 z-10">

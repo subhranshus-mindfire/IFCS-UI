@@ -149,17 +149,7 @@ function FlightPreparations() {
                     <img src={Fifth} alt="" />
                     <img src={Sixth} alt="" />
                     <img src={Seventh} alt="" />
-
-
                   </td>
-                  <td className="px-3 py-2 text-sm uppercase">
-                    {prep.carrier}
-                  </td>
-                  <td className="px-3 py-2 text-sm uppercase">
-                    {prep.equipment}
-                  </td>
-                  <td className="px-3 py-2 text-sm">{prep.preparedBy}</td>
-                  <td className="px-3 py-2 flex justify-start gap-3 text-gray-600 no-print"></td>
                 </tr>
               ))}
               {/* ... (No results row) ... */}

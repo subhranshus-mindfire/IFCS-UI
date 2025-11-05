@@ -10,13 +10,18 @@
   src: url('./assets/fonts/Rubik.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: roboto;
+  src: url('./assets//fonts/Roboto.ttf') format('truetype');
+}
+
 @import "tailwindcss";
 
 @theme {
   --font-arial: "Arial", sans-serif;
   --font-rubik: "Rubik", sans-serif;
-
-    --color-bg-accent: #602AF3;
+  --font-roboto: roboto, "sans-serif";
+  --color-bg-accent: #602AF3;
   --color-bg-primary: #B79EFA;
   --color-bg-secondary: #F0F0F0;
   --color-bg-surface: #FFFFFF;

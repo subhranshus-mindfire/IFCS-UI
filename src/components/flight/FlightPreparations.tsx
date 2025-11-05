@@ -6,11 +6,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { samplePreparations } from "../../const/samplePreparations";
+import First from "../../assets/logos/preparation/first.svg"
+import Second from "../../assets/logos/preparation/Second.png"
+import Third from "../../assets/logos/preparation/third.png"
+import Fourth from "../../assets/logos/preparation/forth.png"
+import Fifth from "../../assets/logos/preparation/fifth.png"
+import Sixth from "../../assets/logos/preparation/sixth.png"
+import Seventh from "../../assets/logos/preparation/seventh.png"
+import DynamicLoadingModal from "./AddFlightPreparationModal";
 
 function FlightPreparations() {
   const tableRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilter, setshowFilter] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
 
   const filteredPreparations = samplePreparations.filter((p) =>
     p.preparedBy.toLowerCase().includes(searchTerm.toLowerCase())
@@ -48,21 +62,18 @@ function FlightPreparations() {
     <div className="bg-white">
       {/* Header */}
       <div className="font-rubik flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-        {/* LEFT SIDE: Heading (as provided) */}
         <h2 className="text-base font-normal text-[#27262C]">
           Flight Preparation ({filteredPreparations.length})
         </h2>
 
-        {/* RIGHT SIDE: Adjusted to match image_8f8924.png */}
         <div className="flex flex-row items-center gap-6 text-sm">
-          {/* "Add New" Link */}
           <button
-            // You might attach an onClick={handleAddNew} here
             className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
+            onClick={handleOpenModal}
           >
             <FontAwesomeIcon
               icon={faPlusCircle}
-              className="text-gray-500 text-lg" // Adjust size and color for the circular icon
+              className="text-gray-500 text-lg" 
             />
             <span className="underline font-normal">Add New</span>
           </button>
@@ -74,7 +85,7 @@ function FlightPreparations() {
           >
             <FontAwesomeIcon
               icon={faPrint}
-              className="text-gray-500 text-lg" // Adjust size and color for the circular icon
+              className="text-gray-500 text-lg" 
             />
             <span className="underline font-normal">Print</span>
           </button>
@@ -82,10 +93,7 @@ function FlightPreparations() {
       </div>
 
       {/* Table wrapper for horizontal scroll */}
-      <div
-        ref={tableRef}
-        className="font-rubik overflow-x-auto rounded-lg border border-gray-100"
-      >
+      <div ref={tableRef} className="font-rubik overflow-x-auto rounded-2xl border border-gray-100">
         <div className="max-h-[60vh] overflow-y-auto">
           <table className="min-w-max w-full text-sm border-collapse">
             <thead className="bg-[#F0F0F0] text-[#3D3D3D] text-[14px] border-b border-gray-200 sticky top-0 z-10">
@@ -129,8 +137,20 @@ function FlightPreparations() {
                   key={idx}
                   className="bg-white border-b border-gray-100 last:border-b-0 px-10 font-rubik text-[#7A7A7A]"
                 >
-                  <td className="px-3 py-2 text-sm font-medium uppercase">
-                    {prep.stowage}
+                  <td className="px-3 py-2 text-sm font-medium uppercase">{prep.stowage}</td>
+                  <td className="px-3 py-2 text-sm uppercase">{prep.carrier}</td>
+                  <td className="px-3 py-2 text-sm uppercase">{prep.equipment}</td>
+                  <td className="px-3 py-2 text-sm">{prep.preparedBy}</td>
+                  <td className="px-3 py-2 flex justify-between gap-3 text-gray-600 no-print">
+                    <img src={First} alt="" className="w-4 h-4" />
+                    <img src={Second} alt="" />
+                    <img src={Third} alt="" />
+                    <img src={Fourth} alt="" />
+                    <img src={Fifth} alt="" />
+                    <img src={Sixth} alt="" />
+                    <img src={Seventh} alt="" />
+
+
                   </td>
                   <td className="px-3 py-2 text-sm uppercase">
                     {prep.carrier}
@@ -147,6 +167,11 @@ function FlightPreparations() {
           </table>
         </div>
       </div>
+      {isModalOpen && (
+        <DynamicLoadingModal
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 }

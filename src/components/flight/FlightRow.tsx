@@ -56,53 +56,53 @@ export const FlightRow: React.FC<FlightRowProps> = ({
   }, []);
 
   return (
-    <div className="min-w-[1380px] grid grid-cols-[40px_100px_60px_35px_70px_50px_50px_70px_150px_150px_60px_300px_200px] items-center border-b border-gray-300 hover:bg-gray-50 text-xs bg-white font-arial">
-      <div className="flex justify-center py-2">
-        <img src={logoUrl} alt={flight.airlineCode} className="h-6 w-6" />
-      </div>
-      <div className="text-left font-medium py-2">{flight.route}</div>
-      <div className="text-left text-base font-bold text-black py-2">
+    <tr className="border-b border-gray-300 hover:bg-gray-50 text-xs bg-white font-arial shadow-2xl">
+      <td className="text-center py-2">
+        <img
+          src={logoUrl}
+          alt={flight.airlineCode}
+          className="h-6 w-6 mx-auto"
+        />
+      </td>
+      <td className="text-left font-medium py-2 ">{flight.route}</td>
+      <td className="text-left text-base font-bold text-black py-2 ">
         {flight.flightNumber}
-      </div>
-      <div className="text-left font-semibold text-base py-2">
-        {flight.type}
-      </div>
-      <div className="text-left font-semibold text-base py-2">
-        {flight.date}
-      </div>
-      <div className="text-left py-2">
+      </td>
+      <td className="text-left font-semibold text-base py-2 ">{flight.type}</td>
+      <td className="text-left font-semibold text-base py-2 ">{flight.date}</td>
+      <td className="text-left py-2 ">
         <div className="font-extralight text-[10px]">
           {flight.departureType}
         </div>
         <div className="font-bold text-base">{flight.departure}</div>
         <div className="text-[#47B8ED] font-semibold">{flight.depStation}</div>
-      </div>
-      <div className="text-left py-2">
+      </td>
+      <td className="text-left py-2 ">
         <div className="font-extralight text-[10px]">{flight.arrivalType}</div>
         <div className="font-bold text-base">{flight.arrival}</div>
         <div className="text-[#47B8ED] font-semibold">{flight.arrStation}</div>
-      </div>
-      <div className="text-left py-2">
+      </td>
+      <td className="text-left py-2 ">
         <span className={`font-semibold ${flight.status}`}>
           {flight.status}
         </span>
-      </div>
-      <div className="text-left py-2">
-        <div className="font-medium text-center">{flight.acType}</div>
-        <div className="text-gray-600 text-center">{flight.acReg}</div>
-      </div>
-      <div className="px-2 py-2 text-[11px] text-gray-700 leading-tight">
+      </td>
+      <td className="text-center py-2 ">
+        <div className="font-medium">{flight.acType}</div>
+        <div className="text-gray-600">{flight.acReg}</div>
+      </td>
+      <td className=" py-2 text-[11px] text-gray-700 leading-tight">
         {flight.plan && <div className="mb-1">📄 {flight.plan}</div>}
         {flight.mealPlan && <div>{flight.mealPlan}</div>}
         {!flight.mealPlan && <div className="text-red-500">no meal plan</div>}
-      </div>
-      <div className="text-left py-2">
+      </td>
+      <td className="text-center py-2 ">
         <div className="flex flex-col items-center justify-center gap-1">
           <FontAwesomeIcon icon={faUsers} className="text-gray-500" />
           <span className="font-bold text-sm">{flight.paxTotal}</span>
         </div>
-      </div>
-      <div className="px-2  text-[11px] text-gray-700">
+      </td>
+      <td className=" py-2 text-[11px] text-gray-700">
         <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-left">
           <div>
             <span className="text-xs text-left text-gray-900">
@@ -123,84 +123,85 @@ export const FlightRow: React.FC<FlightRowProps> = ({
             <span className="text-left"> {flight.pax.premium}</span>
           </div>
         </div>
-      </div>
-
-      <div className="flex items-center justify-end gap-2 py-2 text-gray-400">
-        <FontAwesomeIcon
-          icon={faExclamationTriangle}
-          className="hover:text-yellow-500 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faUtensils}
-          className="hover:text-green-500 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faClipboardList}
-          className="hover:text-blue-500 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faMagnifyingGlass}
-          className="hover:text-purple-500 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faBox}
-          className="hover:text-orange-500 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faLock}
-          className="hover:text-red-500 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faCheckCircle}
-          className="hover:text-green-500 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faWrench}
-          className="hover:text-blue-500 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faComment}
-          className="hover:text-purple-500 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faFileAlt}
-          className="hover:text-gray-600 cursor-pointer"
-        />
-        <div className="relative" ref={menuRef}>
+      </td>
+      <td className="py-2 ">
+        <div className="flex items-center justify-end gap-2 text-gray-400">
           <FontAwesomeIcon
-            icon={faCog}
-            className="text-red-500 hover:text-red-700 cursor-pointer"
-            onClick={() => setOpen(!open)}
+            icon={faExclamationTriangle}
+            className="hover:text-yellow-500 cursor-pointer"
           />
-          {open && (
-            <div className="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-              <ul className="text-xs text-gray-700">
-                <li
-                  className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={handleFlightDetails}
-                >
-                  <FontAwesomeIcon icon={faEye} className="text-blue-400" />
-                  Details
-                </li>
-                <li className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer">
-                  <FontAwesomeIcon icon={faPen} className="text-green-500" />
-                  Edit
-                </li>
-                <li
-                  className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={handleHistory}
-                >
-                  <FontAwesomeIcon
-                    icon={faHistory}
-                    className="text-purple-500"
-                  />
-                  History
-                </li>
-              </ul>
-            </div>
-          )}
+          <FontAwesomeIcon
+            icon={faUtensils}
+            className="hover:text-green-500 cursor-pointer"
+          />
+          <FontAwesomeIcon
+            icon={faClipboardList}
+            className="hover:text-blue-500 cursor-pointer"
+          />
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            className="hover:text-purple-500 cursor-pointer"
+          />
+          <FontAwesomeIcon
+            icon={faBox}
+            className="hover:text-orange-500 cursor-pointer"
+          />
+          <FontAwesomeIcon
+            icon={faLock}
+            className="hover:text-red-500 cursor-pointer"
+          />
+          <FontAwesomeIcon
+            icon={faCheckCircle}
+            className="hover:text-green-500 cursor-pointer"
+          />
+          <FontAwesomeIcon
+            icon={faWrench}
+            className="hover:text-blue-500 cursor-pointer"
+          />
+          <FontAwesomeIcon
+            icon={faComment}
+            className="hover:text-purple-500 cursor-pointer"
+          />
+          <FontAwesomeIcon
+            icon={faFileAlt}
+            className="hover:text-gray-600 cursor-pointer"
+          />
+          <div className="relative inline-block" ref={menuRef}>
+            <FontAwesomeIcon
+              icon={faCog}
+              className="text-red-500 hover:text-red-700 cursor-pointer"
+              onClick={() => setOpen(!open)}
+            />
+            {open && (
+              <div className="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                <ul className="text-xs text-gray-700">
+                  <li
+                    className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={handleFlightDetails}
+                  >
+                    <FontAwesomeIcon icon={faEye} className="text-blue-400" />
+                    Details
+                  </li>
+                  <li className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer">
+                    <FontAwesomeIcon icon={faPen} className="text-green-500" />
+                    Edit
+                  </li>
+                  <li
+                    className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={handleHistory}
+                  >
+                    <FontAwesomeIcon
+                      icon={faHistory}
+                      className="text-purple-500"
+                    />
+                    History
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 };

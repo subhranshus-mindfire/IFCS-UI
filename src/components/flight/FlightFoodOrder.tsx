@@ -56,7 +56,7 @@ function FlightFoodOrder() {
   );
 
   return (
-    <div className="bg-white w-full shadow rounded-lg p-4 font-rubik">
+    <div className="bg-bg-surface w-full shadow rounded-lg p-4 font-rubik">
       <div className="font-rubik flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
         <h2 className="text-base font-normal text-[#27262C]">
           Food Orders ({filteredFoodOrders.length})

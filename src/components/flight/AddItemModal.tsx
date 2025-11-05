@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { items } from "../../const/itemData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { BowlIcon, UtensilIcon } from "../../assets/icons";
 
 type ItemQuantities = Record<string, number>;
@@ -59,28 +59,25 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
       <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose}></div>
 
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-3xl font-rubik">
-        <div className="p-6 md:p-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Add Item <span className="font-light">or</span> Packing Standard
+        <div className="px-6 py-2 md:p-8">
+          <h2 className="text-xl font-semibold text-text-muted mb-4">
+            Add Item or Packing Standard
           </h2>
 
+          <label className="text-text-muted">search</label>
           <div className="relative mb-6">
             <input
               type="text"
               placeholder="Search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm" // Added pl-10 for icon
-            />
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              className="w-full px-4 py-3 border border-border-muted rounded-lg focus:outline-none focus:ring-2 text-sm"
             />
           </div>
 
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-            <div className="w-full md:w-1/3">
-              <h3 className="text-sm font-medium text-gray-600 mb-3">
+            <div className="w-full md:w-1/4 border-r-1 pr-5 border-border-muted">
+              <h3 className="text-sm  text-secondary mb-3">
                 Select Equipment Type
               </h3>
               <div className="flex flex-row md:flex-col gap-2">
@@ -88,8 +85,8 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                   onClick={() => setSelectedType("meal")}
                   className={`flex items-center gap-3 p-3 rounded-lg w-full text-left transition-all ${
                     selectedType === "meal"
-                      ? "bg-purple-100 text-gray-900 shadow-sm"
-                      : "hover:bg-gray-100 text-gray-600"
+                      ? "bg-bg-accent text-text-primary shadow-sm border-border-accent border-1"
+                      : "hover:bg-bg-surface text-text-secondary"
                   }`}
                 >
                   <img src={BowlIcon} alt="Meal" className="w-5 h-5" />
@@ -99,8 +96,8 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                   onClick={() => setSelectedType("provision")}
                   className={`flex items-center gap-3 p-3 rounded-lg w-full text-left transition-all ${
                     selectedType === "provision"
-                      ? "bg-purple-100 text-purple-700 font-semibold shadow-sm"
-                      : "hover:bg-gray-100 text-gray-600"
+                      ? "bg-bg-accent text-text-primary shadow-sm border-border-accent border-1"
+                      : "hover:bg-bg-surface text-text-tertiary"
                   }`}
                 >
                   <img src={UtensilIcon} alt="Provision" className="w-5 h-5" />
@@ -113,7 +110,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
               <h3 className="text-sm font-medium text-gray-600 mb-3">
                 Select Item
               </h3>
-              <div className="border border-gray-200 rounded-lg overflow-hidden">
+              <div className="border border-border-muted rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-500 uppercase">
                   <span className="flex-[1]">Code</span>
                   <span className="flex-[2]">Name</span>
@@ -129,14 +126,14 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                           key={item.id}
                           className={`flex items-center justify-between px-4 py-3 transition-all ${
                             hasQuantity
-                              ? "bg-purple-50"
-                              : "bg-white hover:bg-gray-50"
+                              ? "bg-bg-accent text-text-secondary"
+                              : "bg-white text-text-muted hover:bg-gray-50"
                           }`}
                         >
-                          <span className="flex-[1] text-sm font-medium text-gray-800">
+                          <span className={`flex-[1] text-sm`}>
                             {item.code}
                           </span>
-                          <span className="flex-[2] text-sm text-gray-700 truncate">
+                          <span className="flex-[2] text-sm truncate">
                             {item.name}
                           </span>
                           <div className="flex-[1] flex items-center justify-center gap-2">
@@ -150,11 +147,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                               <FontAwesomeIcon icon={faMinus} size="xs" />
                             </button>
                             <span
-                              className={`text-sm font-semibold w-6 text-center ${
-                                hasQuantity
-                                  ? "text-purple-700"
-                                  : "text-gray-500"
-                              }`}
+                              className={`text-sm font-extralight w-6 text-center`}
                             >
                               {formatQuantity(item.code)}
                             </span>
@@ -182,13 +175,13 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
         <div className="bg-gray-50 px-6 py-4 flex justify-end items-center gap-3 rounded-b-lg">
           <button
             onClick={onClose}
-            className="py-2 px-5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-300"
+            className="py-2 px-5 w-1/6 text-sm text-secondary-700 bg-white border border-border-muted rounded-lg hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-300"
           >
             Cancel
           </button>
           <button
             onClick={handleSaveClick}
-            className="py-2 px-5 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-all focus:outline-none focus:ring-2 focus:ring-purple-400"
+            className="py-2 px-5 w-1/6 text-sm rounded-xl text-white bg-bg-button transition-all"
           >
             Save
           </button>

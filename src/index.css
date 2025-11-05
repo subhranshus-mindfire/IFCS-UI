@@ -16,12 +16,14 @@
   --font-arial: "Arial", sans-serif;
   --font-rubik: "Rubik", sans-serif;
 
-    --color-bg-accent: #602AF3;
+  --color-bg-accent: #E2D8FD;
+  --color-bg-button: #602AF3;
   --color-bg-primary: #B79EFA;
   --color-bg-secondary: #F0F0F0;
   --color-bg-surface: #FFFFFF;
   --color-border-accent: #B79EFA;
   --color-border-secondary: #638292;
+  --color-border-muted: #EAE9EC;
   --color-text-primary: #27262C;
   --color-text-secondary: #4F4B58;
   --color-text-tertiary: #A09CAB;

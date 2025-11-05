@@ -38,7 +38,6 @@ const FlightList: React.FC = () => {
         />
       )}
 
-      {/* Table container with horizontal scroll */}
       <div className="flex-1 overflow-auto">
         <table className="w-full border-collapse bg-white min-w-[1300px]">
           <thead className="bg-black text-white sticky top-0 z-10">
@@ -85,20 +84,20 @@ const FlightList: React.FC = () => {
                 </div>
               </th>
             </tr>
-            <tr className="bg-[#9A9A9A] text-left text-black text-[10px] font-extralight border-b border-gray-400">
-              <th className="font-extralight">Airline</th>
-              <th className="font-extralight">Route</th>
-              <th className="font-extralight">Flight #</th>
-              <th className="font-extralight">Type</th>
-              <th className="font-extralight">Date</th>
-              <th className="font-extralight">Departure</th>
-              <th className="font-extralight">Arrival</th>
-              <th className="font-extralight">Status</th>
-              <th className="text-center font-extralight">AC Type/AC Reg</th>
-              <th className="font-extralight">Loading plan / Meal plan</th>
-              <th className="text-center font-extralight">Total</th>
-              <th className="text-center font-extralight">Cabins</th>
-              <th className="font-extralight"></th>
+            <tr className="bg-bg-secondary text-left text-black text-[10px] font-extralight border-b border-gray-400">
+              <th className="text-text-tertiary">Airline</th>
+              <th className="text-text-tertiary">Route</th>
+              <th className="text-text-tertiary">Flight #</th>
+              <th className="text-text-tertiary">Type</th>
+              <th className="text-text-tertiary">Date</th>
+              <th className="text-text-tertiary">Departure</th>
+              <th className="text-text-tertiary">Arrival</th>
+              <th className="text-text-tertiary">Status</th>
+              <th className="text-center text-text-tertiary">AC Type/AC Reg</th>
+              <th className="text-text-tertiary">Loading plan / Meal plan</th>
+              <th className="text-center text-text-tertiary">Total</th>
+              <th className="text-center text-text-tertiary">Cabins</th>
+              <th className="text-text-tertiary"></th>
             </tr>
           </thead>
           <tbody>

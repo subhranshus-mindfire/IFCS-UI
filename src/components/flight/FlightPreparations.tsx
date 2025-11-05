@@ -12,7 +12,6 @@ function FlightPreparations() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilter, setshowFilter] = useState(false);
 
-
   const filteredPreparations = samplePreparations.filter((p) =>
     p.preparedBy.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -56,7 +55,6 @@ function FlightPreparations() {
 
         {/* RIGHT SIDE: Adjusted to match image_8f8924.png */}
         <div className="flex flex-row items-center gap-6 text-sm">
-
           {/* "Add New" Link */}
           <button
             // You might attach an onClick={handleAddNew} here
@@ -80,12 +78,14 @@ function FlightPreparations() {
             />
             <span className="underline font-normal">Print</span>
           </button>
-
         </div>
       </div>
 
       {/* Table wrapper for horizontal scroll */}
-      <div ref={tableRef} className="font-rubik overflow-x-auto rounded-lg border border-gray-100">
+      <div
+        ref={tableRef}
+        className="font-rubik overflow-x-auto rounded-lg border border-gray-100"
+      >
         <div className="max-h-[60vh] overflow-y-auto">
           <table className="min-w-max w-full text-sm border-collapse">
             <thead className="bg-[#F0F0F0] text-[#3D3D3D] text-[14px] border-b border-gray-200 sticky top-0 z-10">
@@ -100,8 +100,10 @@ function FlightPreparations() {
                       onClick={() => setshowFilter(true)}
                     >
                       <span>Prepared By</span>
-                      {/* Filter Icon */}
-                      <FontAwesomeIcon icon={faFilter} className="w-3 h-3 text-gray-400 hover:text-gray-600" />
+                      <FontAwesomeIcon
+                        icon={faFilter}
+                        className="w-3 h-3 text-gray-400 hover:text-gray-600"
+                      />
                     </div>
 
                     <input
@@ -109,8 +111,10 @@ function FlightPreparations() {
                       placeholder="Search..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 absolute top-0 left-30 mt-1 bg-white shadow-lg z-30 transition-all ${showFilter ? "block" : 'hidden'}`}
-                      style={{ width: '150px' }}
+                      className={`w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 absolute top-0 left-30 mt-1 bg-white shadow-lg z-30 transition-all ${
+                        showFilter ? "block" : "hidden"
+                      }`}
+                      style={{ width: "150px" }}
                     />
                   </div>
                 </th>
@@ -125,13 +129,17 @@ function FlightPreparations() {
                   key={idx}
                   className="bg-white border-b border-gray-100 last:border-b-0 px-10 font-rubik text-[#7A7A7A]"
                 >
-                  <td className="px-3 py-2 text-sm font-medium uppercase">{prep.stowage}</td>
-                  <td className="px-3 py-2 text-sm uppercase">{prep.carrier}</td>
-                  <td className="px-3 py-2 text-sm uppercase">{prep.equipment}</td>
-                  <td className="px-3 py-2 text-sm">{prep.preparedBy}</td>
-                  <td className="px-3 py-2 flex justify-start gap-3 text-gray-600 no-print">
-
+                  <td className="px-3 py-2 text-sm font-medium uppercase">
+                    {prep.stowage}
                   </td>
+                  <td className="px-3 py-2 text-sm uppercase">
+                    {prep.carrier}
+                  </td>
+                  <td className="px-3 py-2 text-sm uppercase">
+                    {prep.equipment}
+                  </td>
+                  <td className="px-3 py-2 text-sm">{prep.preparedBy}</td>
+                  <td className="px-3 py-2 flex justify-start gap-3 text-gray-600 no-print"></td>
                 </tr>
               ))}
               {/* ... (No results row) ... */}

@@ -56,12 +56,12 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
         <div className="flex flex-col items-left gap-3">
           <h1 className="text-lg font-semibold text-gray-800">Flight Hub</h1>
 
-          <div className="flex flex-row items-center justify-center gap-6">
+          <div className="flex flex-row items-center justify-center gap-1">
             <div className="flex items-center gap-2">
               <select
                 value={station}
                 onChange={(e) => setStation(e.target.value)}
-                className="px-3 py-1.5 border border-black bg-gray-900 text-gray-400 text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-1.5 border border-black bg-black text-gray-400 text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Station</option>
                 <option value="Oman">Oman</option>
@@ -76,7 +76,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="px-3 py-1.5 border border-gray-600 bg-gray-900 text-gray-400 text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-40 appearance-none"
+                  className="px-3 py-1.5 border border-gray-600 bg-black text-gray-400 text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-40 appearance-none"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                   <FontAwesomeIcon icon={faCalendar} color="white" />
@@ -90,7 +90,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                 value={flightNumber}
                 onChange={(e) => setFlightNumber(e.target.value)}
                 placeholder="Flight"
-                className="px-3 py-1.5 border border-gray-600 bg-gray-900 text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+                className="px-3 py-1.5 border border-gray-600 bg-black text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
               />
             </div>
           </div>

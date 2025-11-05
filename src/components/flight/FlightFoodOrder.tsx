@@ -5,11 +5,13 @@ import { sampleFoodOrders } from "../../const/foodOrder";
 import PrintIcon from "../../assets/icons/print.svg";
 import AddIcon from "../../assets/icons/add.svg";
 import { AddItemModal } from "./AddItemModal";
+import DynamicLoadingModal from "./AddDynamicLoadingModal";
 
 function FlightFoodOrder() {
   const tableRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isAddDynamicModalOpen, setIsDynamicAddModalOpen] = useState(false);
 
   const handleAddItem = () => {
     setIsAddModalOpen(true);
@@ -17,6 +19,13 @@ function FlightFoodOrder() {
 
   const handleCloseModal = () => {
     setIsAddModalOpen(false);
+  };
+
+  const handleOpenDynamicModal = () => {
+    setIsDynamicAddModalOpen(true);
+  };
+  const handleCloseDynamicModal = () => {
+    setIsDynamicAddModalOpen(false);
   };
 
   const handleSaveItems = (quantities: Record<string, number>) => {
@@ -63,7 +72,10 @@ function FlightFoodOrder() {
         </h2>
 
         <div className="flex flex-row items-center gap-6 text-sm">
-          <button className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none">
+          <button
+            onClick={handleOpenDynamicModal}
+            className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
+          >
             <img src={AddIcon} />
             <span className="underline font-normal">Add Dynamic Loading</span>
           </button>
@@ -186,6 +198,9 @@ function FlightFoodOrder() {
 
       {isAddModalOpen && (
         <AddItemModal onClose={handleCloseModal} onSave={handleSaveItems} />
+      )}
+      {isAddDynamicModalOpen && (
+        <DynamicLoadingModal onClose={handleCloseDynamicModal} />
       )}
     </div>
   );

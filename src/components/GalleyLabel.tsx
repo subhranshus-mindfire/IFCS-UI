@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import { QRCodeSVG } from "qrcode.react";
+import type { Flight } from "../const/flightData";
 
 type PreparationData = {
   stowage: string;
@@ -8,33 +9,9 @@ type PreparationData = {
   preparedBy: string;
 };
 
-type FlightData = {
-  airlineCode: string;
-  route: string;
-  flightNumber: string;
-  type: string;
-  date: string;
-  departure: string;
-  arrival: string;
-  depStation: string;
-  arrStation: string;
-  status: string;
-  acType: string;
-  acReg: string;
-  groundTime: string;
-  plan: string;
-  paxTotal: number;
-  pax: {
-    first: string;
-    business: string;
-    premium: string;
-    economy: string;
-  };
-};
-
 interface LabelProps {
   preparation: PreparationData;
-  flight: FlightData;
+  flight: Flight;
 }
 
 const GalleyLabel: FC<LabelProps> = ({ preparation, flight }) => {

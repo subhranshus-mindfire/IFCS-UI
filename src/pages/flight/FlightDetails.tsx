@@ -11,27 +11,25 @@ import FlightContLoc from "../../components/flight/FlightContLoc";
 import FlightDeliveries from "../../components/flight/FlightDeliveries";
 import FlightLabels from "../../components/flight/FlightLabels";
 import FlightLegsDisplay from "../../components/flight/FlightLegsDisplay";
+import { Breadcrumb } from "../../components/BreadCrumb";
 import { useTranslation } from "react-i18next";
 
-// Use keys for logic and mapping
-// These keys will match the 'tabs' object in your translation JSON files
 const tabKeys = [
   "details",
   "preparations",
-  "food_orders",
-  "content_locn",
+  "food orders",
+  "content locn",
   "galleys",
-  "labels_reports",
+  "labels reports",
   "deliveries",
   "invoice",
 ];
 
 function FlightDetails() {
   const { flightNumber } = useParams<{ flightNumber: string }>();
-  const { t } = useTranslation(); // Initialize the translation hook
+  const { t } = useTranslation();
 
   const [activeTab, setActiveTab] = useState(() => {
-    // Default to the first tab key
     return localStorage.getItem("activeTab") || tabKeys[0];
   });
 
@@ -52,7 +50,7 @@ function FlightDetails() {
   }
 
   return (
-    <div className="p-2 sm:p-4">
+    <div className="p-2 sm:p-8">
       <nav className="w-full bg-white h-14 sm:h-16 flex items-center justify-between">
         <Button className="bg-blue-400" to="/flight-list">
           <div className="flex flex-row justify-center items-center gap-2">
@@ -64,10 +62,9 @@ function FlightDetails() {
         </Button>
       </nav>
 
-      <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow rounded-xl p-3 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 items-start">
+      {/* <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow rounded-xl p-3 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 items-start">
         <div>
           <h1 className="text-xl sm:text-3xl font-extrabold text-blue-800 mb-1 sm:mb-2">
-            {/* Use interpolation for dynamic values */}
             {t("flightDetails.info.title", {
               flightNumber: flight.flightNumber,
             })}
@@ -94,24 +91,62 @@ function FlightDetails() {
             <span className="font-medium">{flight.arrival}</span>
           </p>
         </div>
+      </div> */}
+
+
+      <Breadcrumb currentScreen="Preparation" />
+
+      <div className="flex flex-wrap font-rubik gap-4 mt-6">
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Flight: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.flightNumber}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Route: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.route}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Date: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.date}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Aircraft: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.acType}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">AC Reg.: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.acReg}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Destination: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.departure}</span>
+        </div>
+        <div>
+          <span className="text-[#A09CAB] text-sm font-normal">Loading Plan: </span>
+          <span className="font-medium text-base text-[#4F4B58]">{flight.plan}</span>
+        </div>
       </div>
 
-      <div className="overflow-x-auto mt-3 sm:mt-4">
-        <div className="flex gap-2 bg-blue-400 rounded-lg shadow p-1 min-w-max">
-          {/* Map over the tab keys */}
-          {tabKeys.map((tabKey) => (
-            <button
-              key={tabKey}
-              onClick={() => setActiveTab(tabKey)}
-              className={`flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-center transition-all ${
-                activeTab === tabKey
-                  ? "bg-blue-100 text-blue-400 shadow-md"
-                  : "text-white hover:bg-blue-300"
-              }`}
-            >
-              {/* Use the key to get the translated display text */}
-              {t(`flightDetails.tabs.${tabKey}`)}
+      <div className="overflow-x-auto my-3 sm:my-4">
+        <div className="flex bg-white rounded-full shadow min-w-max border border-gray-100">
+          {tabKeys.map((tab, index) => (
+            <><button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`font-roboto capitalize cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs font-semibold text-center transition-all 
+              ${index == 0 ? "rounded-l-full" : ""}
+              ${index == tab.length ? "rounded-r-full" : ""}
+              ${index == 0 || index == tab.length ? "" : "border border-gray-100 "} ${activeTab === tab
+                ? "border-b-4 border-b-[#602AF3] text-[#602AF3] shadow-md"
+                : "text-[#4F4B58] hover:bg-[#602AF3] hover:text-white"
+              }`}>
+              <span className={`inline-block w-6 py-1 rounded-full ${activeTab === tab
+                ? "bg-[#602AF3] text-white shadow-md"
+                : "text-[#4F4B58] bg-[#EAE9EC]"} `}>
+                {'0' + (index + 1)}
+              </span> &ensp; {tab}
             </button>
+            </>
           ))}
         </div>
       </div>
@@ -196,3 +231,5 @@ function FlightDetails() {
 }
 
 export default FlightDetails;
+
+

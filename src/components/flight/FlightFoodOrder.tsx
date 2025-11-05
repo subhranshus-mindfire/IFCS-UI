@@ -4,10 +4,25 @@ import { useRef, useState } from "react";
 import { sampleFoodOrders } from "../../const/foodOrder";
 import PrintIcon from "../../assets/icons/print.svg";
 import AddIcon from "../../assets/icons/add.svg";
+import { AddItemModal } from "./AddItemModal";
 
 function FlightFoodOrder() {
   const tableRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  const handleAddItem = () => {
+    setIsAddModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsAddModalOpen(false);
+  };
+
+  const handleSaveItems = (quantities: Record<string, number>) => {
+    console.log("Saved Quantities:", quantities);
+    setIsAddModalOpen(false);
+  };
 
   const handlePrint = () => {
     if (tableRef.current) {
@@ -41,7 +56,7 @@ function FlightFoodOrder() {
   );
 
   return (
-    <div className="bg-white w-full shadow rounded-lg p-4 font-rubik ">
+    <div className="bg-white w-full shadow rounded-lg p-4 font-rubik">
       <div className="font-rubik flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
         <h2 className="text-base font-normal text-[#27262C]">
           Food Orders ({filteredFoodOrders.length})
@@ -52,7 +67,11 @@ function FlightFoodOrder() {
             <img src={AddIcon} />
             <span className="underline font-normal">Add Dynamic Loading</span>
           </button>
-          <button className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none">
+
+          <button
+            onClick={handleAddItem}
+            className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
+          >
             <img src={AddIcon} />
             <span className="underline font-normal">Add Item/PS</span>
           </button>
@@ -67,6 +86,7 @@ function FlightFoodOrder() {
         </div>
       </div>
 
+      {/* Table */}
       <div ref={tableRef} className="overflow-x-auto">
         <div className="max-h-[60vh] overflow-y-auto">
           <table className="min-w-max w-full text-sm border-collapse">
@@ -133,13 +153,10 @@ function FlightFoodOrder() {
                   <td className="px-3 py-2 text-sm uppercase">{order.seat}</td>
                   <td className="px-3 py-2 text-sm">{order.passenger}</td>
                   <td></td>
-
                   <td className="px-3 py-2 text-sm uppercase">{order.sku}</td>
                   <td className="px-3 py-2 text-sm uppercase">{order.cabin}</td>
                   <td className="px-3 py-2 text-sm">{order.name}</td>
-
                   <td></td>
-
                   <td className="px-2 py-2 text-center text-sm border-l border-gray-100">
                     {order.ordered}
                   </td>
@@ -166,6 +183,10 @@ function FlightFoodOrder() {
           </table>
         </div>
       </div>
+
+      {isAddModalOpen && (
+        <AddItemModal onClose={handleCloseModal} onSave={handleSaveItems} />
+      )}
     </div>
   );
 }

@@ -21,6 +21,8 @@ export interface Flight {
     premium: string;
     economy: string;
   };
+  departureType: "actual" | "estimated" | "scheduled";
+  arrivalType: "actual" | "estimated" | "scheduled";
 }
 
 export const flights: Flight[][] = [
@@ -48,6 +50,8 @@ export const flights: Flight[][] = [
         premium: "0/0",
         economy: "244/244",
       },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
     },
     {
       airlineCode: "WY",
@@ -72,6 +76,8 @@ export const flights: Flight[][] = [
         premium: "0/0",
         economy: "245/245",
       },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
     },
   ],
   [
@@ -98,6 +104,8 @@ export const flights: Flight[][] = [
         premium: "0/0",
         economy: "147/147",
       },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
     },
     {
       airlineCode: "WY",
@@ -122,6 +130,8 @@ export const flights: Flight[][] = [
         premium: "0/0",
         economy: "140/140",
       },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
     },
   ],
   [
@@ -148,6 +158,8 @@ export const flights: Flight[][] = [
         premium: "0/0",
         economy: "101/101",
       },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
     },
     {
       airlineCode: "WY",
@@ -172,6 +184,8 @@ export const flights: Flight[][] = [
         premium: "0/0",
         economy: "153/153",
       },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
     },
   ],
   [
@@ -198,6 +212,8 @@ export const flights: Flight[][] = [
         premium: "0/0",
         economy: "249/249",
       },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
     },
     {
       airlineCode: "WY",
@@ -222,6 +238,8 @@ export const flights: Flight[][] = [
         premium: "0/0",
         economy: "97/97",
       },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
     },
   ],
 ];

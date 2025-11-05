@@ -67,7 +67,6 @@ function FlightPreparations() {
         </h2>
 
         <div className="flex flex-row items-center gap-6 text-sm">
-
           <button
             className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
             onClick={handleOpenModal}
@@ -90,7 +89,6 @@ function FlightPreparations() {
             />
             <span className="underline font-normal">Print</span>
           </button>
-
         </div>
       </div>
 
@@ -110,8 +108,10 @@ function FlightPreparations() {
                       onClick={() => setshowFilter(true)}
                     >
                       <span>Prepared By</span>
-                      {/* Filter Icon */}
-                      <FontAwesomeIcon icon={faFilter} className="w-3 h-3 text-gray-400 hover:text-gray-600" />
+                      <FontAwesomeIcon
+                        icon={faFilter}
+                        className="w-3 h-3 text-gray-400 hover:text-gray-600"
+                      />
                     </div>
 
                     <input
@@ -119,8 +119,10 @@ function FlightPreparations() {
                       placeholder="Search..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 absolute top-0 left-30 mt-1 bg-white shadow-lg z-30 transition-all ${showFilter ? "block" : 'hidden'}`}
-                      style={{ width: '150px' }}
+                      className={`w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 absolute top-0 left-30 mt-1 bg-white shadow-lg z-30 transition-all ${
+                        showFilter ? "block" : "hidden"
+                      }`}
+                      style={{ width: "150px" }}
                     />
                   </div>
                 </th>
@@ -150,6 +152,14 @@ function FlightPreparations() {
 
 
                   </td>
+                  <td className="px-3 py-2 text-sm uppercase">
+                    {prep.carrier}
+                  </td>
+                  <td className="px-3 py-2 text-sm uppercase">
+                    {prep.equipment}
+                  </td>
+                  <td className="px-3 py-2 text-sm">{prep.preparedBy}</td>
+                  <td className="px-3 py-2 flex justify-start gap-3 text-gray-600 no-print"></td>
                 </tr>
               ))}
               {/* ... (No results row) ... */}

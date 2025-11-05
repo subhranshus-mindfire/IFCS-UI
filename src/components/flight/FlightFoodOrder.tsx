@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPrint, faCogs } from "@fortawesome/free-solid-svg-icons";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { sampleFoodOrders } from "../../const/foodOrder";
+import PrintIcon from "../../assets/icons/print.svg";
+import AddIcon from "../../assets/icons/add.svg";
 
 function FlightFoodOrder() {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -39,83 +41,123 @@ function FlightFoodOrder() {
   );
 
   return (
-    <div className="bg-white w-full shadow rounded-lg p-4">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-        <h2 className="text-lg font-bold text-gray-700">
-          Food Orders: {filteredFoodOrders.length}
+    <div className="bg-white w-full shadow rounded-lg p-4 font-rubik ">
+      <div className="font-rubik flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
+        <h2 className="text-base font-normal text-[#27262C]">
+          Food Orders ({filteredFoodOrders.length})
         </h2>
-        <div className="flex flex-row items-center gap-4">
-          <FontAwesomeIcon
-            icon={faCogs}
-            className="cursor-pointer text-red-500"
-          />
+
+        <div className="flex flex-row items-center gap-6 text-sm">
+          <button className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none">
+            <img src={AddIcon} />
+            <span className="underline font-normal">Add Dynamic Loading</span>
+          </button>
+          <button className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none">
+            <img src={AddIcon} />
+            <span className="underline font-normal">Add Item/PS</span>
+          </button>
+
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-600 transition"
+            className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
           >
-            <FontAwesomeIcon icon={faPrint} />
-            Print
+            <img src={PrintIcon} />
+            <span className="underline font-normal">Print</span>
           </button>
         </div>
       </div>
 
-      {/* Scrollable Table */}
       <div ref={tableRef} className="overflow-x-auto">
         <div className="max-h-[60vh] overflow-y-auto">
-          <table className="min-w-max w-full border border-gray-200 text-sm border-collapse">
-            <thead className="bg-gray-100 text-gray-600 uppercase text-xs sticky top-0 z-10">
+          <table className="min-w-max w-full text-sm border-collapse">
+            <thead className="bg-[#F0F0F0] text-[#3D3D3D] text-[14px] border-b border-gray-200 sticky top-0 z-10">
               <tr>
-                <th className="px-3 py-2 text-left">Station</th>
-                <th className="px-3 py-2 text-left">FLT #</th>
-                <th className="px-3 py-2 text-left">Seat #</th>
-                <th className="px-3 py-2 text-left min-w-[140px]">
+                <th className="px-3 py-3 text-left font-medium">Station</th>
+                <th className="px-3 py-3 text-left font-medium">FLT #</th>
+                <th className="px-3 py-3 text-left font-medium">Seat #</th>
+                <th className="px-3 py-3 text-left font-medium min-w-[140px]">
                   Passenger Name
                 </th>
-                <th className="px-3 py-2 text-left">SKU</th>
-                <th className="px-3 py-2 text-left">Cabin</th>
-                <th className="px-3 py-2 text-left min-w-[140px]">
-                  <div className="flex flex-col gap-1">
-                    <span>Name</span>
+                <th className="w-[20px]"></th>
+
+                <th className="px-3 py-3 text-left font-medium">SKU</th>
+                <th className="px-3 py-3 text-left font-medium">Cabin</th>
+
+                <th className="px-3 py-3 text-left font-medium relative min-w-[140px]">
+                  <div className="flex flex-col gap-1 min-w-[120px]">
+                    <div className="flex items-center gap-1 cursor-pointer">
+                      <span>Name</span>
+                      <FontAwesomeIcon
+                        icon={faFilter}
+                        className="w-3 h-3 text-gray-400 hover:text-gray-600"
+                      />
+                    </div>
+
                     <input
                       type="text"
                       placeholder="Search..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
+                      className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 bg-white shadow-sm transition-all"
+                      style={{ width: "150px" }}
                     />
                   </div>
                 </th>
-                <th className="px-3 py-2 text-center min-w-[100px]">Ordered</th>
-                <th className="px-3 py-2 text-center min-w-[100px]">
+
+                <th className="w-[20px]"></th>
+
+                <th className="px-2 py-3 text-center font-medium min-w-[90px] border-l border-gray-200">
+                  Ordered
+                </th>
+                <th className="px-2 py-3 text-center font-medium min-w-[90px]">
                   Distributed
                 </th>
-                <th className="px-3 py-2 text-center min-w-[100px]">Loaded</th>
+                <th className="px-2 py-3 text-center font-medium min-w-[90px]">
+                  Loaded
+                </th>
               </tr>
             </thead>
+
             <tbody>
               {filteredFoodOrders.map((order, idx) => (
                 <tr
                   key={idx}
-                  className={`border-b ${
-                    idx % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  }`}
+                  className="bg-white border-b border-gray-100 last:border-b-0 text-[#7A7A7A] font-rubik"
                 >
-                  <td className="px-3 py-2">{order.station}</td>
-                  <td className="px-3 py-2">{order.flight}</td>
-                  <td className="px-3 py-2">{order.seat}</td>
-                  <td className="px-3 py-2">{order.passenger}</td>
-                  <td className="px-3 py-2">{order.sku}</td>
-                  <td className="px-3 py-2">{order.cabin}</td>
-                  <td className="px-3 py-2">{order.name}</td>
-                  <td className="px-3 py-2 text-center">{order.ordered}</td>
-                  <td className="px-3 py-2 text-center">{order.distributed}</td>
-                  <td className="px-3 py-2 text-center">{order.loaded}</td>
+                  <td className="px-3 py-2 text-sm font-medium uppercase">
+                    {order.station}
+                  </td>
+                  <td className="px-3 py-2 text-sm uppercase">
+                    {order.flight}
+                  </td>
+                  <td className="px-3 py-2 text-sm uppercase">{order.seat}</td>
+                  <td className="px-3 py-2 text-sm">{order.passenger}</td>
+                  <td></td>
+
+                  <td className="px-3 py-2 text-sm uppercase">{order.sku}</td>
+                  <td className="px-3 py-2 text-sm uppercase">{order.cabin}</td>
+                  <td className="px-3 py-2 text-sm">{order.name}</td>
+
+                  <td></td>
+
+                  <td className="px-2 py-2 text-center text-sm border-l border-gray-100">
+                    {order.ordered}
+                  </td>
+                  <td className="px-2 py-2 text-center text-sm">
+                    {order.distributed}
+                  </td>
+                  <td className="px-2 py-2 text-center text-sm">
+                    {order.loaded}
+                  </td>
                 </tr>
               ))}
+
               {filteredFoodOrders.length === 0 && (
                 <tr>
-                  <td colSpan={10} className="text-center py-4 text-gray-500">
+                  <td
+                    colSpan={13}
+                    className="text-center py-4 text-gray-500 font-rubik"
+                  >
                     No results found
                   </td>
                 </tr>

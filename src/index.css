@@ -1,23 +1,30 @@
+/* src/index.css or src/theme.css */
+
 @font-face {
-  font-family: arial;
-  src: url('./assets//fonts/ARIAL.TTF') format('truetype');
+  font-family: 'Arial';
+  src: url('./assets/fonts/ARIAL.TTF') format('truetype');
 }
 
 @font-face {
-  font-family: rubik;
-  src: url('./assets//fonts/Rubik.ttf') format('truetype');
+  font-family: 'Rubik';
+  src: url('./assets/fonts/Rubik.ttf') format('truetype');
 }
 
 @import "tailwindcss";
 
 @theme {
-  --font-arial: arial, "sans-serif";
-  --font-rubik: rubik, "sans-serif";
+  --font-arial: "Arial", sans-serif;
+  --font-rubik: "Rubik", sans-serif;
+
+    --color-bg-accent: #602AF3;
+  --color-bg-primary: #B79EFA;
+  --color-bg-secondary: #F0F0F0;
+  --color-bg-surface: #FFFFFF;
+  --color-border-accent: #B79EFA;
+  --color-border-secondary: #638292;
+  --color-text-primary: #27262C;
+  --color-text-secondary: #4F4B58;
+  --color-text-tertiary: #A09CAB;
+  --color-text-muted: #7A7A7A;
 }
 
-:root {
-  --background2: #485aaa;
-  --backgroundHover: #232b52;
-  --backgroundLight: #dfe8f2;
-  --backgroundAccent: #e5e5e5;
-}

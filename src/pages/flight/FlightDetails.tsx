@@ -16,10 +16,10 @@ import { useTranslation } from "react-i18next";
 const tabKeys = [
   "details",
   "preparations",
-  "food_orders",
-  "content_locn",
+  "food orders",
+  "content locn",
   "galleys",
-  "labels_reports",
+  "labels reports",
   "deliveries",
   "invoice",
 ];
@@ -132,7 +132,7 @@ function FlightDetails() {
             <><button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs font-semibold text-center transition-all 
+              className={`font-roboto capitalize cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs font-semibold text-center transition-all 
               ${index == 0 ? "rounded-l-full" : ""}
               ${index == tab.length ? "rounded-r-full" : ""}
               ${index == 0 || index == tab.length ? "" : "border border-gray-100 "} ${activeTab === tab

@@ -18,7 +18,7 @@ const ToggleSwitch = () => {
         />
         {/* Background */}
         <div
-          className={`block h-6 w-10 border border-gray-200 rounded-full transition-colors duration-300 ${isChecked ? 'bg-bg-accent' : 'bg-white'
+          className={`block h-6 w-10 border border-gray-200 rounded-full transition-colors duration-300 ${isChecked ? 'bg-bg-button' : 'bg-white'
             }`}
         ></div>
         {/* Dot */}

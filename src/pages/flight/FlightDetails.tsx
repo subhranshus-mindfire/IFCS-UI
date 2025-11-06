@@ -96,12 +96,12 @@ function FlightDetails() {
               ${index == 0 ? "rounded-l-full" : ""}
               ${index == tab.length ? "rounded-r-full" : ""}
               ${index == 0 || index == tab.length ? "" : "border border-gray-100 "} ${activeTab === tab
-                ? "border-b-4 border-b-bg-accent text-bg-accent shadow-md"
-                : "text-text-secondary hover:bg-bg-accent hover:text-white"
+                ? "border-b-4 border-b-bg-button text-bg-button shadow-md"
+                : "text-text-secondary hover:bg-bg-button hover:text-white"
               }`}>
               <span className={`inline-block w-6 py-1 rounded-full ${activeTab === tab
-                ? "bg-bg-accent text-white shadow-md"
-                : "text-text-secondary bg-[#EAE9EC]"} `}>
+                ? "bg-bg-button text-white shadow-md"
+                : "text-text-secondary bg-border-muted"} `}>
                 {'0' + (index + 1)}
               </span> &ensp; {tab}
             </button>

@@ -1,117 +1,154 @@
 import { useState } from "react";
 import { galleryItems } from "../../const/galleyItems";
+import flightSkeletonImage from "../../assets/flight-skeleton.jpeg";
 
 const FlightContLoc = () => {
   const [selectedItem, setSelectedItem] = useState(galleryItems[0]);
   const [activeContentTab, setActiveContentTab] = useState("static");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedGalley, setSelectedGalley] = useState<string | null>("G1");
+
+  const filteredItems = galleryItems.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="bg-white w-full max-w-full shadow rounded-lg p-2 sm:p-4">
-      <div className="flex bg-white overflow-x-auto">
+    <div className="bg-surface w-full max-w-full">
+        <h2 className="text-base font-normal text-gray-800">Items</h2>
+      {/* Tabs - Pill Style */}
+      <div className="flex bg-surface overflow-x-auto pt-4 gap-2">
         <button
-          className={`px-4 sm:px-8 py-2 sm:py-3 rounded-t-lg mx-0.5 sm:mx-1 whitespace-nowrap text-sm sm:text-base ${
+          className={`px-6 py-2.5 rounded-full whitespace-nowrap text-sm transition-all ${
             activeContentTab === "static"
-              ? "bg-blue-400 text-white"
-              : "bg-gray-200 text-gray-600"
+              ? "bg-gray-300 text-gray-800 font-normal shadow-sm"
+              : "bg-gray-100 text-gray-500 hover:bg-gray-200"
           }`}
           onClick={() => setActiveContentTab("static")}
         >
           Static Content
         </button>
         <button
-          className={`px-4 sm:px-8 py-2 sm:py-3 rounded-t-lg mx-0.5 sm:mx-1 whitespace-nowrap text-sm sm:text-base ${
+          className={`px-6 py-2.5 rounded-full whitespace-nowrap text-sm transition-all ${
             activeContentTab === "dynamic"
-              ? "bg-blue-400 text-white"
-              : "bg-gray-200 text-gray-600 opacity-60"
+              ? "bg-gray-300 text-gray-800 font-normal shadow-sm"
+              : "bg-gray-100 text-gray-500 hover:bg-gray-200"
           }`}
-          disabled
         >
           Dynamic Content
         </button>
         <button
-          className={`px-4 sm:px-8 py-2 sm:py-3 rounded-t-lg mx-0.5 sm:mx-1 whitespace-nowrap text-sm sm:text-base ${
+          className={`px-6 py-2.5 rounded-full whitespace-nowrap text-sm transition-all ${
             activeContentTab === "deadhead"
-              ? "bg-blue-400 text-white"
-              : "bg-gray-200 text-gray-600 opacity-60"
+              ? "bg-gray-300 text-gray-800 font-normal shadow-sm"
+              : "bg-gray-100 text-gray-500 hover:bg-gray-200"
           }`}
-          disabled
+          onClick={() => setActiveContentTab("deadhead")}
         >
           Dead Head
         </button>
       </div>
-
-      <div className="flex flex-col lg:flex-row bg-gray-200 w-full gap-2 sm:gap-4 p-2 sm:p-4">
-        <div className="w-full lg:flex-1 bg-white rounded-lg shadow-sm">
-          <div className="p-3 sm:p-4 border-b">
-            <h2 className="text-base sm:text-lg font-medium text-blue-400">
-              Items
-            </h2>
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 bg-secondary pt-4">
+        {/* Left Section - Items */}
+        <div className="lg:col-span-3 bg-surface flex flex-col rounded-lg">
+          {/* Search Input */}
+          <div className="border-b border-gray-100">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                🔍
+              </span>
+            </div>
           </div>
-          <div className="overflow-y-auto max-h-48 lg:max-h-full lg:h-full">
-            {galleryItems.map((item) => (
+
+          {/* Items List */}
+          <div className="flex-1 overflow-y-auto">
+            {filteredItems.map((item) => (
               <div
                 key={item.id}
-                className={`p-2 sm:p-3 cursor-pointer border-b hover:bg-gray-50 ${
-                  selectedItem.id === item.id
-                    ? "bg-blue-100 border-l-4 border-l-blue-400"
-                    : ""
+                className={`px-4 py-3 cursor-pointer border-b border-gray-100 hover:bg-gray-50 flex justify-between items-center ${
+                  selectedItem.id === item.id ? "bg-blue-50" : ""
                 }`}
                 onClick={() => setSelectedItem(item)}
               >
-                <div className="text-sm text-gray-800">{item.name}</div>
+                <div className="text-sm text-gray-600">{item.name}</div>
+                <div className="text-xs text-gray-400">
+                  {item.locations[0]?.name || "G1"}
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="w-full lg:flex-[2] space-y-2 sm:space-y-4">
-          <div className="bg-white rounded-lg shadow-sm">
-            <div className="p-3 sm:p-4 border-b">
-              <h2 className="text-base sm:text-lg font-medium text-blue-400">
-                Details
-              </h2>
+        {/* Middle Section - Details & Galley Locations */}
+        <div className="lg:col-span-6 flex flex-col gap-4 px-4">
+          {/* Details Section */}
+          <div className="bg-[--color-bg-surface] rounded-lg">
+            <div className="">
+              <h2 className="text-base font-normal text-gray-800">Details</h2>
             </div>
-            <div className="p-3 sm:p-4">
-              <h3 className="font-medium text-gray-800 mb-2 text-sm sm:text-base">
-                {selectedItem.details.title}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 mb-1">
-                {selectedItem.details.description}
-              </p>
-              <p className="text-xs sm:text-sm text-gray-500">
-                {selectedItem.details.subtitle}
-              </p>
+            <div className="pt-4 min-h-[150px]">
+              <p className="text-sm text-gray-400 mb-2">Equipment Preview</p>
+              {/* Empty preview area */}
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm">
-            <div className="p-3 sm:p-4 border-b">
-              <h2 className="text-base sm:text-lg font-medium text-blue-400">
+          {/* Galley Locations Table */}
+          <div className="bg-[--color-bg-surface] flex-1 rounded-lg">
+            <div className="">
+              <h2 className="text-base font-normal text-gray-800">
                 Galley Locations
               </h2>
             </div>
-            <div className="p-2 sm:p-4">
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs sm:text-sm">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-2 text-gray-500">Name</th>
-                      <th className="text-left py-2 text-gray-500">Storage</th>
-                      <th className="text-right py-2 text-gray-500">Qty</th>
+            <div className="pt-4">
+              <div className="overflow-x-auto overflow-y-auto max-h-[400px] border border-gray-200 rounded-lg">
+                <table className="w-full text-sm">
+                  <thead className="sticky top-0 bg-gray-50">
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 text-gray-700 font-semibold">
+                        {activeContentTab === "deadhead" ? "Name" : "Galley"}
+                      </th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-semibold">
+                        Storage
+                      </th>
+                      <th className="text-right py-3 px-4 text-gray-700 font-semibold">
+                        Qty
+                      </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {selectedItem.locations.map((location, index) => (
-                      <tr key={index} className="border-b">
-                        <td className="py-2 text-gray-700">{location.name}</td>
-                        <td className="py-2 text-gray-700">
-                          {location.storage}
-                        </td>
-                        <td className="py-2 text-right text-gray-700">
-                          {location.qty}
+                  <tbody className="bg-white">
+                    {activeContentTab === "deadhead" ? (
+                      <tr>
+                        <td
+                          colSpan={3}
+                          className="py-4 text-center text-gray-400"
+                        >
+                          No data available
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      selectedItem.locations.map((location, index) => (
+                        <tr
+                          key={index}
+                        >
+                          <td className="py-3 px-4 text-gray-600">
+                            {location.name}
+                          </td>
+                          <td className="py-3 px-4 text-gray-600">
+                            {location.storage}
+                          </td>
+                          <td className="py-3 px-4 text-right text-gray-600">
+                            {location.qty}
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -119,67 +156,93 @@ const FlightContLoc = () => {
           </div>
         </div>
 
-        <div className="w-full lg:flex-1 bg-white rounded-lg shadow-sm">
-          <div className="p-3 sm:p-4 h-48 sm:h-64 lg:h-full flex flex-col items-center justify-center">
-            <div className="relative">
-              <div className="flex flex-col items-center space-y-2">
-                <div className="text-xs text-gray-500 mb-4">
-                  Aircraft Galley Layout
-                </div>
+        {/* Right Section - Aircraft Galley Layout */}
+        <div className="lg:col-span-3 bg-[--color-bg-surface] flex flex-col rounded-lg border border-gray-200">
+          <div className="p-4 border-b border-gray-100">
+            <h2 className="text-base font-normal text-gray-800">
+              Galley Locations in Aircraft
+            </h2>
+          </div>
 
-                {/* <div className="relative">
-                  <div className="w-12 h-20 bg-purple-800 rounded flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">G1</span>
-                  </div>
-                </div>
+          <div className="flex-1 flex items-center justify-center p-6 relative">
+            {/* Aircraft Image with Side Buttons */}
+            <div className="relative flex items-start gap-2">
+              <img
+                src={flightSkeletonImage}
+                alt="Aircraft Layout"
+                className="h-[450px] w-auto object-contain"
+              />
 
-                <div className="flex space-x-2">
-                  <div className="relative">
-                    <div className="w-12 h-16 bg-purple-700 rounded flex items-center justify-center">
-                      <span className="text-white text-xs font-bold">G2A</span>
-                    </div>
-                  </div>
-                  <div className="relative">
-                    <div className="w-12 h-16 bg-purple-800 rounded flex items-center justify-center">
-                      <span className="text-white text-xs font-bold">G2</span>
-                    </div>
-                  </div>
+              {/* Galley Buttons - Right Side */}
+                {/* Top Group - G1 and G2 close together */}
+                <div className="flex flex-col gap-1">
+                  <button
+                    className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors min-w-[60px] ${
+                      selectedGalley === "G1"
+                        ? "bg-purple-900 text-white"
+                        : "bg-gray-300 text-gray-700"
+                    }`}
+                    onClick={() => setSelectedGalley("G1")}
+                  >
+                    G1
+                  </button>
+                  <button
+                    className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors min-w-[60px] ${
+                      selectedGalley === "G2"
+                        ? "bg-purple-900 text-white"
+                        : "bg-gray-300 text-gray-700"
+                    }`}
+                    onClick={() => setSelectedGalley("G2")}
+                  >
+                    G2
+                  </button>
+                <div className="flex flex-col gap-1 mt-4">
+                  <button
+                    className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors min-w-[60px] ${
+                      selectedGalley === "G3"
+                        ? "bg-purple-900 text-white"
+                        : "bg-gray-300 text-gray-700"
+                    }`}
+                    onClick={() => setSelectedGalley("G3")}
+                  >
+                    G3
+                  </button>
+                  <button
+                    className={`px-5 py-1.5 mt-4 rounded-full text-xs font-medium transition-colors min-w-[60px] ${
+                      selectedGalley === "G4"
+                        ? "bg-purple-900 text-white"
+                        : "bg-gray-300 text-gray-700"
+                    }`}
+                    onClick={() => setSelectedGalley("G4")}
+                  >
+                    G4
+                  </button>
                 </div>
-
-                <div className="flex space-x-1">
-                  <div className="flex flex-col space-y-0.5">
-                    {Array.from({ length: 15 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-2 h-2 bg-cyan-400 rounded-sm"
-                      ></div>
-                    ))}
-                  </div>
-                  <div className="flex flex-col space-y-0.5">
-                    {Array.from({ length: 15 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-2 h-2 bg-cyan-400 rounded-sm"
-                      ></div>
-                    ))}
-                  </div>
                 </div>
+            </div>
 
-                <div className="relative mt-4">
-                  <div className="w-12 h-20 bg-purple-800 rounded flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">G4</span>
-                  </div>
-                </div>
-
-                <div className="flex space-x-4 mt-4">
-                  <div className="px-3 py-1 bg-purple-800 text-white text-xs rounded-full">
-                    BULK
-                  </div>
-                  <div className="px-3 py-1 bg-purple-800 text-white text-xs rounded-full">
-                    BELLY
-                  </div>
-                </div> */}
-              </div>
+            {/* BULK and BELLY Buttons - Below Aircraft */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+              <button
+                className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                  selectedGalley === "BULK"
+                    ? "bg-orange-400 text-white"
+                    : "bg-gray-300 text-gray-700"
+                }`}
+                onClick={() => setSelectedGalley("BULK")}
+              >
+                BULK
+              </button>
+              <button
+                className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                  selectedGalley === "BELLY"
+                    ? "bg-orange-400 text-white"
+                    : "bg-gray-300 text-gray-700"
+                }`}
+                onClick={() => setSelectedGalley("BELLY")}
+              >
+                BELLY
+              </button>
             </div>
           </div>
         </div>

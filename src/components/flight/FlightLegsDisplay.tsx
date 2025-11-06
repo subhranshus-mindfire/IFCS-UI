@@ -59,16 +59,20 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
     type: DropdownType;
   } | null>(null);
   const [isEditFlightModalOpen, setIsEditFlightModalOpen] = useState(false);
-  const [selectedLegForEdit, setSelectedLegForEdit] = useState<number | null>(null);
-  const [editPlanType, setEditPlanType] = useState<"loadingPlan" | "mealPlan" | null>(null);
+  const [selectedLegForEdit, setSelectedLegForEdit] = useState<number | null>(
+    null
+  );
+  const [editPlanType, setEditPlanType] = useState<
+    "loadingPlan" | "mealPlan" | null
+  >(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       // Check if click is on a cog icon or inside a dropdown
-      const isClickOnCog = target.closest('.dropdown-trigger');
-      const isClickInDropdown = target.closest('.dropdown-menu');
+      const isClickOnCog = target.closest(".dropdown-trigger");
+      const isClickInDropdown = target.closest(".dropdown-menu");
 
       if (!isClickOnCog && !isClickInDropdown) {
         setOpenDropdown(null);
@@ -113,8 +117,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
     {
       icon: faChartLine,
       label: "Dynamic Provision",
-      onClick: () =>
-        console.log("Dynamic Provision clicked for leg", legIndex),
+      onClick: () => console.log("Dynamic Provision clicked for leg", legIndex),
     },
     {
       icon: faPlaneCircleCheck,
@@ -131,11 +134,15 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
     },
   ];
 
-  const getPlanCardActions = (planType: "loadingPlan" | "mealPlan", legIndex: number) => [
+  const getPlanCardActions = (
+    planType: "loadingPlan" | "mealPlan",
+    legIndex: number
+  ) => [
     {
       icon: faEye,
       label: "Plan Details",
-      onClick: () => console.log(`Plan Details ${planType} clicked for leg`, legIndex),
+      onClick: () =>
+        console.log(`Plan Details ${planType} clicked for leg`, legIndex),
     },
     {
       icon: faPencilAlt,
@@ -150,10 +157,13 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
   const EditFlightModal = () => {
     if (!isEditFlightModalOpen) return null;
 
-    const legData = selectedLegForEdit !== null && selectedLegForEdit >= 0 ? legs[selectedLegForEdit] : null;
+    const legData =
+      selectedLegForEdit !== null && selectedLegForEdit >= 0
+        ? legs[selectedLegForEdit]
+        : null;
 
     return (
-      <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
+      <div className="fixed inset-0 font-rubik bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4">
           {/* Header */}
           <div className="bg-orange-400 text-white px-6 py-4 rounded-t-lg">
@@ -165,13 +175,19 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             {/* Row 1: Airline Code, Direction, Flight Type */}
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm text-gray-500 mb-1">Airline Code</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  Airline Code
+                </label>
                 <select className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400">
-                  <option>{legData?.flightNumber.substring(0, 2) || 'WY'}</option>
+                  <option>
+                    {legData?.flightNumber.substring(0, 2) || "WY"}
+                  </option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-gray-500 mb-1">Direction</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  Direction
+                </label>
                 <select className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400">
                   <option value="">Select</option>
                   <option value="Inbound">Inbound</option>
@@ -179,14 +195,27 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-gray-500 mb-1">Flight Type</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  Flight Type
+                </label>
                 <div className="flex items-center gap-4 pt-2">
                   <label className="flex items-center gap-2">
-                    <input type="radio" name="flightType" value="J" defaultChecked className="text-orange-400 focus:ring-orange-400" />
+                    <input
+                      type="radio"
+                      name="flightType"
+                      value="J"
+                      defaultChecked
+                      className="text-orange-400 focus:ring-orange-400"
+                    />
                     <span className="text-gray-700">J</span>
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="radio" name="flightType" value="P" className="text-orange-400 focus:ring-orange-400" />
+                    <input
+                      type="radio"
+                      name="flightType"
+                      value="P"
+                      className="text-orange-400 focus:ring-orange-400"
+                    />
                     <span className="text-gray-700">P</span>
                   </label>
                 </div>
@@ -203,11 +232,15 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     defaultValue={legData?.date || "Oct 22"}
                     className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">📅</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                    📅
+                  </span>
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-gray-500 mb-1">Departure Time</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  Departure Time
+                </label>
                 <input
                   type="text"
                   defaultValue={legData?.depTime || "21:50"}
@@ -215,7 +248,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-500 mb-1">Arrival Time</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  Arrival Time
+                </label>
                 <input
                   type="text"
                   defaultValue={legData?.arrTime || "0:10"}
@@ -227,7 +262,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             {/* Row 3: Flight Number, Departure Airport, Arrival Airport */}
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm text-gray-500 mb-1">Flight Number</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  Flight Number
+                </label>
                 <input
                   type="text"
                   defaultValue={legData?.flightNumber.substring(2) || "673"}
@@ -235,7 +272,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-500 mb-1">Departure Airport</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  Departure Airport
+                </label>
                 <input
                   type="text"
                   defaultValue="MCT"
@@ -243,7 +282,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-500 mb-1">Arrival Airport</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  Arrival Airport
+                </label>
                 <input
                   type="text"
                   defaultValue="JED"
@@ -255,13 +296,17 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             {/* Row 4: Aircraft Reg, PAX Count */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-gray-500 mb-1">Aircraft Reg</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  Aircraft Reg
+                </label>
                 <select className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400">
-                  <option>{legData?.acReg || 'A4OMP'}</option>
+                  <option>{legData?.acReg || "A4OMP"}</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-gray-500 mb-1">PAX Count</label>
+                <label className="block text-sm text-gray-500 mb-1">
+                  PAX Count
+                </label>
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
@@ -274,7 +319,11 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     className="w-16 border border-gray-300 rounded px-3 py-2 text-center text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
                   />
                   <div className="flex gap-2 text-xs text-gray-500">
-                    <span>Business<br/>Studio</span>
+                    <span>
+                      Business
+                      <br />
+                      Studio
+                    </span>
                     <span>Business</span>
                     <span>Economy</span>
                     <span>Crew</span>
@@ -287,15 +336,28 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             <div className="space-y-3 pt-2">
               <div className="flex items-center justify-between">
                 <label className="text-gray-600">Manual Pairing</label>
-                <input type="radio" className="w-5 h-5 text-orange-400 focus:ring-orange-400" />
+                <input
+                  type="radio"
+                  className="w-5 h-5 text-orange-400 focus:ring-orange-400"
+                />
               </div>
               <div className="flex items-center justify-between">
-                <label className="text-gray-600">Manual Loading Plan Selection</label>
-                <input type="radio" className="w-5 h-5 text-orange-400 focus:ring-orange-400" />
+                <label className="text-gray-600">
+                  Manual Loading Plan Selection
+                </label>
+                <input
+                  type="radio"
+                  className="w-5 h-5 text-orange-400 focus:ring-orange-400"
+                />
               </div>
               <div className="flex items-center justify-between">
-                <label className="text-gray-600">Manual Meal Plan Selection</label>
-                <input type="radio" className="w-5 h-5 text-orange-400 focus:ring-orange-400" />
+                <label className="text-gray-600">
+                  Manual Meal Plan Selection
+                </label>
+                <input
+                  type="radio"
+                  className="w-5 h-5 text-orange-400 focus:ring-orange-400"
+                />
               </div>
             </div>
           </div>
@@ -324,7 +386,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
   };
 
   return (
-    <div className="space-y-4 w-full">
+    <div className="space-y-4 w-full font-rubik">
       <div className="flex justify-between items-center px-2">
         <h2 className="text-xl md:text-2xl text-gray-700">Flights (2 Legs)</h2>
         <div className="relative dropdown-trigger">
@@ -333,10 +395,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             className="text-red-800 cursor-pointer text-xl hover:text-red-900 transition-colors"
             onClick={() => toggleDropdown(-1, "main")}
           />
-          {openDropdown?.legIndex === -1 &&
-            openDropdown?.type === "main" && (
-              <Dropdown actions={getMainActions(-1)} />
-            )}
+          {openDropdown?.legIndex === -1 && openDropdown?.type === "main" && (
+            <Dropdown actions={getMainActions(-1)} />
+          )}
         </div>
       </div>
 
@@ -351,90 +412,132 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
           <div className="px-2 sm:px-4 py-3">
             <div className="grid grid-cols-[repeat(16,minmax(60px,1fr))_auto] xl:grid-cols-[repeat(16,1fr)_auto] gap-1 sm:gap-2 items-center text-xs xl:text-base">
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Route</span>
-                <div className="text-sm xl:text-xl text-gray-600">{leg.route}</div>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Route
+                </span>
+                <div className="text-sm xl:text-xl text-gray-600">
+                  {leg.route}
+                </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Flight #</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Flight #
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600 font-semibold">
                   {leg.flightNumber}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Type</span>
-                <div className="text-sm xl:text-xl text-gray-600">{leg.type}</div>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Type
+                </span>
+                <div className="text-sm xl:text-xl text-gray-600">
+                  {leg.type}
+                </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Date</span>
-                <div className="text-sm xl:text-xl text-gray-600 font-semibold">{leg.date}</div>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Date
+                </span>
+                <div className="text-sm xl:text-xl text-gray-600 font-semibold">
+                  {leg.date}
+                </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">DEP Time</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  DEP Time
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600 font-semibold">
                   {leg.depTime}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">ARR Time</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  ARR Time
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.arrTime}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">AC Type</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  AC Type
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.acType}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">AC Reg</span>
-                <div className="text-sm xl:text-xl text-gray-600">{leg.acReg}</div>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  AC Reg
+                </span>
+                <div className="text-sm xl:text-xl text-gray-600">
+                  {leg.acReg}
+                </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Direction</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Direction
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.direction}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Business</span>
-                <span className="text-[10px] xl:text-xs text-gray-500">Studio</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Business
+                </span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Studio
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.businessStudio}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Business</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Business
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.business}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Economy</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Economy
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.economy}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Crew</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Crew
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.crew}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Child</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Child
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.child}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Crew</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Crew
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.crewCount}
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">Status</span>
+                <span className="text-[10px] xl:text-xs text-gray-500">
+                  Status
+                </span>
                 <div className="text-sm xl:text-xl text-gray-600">
                   {leg.status}
                 </div>
@@ -490,7 +593,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     editPlanType === "loadingPlan" && (
                       <div className="dropdown-menu absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
                         <div className="px-4 py-2 border-b border-gray-200">
-                          <h3 className="text-sm font-semibold text-gray-700">Select desired loading plan</h3>
+                          <h3 className="text-sm font-semibold text-gray-700">
+                            Select desired loading plan
+                          </h3>
                         </div>
                         <select
                           className="w-full px-4 py-2 text-sm text-gray-700 border-0 focus:outline-none focus:ring-2 focus:ring-red-800 rounded"
@@ -512,9 +617,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             {/* Meal Plan Card */}
             <div className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 relative shadow-lg">
               <div className="flex items-start justify-between mb-2">
-                <h3 className="text-xs sm:text-sm text-gray-700">
-                  Meal Plan
-                </h3>
+                <h3 className="text-xs sm:text-sm text-gray-700">Meal Plan</h3>
                 <div className="relative dropdown-trigger">
                   <FontAwesomeIcon
                     icon={faCog}
@@ -533,7 +636,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     editPlanType === "mealPlan" && (
                       <div className="dropdown-menu absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
                         <div className="px-4 py-2 border-b border-gray-200">
-                          <h3 className="text-sm font-semibold text-gray-700">Select desired meal plan</h3>
+                          <h3 className="text-sm font-semibold text-gray-700">
+                            Select desired meal plan
+                          </h3>
                         </div>
                         <select
                           className="w-full px-4 py-2 text-sm text-gray-700 border-0 focus:outline-none focus:ring-2 focus:ring-red-800 rounded"
@@ -547,7 +652,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     )}
                 </div>
               </div>
-              <p className="text-xs sm:text-sm text-gray-600 break-words font-semibold ">{leg.mealPlan}</p>
+              <p className="text-xs sm:text-sm text-gray-600 break-words font-semibold ">
+                {leg.mealPlan}
+              </p>
             </div>
 
             {/* Crew Flight Reports Card */}
@@ -597,7 +704,10 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   {openDropdown?.legIndex === index &&
                     openDropdown?.type === "alerts" && (
                       <Dropdown
-                        actions={getViewAllAction("Alerts/Messages/Memos", index)}
+                        actions={getViewAllAction(
+                          "Alerts/Messages/Memos",
+                          index
+                        )}
                         width="w-32"
                       />
                     )}
@@ -638,11 +748,15 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
               <div className="space-y-1 text-xs sm:text-sm">
                 <div className="flex items-center gap-2 text-gray-600 font-semibold">
                   <span>🍽️</span>
-                  <span className="break-words">Meals - {leg.cutOffTimes.meals}</span>
+                  <span className="break-words">
+                    Meals - {leg.cutOffTimes.meals}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-600 font-semibold">
                   <span>📦</span>
-                  <span className="break-words">Commissary - {leg.cutOffTimes.commissary}</span>
+                  <span className="break-words">
+                    Commissary - {leg.cutOffTimes.commissary}
+                  </span>
                 </div>
               </div>
             </div>

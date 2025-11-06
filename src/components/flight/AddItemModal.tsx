@@ -3,6 +3,7 @@ import { items } from "../../const/itemData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { BowlIcon, UtensilIcon } from "../../assets/icons";
+import HollowBtn from "../common/HollowBtn";
 
 type ItemQuantities = Record<string, number>;
 
@@ -55,138 +56,150 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
     (quantities[code] || 0).toString().padStart(2, "0");
 
   return (
-    <>
-      <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose}></div>
-
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-3xl font-rubik">
-        <div className="px-6 py-2 md:p-8">
-          <h2 className="text-xl font-semibold text-text-muted mb-4">
+    <div
+      className="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex justify-center items-center z-50 p-3 font-rubik"
+      onClick={onClose}
+    >
+      <div
+        className="bg-bg-surface rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col p-5"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="mb-4">
+          <h1 className="text-base font-normal text-text-tertiary mb-2">
             Add Item or Packing Standard
-          </h2>
+          </h1>
+          <p className="text-xs text-text-secondary">
+            Select equipment type and add required quantities.
+          </p>
+        </div>
 
-          <label className="text-text-muted">search</label>
-          <div className="relative mb-6">
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 border border-border-muted rounded-lg focus:outline-none focus:ring-2 text-sm"
-            />
+        {/* Search Input */}
+        <div className="mb-4">
+          <h3 className="text-xs text-text-tertiary mb-1">Search</h3>
+          <input
+            type="text"
+            placeholder="Search by code or name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-3 py-2 border rounded-2xl border-border-muted text-xs focus:outline-none focus:border-bg-button"
+          />
+        </div>
+
+        <div className="flex flex-1 overflow-hidden gap-4">
+          {/* Sidebar */}
+          <div className="w-[25%]">
+            <h3 className="text-xs text-text-tertiary mb-2">
+              Select Equipment Type
+            </h3>
+            <div className="flex flex-col gap-2">
+              <HollowBtn
+                icon={BowlIcon}
+                label="Meal"
+                isActive={selectedType === "meal"}
+                handleClick={() => setSelectedType("meal")}
+              />
+
+              <HollowBtn
+                icon={UtensilIcon}
+                label="Provision"
+                isActive={selectedType === "provision"}
+                handleClick={() => setSelectedType("provision")}
+              />
+            </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-            <div className="w-full md:w-1/4 border-r-1 pr-5 border-border-muted">
-              <h3 className="text-sm  text-secondary mb-3">
-                Select Equipment Type
-              </h3>
-              <div className="flex flex-row md:flex-col gap-2">
-                <button
-                  onClick={() => setSelectedType("meal")}
-                  className={`flex items-center gap-3 p-3 rounded-lg w-full text-left transition-all ${
-                    selectedType === "meal"
-                      ? "bg-bg-accent text-text-primary shadow-sm border-border-accent border-1"
-                      : "hover:bg-bg-surface text-text-secondary"
-                  }`}
-                >
-                  <img src={BowlIcon} alt="Meal" className="w-5 h-5" />
-                  <span>Meal</span>
-                </button>
-                <button
-                  onClick={() => setSelectedType("provision")}
-                  className={`flex items-center gap-3 p-3 rounded-lg w-full text-left transition-all ${
-                    selectedType === "provision"
-                      ? "bg-bg-accent text-text-primary shadow-sm border-border-accent border-1"
-                      : "hover:bg-bg-surface text-text-tertiary"
-                  }`}
-                >
-                  <img src={UtensilIcon} alt="Provision" className="w-5 h-5" />
-                  <span>Provision</span>
-                </button>
-              </div>
-            </div>
-
-            <div className="w-full md:w-2/3">
-              <h3 className="text-sm font-medium text-gray-600 mb-3">
-                Select Item
-              </h3>
-              <div className="border border-border-muted rounded-lg overflow-hidden">
-                <div className="flex items-center justify-between bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-500 uppercase">
-                  <span className="flex-[1]">Code</span>
-                  <span className="flex-[2]">Name</span>
-                  <span className="flex-[1] text-center">Qty.</span>
-                </div>
-
-                <div className="max-h-[300px] overflow-y-auto divide-y divide-gray-200">
+          {/* Table */}
+          <div className="flex-1 overflow-hidden">
+            <h3 className="text-xs text-text-tertiary mb-2">Select Item</h3>
+            <div className="h-full overflow-y-auto border border-border-muted rounded-lg">
+              <table className="min-w-full text-xs border-collapse">
+                <thead className="bg-bg-secondary text-text-secondary sticky top-0">
+                  <tr>
+                    <th className="px-2 py-2 text-left">Code</th>
+                    <th className="px-2 py-2 text-left">Name</th>
+                    <th className="px-2 py-2 text-center" colSpan={3}>
+                      Quantity
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
                   {filteredItems.length > 0 ? (
                     filteredItems.map((item) => {
-                      const hasQuantity = (quantities[item.code] || 0) > 0;
+                      const quantity = quantities[item.code] || 0;
+                      const isSelected = quantity > 0;
                       return (
-                        <div
+                        <tr
                           key={item.id}
-                          className={`flex items-center justify-between px-4 py-3 transition-all ${
-                            hasQuantity
-                              ? "bg-bg-accent text-text-secondary"
-                              : "bg-white text-text-muted hover:bg-gray-50"
-                          }`}
+                          className={`${
+                            isSelected
+                              ? "bg-bg-accent border border-border-accent"
+                              : "bg-bg-surface hover:bg-bg-secondary"
+                          } border-b border-border-muted transition`}
                         >
-                          <span className={`flex-[1] text-sm`}>
+                          <td className="px-2 py-2 text-text-muted">
                             {item.code}
-                          </span>
-                          <span className="flex-[2] text-sm truncate">
+                          </td>
+                          <td className="px-2 py-2 text-text-muted">
                             {item.name}
-                          </span>
-                          <div className="flex-[1] flex items-center justify-center gap-2">
+                          </td>
+                          <td className="py-2 w-0  text-text-muted text-center">
                             <button
                               onClick={() =>
                                 handleQuantityChange(item.code, -1)
                               }
-                              className="bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center text-gray-700 hover:bg-gray-300 transition disabled:opacity-50"
-                              disabled={!hasQuantity}
+                              className="w-6 h-6 rounded-full bg-bg-secondary hover:bg-border-muted flex items-center justify-center"
+                              disabled={quantity === 0}
                             >
                               <FontAwesomeIcon icon={faMinus} size="xs" />
                             </button>
-                            <span
-                              className={`text-sm font-extralight w-6 text-center`}
-                            >
-                              {formatQuantity(item.code)}
-                            </span>
+                          </td>
+                          <td className="px-2 py-2 text-center font-medium text-text-primary">
+                            {formatQuantity(item.code)}
+                          </td>
+                          <td className=" py-2 w-0 text-center">
                             <button
                               onClick={() => handleQuantityChange(item.code, 1)}
-                              className="bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center text-gray-700 hover:bg-gray-300 transition"
+                              className="w-6 h-6 rounded-full bg-bg-secondary hover:bg-border-muted flex items-center justify-center"
                             >
                               <FontAwesomeIcon icon={faPlus} size="xs" />
                             </button>
-                          </div>
-                        </div>
+                          </td>
+                        </tr>
                       );
                     })
                   ) : (
-                    <div className="p-4 text-center text-sm text-gray-500">
-                      No items found.
-                    </div>
+                    <tr>
+                      <td
+                        colSpan={5}
+                        className="px-4 py-3 text-center text-text-tertiary"
+                      >
+                        No items found.
+                      </td>
+                    </tr>
                   )}
-                </div>
-              </div>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
-        <div className="bg-gray-50 px-6 py-4 flex justify-end items-center gap-3 rounded-b-lg">
+        {/* Footer */}
+        <div className="flex justify-end gap-2 pt-4 border-t border-border-muted mt-4">
           <button
+            className="px-4 py-2 text-text-secondary text-xs border border-border-muted rounded-lg hover:bg-bg-secondary transition"
             onClick={onClose}
-            className="py-2 px-5 w-1/6 text-sm text-secondary-700 bg-white border border-border-muted rounded-lg hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-300"
           >
             Cancel
           </button>
           <button
             onClick={handleSaveClick}
-            className="py-2 px-5 w-1/6 text-sm rounded-xl text-white bg-bg-button transition-all"
+            className="px-4 py-2 bg-bg-button text-bg-surface text-xs rounded-lg shadow-md hover:bg-bg-primary transition"
           >
             Save
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };

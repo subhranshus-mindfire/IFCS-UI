@@ -1,7 +1,7 @@
 import galleyXplanner from "../assets/logos/galleyXplanner.png";
-import airTransat from "../assets/logos/airTransat.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import EmiratesLogo from "../assets/logos/emirates.svg";
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
 
       <div className="flex items-center gap-2 lg:gap-4">
         <span className="hidden sm:inline text-gray-700">Shitanshu</span>
-        <img src={airTransat} alt="User Logo" className="h-10 lg:h-13 w-auto" />
+        <img src={EmiratesLogo} className="w-25 h-25 shadow-2xl" />
       </div>
     </nav>
   );

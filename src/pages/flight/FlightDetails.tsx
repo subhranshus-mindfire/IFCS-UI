@@ -48,7 +48,7 @@ function FlightDetails() {
 
   return (
     <div className="p-2 sm:p-8">
-      <nav className="w-full bg-white h-14 sm:h-16 flex items-center justify-between"></nav>
+      <nav className="w-full bg-bg-surface h-14 sm:h-16 flex items-center justify-between"></nav>
 
       <Breadcrumb
         handleDetailsNav={() => setActiveTab("Details")}
@@ -57,39 +57,65 @@ function FlightDetails() {
 
       <div className="flex flex-wrap font-rubik gap-4 mt-6">
         <div>
-          <span className="text-text-tertiary text-sm font-normal">Flight: </span>
-          <span className="font-medium text-base text-text-secondary">{flight.flightNumber}</span>
+          <span className="text-text-tertiary text-sm font-normal">
+            Flight:{" "}
+          </span>
+          <span className="font-medium text-base text-text-secondary">
+            {flight.flightNumber}
+          </span>
         </div>
         <div>
-          <span className="text-text-tertiary text-sm font-normal">Route: </span>
-          <span className="font-medium text-base text-text-secondary">{flight.route}</span>
+          <span className="text-text-tertiary text-sm font-normal">
+            Route:{" "}
+          </span>
+          <span className="font-medium text-base text-text-secondary">
+            {flight.route}
+          </span>
         </div>
         <div>
           <span className="text-text-tertiary text-sm font-normal">Date: </span>
-          <span className="font-medium text-base text-text-secondary">{flight.date}</span>
+          <span className="font-medium text-base text-text-secondary">
+            {flight.date}
+          </span>
         </div>
         <div>
-          <span className="text-text-tertiary text-sm font-normal">Aircraft: </span>
-          <span className="font-medium text-base text-text-secondary">{flight.acType}</span>
+          <span className="text-text-tertiary text-sm font-normal">
+            Aircraft:{" "}
+          </span>
+          <span className="font-medium text-base text-text-secondary">
+            {flight.acType}
+          </span>
         </div>
         <div>
-          <span className="text-text-tertiary text-sm font-normal">AC Reg.: </span>
-          <span className="font-medium text-base text-text-secondary">{flight.acReg}</span>
+          <span className="text-text-tertiary text-sm font-normal">
+            AC Reg.:{" "}
+          </span>
+          <span className="font-medium text-base text-text-secondary">
+            {flight.acReg}
+          </span>
         </div>
         <div>
-          <span className="text-text-tertiary text-sm font-normal">Destination: </span>
-          <span className="font-medium text-base text-text-secondary">{flight.departure}</span>
+          <span className="text-text-tertiary text-sm font-normal">
+            Destination:{" "}
+          </span>
+          <span className="font-medium text-base text-text-secondary">
+            {flight.departure}
+          </span>
         </div>
         <div>
-          <span className="text-text-tertiary text-sm font-normal">Loading Plan: </span>
-          <span className="font-medium text-base text-text-secondary">{flight.plan}</span>
+          <span className="text-text-tertiary text-sm font-normal">
+            Loading Plan:{" "}
+          </span>
+          <span className="font-medium text-base text-text-secondary">
+            {flight.plan}
+          </span>
         </div>
       </div>
 
       <div className="overflow-x-auto my-3 sm:my-4">
-        <div className="flex bg-white rounded-full shadow min-w-max border border-gray-100">
+        <div className="flex font-roboto bg-bg-surface rounded-full shadow min-w-max border border-border-muted">
           {tabKeys.map((tab, index) => (
-            <><button
+            <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`font-roboto capitalize transition-all duration-500 cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs md:text-sm font-medium text-center items-center
@@ -105,7 +131,6 @@ function FlightDetails() {
                 {'0' + (index + 1)}
               </span> &ensp; {tab}
             </button>
-            </>
           ))}
         </div>
       </div>

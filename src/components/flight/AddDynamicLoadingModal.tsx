@@ -13,6 +13,7 @@ import {
   positionItems,
   bulkItems,
 } from "../../const/dynamicLoadingData";
+import HollowBtn from "../common/HollowBtn";
 
 interface DynamicLoadingModalProps {
   onClose: () => void;
@@ -152,29 +153,19 @@ const DynamicLoadingModal: React.FC<DynamicLoadingModalProps> = ({
                 Select Item Type
               </h3>
               <div className="flex flex-col gap-2">
-                <button
-                  onClick={() => setActiveType("Meal")}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition ${
-                    activeType === "Meal"
-                      ? "bg-bg-accent text-text-primary shadow-sm border border-border-accent"
-                      : "text-text-tertiary bg-bg-secondary"
-                  }`}
-                >
-                  <img src={UtensilIcon} />
-                  Meal
-                </button>
+                <HollowBtn
+                  icon={UtensilIcon}
+                  label="Meal"
+                  isActive={activeType === "Meal"}
+                  handleClick={() => setActiveType("Meal")}
+                />
 
-                <button
-                  onClick={() => setActiveType("Provision")}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition ${
-                    activeType === "Provision"
-                      ? "bg-bg-accent text-text-primary shadow-sm border border-border-accent"
-                      : "text-text-tertiary bg-bg-secondary"
-                  }`}
-                >
-                  <img src={BowlIcon} />
-                  Provision
-                </button>
+                <HollowBtn
+                  icon={BowlIcon}
+                  label="Provision"
+                  isActive={activeType === "Provision"}
+                  handleClick={() => setActiveType("Provision")}
+                />
               </div>
             </div>
 
@@ -241,8 +232,6 @@ const DynamicLoadingModal: React.FC<DynamicLoadingModalProps> = ({
     );
   }
 
-  // Step 2: Select Position to Load
-  // Step 2: Select Position to Load
   return (
     <div
       className="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex justify-center items-center z-50 p-3 font-rubik"
@@ -323,29 +312,19 @@ const DynamicLoadingModal: React.FC<DynamicLoadingModalProps> = ({
           <div className="w-[25%]">
             <h3 className="text-xs text-text-tertiary mb-2">Select Type</h3>
             <div className="flex flex-col gap-2">
-              <button
-                onClick={() => setLoadType("Positions")}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition ${
-                  loadType === "Positions"
-                    ? "bg-bg-accent text-text-primary shadow-sm border border-border-accent"
-                    : "text-text-tertiary bg-bg-secondary"
-                }`}
-              >
-                <img src={PositionIcon} />
-                Positions
-              </button>
+              <HollowBtn
+                icon={PositionIcon}
+                label="Positions"
+                isActive={loadType === "Positions"}
+                handleClick={() => setLoadType("Positions")}
+              />
 
-              <button
-                onClick={() => setLoadType("Bulk")}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition ${
-                  loadType === "Bulk"
-                    ? "bg-bg-accent text-text-primary shadow-sm border border-border-accent"
-                    : "text-text-tertiary bg-bg-secondary"
-                }`}
-              >
-                <img src={InfoIcon} />
-                Bulk
-              </button>
+              <HollowBtn
+                icon={InfoIcon}
+                label="Bulk"
+                isActive={loadType === "Bulk"}
+                handleClick={() => setLoadType("Bulk")}
+              />
             </div>
           </div>
 

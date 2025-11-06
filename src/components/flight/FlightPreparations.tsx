@@ -1,9 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPrint,
-  faFilter,
-  faPlusCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { samplePreparations } from "../../const/samplePreparations";
 import First from "../../assets/logos/preparation/first.svg";

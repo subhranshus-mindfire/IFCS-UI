@@ -1,14 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPrint,
-  faFilter,
-  faPlusCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { sampleFoodOrders } from "../../const/foodOrder";
 import { AddItemModal } from "./AddItemModal";
 import DynamicLoadingModal from "./AddDynamicLoadingModal";
-import Redirect from "../common/RedirectBtn";
 import { AddIcon, PrintIcon } from "../../assets/icons";
 import RedirectBtn from "../common/RedirectBtn";
 

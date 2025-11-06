@@ -3,6 +3,7 @@ import { items } from "../../const/itemData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { BowlIcon, UtensilIcon } from "../../assets/icons";
+import HollowBtn from "../common/HollowBtn";
 
 type ItemQuantities = Record<string, number>;
 
@@ -92,29 +93,19 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
               Select Equipment Type
             </h3>
             <div className="flex flex-col gap-2">
-              <button
-                onClick={() => setSelectedType("meal")}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition ${
-                  selectedType === "meal"
-                    ? "bg-bg-accent text-text-primary shadow-sm border border-border-accent"
-                    : "text-text-tertiary bg-bg-secondary"
-                }`}
-              >
-                <img src={BowlIcon} alt="Meal" className="w-4 h-4" />
-                Meal
-              </button>
+              <HollowBtn
+                icon={BowlIcon}
+                label="Meal"
+                isActive={selectedType === "meal"}
+                handleClick={() => setSelectedType("meal")}
+              />
 
-              <button
-                onClick={() => setSelectedType("provision")}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition ${
-                  selectedType === "provision"
-                    ? "bg-bg-accent text-text-primary shadow-sm border border-border-accent"
-                    : "text-text-tertiary bg-bg-secondary"
-                }`}
-              >
-                <img src={UtensilIcon} alt="Provision" className="w-4 h-4" />
-                Provision
-              </button>
+              <HollowBtn
+                icon={UtensilIcon}
+                label="Provision"
+                isActive={selectedType === "provision"}
+                handleClick={() => setSelectedType("provision")}
+              />
             </div>
           </div>
 

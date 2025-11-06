@@ -1,13 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPrint,
-  faFilter,
-  faPlusCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { sampleFoodOrders } from "../../const/foodOrder";
 import { AddItemModal } from "./AddItemModal";
 import DynamicLoadingModal from "./AddDynamicLoadingModal";
+import { AddIcon, PrintIcon } from "../../assets/icons";
+import RedirectBtn from "../common/RedirectBtn";
 
 function FlightFoodOrder() {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -70,37 +68,21 @@ function FlightFoodOrder() {
 
         <div className="flex flex-row items-center gap-6 text-sm">
           {/* Add Dynamic Loading */}
-          <button
-            onClick={handleOpenDynamicModal}
-            className="flex items-center gap-1 text-text-secondary hover:text-text-primary transition focus:outline-none"
-          >
-            <FontAwesomeIcon
-              icon={faPlusCircle}
-              className="text-text-tertiary text-lg"
-            />
-            <span className="underline font-normal">Add Dynamic Loading</span>
-          </button>
-          <button
-            onClick={handleAddItem}
-            className="flex items-center gap-1 text-text-secondary hover:text-text-primary transition focus:outline-none"
-          >
-            <FontAwesomeIcon
-              icon={faPlusCircle}
-              className="text-text-tertiary text-lg"
-            />
-            <span className="underline font-normal">Add Item/PS</span>
-          </button>
-          {/* Print */}
-          <button
-            onClick={handlePrint}
-            className="flex items-center gap-1 text-text-secondary hover:text-text-primary transition focus:outline-none"
-          >
-            <FontAwesomeIcon
-              icon={faPrint}
-              className="text-text-tertiary text-lg"
-            />
-            <span className="underline font-normal">Print</span>
-          </button>
+          <RedirectBtn
+            icon={AddIcon}
+            label={"Add Dynamic Loading"}
+            handleClick={handleOpenDynamicModal}
+          />
+          <RedirectBtn
+            icon={AddIcon}
+            label={"Add Item/PS"}
+            handleClick={handleAddItem}
+          />
+          <RedirectBtn
+            icon={PrintIcon}
+            label={"Print"}
+            handleClick={handlePrint}
+          />
         </div>
       </div>
 

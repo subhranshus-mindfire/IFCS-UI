@@ -9,6 +9,8 @@ import UtensilIcon from "./utensil.svg";
 import InfoIcon from "./info.svg";
 import PositionIcon from "./position.svg";
 import BoxIcon from "./box.svg";
+import SortIcon from "./sort.svg";
+import DeleteIcon from "./delete.svg";
 
 export {
   AddIcon,
@@ -21,5 +23,7 @@ export {
   UtensilIcon,
   InfoIcon,
   PositionIcon,
+  DeleteIcon,
   BoxIcon,
+  SortIcon,
 };

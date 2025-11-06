@@ -16,7 +16,7 @@ const Button: FC<ButtonProps> = ({
   to,
   ...props
 }) => {
-  const buttonClassName = `rounded-md bg-[var(--background2)] px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--backgroundHover)] ${className}`;
+  const buttonClassName = `rounded-md bg-bg-button px-6 py-2 text-sm font-medium transition-colors hover:bg-bg-button-hover ${className}`;
 
   if (to) {
     return (

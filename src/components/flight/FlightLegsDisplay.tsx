@@ -11,6 +11,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown";
+import Button from "../Button";
+import { Field, FieldLabel, FieldContent } from "../Field";
 
 interface FlightLegData {
   route: string;
@@ -163,222 +165,208 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
         : null;
 
     return (
-      <div className="fixed inset-0 font-rubik bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4">
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-bg-surface rounded-lg shadow-xl w-full max-w-xl mx-4">
           {/* Header */}
-          <div className="bg-orange-400 text-white px-6 py-4 rounded-t-lg">
-            <h2 className="text-xl font-semibold text-center">Edit Mode</h2>
+          <div className="bg-orange-400 text-white px-6 py-2 rounded-t-lg">
+            <h2 className="text-sm font-semibold text-center">Edit Mode</h2>
           </div>
 
           {/* Content */}
           <div className="p-6 space-y-4">
             {/* Row 1: Airline Code, Direction, Flight Type */}
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  Airline Code
-                </label>
-                <select className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400">
-                  <option>
-                    {legData?.flightNumber.substring(0, 2) || "WY"}
-                  </option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  Direction
-                </label>
-                <select className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400">
-                  <option value="">Select</option>
-                  <option value="Inbound">Inbound</option>
-                  <option value="Outbound">Outbound</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  Flight Type
-                </label>
-                <div className="flex items-center gap-4 pt-2">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="flightType"
-                      value="J"
-                      defaultChecked
-                      className="text-orange-400 focus:ring-orange-400"
-                    />
-                    <span className="text-gray-700">J</span>
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="flightType"
-                      value="P"
-                      className="text-orange-400 focus:ring-orange-400"
-                    />
-                    <span className="text-gray-700">P</span>
-                  </label>
-                </div>
-              </div>
+            <div className="grid grid-cols-3 gap-2">
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Airline Code</FieldLabel>
+                <FieldContent>
+                  <select className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent">
+                    <option>{legData?.flightNumber.substring(0, 2) || 'WY'}</option>
+                  </select>
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Direction</FieldLabel>
+                <FieldContent>
+                  <select className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent">
+                    <option value="">Select</option>
+                    <option value="Inbound">Inbound</option>
+                    <option value="Outbound">Outbound</option>
+                  </select>
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Flight Type</FieldLabel>
+                <FieldContent>
+                  <div className="flex items-center gap-4 pt-2">
+                    <label className="flex items-center gap-2">
+                      <input type="radio" name="flightType" value="J" defaultChecked className="text-bg-button focus:ring-bg-button" />
+                      <span className="text-text-primary">J</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input type="radio" name="flightType" value="P" className="text-bg-button focus:ring-bg-button" />
+                      <span className="text-text-primary">P</span>
+                    </label>
+                  </div>
+                </FieldContent>
+              </Field>
             </div>
 
             {/* Row 2: Date, Departure Time, Arrival Time */}
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">Date</label>
-                <div className="relative">
+            <div className="grid grid-cols-3 gap-2">
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Date</FieldLabel>
+                <FieldContent>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      defaultValue={legData?.date || "Oct 22"}
+                      className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary">📅</span>
+                  </div>
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Departure Time</FieldLabel>
+                <FieldContent>
                   <input
                     type="text"
-                    defaultValue={legData?.date || "Oct 22"}
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    defaultValue={legData?.depTime || "21:50"}
+                    className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                    📅
-                  </span>
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  Departure Time
-                </label>
-                <input
-                  type="text"
-                  defaultValue={legData?.depTime || "21:50"}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  Arrival Time
-                </label>
-                <input
-                  type="text"
-                  defaultValue={legData?.arrTime || "0:10"}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                />
-              </div>
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Arrival Time</FieldLabel>
+                <FieldContent>
+                  <input
+                    type="text"
+                    defaultValue={legData?.arrTime || "0:10"}
+                    className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                  />
+                </FieldContent>
+              </Field>
             </div>
 
             {/* Row 3: Flight Number, Departure Airport, Arrival Airport */}
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  Flight Number
-                </label>
-                <input
-                  type="text"
-                  defaultValue={legData?.flightNumber.substring(2) || "673"}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  Departure Airport
-                </label>
-                <input
-                  type="text"
-                  defaultValue="MCT"
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  Arrival Airport
-                </label>
-                <input
-                  type="text"
-                  defaultValue="JED"
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                />
-              </div>
+            <div className="grid grid-cols-3 gap-2">
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Flight Number</FieldLabel>
+                <FieldContent>
+                  <input
+                    type="text"
+                    defaultValue={legData?.flightNumber.substring(2) || "673"}
+                    className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                  />
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Departure Airport</FieldLabel>
+                <FieldContent>
+                  <input
+                    type="text"
+                    defaultValue="MCT"
+                    className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                  />
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Arrival Airport</FieldLabel>
+                <FieldContent>
+                  <input
+                    type="text"
+                    defaultValue="JED"
+                    className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                  />
+                </FieldContent>
+              </Field>
             </div>
 
-            {/* Row 4: Aircraft Reg, PAX Count */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  Aircraft Reg
-                </label>
-                <select className="w-full border border-gray-300 rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400">
-                  <option>{legData?.acReg || "A4OMP"}</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm text-gray-500 mb-1">
-                  PAX Count
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    defaultValue="2"
-                    className="w-16 border border-gray-300 rounded px-3 py-2 text-center text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                  />
-                  <input
-                    type="number"
-                    defaultValue="153"
-                    className="w-16 border border-gray-300 rounded px-3 py-2 text-center text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                  />
-                  <div className="flex gap-2 text-xs text-gray-500">
-                    <span>
-                      Business
-                      <br />
-                      Studio
-                    </span>
-                    <span>Business</span>
-                    <span>Economy</span>
-                    <span>Crew</span>
+            {/* Row 4: Aircraft Reg and PAX Count */}
+            <div className="grid grid-cols-3 gap-2">
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">Aircraft Reg</FieldLabel>
+                <FieldContent>
+                  <select className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent">
+                    <option>{legData?.acReg || 'A4OMP'}</option>
+                  </select>
+                </FieldContent>
+              </Field>
+              <Field>
+                <FieldLabel className="text-sm text-text-tertiary">PAX Count</FieldLabel>
+                <FieldContent>
+                  <div className="grid grid-cols-4 gap-1">
+                    <div className="flex flex-col">
+                      <input
+                        type="text"
+                        defaultValue={legData?.businessStudio || "2"}
+                        className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                      />
+                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">Business Studio</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <input
+                        type="text"
+                        defaultValue={legData?.business || "153"}
+                        className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                      />
+                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">Business</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <input
+                        type="text"
+                        defaultValue={legData?.economy || "0"}
+                        className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                      />
+                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">Economy</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <input
+                        type="text"
+                        defaultValue={legData?.crew || "0"}
+                        className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                      />
+                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">Crew</span>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </FieldContent>
+              </Field>
             </div>
 
             {/* Row 5: Manual Options */}
             <div className="space-y-3 pt-2">
               <div className="flex items-center justify-between">
-                <label className="text-gray-600">Manual Pairing</label>
-                <input
-                  type="radio"
-                  className="w-5 h-5 text-orange-400 focus:ring-orange-400"
-                />
+                <label className="text-text-secondary">Manual Pairing</label>
+                <input type="radio" className="w-5 h-5 text-bg-button focus:ring-bg-button" />
               </div>
               <div className="flex items-center justify-between">
-                <label className="text-gray-600">
-                  Manual Loading Plan Selection
-                </label>
-                <input
-                  type="radio"
-                  className="w-5 h-5 text-orange-400 focus:ring-orange-400"
-                />
+                <label className="text-text-secondary">Manual Loading Plan Selection</label>
+                <input type="radio" className="w-5 h-5 text-bg-button focus:ring-bg-button" />
               </div>
               <div className="flex items-center justify-between">
-                <label className="text-gray-600">
-                  Manual Meal Plan Selection
-                </label>
-                <input
-                  type="radio"
-                  className="w-5 h-5 text-orange-400 focus:ring-orange-400"
-                />
+                <label className="text-text-secondary">Manual Meal Plan Selection</label>
+                <input type="radio" className="w-5 h-5 text-bg-button focus:ring-bg-button" />
               </div>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
-            <button
+          <div className="flex justify-end gap-3 px-6 py-4 border-t border-border-muted">
+            <Button
               onClick={() => setIsEditFlightModalOpen(false)}
-              className="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors"
+              className="px-6 py-2 bg-bg-secondary rounded hover:bg-gray-400 transition-colors"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => {
                 console.log("Save clicked");
                 setIsEditFlightModalOpen(false);
               }}
-              className="px-6 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition-colors"
+              className="px-6 py-2 bg-bg-button text-white rounded hover:opacity-90 transition-opacity"
             >
               Save
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -591,7 +579,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   {openDropdown?.legIndex === index &&
                     openDropdown?.type === "editPlan" &&
                     editPlanType === "loadingPlan" && (
-                      <div className="dropdown-menu absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                      <div className="dropdown-menu absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 p-2 z-50">
                         <div className="px-4 py-2 border-b border-gray-200">
                           <h3 className="text-sm font-semibold text-gray-700">
                             Select desired loading plan

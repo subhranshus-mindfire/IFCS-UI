@@ -17,7 +17,7 @@ const tabKeys = [
   "food_orders",
   "content_locn",
   "galleys",
-  "labels reports",
+  "labels_reports",
   "deliveries",
   "invoice",
 ];

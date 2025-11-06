@@ -6,30 +6,30 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
   const [flightType, setFlightType] = useState("J");
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      {/* slightly gray modal background */}
-      <div className="bg-[#EFF2F4] rounded-lg shadow-md w-full max-w-md p-3 border border-gray-300">
+    <div className="fixed inset-0 bg-overlay flex items-center justify-center z-50">
+      {/* Modal */}
+      <div className="bg-bgSecondary rounded-lg shadow-md w-full max-w-md p-3 border border-borderLight">
         <div className="space-y-3 text-xs">
           {/* Row 1 */}
           <div className="grid grid-cols-3 gap-2">
             <div>
-              <label className="block text-gray-500 mb-0.5 text-[11px]">
+              <label className="block text-textTertiary mb-0.5 text-[11px]">
                 Airline Code
               </label>
-              <select className="w-full border border-gray-300 rounded px-1.5 py-1 text-gray-700 bg-white focus:outline-none focus:border-blue-400">
+              <select className="w-full border border-borderLight rounded px-1.5 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary">
                 <option value=""></option>
               </select>
             </div>
             <div>
-              <label className="block text-gray-500 mb-0.5 text-[11px]">
+              <label className="block text-textTertiary mb-0.5 text-[11px]">
                 Direction
               </label>
-              <select className="w-full border border-gray-300 rounded px-1.5 py-1 text-gray-700 bg-white focus:outline-none focus:border-blue-400">
+              <select className="w-full border border-borderLight rounded px-1.5 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary">
                 <option value=""></option>
               </select>
             </div>
             <div>
-              <label className="block text-gray-500 mb-0.5 text-[11px]">
+              <label className="block text-textTertiary mb-0.5 text-[11px]">
                 Flight Type
               </label>
               <div className="flex gap-1">
@@ -44,9 +44,9 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
                       value={type}
                       checked={flightType === type}
                       onChange={(e) => setFlightType(e.target.value)}
-                      className="w-3 h-3 bg-white"
+                      className="w-3 h-3 bg-surface accent-accentPrimary"
                     />
-                    <span className="text-[11px]">{type}</span>
+                    <span className="text-[11px] text-textPrimary">{type}</span>
                   </label>
                 ))}
               </div>
@@ -61,12 +61,12 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
               { label: "Arrival", type: "time" },
             ].map((field) => (
               <div key={field.label}>
-                <label className="block text-gray-500 mb-0.5 text-[11px]">
+                <label className="block text-textTertiary mb-0.5 text-[11px]">
                   {field.label}
                 </label>
                 <input
                   type={field.type}
-                  className="w-full border border-gray-300 rounded px-1.5 py-1 text-gray-700 bg-white focus:outline-none focus:border-blue-400"
+                  className="w-full border border-borderLight rounded px-1.5 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary"
                 />
               </div>
             ))}
@@ -76,12 +76,12 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
           <div className="grid grid-cols-3 gap-2">
             {["Flight No.", "Dep. Airport", "Arr. Airport"].map((label) => (
               <div key={label}>
-                <label className="block text-gray-500 mb-0.5 text-[11px]">
+                <label className="block text-textTertiary mb-0.5 text-[11px]">
                   {label}
                 </label>
                 <input
                   type="text"
-                  className="w-full border border-gray-300 rounded px-1.5 py-1 text-gray-700 bg-white focus:outline-none focus:border-blue-400"
+                  className="w-full border border-borderLight rounded px-1.5 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary"
                 />
               </div>
             ))}
@@ -90,16 +90,16 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
           {/* Row 4 */}
           <div className="flex items-start gap-1">
             <div className="w-1/3">
-              <label className="block text-gray-500 mb-0.5 text-[11px]">
+              <label className="block text-textTertiary mb-0.5 text-[11px]">
                 Aircraft Reg
               </label>
-              <select className="w-[90%] border border-gray-300 rounded px-1 py-1 text-gray-700 bg-white focus:outline-none focus:border-blue-400">
+              <select className="w-[90%] border border-borderLight rounded px-1 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary">
                 <option value=""></option>
               </select>
             </div>
 
             <div className="flex-1">
-              <label className="block text-gray-500 mb-0.5 text-[11px]">
+              <label className="block text-textTertiary mb-0.5 text-[11px]">
                 PAX Count
               </label>
               <div className="flex items-start">
@@ -112,9 +112,9 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
                     >
                       <input
                         type="number"
-                        className="w-[30px] border border-gray-300 rounded py-0.5 text-xs text-gray-700 text-center bg-white focus:outline-none focus:border-blue-400"
+                        className="w-[30px] border border-borderLight rounded py-0.5 text-xs text-textPrimary text-center bg-surface focus:outline-none focus:border-accentPrimary"
                       />
-                      <label className="mt-1 text-[7px] text-gray-400 leading-tight text-center break-words w-full">
+                      <label className="mt-1 text-[7px] text-textTertiary leading-tight text-center break-words w-full">
                         {type}
                       </label>
                     </div>
@@ -124,6 +124,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
             </div>
           </div>
 
+          {/* Manual toggles */}
           <div className="space-y-0.5 pt-1">
             {[
               "Manual Pairing",
@@ -132,12 +133,12 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
             ].map((label) => (
               <label
                 key={label}
-                className="flex items-center justify-between pe-6 gap-1 cursor-pointer text-[11px]"
+                className="flex items-center justify-between pe-6 gap-1 cursor-pointer text-[11px] text-textPrimary"
               >
                 <span>{label}</span>
                 <input
                   type="checkbox"
-                  className="w-3 h-3 border-gray-300 bg-white"
+                  className="w-3 h-3 border-borderLight bg-surface accent-accentPrimary"
                 />
               </label>
             ))}
@@ -149,10 +150,10 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
               <button
                 key={btn}
                 onClick={btn === "Cancel" ? onClose : undefined}
-                className={`px-3 py-1 rounded-full transition-colors text-xs ${
+                className={`px-3 py-1 rounded-full transition-colors text-xs font-medium ${
                   i === 0
-                    ? "bg-gray-300 text-gray-700 hover:bg-gray-400"
-                    : "bg-gray-300 text-gray-900"
+                    ? "bg-surface text-textSecondary hover:bg-borderLight"
+                    : "bg-accentPrimary text-white hover:bg-accentPrimaryHover"
                 }`}
               >
                 {btn}

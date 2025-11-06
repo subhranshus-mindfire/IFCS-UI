@@ -1,4 +1,8 @@
 /* src/index.css or src/theme.css */
+button{
+  cursor: pointer;
+}
+
 
 @font-face {
   font-family: 'Arial';
@@ -11,7 +15,7 @@
 }
 
 @font-face {
-  font-family: roboto;
+  font-family: "roboto";
   src: url('./assets//fonts/Roboto.ttf') format('truetype');
 }
 
@@ -20,9 +24,8 @@
 @theme {
   --font-arial: "Arial", sans-serif;
   --font-rubik: "Rubik", sans-serif;
-
-  --color-bg-accent: #E2D8FD;
-  --color-bg-button: #602AF3;
+  --font-roboto: "roboto", "sans-serif";
+  --color-bg-accent: #602AF3;
   --color-bg-primary: #B79EFA;
   --color-bg-secondary: #F0F0F0;
   --color-bg-surface: #FFFFFF;

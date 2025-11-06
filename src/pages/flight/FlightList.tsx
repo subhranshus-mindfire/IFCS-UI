@@ -13,12 +13,13 @@ import FlightHeader from "../../components/flight/FlightListHeader";
 import { AddFlightModal } from "../../components/flight/AddFlightModal";
 import { FlightHistoryModal } from "../../components/flight/FlightHistoryModal";
 import { FlightRow } from "../../components/flight/FlightRow";
+import { useNavigate } from "react-router-dom";
 
 const FlightList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [selectedFlightNumber, setSelectedFlightNumber] = useState<string>("");
-
+  const navigate = useNavigate();
   const handleAddFlight = () => setShowAddModal(true);
   const handleShowHistory = (flightNumber: string) => {
     setSelectedFlightNumber(flightNumber);
@@ -27,7 +28,10 @@ const FlightList: React.FC = () => {
 
   return (
     <div className="w-full h-screen flex flex-col bg-gray-100 font-arial overflow-hidden">
-      <FlightHeader onAddFlight={handleAddFlight} />
+      <FlightHeader
+        onBack={() => navigate("/dashboard")}
+        onAddFlight={handleAddFlight}
+      />
 
       {showAddModal && (
         <AddFlightModal onClose={() => setShowAddModal(false)} />

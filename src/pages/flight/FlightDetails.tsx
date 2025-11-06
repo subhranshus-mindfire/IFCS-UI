@@ -52,7 +52,7 @@ function FlightDetails() {
 
       <Breadcrumb
         handleDetailsNav={() => setActiveTab("details")}
-        currentScreen="Preparation"
+        currentScreen={activeTab}
       />
 
       <div className="flex flex-wrap font-rubik gap-4 mt-6">

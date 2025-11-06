@@ -61,13 +61,9 @@ const FlightContLoc = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                🔍
-              </span>
             </div>
           </div>
 
-          {/* Items List */}
           <div className="flex-1 overflow-y-auto">
             {filteredItems.map((item) => (
               <div

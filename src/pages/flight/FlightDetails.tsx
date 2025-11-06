@@ -18,7 +18,7 @@ const tabKeys = [
   "details",
   "preparations",
   "food orders",
-  "content locn",
+  "content_locn",
   "galleys",
   "labels reports",
   "deliveries",
@@ -61,38 +61,6 @@ function FlightDetails() {
           </div>
         </Button>
       </nav>
-
-      {/* <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow rounded-xl p-3 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 items-start">
-        <div>
-          <h1 className="text-xl sm:text-3xl font-extrabold text-blue-800 mb-1 sm:mb-2">
-            {t("flightDetails.info.title", {
-              flightNumber: flight.flightNumber,
-            })}
-          </h1>
-          <p className="text-sm sm:text-lg text-gray-700 font-medium">
-            {flight.airlineCode} • {flight.type}
-          </p>
-          <p className="text-xs sm:text-sm text-gray-500">
-            {flight.date} |{" "}
-            <span className="font-semibold">{flight.status}</span>
-          </p>
-        </div>
-        <div className="text-left md:text-right">
-          <p className="text-xs sm:text-sm text-gray-500">
-            {t("flightDetails.info.route")}
-          </p>
-          <h2 className="text-base sm:text-xl font-semibold text-gray-800">
-            {flight.depStation} → {flight.arrStation}
-          </h2>
-          <p className="text-xs sm:text-sm text-gray-600">
-            {t("flightDetails.info.departure")}{" "}
-            <span className="font-medium">{flight.departure}</span> •{" "}
-            {t("flightDetails.info.arrival")}{" "}
-            <span className="font-medium">{flight.arrival}</span>
-          </p>
-        </div>
-      </div> */}
-
 
       <Breadcrumb currentScreen="Preparation" />
 
@@ -173,7 +141,7 @@ function FlightDetails() {
                 child: 0,
                 crewCount: 0,
                 status: flight.status,
-                loadingPlan: flight.plan,
+                loadingPlan: flight.plan!,
                 mealPlan: "No Meal Plan",
                 crewFlightReports: ["NA"],
                 alerts: ["NA", "NA"],

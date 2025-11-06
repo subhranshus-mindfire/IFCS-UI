@@ -48,7 +48,8 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
       <button
         onClick={handleDetailsNav}
         className={`mx-1 text-text-muted font-medium hover:text-[#602AF3] transition-colors, ${
-          currentScreen === "details" && "text-xl font-semibold"
+          currentScreen === "details" &&
+          "text-text-primary text-base font-semibold"
         }`}
       >
         Flight Details

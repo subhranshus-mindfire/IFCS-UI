@@ -13,7 +13,7 @@ import Fourth from "../../assets/logos/preparation/forth.png";
 import Fifth from "../../assets/logos/preparation/fifth.png";
 import Sixth from "../../assets/logos/preparation/sixth.png";
 import Seventh from "../../assets/logos/preparation/seventh.png";
-import DynamicLoadingModal from "./AddFlightPreparationModal";
+import DynamicLoadingModal from "./AddDynamicLoadingModal";
 
 function FlightPreparations() {
   const tableRef = useRef<HTMLDivElement>(null);

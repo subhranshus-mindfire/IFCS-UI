@@ -2,9 +2,6 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { flights } from "../../const/flightData";
 import FlightPreparations from "../../components/flight/FlightPreparations";
-import Button from "../../components/Button";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FlightFoodOrder from "../../components/flight/FlightFoodOrder";
 import FlightGalleys from "../../components/flight/FlightGalleys";
 import FlightContLoc from "../../components/flight/FlightContLoc";
@@ -50,16 +47,7 @@ function FlightDetails() {
 
   return (
     <div className="p-2 sm:p-8">
-      <nav className="w-full bg-white h-14 sm:h-16 flex items-center justify-between">
-        <Button className="bg-blue-400" to="/flight-list">
-          <div className="flex flex-row justify-center items-center gap-2">
-            <FontAwesomeIcon icon={faArrowLeft} className="text-white" />
-            <p className="text-sm sm:text-base">
-              {t("flightDetails.backButton")}
-            </p>
-          </div>
-        </Button>
-      </nav>
+      <nav className="w-full bg-white h-14 sm:h-16 flex items-center justify-between"></nav>
 
       {/* <div className="bg-gradient-to-r from-blue-50 to-blue-100 shadow rounded-xl p-3 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 items-start">
         <div>

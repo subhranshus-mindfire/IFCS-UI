@@ -5,7 +5,7 @@ import FlightPreparations from "../../components/flight/FlightPreparations";
 import FlightFoodOrder from "../../components/flight/FlightFoodOrder";
 import FlightGalleys from "../../components/flight/FlightGalleys";
 import FlightContLoc from "../../components/flight/FlightContLoc";
-import FlightDeliveries from "../../components/flight/deliveries/FlightDeliveries";
+import FlightDeliveries from "../../components/flight/delivery/FlightDeliveries";
 import FlightLabels from "../../components/flight/FlightLabels";
 import FlightLegsDisplay from "../../components/flight/FlightLegsDisplay";
 import { Breadcrumb } from "../../components/BreadCrumb";

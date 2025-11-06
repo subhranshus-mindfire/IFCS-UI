@@ -87,11 +87,12 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           {flight.status}
         </span>
       </td>
-      <td className="text-center py-2 ">
+      <td className="text-center py-2 text-xl">6:66</td>
+      <td className="text-center py-2 text-[13px]">
         <div className="font-medium">{flight.acType}</div>
         <div className="text-gray-600">{flight.acReg}</div>
       </td>
-      <td className=" py-2 text-[11px] text-gray-700 leading-tight">
+      <td className=" py-2 text-[12px] text-gray-700 leading-tight">
         {flight.plan && <div className="mb-1">📄 {flight.plan}</div>}
         {flight.mealPlan && <div>{flight.mealPlan}</div>}
         {!flight.mealPlan && <div className="text-red-500">no meal plan</div>}
@@ -102,7 +103,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           <span className="font-bold text-sm">{flight.paxTotal}</span>
         </div>
       </td>
-      <td className=" py-2 text-[11px] text-gray-700">
+      <td className=" py-2 text-[12px] text-gray-700">
         <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-left">
           <div>
             <span className="text-xs text-left text-gray-900">
@@ -124,8 +125,8 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           </div>
         </div>
       </td>
-      <td className="py-2 ">
-        <div className="flex items-center justify-end gap-2 text-gray-400">
+      <td className="py-2 text-[13px]">
+        <div className="flex items-center justify-end pe-2 gap-2 text-gray-400">
           <FontAwesomeIcon
             icon={faExclamationTriangle}
             className="hover:text-yellow-500 cursor-pointer"
@@ -179,11 +180,14 @@ export const FlightRow: React.FC<FlightRowProps> = ({
                     className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
                     onClick={handleFlightDetails}
                   >
-                    <FontAwesomeIcon icon={faEye} className="text-blue-400" />
+                    <FontAwesomeIcon icon={faEye} className="text-red-400" />
                     Details
                   </li>
-                  <li className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer">
-                    <FontAwesomeIcon icon={faPen} className="text-green-500" />
+                  <li
+                    className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={handleFlightDetails}
+                  >
+                    <FontAwesomeIcon icon={faPen} className="text-red-500" />
                     Edit
                   </li>
                   <li
@@ -192,7 +196,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
                   >
                     <FontAwesomeIcon
                       icon={faHistory}
-                      className="text-purple-500"
+                      className="text-red-500"
                     />
                     History
                   </li>

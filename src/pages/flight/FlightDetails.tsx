@@ -12,14 +12,14 @@ import { Breadcrumb } from "../../components/BreadCrumb";
 import { useTranslation } from "react-i18next";
 
 const tabKeys = [
-  "details",
-  "preparations",
-  "food_orders",
-  "content_locn",
-  "galleys",
-  "labels_reports",
-  "deliveries",
-  "invoice",
+  "Details",
+  "Preparations",
+  "Food Orders",
+  "Content Locn",
+  "Galleys",
+  "Labels/Reports",
+  "Deliveries",
+  "Invoice",
 ];
 
 function FlightDetails() {
@@ -51,7 +51,7 @@ function FlightDetails() {
       <nav className="w-full bg-bg-surface h-14 sm:h-16 flex items-center justify-between"></nav>
 
       <Breadcrumb
-        handleDetailsNav={() => setActiveTab("details")}
+        handleDetailsNav={() => setActiveTab("Details")}
         currentScreen={activeTab}
       />
 
@@ -118,37 +118,26 @@ function FlightDetails() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`font-roboto capitalize cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs font-semibold text-center transition-all
-          ${index == 0 ? "rounded-l-full" : ""}
-          ${index == tab.length ? "rounded-r-full" : ""}
-          ${
-            index == 0 || index == tab.length
-              ? ""
-              : "border border-border-muted"
-          }
-          ${
-            activeTab === tab
-              ? "border-b-4 border-b-bg-button text-bg-button shadow-md"
-              : "text-text-secondary hover:bg-bg-button hover:text-bg-surface"
-          }`}
-            >
-              <span
-                className={`inline-block w-6 py-1 rounded-full ${
-                  activeTab === tab
-                    ? "bg-bg-button text-bg-surface shadow-md"
-                    : "text-text-secondary bg-border-muted"
-                }`}
-              >
-                {"0" + (index + 1)}
-              </span>{" "}
-              &ensp; {tab}
+              className={`font-roboto capitalize transition-all duration-500 cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs md:text-sm font-medium text-center items-center
+              ${index == 0 ? "rounded-l-full" : ""}
+              ${index == tab.length ? "rounded-r-full" : ""}
+              ${index == 0 || index == tab.length ? "" : "border border-gray-100 "} ${activeTab === tab
+                ? "border-b-4 border-b-bg-button text-bg-button shadow-md"
+                : "text-text-secondary hover:bg-bg-button hover:text-white"
+              }`}>
+              <span className={`inline-block w-6 py-1 rounded-full text-xs ${activeTab === tab
+                ? "bg-bg-button text-white shadow-md"
+                : "text-text-secondary bg-border-muted"} `}>
+                {'0' + (index + 1)}
+              </span> &ensp; {tab}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="bg-bg-surface rounded-xl mt-3 sm:mt-4 p-3 sm:p-3 min-w-full min-h-[250px]">
-        {activeTab === "details" && (
+      <div className="bg-white rounded-xl mt-3 sm:mt-4 min-w-full min-h-[250px]">
+        {/* Use the tab keys for conditional rendering */}
+        {activeTab === "Details" && (
           <FlightLegsDisplay
             legs={[
               {
@@ -208,16 +197,15 @@ function FlightDetails() {
             ]}
           />
         )}
-
-        {activeTab !== "details" && (
+        {activeTab !== "Details" && (
           <div className="flex items-center justify-center w-full h-full">
             <div className="w-full">
-              {activeTab === "preparations" && <FlightPreparations />}
-              {activeTab === "food_orders" && <FlightFoodOrder />}
-              {activeTab === "galleys" && <FlightGalleys />}
-              {activeTab === "content_locn" && <FlightContLoc />}
-              {activeTab === "deliveries" && <FlightDeliveries />}
-              {activeTab === "labels_reports" && <FlightLabels />}
+              {activeTab === "Preparations" && <FlightPreparations />}
+              {activeTab === "Food Orders" && <FlightFoodOrder />}
+              {activeTab === "Galleys" && <FlightGalleys />}
+              {activeTab === "Content Locn" && <FlightContLoc />}
+              {activeTab === "Deliveries" && <FlightDeliveries />}
+              {activeTab === "Labels/Reports" && <FlightLabels />}
             </div>
           </div>
         )}

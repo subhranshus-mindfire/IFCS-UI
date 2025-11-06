@@ -30,34 +30,34 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
     name.replace(/([A-Z])/g, " $1").trim();
 
   return (
-    <nav className="flex font-rubik items-center w-full bg-white px-6 py-3 text-sm shadow-sm">
+    <nav className="flex font-rubik items-center w-full bg-white py-3 text-sm">
       <button
         onClick={handleHomePress}
-        className="mx-1 text-text-muted font-medium hover:text-[#602AF3] transition-colors"
+        className=" text-text-muted font-normal hover:text-bg-button transition-colors"
       >
         Home
       </button>
       <span className="mx-2 text-gray-400 text-base">›</span>
       <button
         onClick={handleFlightsPress}
-        className="mx-1 text-text-muted font-medium hover:text-[#602AF3] transition-colors"
+        className="mx-1 text-text-muted font-normal hover:text-bg-button transition-colors"
       >
         Flights
       </button>
       <span className="mx-2 text-gray-400 text-base">›</span>{" "}
       <button
         onClick={handleDetailsNav}
-        className={`mx-1 text-text-muted font-medium hover:text-[#602AF3] transition-colors, ${
-          currentScreen === "details" &&
-          "text-text-primary text-base font-semibold"
+        className={`mx-1 text-text-muted font-normal hover:text-bg-button transition-colors, ${
+          currentScreen === "Details" &&
+          "text-text-primary text-base font-regular"
         }`}
       >
         Flight Details
       </button>
-      {currentScreen !== "details" && (
+      {currentScreen !== "Details" && (
         <>
           <span className="mx-2 text-gray-400 text-base">›</span>{" "}
-          <span className="mx-1 text-text-primary font-semibold text-xl">
+          <span className="mx-1 text-text-primary font-medium text-base ">
             {formatScreenName(currentScreen)}
           </span>
         </>
@@ -65,7 +65,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
       {subItem && (
         <>
           <span className="mx-2 text-gray-400 text-base">›</span>
-          <span className="mx-1 text-[#3a3939] font-semibold text-base">
+          <span className="mx-1 text-[#3a3939] font-regular text-base">
             {subItem}
           </span>
         </>

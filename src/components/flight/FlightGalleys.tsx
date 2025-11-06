@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBoxesPacking } from "@fortawesome/free-solid-svg-icons";
 
 type PreparedBy = string;
 type Item = {
@@ -10,101 +8,86 @@ type Item = {
 };
 
 const preparedByList: PreparedBy[] = [
-  "Dry Stores",
-  "Spare",
-  "Bond Stores",
-  "Tray Set Up",
+  "Commissary",
+  "Kitchen",
+  "Duty Free",
+  "Meals",
 ];
 
 const itemsList: Item[] = [
-  { code: "CN007", label: "JC Headsets X12", qty: 2 },
-  { code: "CN030", label: "Ice", qty: 2 },
-  { code: "CT060", label: "B737 Holloware ISC-MEA", qty: 1 },
-  { code: "CT059", label: "JC ISC - MEA NB Spare", qty: 1 },
-  { code: "OV002", label: "JC Oven", qty: 1 },
-  { code: "CN033", label: "JC Dry store NB", qty: 1 },
-  { code: "CT107", label: "YC 2nd Service", qty: 1 },
-  { code: "CT070", label: "WC 737 Bulk Food", qty: 1 },
-  { code: "CT064", label: "JC 1st Service OB TSU", qty: 1 },
+  { code: "CN031", label: "Purser Kit", qty: 2 },
+  { code: "CN031", label: "Purser Kit", qty: 2 },
+  { code: "CN031", label: "Purser Kit", qty: 2 },
+  { code: "CN031", label: "Purser Kit", qty: 2 },
+  { code: "CN031", label: "Purser Kit", qty: 2 },
+  { code: "CN031", label: "Purser Kit", qty: 2 },
+  { code: "CN031", label: "Purser Kit", qty: 2 },
 ];
 
 const FlightGalleys = () => {
-  const [preparedBy] = useState(preparedByList);
-  const [items] = useState(itemsList);
+  const [selectedPrep, setSelectedPrep] = useState("Commissary");
 
   return (
-    <div className="flex flex-col lg:flex-row w-full max-w-full bg-gray-200 gap-2 sm:gap-4 p-2 sm:p-4">
-      <div className="w-full lg:w-72 rounded-xl bg-white shadow p-3 sm:p-4 order-2 lg:order-1">
-        <h2 className="text-blue-400 font-semibold mb-3 text-sm sm:text-base">
-          Prepared By:
+    <div className="flex w-full gap-4 bg-bg-surface font-rubik">
+
+      {/* LEFT SIDEBAR */}
+      <div className="w-60 bg-[#FAF9FA] h-auto rounded-xl shadow-sm p-4 md:h-[60vh]">
+        <h2 className="text-text-primary font-normal text-sm mb-3 border-b border-bg-secondary pb-3">
+          Prepared by
         </h2>
-        <div className="overflow-y-auto max-h-48 sm:max-h-64 lg:max-h-96 space-y-2">
-          {preparedBy.map((prep, idx) => (
-            <div
-              key={idx}
-              className="p-2 rounded-md shadow-sm border hover:bg-gray-50 cursor-pointer text-sm sm:text-base"
-            >
-              {prep}
-            </div>
-          ))}
+
+        <div className="space-y-2">
+          {preparedByList.map((prep, idx) => {
+            const active = prep === selectedPrep;
+            return (
+              <button
+                key={idx}
+                onClick={() => setSelectedPrep(prep)}
+                className={`w-full text-left px-3 py-2 rounded-md text-sm 
+                  ${active
+                    ? "bg-bg-accent text-text-primary font-normal"
+                    : "hover:bg-gray-100 text-text-muted"
+                  }`}
+              >
+                {prep}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <div className="flex-1 bg-white rounded-xl shadow p-3 sm:p-4 order-1 lg:order-2">
-        <h2 className="text-blue-400 font-semibold mb-3 text-sm sm:text-base">
-          Items
-        </h2>
-        <div className="overflow-y-auto max-h-64 sm:max-h-80 lg:max-h-96">
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs sm:text-sm min-w-full">
-              <thead>
-                <tr className="border-b text-gray-500">
-                  <th className="text-left py-2 px-1 sm:px-2 whitespace-nowrap">
-                    Code
-                  </th>
-                  <th className="text-left py-2 px-1 sm:px-2">Label</th>
-                  <th className="text-right py-2 px-1 sm:px-2 whitespace-nowrap">
-                    Qty
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item, idx) => (
-                  <tr key={idx} className="border-b">
-                    <td className="py-2 px-1 sm:px-2 font-mono text-xs sm:text-sm whitespace-nowrap">
-                      {item.code}
-                    </td>
-                    <td className="py-2 px-1 sm:px-2 text-xs sm:text-sm">
-                      <div
-                        className="truncate sm:whitespace-normal"
-                        title={item.label}
-                      >
-                        {item.label}
-                      </div>
-                    </td>
-                    <td className="py-2 px-1 sm:px-2 text-right text-xs sm:text-sm whitespace-nowrap">
-                      {item.qty}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* TABLE */}
+      <div className="flex-1 bg-white rounded-xl p-1 px-3">
+        <div className="flex justify-between">
+          <div className="flex justify-between items-center">
+            <h2 className="text-gray-700 font-normal text-sm">Items</h2>
           </div>
+          <button className="underline text-text-secondary py-2 rounded-lg hover:bg-gray-300 text-sm">
+            Show All
+          </button>
         </div>
-      </div>
 
-      <div className="w-full lg:w-48 flex flex-row lg:flex-col gap-2 sm:gap-3 order-3">
-        <button className="flex-1 lg:w-full bg-gray-200 text-gray-700 py-2 px-3 rounded-lg hover:bg-gray-300 transition text-sm sm:text-base">
-          Show All
-        </button>
-        <button className="flex-1 lg:w-full flex items-center justify-center gap-2 bg-blue-400 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition text-sm sm:text-base">
-          <FontAwesomeIcon
-            icon={faBoxesPacking}
-            className="text-sm sm:text-base"
-          />
-          <span className="hidden sm:inline">View Galleys</span>
-          <span className="sm:hidden">Galleys</span>
-        </button>
+        <div className="border border-bg-secondary rounded-2xl overflow-hidden">
+          <table className="w-full text-xs font-normal">
+            <thead className="bg-gray-50">
+              <tr className="text-gray-500 border-b border-bg-secondary">
+                <th className="py-3 px-4 text-left">Code</th>
+                <th className="py-3 px-4 text-left">Label</th>
+                <th className="py-3 px-4 text-left">Qty</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {itemsList.map((item, index) => (
+                <tr key={index} className="border-b border-bg-secondary text-text-muted">
+                  <td className="py-3 px-4">{item.code}</td>
+                  <td className="py-3 px-4">{item.label}</td>
+                  <td className="py-3 px-4 text-left">{item.qty}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -13,8 +13,10 @@ import Fourth from "../../assets/logos/preparation/forth.png";
 import Fifth from "../../assets/logos/preparation/fifth.png";
 import Sixth from "../../assets/logos/preparation/sixth.png";
 import Seventh from "../../assets/logos/preparation/seventh.png";
-import { FlightPreparationDetailsModal } from "./FlightPreparationDetailsModal";
 import DynamicLoadingModal from "./AddDynamicLoadingModal";
+import { FlightPreparationDetailsModal } from "./FlightPreparationDetailsModal";
+import RedirectBtn from "../common/RedirectBtn";
+import { AddIcon, PrintIcon } from "../../assets/icons";
 
 function FlightPreparations() {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -74,28 +76,16 @@ function FlightPreparations() {
         </h2>
 
         <div className="flex flex-row items-center gap-6 text-sm">
-          <button
-            className="flex items-center gap-1 text-text-secondary hover:text-text-primary transition focus:outline-none"
-            onClick={handleOpenFlightPrepModal}
-          >
-            <FontAwesomeIcon
-              icon={faPlusCircle}
-              className="text-text-tertiary text-lg"
-            />
-            <span className="underline font-normal">Add New</span>
-          </button>
-
-          {/* "Print" Link */}
-          <button
-            onClick={handlePrint}
-            className="flex items-center gap-1 text-text-secondary hover:text-text-primary transition focus:outline-none"
-          >
-            <FontAwesomeIcon
-              icon={faPrint}
-              className="text-text-tertiary text-lg"
-            />
-            <span className="underline font-normal">Print</span>
-          </button>
+          <RedirectBtn
+            icon={AddIcon}
+            label={"Add New"}
+            handleClick={handleOpenFlightPrepModal}
+          />
+          <RedirectBtn
+            icon={PrintIcon}
+            label={"Print"}
+            handleClick={handlePrint}
+          />
         </div>
       </div>
 

@@ -12,14 +12,14 @@ import { Breadcrumb } from "../../components/BreadCrumb";
 import { useTranslation } from "react-i18next";
 
 const tabKeys = [
-  "details",
-  "preparations",
-  "food_orders",
-  "content_locn",
-  "galleys",
-  "labels reports",
-  "deliveries",
-  "invoice",
+  "Details",
+  "Preparations",
+  "Food Orders",
+  "Content Locn",
+  "Galleys",
+  "Labels/Reports",
+  "Deliveries",
+  "Invoice",
 ];
 
 function FlightDetails() {
@@ -51,8 +51,8 @@ function FlightDetails() {
       <nav className="w-full bg-white h-14 sm:h-16 flex items-center justify-between"></nav>
 
       <Breadcrumb
-        handleDetailsNav={() => setActiveTab("details")}
-        currentScreen="Preparation"
+        handleDetailsNav={() => setActiveTab("Details")}
+        currentScreen={activeTab}
       />
 
       <div className="flex flex-wrap font-rubik gap-4 mt-6">
@@ -92,14 +92,14 @@ function FlightDetails() {
             <><button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`font-roboto capitalize cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-sm font-semibold text-center transition-all 
+              className={`font-roboto capitalize transition-all duration-500 cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs md:text-sm font-medium text-center items-center
               ${index == 0 ? "rounded-l-full" : ""}
               ${index == tab.length ? "rounded-r-full" : ""}
               ${index == 0 || index == tab.length ? "" : "border border-gray-100 "} ${activeTab === tab
                 ? "border-b-4 border-b-bg-button text-bg-button shadow-md"
                 : "text-text-secondary hover:bg-bg-button hover:text-white"
               }`}>
-              <span className={`inline-block w-6 py-1 rounded-full ${activeTab === tab
+              <span className={`inline-block w-6 py-1 rounded-full text-xs ${activeTab === tab
                 ? "bg-bg-button text-white shadow-md"
                 : "text-text-secondary bg-border-muted"} `}>
                 {'0' + (index + 1)}
@@ -110,9 +110,9 @@ function FlightDetails() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl mt-3 sm:mt-4 p-3 sm:p-3 min-w-full min-h-[250px]">
+      <div className="bg-white rounded-xl mt-3 sm:mt-4 min-w-full min-h-[250px]">
         {/* Use the tab keys for conditional rendering */}
-        {activeTab === "details" && (
+        {activeTab === "Details" && (
           <FlightLegsDisplay
             legs={[
               {
@@ -172,15 +172,15 @@ function FlightDetails() {
             ]}
           />
         )}
-        {activeTab !== "details" && (
+        {activeTab !== "Details" && (
           <div className="flex items-center justify-center w-full h-full">
             <div className="w-full">
-              {activeTab === "preparations" && <FlightPreparations />}
-              {activeTab === "food_orders" && <FlightFoodOrder />}
-              {activeTab === "galleys" && <FlightGalleys />}
-              {activeTab === "content_locn" && <FlightContLoc />}
-              {activeTab === "deliveries" && <FlightDeliveries />}
-              {activeTab === "labels_reports" && <FlightLabels />}
+              {activeTab === "Preparations" && <FlightPreparations />}
+              {activeTab === "Food Orders" && <FlightFoodOrder />}
+              {activeTab === "Galleys" && <FlightGalleys />}
+              {activeTab === "Content Locn" && <FlightContLoc />}
+              {activeTab === "Deliveries" && <FlightDeliveries />}
+              {activeTab === "Labels/Reports" && <FlightLabels />}
             </div>
           </div>
         )}

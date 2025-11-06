@@ -87,7 +87,7 @@ function FlightDetails() {
       </div>
 
       <div className="overflow-x-auto my-3 sm:my-4">
-        <div className="flex bg-white rounded-full shadow min-w-max border border-gray-100">
+        <div className="flex font-rubik bg-white rounded-full shadow min-w-max border border-gray-100">
           {tabKeys.map((tab, index) => (
             <><button
               key={tab}

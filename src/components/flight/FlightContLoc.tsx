@@ -13,8 +13,8 @@ const FlightContLoc = () => {
   );
 
   return (
-    <div className="bg-surface w-full max-w-full">
-        <h2 className="text-base font-normal text-gray-800">Items</h2>
+    <div className="bg-surface w-full max-w-full font-rubik">
+      <h2 className="text-base font-normal text-gray-800">Items</h2>
       {/* Tabs - Pill Style */}
       <div className="flex bg-surface overflow-x-auto pt-4 gap-2">
         <button
@@ -134,9 +134,7 @@ const FlightContLoc = () => {
                       </tr>
                     ) : (
                       selectedItem.locations.map((location, index) => (
-                        <tr
-                          key={index}
-                        >
+                        <tr key={index}>
                           <td className="py-3 px-4 text-gray-600">
                             {location.name}
                           </td>
@@ -174,28 +172,28 @@ const FlightContLoc = () => {
               />
 
               {/* Galley Buttons - Right Side */}
-                {/* Top Group - G1 and G2 close together */}
-                <div className="flex flex-col gap-1">
-                  <button
-                    className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors min-w-[60px] ${
-                      selectedGalley === "G1"
-                        ? "bg-purple-900 text-white"
-                        : "bg-gray-300 text-gray-700"
-                    }`}
-                    onClick={() => setSelectedGalley("G1")}
-                  >
-                    G1
-                  </button>
-                  <button
-                    className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors min-w-[60px] ${
-                      selectedGalley === "G2"
-                        ? "bg-purple-900 text-white"
-                        : "bg-gray-300 text-gray-700"
-                    }`}
-                    onClick={() => setSelectedGalley("G2")}
-                  >
-                    G2
-                  </button>
+              {/* Top Group - G1 and G2 close together */}
+              <div className="flex flex-col gap-1">
+                <button
+                  className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors min-w-[60px] ${
+                    selectedGalley === "G1"
+                      ? "bg-purple-900 text-white"
+                      : "bg-gray-300 text-gray-700"
+                  }`}
+                  onClick={() => setSelectedGalley("G1")}
+                >
+                  G1
+                </button>
+                <button
+                  className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors min-w-[60px] ${
+                    selectedGalley === "G2"
+                      ? "bg-purple-900 text-white"
+                      : "bg-gray-300 text-gray-700"
+                  }`}
+                  onClick={() => setSelectedGalley("G2")}
+                >
+                  G2
+                </button>
                 <div className="flex flex-col gap-1 mt-4">
                   <button
                     className={`px-5 py-1.5 rounded-full text-xs font-medium transition-colors min-w-[60px] ${
@@ -218,7 +216,7 @@ const FlightContLoc = () => {
                     G4
                   </button>
                 </div>
-                </div>
+              </div>
             </div>
 
             {/* BULK and BELLY Buttons - Below Aircraft */}

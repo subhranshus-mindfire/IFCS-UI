@@ -6,6 +6,9 @@ import ProgressIcon from "./progress.svg";
 import TimerIcon from "./timer.svg";
 import BowlIcon from "./bowl.svg";
 import UtensilIcon from "./utensil.svg";
+import InfoIcon from "./info.svg";
+import PositionIcon from "./position.svg";
+import BoxIcon from "./box.svg";
 
 export {
   AddIcon,
@@ -16,4 +19,7 @@ export {
   TimerIcon,
   BowlIcon,
   UtensilIcon,
+  InfoIcon,
+  PositionIcon,
+  BoxIcon,
 };

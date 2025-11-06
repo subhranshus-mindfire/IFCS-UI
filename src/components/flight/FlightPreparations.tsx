@@ -6,14 +6,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { samplePreparations } from "../../const/samplePreparations";
-import First from "../../assets/logos/preparation/first.svg"
-import Second from "../../assets/logos/preparation/Second.png"
-import Third from "../../assets/logos/preparation/third.png"
-import Fourth from "../../assets/logos/preparation/forth.png"
-import Fifth from "../../assets/logos/preparation/fifth.png"
-import Sixth from "../../assets/logos/preparation/sixth.png"
-import Seventh from "../../assets/logos/preparation/seventh.png"
-import DynamicLoadingModal from "./AddFlightPreparationModal";
+import First from "../../assets/logos/preparation/first.svg";
+import Second from "../../assets/logos/preparation/Second.png";
+import Third from "../../assets/logos/preparation/third.png";
+import Fourth from "../../assets/logos/preparation/forth.png";
+import Fifth from "../../assets/logos/preparation/fifth.png";
+import Sixth from "../../assets/logos/preparation/sixth.png";
+import Seventh from "../../assets/logos/preparation/seventh.png";
+import DynamicLoadingModal from "./AddDynamicLoadingModal";
 
 function FlightPreparations() {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -24,7 +24,6 @@ function FlightPreparations() {
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-
 
   const filteredPreparations = samplePreparations.filter((p) =>
     p.preparedBy.toLowerCase().includes(searchTerm.toLowerCase())
@@ -73,7 +72,7 @@ function FlightPreparations() {
           >
             <FontAwesomeIcon
               icon={faPlusCircle}
-              className="text-gray-500 text-lg" 
+              className="text-gray-500 text-lg"
             />
             <span className="underline font-normal">Add New</span>
           </button>
@@ -83,17 +82,17 @@ function FlightPreparations() {
             onClick={handlePrint}
             className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
           >
-            <FontAwesomeIcon
-              icon={faPrint}
-              className="text-gray-500 text-lg" 
-            />
+            <FontAwesomeIcon icon={faPrint} className="text-gray-500 text-lg" />
             <span className="underline font-normal">Print</span>
           </button>
         </div>
       </div>
 
       {/* Table wrapper for horizontal scroll */}
-      <div ref={tableRef} className="font-rubik overflow-x-auto rounded-2xl border border-gray-100">
+      <div
+        ref={tableRef}
+        className="font-rubik overflow-x-auto rounded-2xl border border-gray-100"
+      >
         <div className="max-h-[60vh] overflow-y-auto">
           <table className="min-w-max w-full text-sm border-collapse">
             <thead className="bg-[#F0F0F0] text-[#3D3D3D] text-[14px] border-b border-gray-200 sticky top-0 z-10">
@@ -137,9 +136,15 @@ function FlightPreparations() {
                   key={idx}
                   className="bg-white border-b border-gray-100 last:border-b-0 px-10 font-rubik text-[#7A7A7A]"
                 >
-                  <td className="px-3 py-2 text-sm font-medium uppercase">{prep.stowage}</td>
-                  <td className="px-3 py-2 text-sm uppercase">{prep.carrier}</td>
-                  <td className="px-3 py-2 text-sm uppercase">{prep.equipment}</td>
+                  <td className="px-3 py-2 text-sm font-medium uppercase">
+                    {prep.stowage}
+                  </td>
+                  <td className="px-3 py-2 text-sm uppercase">
+                    {prep.carrier}
+                  </td>
+                  <td className="px-3 py-2 text-sm uppercase">
+                    {prep.equipment}
+                  </td>
                   <td className="px-3 py-2 text-sm">{prep.preparedBy}</td>
                   <td className="px-3 py-2 flex justify-between gap-3 text-gray-600 no-print">
                     <img src={First} alt="" className="w-4 h-4" />
@@ -152,16 +157,11 @@ function FlightPreparations() {
                   </td>
                 </tr>
               ))}
-              {/* ... (No results row) ... */}
             </tbody>
           </table>
         </div>
       </div>
-      {isModalOpen && (
-        <DynamicLoadingModal
-          onClose={handleCloseModal}
-        />
-      )}
+      {isModalOpen && <DynamicLoadingModal onClose={handleCloseModal} />}
     </div>
   );
 }

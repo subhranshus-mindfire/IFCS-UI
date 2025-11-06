@@ -6,6 +6,7 @@ import {
   faPlaneDeparture,
   faPlaneCircleCheck,
   faBoltLightning,
+  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import { flights } from "../../const/flightData";
 import FlightHeader from "../../components/flight/FlightListHeader";
@@ -39,7 +40,7 @@ const FlightList: React.FC = () => {
       )}
 
       <div className="flex-1 overflow-auto">
-        <table className="w-full border-collapse bg-white min-w-[1300px]">
+        <table className="w-full border-collapse bg-white min-w-[1400px]">
           <thead className="bg-black text-white sticky top-0 z-10">
             <tr className="text-xs font-semibold border-b border-gray-600">
               <th className="w-10"></th>
@@ -58,6 +59,12 @@ const FlightList: React.FC = () => {
               <th className="w-16"></th>
               <th className="w-16"></th>
               <th className="w-20"></th>
+              <th className="w-20">
+                <div className="flex items-center justify-center gap-1">
+                  <FontAwesomeIcon icon={faClock} />
+                  <span>Ground Time</span>
+                </div>
+              </th>
               <th className="w-36">
                 <div className="flex items-center py-2 justify-center gap-1">
                   <FontAwesomeIcon icon={faPlaneCircleCheck} />
@@ -93,6 +100,7 @@ const FlightList: React.FC = () => {
               <th className="text-text-tertiary">Departure</th>
               <th className="text-text-tertiary">Arrival</th>
               <th className="text-text-tertiary">Status</th>
+              <th className="text-center text-text-tertiary">Ground Time</th>
               <th className="text-center text-text-tertiary">AC Type/AC Reg</th>
               <th className="text-text-tertiary">Loading plan / Meal plan</th>
               <th className="text-center text-text-tertiary">Total</th>
@@ -112,7 +120,7 @@ const FlightList: React.FC = () => {
                 ))}
                 {idx < flights.length - 1 && (
                   <tr>
-                    <td colSpan={13} className="h-7"></td>
+                    <td colSpan={14} className="h-7"></td>
                   </tr>
                 )}
               </React.Fragment>

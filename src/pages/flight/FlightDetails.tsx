@@ -2,9 +2,6 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { flights } from "../../const/flightData";
 import FlightPreparations from "../../components/flight/FlightPreparations";
-import Button from "../../components/Button";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FlightFoodOrder from "../../components/flight/FlightFoodOrder";
 import FlightGalleys from "../../components/flight/FlightGalleys";
 import FlightContLoc from "../../components/flight/FlightContLoc";
@@ -17,7 +14,7 @@ import { useTranslation } from "react-i18next";
 const tabKeys = [
   "details",
   "preparations",
-  "food orders",
+  "food_orders",
   "content_locn",
   "galleys",
   "labels reports",
@@ -51,69 +48,93 @@ function FlightDetails() {
 
   return (
     <div className="p-2 sm:p-8">
-      <nav className="w-full bg-white h-14 sm:h-16 flex items-center justify-between">
-        <Button className="bg-blue-400" to="/flight-list">
-          <div className="flex flex-row justify-center items-center gap-2">
-            <FontAwesomeIcon icon={faArrowLeft} className="text-white" />
-            <p className="text-sm sm:text-base">
-              {t("flightDetails.backButton")}
-            </p>
-          </div>
-        </Button>
-      </nav>
+      <nav className="w-full bg-white h-14 sm:h-16 flex items-center justify-between"></nav>
 
-      <Breadcrumb currentScreen="Preparation" />
+      <Breadcrumb
+        handleDetailsNav={() => setActiveTab("details")}
+        currentScreen="Preparation"
+      />
 
       <div className="flex flex-wrap font-rubik gap-4 mt-6">
         <div>
           <span className="text-[#A09CAB] text-sm font-normal">Flight: </span>
-          <span className="font-medium text-base text-[#4F4B58]">{flight.flightNumber}</span>
+          <span className="font-medium text-base text-[#4F4B58]">
+            {flight.flightNumber}
+          </span>
         </div>
         <div>
           <span className="text-[#A09CAB] text-sm font-normal">Route: </span>
-          <span className="font-medium text-base text-[#4F4B58]">{flight.route}</span>
+          <span className="font-medium text-base text-[#4F4B58]">
+            {flight.route}
+          </span>
         </div>
         <div>
           <span className="text-[#A09CAB] text-sm font-normal">Date: </span>
-          <span className="font-medium text-base text-[#4F4B58]">{flight.date}</span>
+          <span className="font-medium text-base text-[#4F4B58]">
+            {flight.date}
+          </span>
         </div>
         <div>
           <span className="text-[#A09CAB] text-sm font-normal">Aircraft: </span>
-          <span className="font-medium text-base text-[#4F4B58]">{flight.acType}</span>
+          <span className="font-medium text-base text-[#4F4B58]">
+            {flight.acType}
+          </span>
         </div>
         <div>
           <span className="text-[#A09CAB] text-sm font-normal">AC Reg.: </span>
-          <span className="font-medium text-base text-[#4F4B58]">{flight.acReg}</span>
+          <span className="font-medium text-base text-[#4F4B58]">
+            {flight.acReg}
+          </span>
         </div>
         <div>
-          <span className="text-[#A09CAB] text-sm font-normal">Destination: </span>
-          <span className="font-medium text-base text-[#4F4B58]">{flight.departure}</span>
+          <span className="text-[#A09CAB] text-sm font-normal">
+            Destination:{" "}
+          </span>
+          <span className="font-medium text-base text-[#4F4B58]">
+            {flight.departure}
+          </span>
         </div>
         <div>
-          <span className="text-[#A09CAB] text-sm font-normal">Loading Plan: </span>
-          <span className="font-medium text-base text-[#4F4B58]">{flight.plan}</span>
+          <span className="text-[#A09CAB] text-sm font-normal">
+            Loading Plan:{" "}
+          </span>
+          <span className="font-medium text-base text-[#4F4B58]">
+            {flight.plan}
+          </span>
         </div>
       </div>
 
       <div className="overflow-x-auto my-3 sm:my-4">
         <div className="flex bg-white rounded-full shadow min-w-max border border-gray-100">
           {tabKeys.map((tab, index) => (
-            <><button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`font-roboto capitalize cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs font-semibold text-center transition-all 
+            <>
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`font-roboto capitalize cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs font-semibold text-center transition-all 
               ${index == 0 ? "rounded-l-full" : ""}
               ${index == tab.length ? "rounded-r-full" : ""}
-              ${index == 0 || index == tab.length ? "" : "border border-gray-100 "} ${activeTab === tab
-                ? "border-b-4 border-b-[#602AF3] text-[#602AF3] shadow-md"
-                : "text-[#4F4B58] hover:bg-[#602AF3] hover:text-white"
-              }`}>
-              <span className={`inline-block w-6 py-1 rounded-full ${activeTab === tab
-                ? "bg-[#602AF3] text-white shadow-md"
-                : "text-[#4F4B58] bg-[#EAE9EC]"} `}>
-                {'0' + (index + 1)}
-              </span> &ensp; {tab}
-            </button>
+              ${
+                index == 0 || index == tab.length
+                  ? ""
+                  : "border border-gray-100 "
+              } ${
+                  activeTab === tab
+                    ? "border-b-4 border-b-[#602AF3] text-[#602AF3] shadow-md"
+                    : "text-[#4F4B58] hover:bg-[#602AF3] hover:text-white"
+                }`}
+              >
+                <span
+                  className={`inline-block w-6 py-1 rounded-full ${
+                    activeTab === tab
+                      ? "bg-[#602AF3] text-white shadow-md"
+                      : "text-[#4F4B58] bg-[#EAE9EC]"
+                  } `}
+                >
+                  {"0" + (index + 1)}
+                </span>{" "}
+                &ensp; {tab}
+              </button>
             </>
           ))}
         </div>
@@ -199,5 +220,3 @@ function FlightDetails() {
 }
 
 export default FlightDetails;
-
-

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import GalleyLabel from "../GalleyLabel";
+import type { Flight } from "../../const/flightData";
 
 const FlightLabels = () => {
   const [activeTab, setActiveTab] = useState("LABELS");
 
-  const sampleFlight = {
+  const sampleFlight: Flight = {
     airlineCode: "WY",
     route: "MCT-MNL-MCT",
     flightNumber: "WY843",
@@ -19,6 +20,7 @@ const FlightLabels = () => {
     acReg: "A40SK",
     groundTime: "2h 15m",
     plan: "ATLAS",
+    mealPlan: null, // ✅ required by new type
     paxTotal: 180,
     pax: {
       first: "12",
@@ -26,6 +28,8 @@ const FlightLabels = () => {
       premium: "36",
       economy: "108",
     },
+    departureType: "scheduled", // ✅ added
+    arrivalType: "scheduled", // ✅ added
   };
 
   const outboundPreparations = [

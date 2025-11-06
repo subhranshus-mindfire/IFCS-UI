@@ -1,32 +1,27 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPrint,
+  faFilter,
+  faPlusCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { sampleFoodOrders } from "../../const/foodOrder";
-import PrintIcon from "../../assets/icons/print.svg";
-import AddIcon from "../../assets/icons/add.svg";
 import { AddItemModal } from "./AddItemModal";
 import DynamicLoadingModal from "./AddDynamicLoadingModal";
 
 function FlightFoodOrder() {
   const tableRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAddDynamicModalOpen, setIsDynamicAddModalOpen] = useState(false);
 
-  const handleAddItem = () => {
-    setIsAddModalOpen(true);
-  };
+  const handleAddItem = () => setIsAddModalOpen(true);
+  const handleCloseModal = () => setIsAddModalOpen(false);
 
-  const handleCloseModal = () => {
-    setIsAddModalOpen(false);
-  };
-
-  const handleOpenDynamicModal = () => {
-    setIsDynamicAddModalOpen(true);
-  };
-  const handleCloseDynamicModal = () => {
-    setIsDynamicAddModalOpen(false);
-  };
+  const handleOpenDynamicModal = () => setIsDynamicAddModalOpen(true);
+  const handleCloseDynamicModal = () => setIsDynamicAddModalOpen(false);
 
   const handleSaveItems = (quantities: Record<string, number>) => {
     console.log("Saved Quantities:", quantities);
@@ -47,6 +42,7 @@ function FlightFoodOrder() {
                 table { border-collapse: collapse; width: 100%; }
                 th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
                 th { background: #f5f5f5; }
+                .no-print { display: none; }
               </style>
             </head>
             <body>
@@ -65,44 +61,57 @@ function FlightFoodOrder() {
   );
 
   return (
-    <div className="bg-bg-surface w-full shadow rounded-lg p-4 font-rubik">
-      <div className="font-rubik flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-        <h2 className="text-base font-normal text-[#27262C]">
+    <div className="bg-bg-surface font-rubik">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
+        <h2 className="text-base font-normal text-text-primary">
           Food Orders ({filteredFoodOrders.length})
         </h2>
 
         <div className="flex flex-row items-center gap-6 text-sm">
+          {/* Add Dynamic Loading */}
           <button
             onClick={handleOpenDynamicModal}
-            className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
+            className="flex items-center gap-1 text-text-secondary hover:text-text-primary transition focus:outline-none"
           >
-            <img src={AddIcon} />
+            <FontAwesomeIcon
+              icon={faPlusCircle}
+              className="text-text-tertiary text-lg"
+            />
             <span className="underline font-normal">Add Dynamic Loading</span>
           </button>
-
           <button
             onClick={handleAddItem}
-            className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
+            className="flex items-center gap-1 text-text-secondary hover:text-text-primary transition focus:outline-none"
           >
-            <img src={AddIcon} />
+            <FontAwesomeIcon
+              icon={faPlusCircle}
+              className="text-text-tertiary text-lg"
+            />
             <span className="underline font-normal">Add Item/PS</span>
           </button>
-
+          {/* Print */}
           <button
             onClick={handlePrint}
-            className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
+            className="flex items-center gap-1 text-text-secondary hover:text-text-primary transition focus:outline-none"
           >
-            <img src={PrintIcon} />
+            <FontAwesomeIcon
+              icon={faPrint}
+              className="text-text-tertiary text-lg"
+            />
             <span className="underline font-normal">Print</span>
           </button>
         </div>
       </div>
 
-      {/* Table */}
-      <div ref={tableRef} className="overflow-x-auto">
+      {/* Table Wrapper */}
+      <div
+        ref={tableRef}
+        className="overflow-x-auto rounded-2xl border border-border-muted"
+      >
         <div className="max-h-[60vh] overflow-y-auto">
           <table className="min-w-max w-full text-sm border-collapse">
-            <thead className="bg-[#F0F0F0] text-[#3D3D3D] text-[14px] border-b border-gray-200 sticky top-0 z-10">
+            <thead className="bg-bg-secondary text-text-secondary text-[14px] border-b border-border-muted sticky top-0 z-10">
               <tr>
                 <th className="px-3 py-3 text-left font-medium">Station</th>
                 <th className="px-3 py-3 text-left font-medium">FLT #</th>
@@ -110,18 +119,19 @@ function FlightFoodOrder() {
                 <th className="px-3 py-3 text-left font-medium min-w-[140px]">
                   Passenger Name
                 </th>
-                <th className="w-[20px]"></th>
-
                 <th className="px-3 py-3 text-left font-medium">SKU</th>
                 <th className="px-3 py-3 text-left font-medium">Cabin</th>
 
                 <th className="px-3 py-3 text-left font-medium relative min-w-[140px]">
                   <div className="flex flex-col gap-1 min-w-[120px]">
-                    <div className="flex items-center gap-1 cursor-pointer">
+                    <div
+                      className="flex items-center gap-1 cursor-pointer"
+                      onClick={() => setShowFilter(true)}
+                    >
                       <span>Name</span>
                       <FontAwesomeIcon
                         icon={faFilter}
-                        className="w-3 h-3 text-gray-400 hover:text-gray-600"
+                        className="w-3 h-3 text-text-tertiary hover:text-text-secondary"
                       />
                     </div>
 
@@ -130,23 +140,21 @@ function FlightFoodOrder() {
                       placeholder="Search..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 bg-white shadow-sm transition-all"
+                      className={`w-full px-2 py-1 text-xs border border-border-muted rounded focus:outline-none focus:ring-1 focus:ring-bg-button absolute top-6 bg-bg-surface shadow-lg z-30 transition-all ${
+                        showFilter ? "block" : "hidden"
+                      }`}
                       style={{ width: "150px" }}
                     />
                   </div>
                 </th>
 
-                <th className="w-[20px]"></th>
-
-                <th className="px-2 py-3 text-center font-medium min-w-[90px] border-l border-gray-200">
+                <th className="px-2 py-3 text-center font-medium border-l border-border-muted">
                   Ordered
                 </th>
-                <th className="px-2 py-3 text-center font-medium min-w-[90px]">
+                <th className="px-2 py-3 text-center font-medium">
                   Distributed
                 </th>
-                <th className="px-2 py-3 text-center font-medium min-w-[90px]">
-                  Loaded
-                </th>
+                <th className="px-2 py-3 text-center font-medium">Loaded</th>
               </tr>
             </thead>
 
@@ -154,7 +162,7 @@ function FlightFoodOrder() {
               {filteredFoodOrders.map((order, idx) => (
                 <tr
                   key={idx}
-                  className="bg-white border-b border-gray-100 last:border-b-0 text-[#7A7A7A] font-rubik"
+                  className="bg-bg-surface border-b border-border-muted last:border-b-0 text-text-muted hover:bg-bg-accent/20 transition"
                 >
                   <td className="px-3 py-2 text-sm font-medium uppercase">
                     {order.station}
@@ -164,12 +172,10 @@ function FlightFoodOrder() {
                   </td>
                   <td className="px-3 py-2 text-sm uppercase">{order.seat}</td>
                   <td className="px-3 py-2 text-sm">{order.passenger}</td>
-                  <td></td>
                   <td className="px-3 py-2 text-sm uppercase">{order.sku}</td>
                   <td className="px-3 py-2 text-sm uppercase">{order.cabin}</td>
                   <td className="px-3 py-2 text-sm">{order.name}</td>
-                  <td></td>
-                  <td className="px-2 py-2 text-center text-sm border-l border-gray-100">
+                  <td className="px-2 py-2 text-center text-sm border-l border-border-muted">
                     {order.ordered}
                   </td>
                   <td className="px-2 py-2 text-center text-sm">
@@ -184,8 +190,8 @@ function FlightFoodOrder() {
               {filteredFoodOrders.length === 0 && (
                 <tr>
                   <td
-                    colSpan={13}
-                    className="text-center py-4 text-gray-500 font-rubik"
+                    colSpan={10}
+                    className="text-center py-4 text-text-tertiary font-rubik"
                   >
                     No results found
                   </td>

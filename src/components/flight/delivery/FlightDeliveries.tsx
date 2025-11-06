@@ -1,13 +1,12 @@
 import { useState } from "react";
-import type { Delivery, ContentPreparer, TSACompliance, DriversDeclaration, SecurityDeclaration } from "../../../types/delivery";
+import type { Delivery, ContentPreparer, TSACompliance, DriversDeclaration } from "../../../types/delivery";
 import ContentPreparersTab from "./ContentPreparersTab";
 import TSAComplianceTab from "./TSAComplianceTab";
 import DriversDeclarationTab from "./DriversDeclarationTab";
-import SecurityDeclarationTab from "./SecurityDeclarationTab";
 import DispatcherCommentsTab from "./DispatcherCommentsTab";
 import { AddIcon } from "../../../assets/icons";
 
-type TabType = "dispatcher" | "preparers" | "tsa" | "driver" | "security";
+type TabType = "dispatcher" | "preparers" | "tsa" | "driver";
 
 const FlightDeliveries: React.FC = () => {
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
@@ -106,18 +105,6 @@ const FlightDeliveries: React.FC = () => {
     );
   };
 
-  const handleUpdateSecurityDeclaration = (declaration: SecurityDeclaration) => {
-    if (!selectedDeliveryId) return;
-
-    setDeliveries(
-      deliveries.map((d) =>
-        d.id === selectedDeliveryId
-          ? { ...d, securityDeclaration: declaration, updatedAt: new Date() }
-          : d
-      )
-    );
-  };
-
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -199,16 +186,6 @@ const FlightDeliveries: React.FC = () => {
                 >
                   Driver's Declaration
                 </button>
-                <button
-                  onClick={() => setActiveTab("security")}
-                  className={`px-6 py-3 text-sm whitespace-nowrap rounded-full transition-colors ${
-                    activeTab === "security"
-                      ? "bg-gray-300 text-text-primary"
-                      : "text-text-secondary hover:text-text-primary"
-                  }`}
-                >
-                  Security Declaration
-                </button>
               </div>
             </div>
 
@@ -233,12 +210,6 @@ const FlightDeliveries: React.FC = () => {
                 <DriversDeclarationTab
                   driversDeclaration={selectedDelivery.driversDeclaration}
                   onUpdateDeclaration={handleUpdateDriversDeclaration}
-                />
-              )}
-              {activeTab === "security" && (
-                <SecurityDeclarationTab
-                  securityDeclaration={selectedDelivery.securityDeclaration}
-                  onUpdateDeclaration={handleUpdateSecurityDeclaration}
                 />
               )}
             </div>

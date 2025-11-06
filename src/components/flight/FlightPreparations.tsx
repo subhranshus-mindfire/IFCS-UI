@@ -6,13 +6,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { samplePreparations } from "../../const/samplePreparations";
-import First from "../../assets/logos/preparation/first.svg";
-import Second from "../../assets/logos/preparation/Second.png";
-import Third from "../../assets/logos/preparation/third.png";
-import Fourth from "../../assets/logos/preparation/forth.png";
-import Fifth from "../../assets/logos/preparation/fifth.png";
-import Sixth from "../../assets/logos/preparation/sixth.png";
-import Seventh from "../../assets/logos/preparation/seventh.png";
+import First from "../../assets/logos/preparation/first.svg"
+import Second from "../../assets/logos/preparation/Second.png"
+import Third from "../../assets/logos/preparation/third.png"
+import Fourth from "../../assets/logos/preparation/forth.png"
+import Fifth from "../../assets/logos/preparation/fifth.png"
+import Sixth from "../../assets/logos/preparation/sixth.png"
+import Seventh from "../../assets/logos/preparation/seventh.png"
+import { FlightPreparationDetailsModal } from "./FlightPreparationDetailsModal";
 import DynamicLoadingModal from "./AddDynamicLoadingModal";
 
 function FlightPreparations() {
@@ -20,10 +21,15 @@ function FlightPreparations() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilter, setshowFilter] = useState(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFlightPrepModalOpen, setisFlightPrepModalOpen] = useState(false);
+  const [isFlightPrepaDetailsModal, setIsFlightPrepDetailsModal] = useState(false);
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleOpenFlightPrepModal = () => setisFlightPrepModalOpen(true);
+  const handleCloseFlightPrepModal = () => setisFlightPrepModalOpen(false);
+
+  const handleOpenFlightPrepDetailsModal = () => setIsFlightPrepDetailsModal(true);
+  const handleCloseFlightPrepDetailsModal = () => setIsFlightPrepDetailsModal(false);
 
   const filteredPreparations = samplePreparations.filter((p) =>
     p.preparedBy.toLowerCase().includes(searchTerm.toLowerCase())
@@ -61,14 +67,14 @@ function FlightPreparations() {
     <div className="bg-white">
       {/* Header */}
       <div className="font-rubik flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-        <h2 className="text-base font-normal text-[#27262C]">
+        <h2 className="text-base font-normal text-text-primary">
           Flight Preparation ({filteredPreparations.length})
         </h2>
 
         <div className="flex flex-row items-center gap-6 text-sm">
           <button
             className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
-            onClick={handleOpenModal}
+            onClick={handleOpenFlightPrepModal}
           >
             <FontAwesomeIcon
               icon={faPlusCircle}
@@ -82,7 +88,10 @@ function FlightPreparations() {
             onClick={handlePrint}
             className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition focus:outline-none"
           >
-            <FontAwesomeIcon icon={faPrint} className="text-gray-500 text-lg" />
+            <FontAwesomeIcon
+              icon={faPrint}
+              className="text-gray-500 text-lg"
+            />
             <span className="underline font-normal">Print</span>
           </button>
         </div>
@@ -95,7 +104,7 @@ function FlightPreparations() {
       >
         <div className="max-h-[60vh] overflow-y-auto">
           <table className="min-w-max w-full text-sm border-collapse">
-            <thead className="bg-[#F0F0F0] text-[#3D3D3D] text-[14px] border-b border-gray-200 sticky top-0 z-10">
+            <thead className="bg-bg-secondary text-[#3D3D3D] text-[14px] border-b border-gray-200 sticky top-0 z-10">
               <tr>
                 <th className="px-3 py-3 text-left font-medium">Stowage</th>
                 <th className="px-3 py-3 text-left font-medium">Carrier</th>
@@ -118,9 +127,8 @@ function FlightPreparations() {
                       placeholder="Search..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 absolute top-0 left-30 mt-1 bg-white shadow-lg z-30 transition-all ${
-                        showFilter ? "block" : "hidden"
-                      }`}
+                      className={`w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 absolute top-0 left-30 mt-1 bg-white shadow-lg z-30 transition-all ${showFilter ? "block" : "hidden"
+                        }`}
                       style={{ width: "150px" }}
                     />
                   </div>
@@ -134,7 +142,7 @@ function FlightPreparations() {
               {filteredPreparations.map((prep, idx) => (
                 <tr
                   key={idx}
-                  className="bg-white border-b border-gray-100 last:border-b-0 px-10 font-rubik text-[#7A7A7A]"
+                  className="bg-white border-b border-gray-100 last:border-b-0 px-10 font-rubik text-text-muted"
                 >
                   <td className="px-3 py-2 text-sm font-medium uppercase">
                     {prep.stowage}
@@ -153,7 +161,12 @@ function FlightPreparations() {
                     <img src={Fourth} alt="" />
                     <img src={Fifth} alt="" />
                     <img src={Sixth} alt="" />
-                    <img src={Seventh} alt="" />
+                    <img
+                      src={Seventh}
+                      alt="Open modal"
+                      onClick={handleOpenFlightPrepDetailsModal}
+                      className="cursor-pointer hover:scale-110 transition-transform duration-150"
+                    />
                   </td>
                 </tr>
               ))}
@@ -161,7 +174,15 @@ function FlightPreparations() {
           </table>
         </div>
       </div>
-      {isModalOpen && <DynamicLoadingModal onClose={handleCloseModal} />}
+      {isFlightPrepModalOpen && (
+        <DynamicLoadingModal
+          onClose={handleCloseFlightPrepModal}
+        />
+      )}
+      {isFlightPrepaDetailsModal && (
+        <FlightPreparationDetailsModal
+          onClose={handleCloseFlightPrepDetailsModal} open={false} />
+      )}
     </div>
   );
 }

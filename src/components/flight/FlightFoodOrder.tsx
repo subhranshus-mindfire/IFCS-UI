@@ -121,7 +121,6 @@ function FlightFoodOrder() {
                 </th>
                 <th className="px-3 py-3 text-left font-medium">SKU</th>
                 <th className="px-3 py-3 text-left font-medium">Cabin</th>
-
                 <th className="px-3 py-3 text-left font-medium relative min-w-[140px]">
                   <div className="flex flex-col gap-1 min-w-[120px]">
                     <div
@@ -134,7 +133,6 @@ function FlightFoodOrder() {
                         className="w-3 h-3 text-text-tertiary hover:text-text-secondary"
                       />
                     </div>
-
                     <input
                       type="text"
                       placeholder="Search..."
@@ -147,7 +145,6 @@ function FlightFoodOrder() {
                     />
                   </div>
                 </th>
-
                 <th className="px-2 py-3 text-center font-medium border-l border-border-muted">
                   Ordered
                 </th>
@@ -155,6 +152,33 @@ function FlightFoodOrder() {
                   Distributed
                 </th>
                 <th className="px-2 py-3 text-center font-medium">Loaded</th>
+              </tr>
+
+              <tr className="bg-bg-surface font-medium text-text-primary">
+                <td
+                  colSpan={7}
+                  className="px-3 py-2 text-text-tertiary text-right"
+                >
+                  Total
+                </td>
+                <td className="px-2 py-2 text-center border-l border-border-muted">
+                  {filteredFoodOrders.reduce(
+                    (sum, item) => sum + (item.ordered || 0),
+                    0
+                  )}
+                </td>
+                <td className="px-2 py-2 text-center">
+                  {filteredFoodOrders.reduce(
+                    (sum, item) => sum + (item.distributed || 0),
+                    0
+                  )}
+                </td>
+                <td className="px-2 py-2 text-center">
+                  {filteredFoodOrders.reduce(
+                    (sum, item) => sum + (item.loaded || 0),
+                    0
+                  )}
+                </td>
               </tr>
             </thead>
 

@@ -6,9 +6,9 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
   const [flightType, setFlightType] = useState("J");
 
   return (
-    <div className="fixed inset-0 bg-overlay flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       {/* Modal */}
-      <div className="bg-bgSecondary rounded-lg shadow-md w-full max-w-md p-3 border border-borderLight">
+      <div className="bg-bg-secondary rounded-lg shadow-md w-full max-w-md p-3 border border-borderLight">
         <div className="space-y-3 text-xs">
           {/* Row 1 */}
           <div className="grid grid-cols-3 gap-2">
@@ -153,7 +153,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
                 className={`px-3 py-1 rounded-full transition-colors text-xs font-medium ${
                   i === 0
                     ? "bg-surface text-textSecondary hover:bg-borderLight"
-                    : "bg-accentPrimary text-white hover:bg-accentPrimaryHover"
+                    : "bg-accentPrimary text-text-secondary hover:bg-accentPrimaryHover"
                 }`}
               >
                 {btn}

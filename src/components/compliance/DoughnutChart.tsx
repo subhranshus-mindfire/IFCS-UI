@@ -77,10 +77,6 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({
       return hexToRgba(baseColor, BG_OPACITY);
     });
 
-    const borderColors = percentages.map((percentage) =>
-      getColorByPercentage(percentage)
-    );
-
     chartInstanceRef.current = new ChartJS(ctx, {
       type: "doughnut",
       data: {

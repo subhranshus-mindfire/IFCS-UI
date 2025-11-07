@@ -14,7 +14,7 @@ const FlightContLoc = () => {
   );
 
   return (
-    <div className="bg-bg-surface w-full max-w-full">
+    <div className="bg-bg-surface w-full max-w-full font-rubik">
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Left Section - Items */}

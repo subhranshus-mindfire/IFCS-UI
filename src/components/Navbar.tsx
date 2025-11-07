@@ -9,7 +9,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
   return (
-    <nav className="w-full bg-white h-14 lg:h-16 flex items-center justify-between px-4 lg:px-6 shadow-sm">
+    <nav className="w-full bg-white h-14 lg:h-16 font-rubik flex items-center justify-between px-4 lg:px-6 shadow-sm">
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}

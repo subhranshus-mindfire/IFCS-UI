@@ -95,7 +95,7 @@ const FlightList: React.FC = () => {
                 </div>
               </th>
             </tr>
-            <tr className="bg-bg-secondary text-left text-black text-[10px] font-extralight border-b border-gray-400">
+            <tr className="bg-bg-secondary text-left text-sm text-blackfont-extralight border-b border-gray-400">
               <th className="text-text-tertiary">Airline</th>
               <th className="text-text-tertiary">Route</th>
               <th className="text-text-tertiary">Flight #</th>

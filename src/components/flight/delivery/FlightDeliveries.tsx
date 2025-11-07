@@ -1,5 +1,10 @@
 import { useState } from "react";
-import type { Delivery, ContentPreparer, TSACompliance, DriversDeclaration } from "../../../types/delivery";
+import type {
+  Delivery,
+  ContentPreparer,
+  TSACompliance,
+  DriversDeclaration,
+} from "../../../types/delivery";
 import ContentPreparersTab from "./ContentPreparersTab";
 import TSAComplianceTab from "./TSAComplianceTab";
 import DriversDeclarationTab from "./DriversDeclarationTab";
@@ -10,7 +15,9 @@ type TabType = "dispatcher" | "preparers" | "tsa" | "driver";
 
 const FlightDeliveries: React.FC = () => {
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
-  const [selectedDeliveryId, setSelectedDeliveryId] = useState<string | null>(null);
+  const [selectedDeliveryId, setSelectedDeliveryId] = useState<string | null>(
+    null
+  );
   const [activeTab, setActiveTab] = useState<TabType>("dispatcher");
 
   const selectedDelivery = deliveries.find((d) => d.id === selectedDeliveryId);
@@ -30,7 +37,9 @@ const FlightDeliveries: React.FC = () => {
     setSelectedDeliveryId(newDelivery.id);
   };
 
-  const handleAddPreparer = (preparer: Omit<ContentPreparer, "id" | "signature" | "signedAt">) => {
+  const handleAddPreparer = (
+    preparer: Omit<ContentPreparer, "id" | "signature" | "signedAt">
+  ) => {
     if (!selectedDeliveryId) return;
 
     const newPreparer: ContentPreparer = {
@@ -43,7 +52,11 @@ const FlightDeliveries: React.FC = () => {
     setDeliveries(
       deliveries.map((d) =>
         d.id === selectedDeliveryId
-          ? { ...d, contentPreparers: [...d.contentPreparers, newPreparer], updatedAt: new Date() }
+          ? {
+              ...d,
+              contentPreparers: [...d.contentPreparers, newPreparer],
+              updatedAt: new Date(),
+            }
           : d
       )
     );
@@ -57,7 +70,9 @@ const FlightDeliveries: React.FC = () => {
         d.id === selectedDeliveryId
           ? {
               ...d,
-              contentPreparers: d.contentPreparers.filter((p) => p.id !== preparerId),
+              contentPreparers: d.contentPreparers.filter(
+                (p) => p.id !== preparerId
+              ),
               updatedAt: new Date(),
             }
           : d
@@ -65,7 +80,10 @@ const FlightDeliveries: React.FC = () => {
     );
   };
 
-  const handleUpdatePreparerSignature = (preparerId: string, signature: string) => {
+  const handleUpdatePreparerSignature = (
+    preparerId: string,
+    signature: string
+  ) => {
     if (!selectedDeliveryId) return;
 
     setDeliveries(
@@ -74,7 +92,9 @@ const FlightDeliveries: React.FC = () => {
           ? {
               ...d,
               contentPreparers: d.contentPreparers.map((p) =>
-                p.id === preparerId ? { ...p, signature, signedAt: new Date() } : p
+                p.id === preparerId
+                  ? { ...p, signature, signedAt: new Date() }
+                  : p
               ),
               updatedAt: new Date(),
             }
@@ -88,7 +108,9 @@ const FlightDeliveries: React.FC = () => {
 
     setDeliveries(
       deliveries.map((d) =>
-        d.id === selectedDeliveryId ? { ...d, tsaCompliance: compliance, updatedAt: new Date() } : d
+        d.id === selectedDeliveryId
+          ? { ...d, tsaCompliance: compliance, updatedAt: new Date() }
+          : d
       )
     );
   };
@@ -106,7 +128,7 @@ const FlightDeliveries: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen font-rubik">
       {/* Sidebar */}
       <div className="w-64 bg-bg-surface border border-border-muted rounded-2xl p-4 flex flex-col">
         <div className="mb-4 border-b border-border-muted pb-4">
@@ -117,8 +139,8 @@ const FlightDeliveries: React.FC = () => {
             onClick={handleAddNewDelivery}
             className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-bg-secondary text-text-primary rounded-lg hover:bg-gray-200 transition-colors"
           >
-                <img src={AddIcon} alt="Sort" className="w-4 h-4" />
-                <span>Add New Delivery</span>
+            <img src={AddIcon} alt="Sort" className="w-4 h-4" />
+            <span>Add New Delivery</span>
           </button>
         </div>
 
@@ -217,7 +239,9 @@ const FlightDeliveries: React.FC = () => {
         ) : (
           <div className="flex-1 flex items-center justify-center bg-bg-surface">
             <div className="text-center">
-              <p className="text-lg text-text-tertiary mb-4">No delivery selected</p>
+              <p className="text-lg text-text-tertiary mb-4">
+                No delivery selected
+              </p>
               <p className="text-sm text-text-tertiary">
                 Add a new delivery or select one from the sidebar
               </p>

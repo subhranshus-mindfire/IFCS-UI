@@ -11,6 +11,12 @@ import PositionIcon from "./position.svg";
 import BoxIcon from "./box.svg";
 import SortIcon from "./sort.svg";
 import DeleteIcon from "./delete.svg";
+import DelayIcon from "./delay.svg";
+import PawsIcon from "./paws.svg";
+import ProvisioningIcon from "./provisioning.svg";
+import QualityIcon from "./quality.svg";
+import SafetyIcon from "./safety.svg";
+import SquaresIcon from "./squares.svg";
 
 export {
   AddIcon,
@@ -26,4 +32,10 @@ export {
   DeleteIcon,
   BoxIcon,
   SortIcon,
+  DelayIcon,
+  PawsIcon,
+  ProvisioningIcon,
+  QualityIcon,
+  SafetyIcon,
+  SquaresIcon,
 };

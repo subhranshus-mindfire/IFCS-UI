@@ -126,7 +126,9 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({
       <canvas ref={chartRef} width={180} height={180}></canvas>
       <div className="absolute flex flex-col items-center justify-center pointer-events-none">
         <span className="text-gray-500 text-sm">Total Issues:</span>
-        <span className="text-4xl font-bold text-gray-800">{totalIssues}</span>
+        <span className="text-4xl font-[500] text-text-primary">
+          {totalIssues}
+        </span>
       </div>
     </div>
   );

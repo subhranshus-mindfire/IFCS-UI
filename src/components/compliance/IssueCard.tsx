@@ -1,4 +1,5 @@
 import React from "react";
+import { InfoIcon } from "../../assets/icons";
 
 interface IssueCategory {
   id: string;
@@ -10,11 +11,11 @@ interface IssueCategory {
 interface IssueCardProps {
   category: IssueCategory;
   totalIssues: number;
+  cardIcon: string;
 }
 
 const BG_OPACITY = 0.3;
 
-// 5-step color gradient (green → yellow → orange → red)
 const PERCENTAGE_COLOR_MAP = [
   "#00C853", // 0–20% (Green)
   "#AEEA00", // 21–40% (Yellow-green)
@@ -31,7 +32,11 @@ const getColorByPercentage = (percentage: number): string => {
   return PERCENTAGE_COLOR_MAP[4];
 };
 
-const IssueCard: React.FC<IssueCardProps> = ({ category, totalIssues }) => {
+const IssueCard: React.FC<IssueCardProps> = ({
+  category,
+  totalIssues,
+  cardIcon,
+}) => {
   const percentage =
     totalIssues > 0 ? (category.issueCount / totalIssues) * 100 : 0;
 
@@ -42,19 +47,29 @@ const IssueCard: React.FC<IssueCardProps> = ({ category, totalIssues }) => {
 
   return (
     <div
-      className="relative font-rubik p-6 rounded-lg flex flex-col items-center justify-center text-center border-2 transition-all duration-200"
+      className="relative font-rubik p-4 rounded-lg flex flex-col items-center justify-center text-center border-2 transition-all duration-200 w-full max-w-[180px] mx-auto"
       style={{
         backgroundColor: bgColorWithOpacity,
         borderColor: bgColor,
       }}
     >
-      <span className="text-4xl font-bold text-gray-800 mb-1">
+      {/* Info icon */}
+      <img
+        src={InfoIcon}
+        alt="Info"
+        className="absolute top-2 right-2 w-4 h-4 opacity-70 hover:opacity-100 cursor-pointer"
+      />
+
+      <span className="text-3xl font-[500] text-text-primary mb-1">
         {percentage.toFixed(0)}%
       </span>
 
-      <h3 className="text-lg font-semibold text-gray-700">{category.name}</h3>
+      <h3 className="text-sm text-text-secondary font-[400] flex items-center justify-center gap-2 mt-1">
+        <img src={cardIcon} alt={`${category.name} icon`} className="w-4 h-4" />
+        {category.name}
+      </h3>
 
-      <p className="text-gray-600 mt-1">
+      <p className="text-xs text-text-secondary font-[400] mt-1">
         ({category.issueCount} {category.issueCount === 1 ? "issue" : "issues"})
       </p>
     </div>

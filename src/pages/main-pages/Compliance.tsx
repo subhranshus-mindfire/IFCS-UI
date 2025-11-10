@@ -7,6 +7,14 @@ import {
 } from "../../const/ComplianceData";
 import IssueCard from "../../components/compliance/IssueCard";
 import DoughnutChart from "../../components/compliance/DoughnutChart";
+import {
+  DelayIcon,
+  PawsIcon,
+  ProvisioningIcon,
+  QualityIcon,
+  SafetyIcon,
+  SquaresIcon,
+} from "../../assets/icons";
 
 interface SummaryStats {
   totalFlights: number;
@@ -14,11 +22,14 @@ interface SummaryStats {
   flightMismatches: number;
   missingFlights: number;
 }
-
-// --- MOCK DATA ---
-// NOTE: For Font Awesome icons to work, make sure you've included the library
-// in your project (e.g., via CDN in your index.html)
-
+const ICONS = [
+  DelayIcon,
+  QualityIcon,
+  PawsIcon,
+  ProvisioningIcon,
+  SquaresIcon,
+  SafetyIcon,
+];
 const SUMMARY_STATS: SummaryStats = {
   totalFlights: 205,
   totalPassengers: 28045,
@@ -66,7 +77,6 @@ const CountryTableSection: React.FC<CountryTableSectionProps> = ({
         )}
       </button>
 
-      {/* Table (Conditional) */}
       {isOpen && (
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
@@ -143,31 +153,31 @@ const App: React.FC = () => {
     <div className="p-6 font-rubik md:p-8 bg-gray-50">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-[20px] font-[500px] text-text-primary">
             Compliance Tracking
           </h1>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600 mt-2">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-text-muted mt-2">
             <span>
               Total Flights:{" "}
-              <span className="font-semibold text-gray-800">
+              <span className="text-text-primary font-[500px]">
                 {SUMMARY_STATS.totalFlights}
               </span>
             </span>
             <span>
               Total Passengers:{" "}
-              <span className="font-semibold text-gray-800">
+              <span className="text-text-primary font-[500px]">
                 {SUMMARY_STATS.totalPassengers}
               </span>
             </span>
             <span>
               Flight Mismatches:{" "}
-              <span className="font-semibold text-gray-800">
+              <span className="text-text-primary font-[500px]">
                 {SUMMARY_STATS.flightMismatches}
               </span>
             </span>
             <span>
               Missing Flights:{" "}
-              <span className="font-semibold text-gray-800">
+              <span className="text-text-primary font-[500px]">
                 {SUMMARY_STATS.missingFlights}
               </span>
             </span>
@@ -179,8 +189,6 @@ const App: React.FC = () => {
           <button className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-purple-700 transition-colors">
             New Issue
           </button>
-          {/* Status Dropdown */}
-          {/* Status Dropdown */}
           <div className="relative">
             <button
               onClick={() => toggleDropdown("status")}
@@ -273,12 +281,13 @@ const App: React.FC = () => {
             totalIssues={totalIssues}
           />
         </div>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {ISSUE_CATEGORIES.map((category) => (
+        <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-1 justify-items-center">
+          {ISSUE_CATEGORIES.map((category, index) => (
             <IssueCard
               key={category.id}
               category={category}
               totalIssues={totalIssues}
+              cardIcon={ICONS[index]}
             />
           ))}
         </div>

@@ -21,6 +21,7 @@ import RefreshIcon from "./refresh.svg";
 import SettingIcon from "./setting.svg";
 import DropdownIcon from "./dropdownIcon.svg";
 import DropdownRevIcon from "./dropdownIconRev.svg";
+import RedirectIcon from "./redirect.svg";
 
 export {
   AddIcon,
@@ -46,4 +47,5 @@ export {
   SettingIcon,
   DropdownIcon,
   DropdownRevIcon,
+  RedirectIcon,
 };

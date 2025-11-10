@@ -52,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       {isMobile && (
         <button
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-[100] bg-bg-surface p-2 rounded-md shadow-md"
+          className="fixed top-4 left-4 z-50 bg-bg-surface p-2 rounded-md shadow-md"
         >
           <FontAwesomeIcon icon={faBars} size="lg" />
         </button>

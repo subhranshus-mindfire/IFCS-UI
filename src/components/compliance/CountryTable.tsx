@@ -84,9 +84,7 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
                       </td>
                     ))}
                     <td className="px-4 py-3">
-                      {station.action && (
-                        <i className="fa-solid fa-arrow-up-right-from-square text-purple-600"></i>
-                      )}
+                      <i className="fa-solid fa-arrow-up-right-from-square text-purple-600"></i>
                     </td>
                   </tr>
                 ))}

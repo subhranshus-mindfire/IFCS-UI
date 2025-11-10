@@ -86,7 +86,7 @@ const App: React.FC = () => {
                 {key
                   .replace(/([A-Z])/g, " $1")
                   .replace(/^./, (str) => str.toUpperCase())}
-                : <span className="text-text-primary font-[500]">{value}</span>
+                : <span className="text-text-primary font-medium">{value}</span>
               </span>
             ))}
           </div>

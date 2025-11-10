@@ -5,6 +5,7 @@ import {
   DropdownRevIcon,
   RedirectIcon,
 } from "../../assets/icons";
+import { useNavigate } from "react-router-dom";
 
 interface CountryTableSectionProps {
   country: Country;
@@ -24,13 +25,15 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
     (key) => key !== "id" && key !== "action"
   );
 
+  const navigate = useNavigate()
+
   return (
     <div className="bg-white font-rubik rounded-xl py-3 shadow mb-4 transition-all duration-300">
       <button
         className="flex justify-between items-center w-full px-4 text-left py-3"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <h3 className="text-[20px] text-text-secondary font-[500]">
+        <h3 className="text-[20px] text-text-secondary font-medium">
           {country.name}{" "}
           <span className="text-text-muted text-sm">
             ({country.stations.length.toString().padStart(2, "0")})
@@ -38,16 +41,14 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
         </h3>
         <img
           src={isOpen ? DropdownRevIcon : DropdownIcon}
-          className={`transition-transform duration-300 ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }`}
+          className={`transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"
+            }`}
         />
       </button>
 
       <div
-        className={`overflow-hidden transition-[max-height,opacity] duration-500 ease-in-out ${
-          isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-[max-height,opacity] duration-500 ease-in-out ${isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
         {/* This outer div handles horizontal scrolling for the entire table.
          */}
@@ -64,7 +65,7 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
                 The background 'bg-bg-tertiary' is important so content
                 doesn't show through.
               */}
-              <thead className="text-xs text-text-secondary font-[500] uppercase bg-bg-tertiary sticky top-0 z-10">
+              <thead className="text-xs text-text-secondary font-medium uppercase bg-bg-tertiary sticky top-0 z-10">
                 <tr>
                   {displayHeaders.map((key) => (
                     <th
@@ -93,7 +94,7 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
                 {country.stations.map((station) => (
                   <tr
                     key={station.id + station.city}
-                    className="border-b-1 border-b-border-muted hover:bg-gray-50"
+                    className="border-b border-b-border-muted hover:bg-gray-50"
                   >
                     {displayHeaders.map((key) => (
                       <td
@@ -104,7 +105,7 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
                       </td>
                     ))}
                     <td className="px-4 py-3 justify-left flex flex-row">
-                      <img src={RedirectIcon} />
+                      <img src={RedirectIcon} className="cursor-pointer" onClick={() => navigate(`/compliance/compliance-tracking/${station.city}`)} />
                     </td>
                   </tr>
                 ))}

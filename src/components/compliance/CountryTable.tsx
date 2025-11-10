@@ -1,6 +1,10 @@
 import { useState } from "react";
 import type { Country, Station } from "../../const/ComplianceData";
-import { DropdownIcon, DropdownRevIcon } from "../../assets/icons";
+import {
+  DropdownIcon,
+  DropdownRevIcon,
+  RedirectIcon,
+} from "../../assets/icons";
 
 interface CountryTableSectionProps {
   country: Country;
@@ -45,33 +49,46 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
           isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
+        {/* This outer div handles horizontal scrolling for the entire table.
+         */}
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-text-secondary font-[500] uppercase bg-bg-tertiary">
-              <tr>
-                {displayHeaders.map((key) => (
-                  <th
-                    key={key}
-                    scope="col"
-                    className="px-4 text-[12px] py-3 whitespace-nowrap"
-                  >
-                    <div className="flex items-center gap-1">
-                      {key.charAt(0).toUpperCase() + key.slice(1)}
-                      {["city", "caterer"].includes(key) && (
-                        <i className="fa-solid fa-filter text-xs"></i>
-                      )}
-                    </div>
-                  </th>
-                ))}
-                <th scope="col" className="px-4 py-3">
-                  Action
-                </th>
-              </tr>
-            </thead>
-          </table>
-
+          {/* This inner div creates the vertical scrolling container.
+           */}
           <div className="max-h-[200px] overflow-y-auto">
-            <table className="w-full text-sm text-left">
+            {/* We now use ONE single table. 
+              'relative' is needed for the 'sticky' header to work inside.
+            */}
+            <table className="w-full text-sm text-left relative">
+              {/* The 'thead' is now 'sticky top-0' to lock it to the top
+                of the scrolling container. 'z-10' keeps it on top.
+                The background 'bg-bg-tertiary' is important so content
+                doesn't show through.
+              */}
+              <thead className="text-xs text-text-secondary font-[500] uppercase bg-bg-tertiary sticky top-0 z-10">
+                <tr>
+                  {displayHeaders.map((key) => (
+                    <th
+                      key={key}
+                      scope="col"
+                      className="px-4 text-[12px] py-3 whitespace-nowrap"
+                    >
+                      <div className="flex items-center gap-1">
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                        {["city", "caterer"].includes(key) && (
+                          <i className="fa-solid fa-filter text-xs"></i>
+                        )}
+                      </div>
+                    </th>
+                  ))}
+                  <th scope="col" className="px-4 py-3">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+
+              {/* The 'tbody' is placed directly inside the same table.
+                This ensures all columns align perfectly.
+              */}
               <tbody>
                 {country.stations.map((station) => (
                   <tr
@@ -79,12 +96,15 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
                     className="border-b-1 border-b-border-muted hover:bg-gray-50"
                   >
                     {displayHeaders.map((key) => (
-                      <td key={key} className="px-4 py-3 whitespace-nowrap">
+                      <td
+                        key={key}
+                        className="px-4 ps-6 py-3 whitespace-nowrap"
+                      >
                         {station[key]}
                       </td>
                     ))}
-                    <td className="px-4 py-3">
-                      <i className="fa-solid fa-arrow-up-right-from-square text-purple-600"></i>
+                    <td className="px-4 py-3 justify-left flex flex-row">
+                      <img src={RedirectIcon} />
                     </td>
                   </tr>
                 ))}

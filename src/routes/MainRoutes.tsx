@@ -36,7 +36,7 @@ function MainRoutes() {
         element={<ComplianceTrackingList />}
       />
       <Route
-        path="/compliance/compliance-tracking/:cityName/:flightNo-:date"
+        path="/compliance/compliance-tracking/:cityName/:flightNo/:date"
         element={<ComplianceTrackingDetails />}
       />
 

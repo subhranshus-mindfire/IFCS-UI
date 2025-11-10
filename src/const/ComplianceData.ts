@@ -40,6 +40,12 @@ export const ISSUE_CATEGORIES: IssueCategory[] = [
     icon: "fa-solid fa-circle-check",
   },
   {
+    id: "compliance",
+    name: "Compliance",
+    issueCount: 4,
+    icon: "fa-solid fa-circle-check",
+  },
+  {
     id: "provisioning",
     name: "Provisioning",
     issueCount: 21,

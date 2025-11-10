@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCog,
-  faPlane,
-  faPencilAlt,
+  faPencilAlt,  
   faShoppingCart,
   faUsers,
   faChartLine,
@@ -13,6 +12,7 @@ import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown";
 import Button from "../Button";
 import { Field, FieldLabel, FieldContent } from "../Field";
+import { PlaneIcon } from "../../assets/icons";
 
 interface FlightLegData {
   route: string;
@@ -546,10 +546,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 ) : (
-                  <FontAwesomeIcon
-                    icon={faPlane}
-                    className="text-red-800 text-xl"
-                  />
+                  <img src={PlaneIcon} alt="Plane" className="w-6 h-6" />
                 )}
               </div>
             </div>

@@ -11,6 +11,8 @@ import PositionIcon from "./position.svg";
 import BoxIcon from "./box.svg";
 import SortIcon from "./sort.svg";
 import DeleteIcon from "./delete.svg";
+import PlaneIcon from "./plane.svg";
+import SettingsIcon from "./settings.svg";
 
 export {
   AddIcon,
@@ -26,4 +28,6 @@ export {
   DeleteIcon,
   BoxIcon,
   SortIcon,
+  PlaneIcon,
+  SettingsIcon,
 };

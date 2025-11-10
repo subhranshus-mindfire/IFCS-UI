@@ -17,6 +17,10 @@ import ProvisioningIcon from "./provisioning.svg";
 import QualityIcon from "./quality.svg";
 import SafetyIcon from "./safety.svg";
 import SquaresIcon from "./squares.svg";
+import RefreshIcon from "./refresh.svg";
+import SettingIcon from "./setting.svg";
+import DropdownIcon from "./dropdownIcon.svg";
+import DropdownRevIcon from "./dropdownIconRev.svg";
 
 export {
   AddIcon,
@@ -38,4 +42,8 @@ export {
   QualityIcon,
   SafetyIcon,
   SquaresIcon,
+  RefreshIcon,
+  SettingIcon,
+  DropdownIcon,
+  DropdownRevIcon,
 };

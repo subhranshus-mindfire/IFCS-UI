@@ -13,6 +13,16 @@ import SortIcon from "./sort.svg";
 import DeleteIcon from "./delete.svg";
 import PlaneIcon from "./plane.svg";
 import SettingsIcon from "./settings.svg";
+import DelayIcon from "./delay.svg";
+import PawsIcon from "./paws.svg";
+import ProvisioningIcon from "./provisioning.svg";
+import QualityIcon from "./quality.svg";
+import SafetyIcon from "./safety.svg";
+import SquaresIcon from "./squares.svg";
+import RefreshIcon from "./refresh.svg";
+import SettingIcon from "./setting.svg";
+import DropdownIcon from "./dropdownIcon.svg";
+import DropdownRevIcon from "./dropdownIconRev.svg";
 
 export {
   AddIcon,
@@ -30,4 +40,14 @@ export {
   SortIcon,
   PlaneIcon,
   SettingsIcon,
+  DelayIcon,
+  PawsIcon,
+  ProvisioningIcon,
+  QualityIcon,
+  SafetyIcon,
+  SquaresIcon,
+  RefreshIcon,
+  SettingIcon,
+  DropdownIcon,
+  DropdownRevIcon,
 };

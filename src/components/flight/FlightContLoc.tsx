@@ -31,7 +31,7 @@ const FlightContLoc = () => {
             <button
               className={`px-4 py-1.5 rounded-full whitespace-nowrap text-xs transition-all ${
                 activeContentTab === "static"
-                  ? "bg-bg-secondary text-text-primary font-normal shadow-sm bg-gray-200"
+                  ? "bg-bg-secondary text-text-primary font-normal shadow-sm"
                   : "bg-gray-100 text-text-muted hover:bg-gray-200"
               }`}
               onClick={() => setActiveContentTab("static")}
@@ -41,7 +41,7 @@ const FlightContLoc = () => {
             <button
               className={`px-4 py-1.5 rounded-full whitespace-nowrap text-xs transition-all ${
                 activeContentTab === "dynamic"
-                  ? "bg-bg-secondary text-text-primary font-normal shadow-sm bg-gray-200"
+                  ? "bg-bg-secondary text-text-primary font-normal shadow-sm "
                   : "bg-gray-100 text-text-muted hover:bg-gray-200"
               }`}
             >
@@ -50,7 +50,7 @@ const FlightContLoc = () => {
             <button
               className={`px-4 py-1.5 rounded-full whitespace-nowrap text-xs transition-all ${
                 activeContentTab === "deadhead"
-                  ? "bg-bg-secondary text-text-primary font-normal shadow-sm bg-gray-200"
+                  ? "bg-bg-secondary text-text-primary font-normal shadow-sm"
                   : "bg-gray-100 text-text-muted hover:bg-gray-200"
               }`}
               onClick={() => setActiveContentTab("deadhead")}

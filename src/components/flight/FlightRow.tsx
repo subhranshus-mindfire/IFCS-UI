@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 import type { Flight } from "../../const/flightData";
 import { useEffect, useRef, useState } from "react";
+import Dropdown from "../Dropdown";
 
 interface FlightRowProps {
   flight: Flight;
@@ -174,34 +175,26 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               onClick={() => setOpen(!open)}
             />
             {open && (
-              <div className="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                <ul className="text-xs text-gray-700">
-                  <li
-                    className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={handleFlightDetails}
-                  >
-                    <FontAwesomeIcon icon={faEye} className="text-red-400" />
-                    Details
-                  </li>
-                  <li
-                    className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={handleFlightDetails}
-                  >
-                    <FontAwesomeIcon icon={faPen} className="text-red-500" />
-                    Edit
-                  </li>
-                  <li
-                    className="px-3 py-1.5 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={handleHistory}
-                  >
-                    <FontAwesomeIcon
-                      icon={faHistory}
-                      className="text-red-500"
-                    />
-                    History
-                  </li>
-                </ul>
-              </div>
+              <Dropdown
+                actions={[
+                  {
+                    icon: faEye,
+                    label: "Details",
+                    onClick: handleFlightDetails,
+                  },
+                  {
+                    icon: faPen,
+                    label: "Edit",
+                    onClick: handleFlightDetails,
+                  },
+                  {
+                    icon: faHistory,
+                    label: "History",
+                    onClick: handleHistory,
+                  },
+                ]}
+                width="w-36"
+              />
             )}
           </div>
         </div>

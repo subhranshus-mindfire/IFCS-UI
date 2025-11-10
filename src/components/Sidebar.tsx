@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -30,44 +30,54 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
-  // Lock body scroll when sidebar is open on mobile
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1366);
+
   useEffect(() => {
-    if (isOpen && window.innerWidth < 1024) {
+    const handleResize = () => setIsMobile(window.innerWidth <= 1366);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Disable scroll when sidebar is open on mobile
+  useEffect(() => {
+    if (isMobile && isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [isOpen]);
+  }, [isOpen, isMobile]);
 
   return (
     <>
-      {/* Toggle Button (visible only on mobile) */}
-      <button
-        onClick={toggleSidebar}
-        className="lg:hidden fixed top-4 left-4 z-50 bg-bg-surface p-2 rounded-md shadow-md"
-      >
-        <FontAwesomeIcon icon={faBars} size="lg" />
-      </button>
+      {isMobile && (
+        <button
+          onClick={toggleSidebar}
+          className="fixed top-4 left-4 z-[100] bg-bg-surface p-2 rounded-md shadow-md"
+        >
+          <FontAwesomeIcon icon={faBars} size="lg" />
+        </button>
+      )}
 
-      {/* Overlay (only visible when open on mobile) */}
-      {isOpen && (
+      {isOpen && isMobile && (
         <div
-          className="fixed inset-0 bg-bg-surface bg-opacity-40 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/40 z-40"
           onClick={toggleSidebar}
         ></div>
       )}
 
-      {/* Sidebar */}
       <div
-        className={`fixed lg:static top-0 left-0 h-full w-64 bg-[var(--backgroundAccent)] shadow-md py-6 flex flex-col justify-between transition-transform duration-300 z-50
-        ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+        className={`bg-bg-surface ${
+          isMobile ? "fixed" : "static"
+        } top-0 left-0 h-full w-64 bg-[var(--backgroundAccent)] shadow-md py-6 flex flex-col justify-between transition-transform duration-300 z-50
+        ${isOpen || !isMobile ? "translate-x-0" : "-translate-x-full"}`}
       >
-        {/* Close Button (mobile only) */}
-        <div className="flex justify-end lg:hidden px-4">
-          <button onClick={toggleSidebar}>
-            <FontAwesomeIcon icon={faTimes} size="lg" />
-          </button>
-        </div>
+        {isMobile && (
+          <div className="flex justify-end px-4 mb-2">
+            <button onClick={toggleSidebar}>
+              <FontAwesomeIcon icon={faTimes} size="lg" />
+            </button>
+          </div>
+        )}
 
         <nav className="flex-1 px-4 space-y-2 mt-2">
           {navItems.map(({ to, label, icon }) => (
@@ -81,7 +91,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                     : "text-gray-500 hover:bg-gray-200"
                 }`
               }
-              onClick={toggleSidebar}
+              onClick={isMobile ? toggleSidebar : undefined}
             >
               <FontAwesomeIcon icon={icon} />
               {label}

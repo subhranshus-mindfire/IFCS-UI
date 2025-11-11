@@ -16,7 +16,7 @@ import IFCSLogo from "../assets/logos/IFCSLogo.png";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: faGauge },
-  { to: "/flights", label: "Flights", icon: faPlaneUp },
+  { to: "/flight-list", label: "Flights", icon: faPlaneUp },
   { to: "/galley-planner", label: "Galley Planner", icon: faServer },
   { to: "/meal-planner", label: "Meal Planner", icon: faBowlRice },
   { to: "/compliance", label: "Compliance", icon: faCircleCheck },

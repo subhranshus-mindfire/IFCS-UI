@@ -128,9 +128,9 @@ const FlightDeliveries: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen font-rubik">
+    <div className="flex font-rubik">
       {/* Sidebar */}
-      <div className="w-64 bg-bg-surface border border-border-muted rounded-2xl p-4 flex flex-col">
+      <div className="w-64 min-h-96 bg-bg-surface border border-border-muted rounded-2xl p-4 flex flex-col">
         <div className="mb-4 border-b border-border-muted pb-4">
           <h2 className="text-lg text-text-primary mb-3">
             Deliveries ({deliveries.length})

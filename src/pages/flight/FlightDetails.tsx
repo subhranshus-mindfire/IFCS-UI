@@ -112,25 +112,69 @@ function FlightDetails() {
         </div>
       </div>
 
-      <div className="overflow-x-auto my-3 sm:my-4">
-        <div className="flex font-roboto bg-bg-surface rounded-full shadow min-w-max border border-border-muted">
+      <div className="overflow-x-auto overflow-y-hidden my-6">
+        <div className="inline-flex font-roboto items-stretch border rounded-full border-border-muted">
           {tabKeys.map((tab, index) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`font-roboto capitalize transition-all duration-500 cursor-pointer flex-1 min-w-[120px] md:min-w-[140px] px-3 py-2 sm:py-3 text-xs md:text-sm font-medium text-center items-center
-              ${index == 0 ? "rounded-l-full" : ""}
-              ${index == tab.length ? "rounded-r-full" : ""}
-              ${index == 0 || index == tab.length ? "" : "border border-gray-100 "} ${activeTab === tab
-                ? "border-b-4 border-b-bg-button text-bg-button shadow-md"
-                : "text-text-secondary hover:bg-bg-button hover:text-white"
-              }`}>
-              <span className={`inline-block w-6 py-1 rounded-full text-xs ${activeTab === tab
-                ? "bg-bg-button text-white shadow-md"
-                : "text-text-secondary bg-border-muted"} `}>
-                {'0' + (index + 1)}
-              </span> &ensp; {tab}
-            </button>
+            <div key={tab} className="relative flex items-center">
+              <button
+                onClick={() => tab !== "Invoice" && setActiveTab(tab)}
+                className={`relative px-4 py-3 text-sm font-medium transition-all duration-300 flex items-center gap-3 min-w-[140px] justify-center
+                ${activeTab === tab
+                    ? "text-bg-button"
+                    : tab === "Invoice" 
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-text-secondary"
+                }`}
+                disabled={tab === "Invoice"}
+              >
+                <span
+                  className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-medium
+                  ${activeTab === tab
+                      ? "bg-bg-button text-white"
+                      : "bg-bg-tertiary text-text-secondary"
+                    }`}
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="whitespace-nowrap">{tab}</span>
+
+                {/* Bottom border indicator for active tab */}
+                {activeTab === tab && (
+                  <span className={`absolute bottom-0 h-1 bg-bg-button ${
+                    index === 0
+                      ? "left-4 right-0"
+                      : index === tabKeys.length - 1
+                        ? "left-0 right-4"
+                        : "left-0 right-0"
+                  }`}></span>
+                )}
+              </button>
+
+              {/* Separator with pointed edges */}
+              {index < tabKeys.length - 1 && (
+                <div className="relative w-0 h-12 flex items-center">
+                  <svg
+                    width="16"
+                    height="48"
+                    viewBox="0 0 16 48"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute left-0 z-10"
+                    style={{ transform: 'translateX(-50%)' }}
+                  >
+                    {/* Vertical line from top, wider pointed middle section, vertical line to bottom */}
+                    <path
+                      d="M8 0 L8 14 L14 24 L8 34 L8 48"
+                      stroke="#D1D5DB"
+                      strokeWidth="1.5"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="miter"
+                    />
+                  </svg>
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>

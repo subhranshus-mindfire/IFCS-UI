@@ -1,18 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCog,
-  faPencilAlt,  
+  faPencilAlt,
   faShoppingCart,
   faUsers,
   faChartLine,
   faPlaneCircleCheck,
   faEye,
+  faPlaneDeparture,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown";
 import Button from "../Button";
 import { Field, FieldLabel, FieldContent } from "../Field";
-import { PlaneIcon } from "../../assets/icons";
 
 interface FlightLegData {
   route: string;
@@ -177,15 +177,21 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             {/* Row 1: Airline Code, Direction, Flight Type */}
             <div className="grid grid-cols-3 gap-2">
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Airline Code</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Airline Code
+                </FieldLabel>
                 <FieldContent>
                   <select className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent">
-                    <option>{legData?.flightNumber.substring(0, 2) || 'WY'}</option>
+                    <option>
+                      {legData?.flightNumber.substring(0, 2) || "WY"}
+                    </option>
                   </select>
                 </FieldContent>
               </Field>
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Direction</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Direction
+                </FieldLabel>
                 <FieldContent>
                   <select className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent">
                     <option value="">Select</option>
@@ -195,15 +201,28 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 </FieldContent>
               </Field>
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Flight Type</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Flight Type
+                </FieldLabel>
                 <FieldContent>
                   <div className="flex items-center gap-4 pt-2">
                     <label className="flex items-center gap-2">
-                      <input type="radio" name="flightType" value="J" defaultChecked className="text-bg-button focus:ring-bg-button" />
+                      <input
+                        type="radio"
+                        name="flightType"
+                        value="J"
+                        defaultChecked
+                        className="text-bg-button focus:ring-bg-button"
+                      />
                       <span className="text-text-primary">J</span>
                     </label>
                     <label className="flex items-center gap-2">
-                      <input type="radio" name="flightType" value="P" className="text-bg-button focus:ring-bg-button" />
+                      <input
+                        type="radio"
+                        name="flightType"
+                        value="P"
+                        className="text-bg-button focus:ring-bg-button"
+                      />
                       <span className="text-text-primary">P</span>
                     </label>
                   </div>
@@ -214,7 +233,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             {/* Row 2: Date, Departure Time, Arrival Time */}
             <div className="grid grid-cols-3 gap-2">
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Date</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Date
+                </FieldLabel>
                 <FieldContent>
                   <div className="relative">
                     <input
@@ -222,12 +243,16 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       defaultValue={legData?.date || "Oct 22"}
                       className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary">📅</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary">
+                      📅
+                    </span>
                   </div>
                 </FieldContent>
               </Field>
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Departure Time</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Departure Time
+                </FieldLabel>
                 <FieldContent>
                   <input
                     type="text"
@@ -237,7 +262,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 </FieldContent>
               </Field>
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Arrival Time</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Arrival Time
+                </FieldLabel>
                 <FieldContent>
                   <input
                     type="text"
@@ -251,7 +278,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             {/* Row 3: Flight Number, Departure Airport, Arrival Airport */}
             <div className="grid grid-cols-3 gap-2">
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Flight Number</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Flight Number
+                </FieldLabel>
                 <FieldContent>
                   <input
                     type="text"
@@ -261,7 +290,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 </FieldContent>
               </Field>
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Departure Airport</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Departure Airport
+                </FieldLabel>
                 <FieldContent>
                   <input
                     type="text"
@@ -271,7 +302,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 </FieldContent>
               </Field>
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Arrival Airport</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Arrival Airport
+                </FieldLabel>
                 <FieldContent>
                   <input
                     type="text"
@@ -285,15 +318,19 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             {/* Row 4: Aircraft Reg and PAX Count */}
             <div className="grid grid-cols-3 gap-2">
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">Aircraft Reg</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  Aircraft Reg
+                </FieldLabel>
                 <FieldContent>
                   <select className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent">
-                    <option>{legData?.acReg || 'A4OMP'}</option>
+                    <option>{legData?.acReg || "A4OMP"}</option>
                   </select>
                 </FieldContent>
               </Field>
               <Field>
-                <FieldLabel className="text-sm text-text-tertiary">PAX Count</FieldLabel>
+                <FieldLabel className="text-sm text-text-tertiary">
+                  PAX Count
+                </FieldLabel>
                 <FieldContent>
                   <div className="grid grid-cols-4 gap-1">
                     <div className="flex flex-col">
@@ -302,7 +339,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                         defaultValue={legData?.businessStudio || "2"}
                         className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                       />
-                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">Business Studio</span>
+                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">
+                        Business Studio
+                      </span>
                     </div>
                     <div className="flex flex-col">
                       <input
@@ -310,7 +349,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                         defaultValue={legData?.business || "153"}
                         className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                       />
-                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">Business</span>
+                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">
+                        Business
+                      </span>
                     </div>
                     <div className="flex flex-col">
                       <input
@@ -318,7 +359,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                         defaultValue={legData?.economy || "0"}
                         className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                       />
-                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">Economy</span>
+                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">
+                        Economy
+                      </span>
                     </div>
                     <div className="flex flex-col">
                       <input
@@ -326,7 +369,9 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                         defaultValue={legData?.crew || "0"}
                         className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                       />
-                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">Crew</span>
+                      <span className="text-[0.6rem] text-text-tertiary text-center mt-1">
+                        Crew
+                      </span>
                     </div>
                   </div>
                 </FieldContent>
@@ -337,15 +382,28 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             <div className="space-y-3 pt-2">
               <div className="flex items-center justify-between">
                 <label className="text-text-secondary">Manual Pairing</label>
-                <input type="radio" className="w-5 h-5 text-bg-button focus:ring-bg-button" />
+                <input
+                  type="radio"
+                  className="w-5 h-5 text-bg-button focus:ring-bg-button"
+                />
               </div>
               <div className="flex items-center justify-between">
-                <label className="text-text-secondary">Manual Loading Plan Selection</label>
-                <input type="radio" className="w-5 h-5 text-bg-button focus:ring-bg-button" />
+                <label className="text-text-secondary">
+                  Manual Loading Plan Selection
+                </label>
+                <input
+                  type="radio"
+                  className="w-5 h-5 text-bg-button focus:ring-bg-button"
+                />
               </div>
               <div className="flex items-center justify-between">
-                <label className="text-text-secondary">Manual Meal Plan Selection</label>
-                <input type="radio" className="w-5 h-5 text-bg-button focus:ring-bg-button" />
+                <label className="text-text-secondary">
+                  Manual Meal Plan Selection
+                </label>
+                <input
+                  type="radio"
+                  className="w-5 h-5 text-bg-button focus:ring-bg-button"
+                />
               </div>
             </div>
           </div>
@@ -546,7 +604,10 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 ) : (
-                  <img src={PlaneIcon} alt="Plane" className="w-6 h-6" />
+                  <FontAwesomeIcon
+                    icon={faPlaneDeparture}
+                    className="text-lg text-red-900"
+                  />
                 )}
               </div>
             </div>

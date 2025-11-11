@@ -55,7 +55,7 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
         <div className="overflow-x-auto">
           {/* This inner div creates the vertical scrolling container.
            */}
-          <div className="max-h-[200px] overflow-y-auto">
+          <div className="max-h-[200px] overflow-auto">
             {/* We now use ONE single table. 
               'relative' is needed for the 'sticky' header to work inside.
             */}
@@ -94,7 +94,7 @@ export const CountryTableSection: React.FC<CountryTableSectionProps> = ({
                 {country.stations.map((station) => (
                   <tr
                     key={station.id + station.city}
-                    className="border-b border-b-border-muted hover:bg-gray-50"
+                    className="border-b border-b-border-muted hover:bg-bg-accent"
                   >
                     {displayHeaders.map((key) => (
                       <td

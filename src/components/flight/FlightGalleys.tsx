@@ -28,10 +28,10 @@ const FlightGalleys = () => {
   const [selectedPrep, setSelectedPrep] = useState("Commissary");
 
   return (
-    <div className="flex w-full gap-4 bg-bg-surface font-rubik">
+    <div className="flex flex-col md:flex-row w-full gap-4 bg-bg-surface font-rubik">
 
       {/* LEFT SIDEBAR */}
-      <div className="w-60 bg-[#FAF9FA] h-auto rounded-xl shadow-sm p-4 md:h-[60vh]">
+      <div className="w-full md:w-36 bg-bg-tertiary rounded-xl shadow-sm p-4">
         <h2 className="text-text-primary font-normal text-sm mb-3 border-b border-bg-secondary pb-3">
           Prepared by
         </h2>
@@ -43,9 +43,9 @@ const FlightGalleys = () => {
               <button
                 key={idx}
                 onClick={() => setSelectedPrep(prep)}
-                className={`w-full text-left px-3 py-2 rounded-md text-sm 
-                  ${active
-                    ? "bg-bg-accent text-text-primary font-normal"
+                className={`w-full text-left px-3 py-2 rounded-md text-sm border border-bg-secondary
+                ${active
+                    ? "bg-bg-accent text-text-primary font-normal border-bg-accent"
                     : "hover:bg-gray-100 text-text-muted"
                   }`}
               >
@@ -68,7 +68,7 @@ const FlightGalleys = () => {
         </div>
 
         <div className="border border-bg-secondary rounded-2xl overflow-hidden">
-          <table className="w-full text-xs font-normal">
+          <table className="w-full text-xs xl:text-sm font-normal">
             <thead className="bg-gray-50">
               <tr className="text-gray-500 border-b border-bg-secondary">
                 <th className="py-3 px-4 text-left">Code</th>

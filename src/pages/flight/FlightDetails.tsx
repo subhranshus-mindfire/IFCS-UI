@@ -113,17 +113,17 @@ function FlightDetails() {
       </div>
 
       <div className="overflow-x-auto overflow-y-hidden my-6">
-        <div className="inline-flex font-roboto items-stretch border rounded-full border-border-muted">
+        <div className="flex font-roboto items-stretch border rounded-full border-border-muted w-full bg-white">
           {tabKeys.map((tab, index) => (
-            <div key={tab} className="relative flex items-center">
+            <div key={tab} className="relative flex-1 flex items-center justify-center min-w-0">
               <button
                 onClick={() => tab !== "Invoice" && setActiveTab(tab)}
-                className={`relative px-4 py-3 text-sm font-medium transition-all duration-300 flex items-center gap-3 min-w-[140px] justify-center
+                className={`relative w-full h-full px-2 py-3 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden
                 ${activeTab === tab
                     ? "text-bg-button"
                     : tab === "Invoice" 
                       ? "text-gray-400 cursor-not-allowed"
-                      : "text-text-secondary"
+                      : "text-text-secondary hover:text-bg-button/80"
                 }`}
                 disabled={tab === "Invoice"}
               >
@@ -136,7 +136,7 @@ function FlightDetails() {
                 >
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <span className="whitespace-nowrap">{tab}</span>
+                <span className="whitespace-nowrap text-ellipsis overflow-hidden">{tab}</span>
 
                 {/* Bottom border indicator for active tab */}
                 {activeTab === tab && (

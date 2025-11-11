@@ -40,7 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
 
       <div className="flex items-center gap-2 lg:gap-4">
         <span className="hidden sm:inline text-gray-700">Shitanshu</span>
-        <img src={EmiratesLogo} className="w-25 h-25 shadow-2xl" />
+        <img src={EmiratesLogo} className="w-25 z-100 h-25 shadow-2xl" />
       </div>
     </nav>
   );

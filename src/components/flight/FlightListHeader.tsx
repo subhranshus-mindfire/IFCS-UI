@@ -33,7 +33,6 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
 
   return (
     <div className="flex flex-col w-full border-b border-gray-300">
-      {/* --- Top Bar --- */}
       <div className="flex items-center justify-left gap-5 bg-red-800 text-white pr-4 py-0">
         <button
           onClick={onBack}
@@ -52,7 +51,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
         </button>
       </div>
 
-      <div className="bg-white px-4 py-3 flex items-center justify-between">
+      <div className="bg-bg-secondary px-4 py-3 flex items-center justify-between">
         <div className="flex flex-col items-left gap-3">
           <h1 className="text-lg font-semibold text-gray-800">Flight Hub</h1>
 

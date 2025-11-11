@@ -6,7 +6,6 @@ import {
   faPlaneDeparture,
   faPlaneCircleCheck,
   faBoltLightning,
-  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import { flights } from "../../const/flightData";
 import FlightHeader from "../../components/flight/FlightListHeader";
@@ -27,7 +26,7 @@ const FlightList: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col bg-gray-100 font-arial overflow-hidden">
+    <div className="w-full h-screen flex flex-col bg-gray-100 font-arial">
       <FlightHeader
         onBack={() => navigate("/dashboard")}
         onAddFlight={handleAddFlight}
@@ -44,72 +43,101 @@ const FlightList: React.FC = () => {
       )}
 
       <div className="flex-1 overflow-auto">
-        <table className="w-full border-collapse bg-white min-w-[1400px]">
-          <thead className="bg-black text-white sticky top-0 z-10">
-            <tr className="text-xs font-semibold border-b border-gray-600">
-              <th className="w-10"></th>
-              <th className="w-24"></th>
-              <th className="w-16">
-                <div className="flex items-center justify-center gap-1">
+        <table className="w-full border-collapse bg-white min-w-[1600px]">
+          <thead
+            className="sticky top-0 z-10 bg-bg-tertiary text-text-secondary"
+            style={{
+              // This shadow creates the BOTTOM border of the whole header
+              boxShadow: "0 2px 0 0 rgb(75 85 99)",
+            }}
+          >
+            {/* First header row (REMOVED the style prop) */}
+            <tr className="text-sm font-semibold">
+              <th colSpan={8} className="py-2 relative">
+                <div className="flex items-center justify-center gap-2">
                   <FontAwesomeIcon
                     icon={faPlaneDeparture}
-                    className="text-sm"
+                    className="text-base"
                   />
                   <span>Flight</span>
                 </div>
+                {/* Vertical separator */}
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
-              <th className="w-10"></th>
-              <th className="w-20"></th>
-              <th className="w-16"></th>
-              <th className="w-16"></th>
-              <th className="w-20"></th>
-              <th className="w-20">
-                <div className="flex items-center justify-center gap-1">
-                  <FontAwesomeIcon icon={faClock} />
-                  <span>Ground Time</span>
-                </div>
-              </th>
-              <th className="w-36">
-                <div className="flex items-center py-2 justify-center gap-1">
-                  <FontAwesomeIcon icon={faPlaneCircleCheck} />
+              <th colSpan={2} className="py-2 relative">
+                <div className="flex items-center justify-center gap-2">
+                  <FontAwesomeIcon
+                    icon={faPlaneCircleCheck}
+                    className="text-base"
+                  />
                   <span>Aircraft</span>
                 </div>
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
-              <th className="w-36">
-                <div className="flex items-center justify-center gap-1">
-                  <FontAwesomeIcon icon={faClipboardList} />
+              <th colSpan={1} className="py-2 relative">
+                <div className="flex items-center justify-center gap-2">
+                  <FontAwesomeIcon
+                    icon={faClipboardList}
+                    className="text-base"
+                  />
                   <span>Plans</span>
                 </div>
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
-              <th className="w-16"></th>
-              <th className="w-72">
-                <div className="flex items-center justify-center gap-1">
-                  <FontAwesomeIcon icon={faUsers} />
-                  <span className="text-left pl-5">PAX</span>
+              <th colSpan={2} className="py-2 relative">
+                <div className="flex items-center justify-center gap-2">
+                  <FontAwesomeIcon icon={faUsers} className="text-base" />
+                  <span>PAX</span>
                 </div>
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
-              <th className="w-48">
-                <div className="flex items-center justify-center gap-1">
-                  <FontAwesomeIcon icon={faBoltLightning} />
+              <th colSpan={1} className="py-2">
+                <div className="flex items-center justify-center gap-2">
+                  <FontAwesomeIcon
+                    icon={faBoltLightning}
+                    className="text-base"
+                  />
                   <span>Status</span>
                 </div>
               </th>
             </tr>
-            <tr className="bg-bg-secondary text-left text-sm text-blackfont-extralight border-b border-gray-400">
-              <th className="text-text-tertiary">Airline</th>
-              <th className="text-text-tertiary">Route</th>
-              <th className="text-text-tertiary">Flight #</th>
-              <th className="text-text-tertiary">Type</th>
-              <th className="text-text-tertiary">Date</th>
-              <th className="text-text-tertiary">Departure</th>
-              <th className="text-text-tertiary">Arrival</th>
-              <th className="text-text-tertiary">Status</th>
-              <th className="text-center text-text-tertiary">Ground Time</th>
-              <th className="text-center text-text-tertiary">AC Type/AC Reg</th>
-              <th className="text-text-tertiary">Loading plan / Meal plan</th>
-              <th className="text-center text-text-tertiary">Total</th>
-              <th className="text-center text-text-tertiary">Cabins</th>
-              <th className="text-text-tertiary"></th>
+
+            {/* Second header row (ADDED style prop) */}
+            <tr
+              className="bg-bg-secondary text-left text-base text-text-primary font-light"
+              style={{
+                // This inset shadow creates the TOP border (the one you were missing)
+                boxShadow: "inset 0 1px 0 0 rgb(75 85 99)",
+              }}
+            >
+              <th className="py-2 px-3 font-medium">Airline</th>
+              <th className="py-2 px-3 font-medium">Route</th>
+              <th className="py-2 px-3 font-medium">Flight #</th>
+              <th className="py-2 px-3 font-medium">Type</th>
+              <th className="py-2 px-3 font-medium">Date</th>
+              <th className="py-2 px-3 font-medium">Departure</th>
+              <th className="py-2 px-3 font-medium">Arrival</th>
+              <th className="py-2 px-3 font-medium relative">
+                Status
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
+              </th>
+              <th className="py-2 px-3 text-center font-medium">
+                AC Type/AC Reg
+              </th>
+              <th className="py-2 px-3 text-center font-medium relative">
+                Ground Time
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
+              </th>
+              <th className="py-2 px-3 font-medium relative">
+                Loading plan / Meal plan
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
+              </th>
+              <th className="py-2 px-3 text-center font-medium">Total</th>
+              <th className="py-2 px-3 text-center font-medium relative">
+                Cabins
+                <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
+              </th>
+              <th className="py-2 px-3 font-medium"></th>
             </tr>
           </thead>
           <tbody>
@@ -124,7 +152,7 @@ const FlightList: React.FC = () => {
                 ))}
                 {idx < flights.length - 1 && (
                   <tr>
-                    <td colSpan={14} className="h-7"></td>
+                    <td colSpan={14} className="h-7 bg-gray-100"></td>
                   </tr>
                 )}
               </React.Fragment>
@@ -133,8 +161,8 @@ const FlightList: React.FC = () => {
         </table>
       </div>
 
-      <div className="bg-gray-400 h-8 flex items-center px-4">
-        <span className="text-xs text-white font-semibold">
+      <div className="bg-gray-500 h-8 flex items-center px-4">
+        <span className="text-sm text-white font-semibold">
           Galley X Planner
         </span>
       </div>

@@ -92,6 +92,44 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                 className="px-3 py-1.5 border border-gray-600 bg-black text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
               />
             </div>
+            <div className="flex items-center">
+              <input
+                type="text"
+                // value={flightNumber}
+                // onChange={(e) => setFlightNumber(e.target.value)}
+                placeholder="AC Reg"
+                className="px-3 py-1.5 border border-gray-600 bg-black text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+              />
+            </div>
+            <div className="flex items-center">
+              <input
+                type="text"
+                // value={flightNumber}
+                // onChange={(e) => setFlightNumber(e.target.value)}
+                placeholder="AC Type"
+                className="px-3 py-1.5 border border-gray-600 bg-black text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+              />
+            </div>
+            <div className="flex items-center">
+              <input
+                type="text"
+                // value={flightNumber}
+                // onChange={(e) => setFlightNumber(e.target.value)}
+                placeholder="Route"
+                className="px-3 py-1.5 border border-gray-600 bg-black text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <select
+                // value={station}
+                // onChange={(e) => setStation(e.target.value)}
+                className="px-3 py-1.5 border border-black bg-black text-gray-400 text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="Oman">Oman</option>
+                <option value="Dubai">Dubai</option>
+                <option value="Abu Dhabi">Abu Dhabi</option>
+              </select>
+            </div>
           </div>
         </div>
 

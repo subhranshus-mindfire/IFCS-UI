@@ -164,7 +164,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           className="h-7 w-7 mx-auto"
         />
       </td>
-      <td className="text-left font-sm py-2 px-3">{flight.route}</td>
+      <td className="text-left font-sm py-2 px-0">{flight.route}</td>
       <td className="text-left text-lg font-bold text-black py-2 px-3">
         {flight.flightNumber}
       </td>

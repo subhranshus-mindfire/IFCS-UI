@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GalleyLabel from "../GalleyLabel";
 import type { Flight } from "../../const/flightData";
 
@@ -12,6 +12,14 @@ type PreparationData = {
 
 const FlightLabels = () => {
   const [activeTab, setActiveTab] = useState("LABELS");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // ✅ Modal state
   const [selectedLabel, setSelectedLabel] = useState<null | {
@@ -69,78 +77,131 @@ const FlightLabels = () => {
     <div className="min-h-screen font-rubik">
       {/* ✅ Top Tabs */}
       <div className="flex gap-2 mb-6 bg-bg-secondary p-1 rounded-full w-full">
-        {["LABELS", "REPORTS"].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2 text-sm rounded-full transition-all duration-300
+        {isLoading ? (
+          [...Array(2)].map((_, idx) => (
+            <div key={idx} className="flex-1">
+              <div className="relative h-10 rounded-full bg-gray-200 overflow-hidden">
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+              </div>
+            </div>
+          ))
+        ) : (
+          ["LABELS", "REPORTS"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-5 py-2 text-sm rounded-full transition-all duration-300
               ${activeTab === tab
-                ? "bg-bg-accent shadow text-gray-900"
-                : "text-gray-500 hover:bg-white/70"
-              }`}
-          >
-            {tab}
-          </button>
-        ))}
+                  ? "bg-bg-accent shadow text-gray-900"
+                  : "text-gray-500 hover:bg-white/70"
+                }`}
+            >
+              {tab}
+            </button>
+          )))}
       </div>
 
       {activeTab === "LABELS" && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* ✅ OUTBOUND LABELS CARD */}
           <div className="bg-white p-5 rounded-2xl border border-bg-secondary">
-            <h2 className="text-gray-700 font-regular mb-4 text-lg">
-              Print Outbound Labels
-            </h2>
+            {isLoading ? (
+              <div className="relative h-7 w-48 mb-4 rounded bg-gray-200 overflow-hidden">
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+              </div>
+            ) : (
+              <h2 className="text-gray-700 font-regular mb-4 text-lg">
+                Print Outbound Labels
+              </h2>
+            )}
+
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {Object.entries(outboundGroups).map(([title, items]) => (
-                <div key={title}>
-                  <h3 className="text-gray-600 font-regular mb-2">{title}</h3>
-
-                  <div className="bg-bg-tertiary py-6 rounded-lg">
-                    {items.map((prep, idx) => (
-                      <div
-                        key={idx}
-                        className="rounded-xl mx-0 2xl:mx-10 flex justify-center cursor-pointer active:scale-[0.98] transition"
-                        onClick={() =>
-                          setSelectedLabel({ preparation: prep, flight: sampleFlight })
-                        }
-                      >
-                        <GalleyLabel preparation={prep} flight={sampleFlight} />
+              {isLoading ? (
+                [...Array(4)].map((_, idx) => (
+                  <div key={idx}>
+                    <div className="relative h-5 w-24 mb-2 rounded bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+                    </div>
+                    <div className="bg-bg-tertiary py-6 rounded-lg">
+                      <div className="mx-0 2xl:mx-10">
+                        <div className="relative h-40 rounded-xl bg-gray-200 overflow-hidden">
+                          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+                        </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                Object.entries(outboundGroups).map(([title, items]) => (
+                  <div key={title}>
+                    <h3 className="text-gray-600 font-regular mb-2">{title}</h3>
+
+                    <div className="bg-bg-tertiary py-6 rounded-lg">
+                      {items.map((prep, idx) => (
+                        <div
+                          key={idx}
+                          className="rounded-xl mx-0 2xl:mx-10 flex justify-center cursor-pointer active:scale-[0.98] transition"
+                          onClick={() =>
+                            setSelectedLabel({ preparation: prep, flight: sampleFlight })
+                          }
+                        >
+                          <GalleyLabel preparation={prep} flight={sampleFlight} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )))}
             </div>
           </div>
 
           {/* ✅ INBOUND LABELS CARD */}
           <div className="bg-white p-5 rounded-2xl border border-bg-secondary">
-            <h2 className="text-gray-700 font-regular mb-4 text-lg">
-              Print Inbound Labels
-            </h2>
-
+            {isLoading ? (
+              <div className="relative h-7 w-48 mb-4 rounded bg-gray-200 overflow-hidden">
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+              </div>
+            ) : (
+              <h2 className="text-gray-700 font-regular mb-4 text-lg">
+                Print Inbound Labels
+              </h2>
+            )}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {Object.entries(inboundGroups).map(([title, items]) => (
-                <div key={title}>
-                  <h3 className="text-gray-600 font-regular mb-2">{title}</h3>
-
-                  <div className="bg-bg-tertiary py-6 rounded-lg">
-                    {items.map((prep, idx) => (
-                      <div
-                        key={idx}
-                        className="rounded-xl mx-0 2xl:mx-10 flex justify-center cursor-pointer active:scale-[0.98] transition"
-                        onClick={() =>
-                          setSelectedLabel({ preparation: prep, flight: sampleFlight })
-                        }
-                      >
-                        <GalleyLabel preparation={prep} flight={sampleFlight} />
+              {isLoading ? (
+                [...Array(2)].map((_, idx) => (
+                  <div key={idx}>
+                    <div className="relative h-5 w-24 mb-2 rounded bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+                    </div>
+                    <div className="bg-bg-tertiary py-6 rounded-lg">
+                      <div className="mx-0 2xl:mx-10">
+                        <div className="relative h-40 rounded-xl bg-gray-200 overflow-hidden">
+                          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+                        </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                Object.entries(inboundGroups).map(([title, items]) => (
+                  <div key={title}>
+                    <h3 className="text-gray-600 font-regular mb-2">{title}</h3>
+
+                    <div className="bg-bg-tertiary py-6 rounded-lg">
+                      {items.map((prep, idx) => (
+                        <div
+                          key={idx}
+                          className="rounded-xl mx-0 2xl:mx-10 flex justify-center cursor-pointer active:scale-[0.98] transition"
+                          onClick={() =>
+                            setSelectedLabel({ preparation: prep, flight: sampleFlight })
+                          }
+                        >
+                          <GalleyLabel preparation={prep} flight={sampleFlight} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )))}
             </div>
           </div>
         </div>

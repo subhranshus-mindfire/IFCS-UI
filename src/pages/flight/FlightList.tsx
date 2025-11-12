@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { flights } from "../../const/flightData";
 import FlightHeader from "../../components/flight/FlightListHeader";
 import { AddFlightModal } from "../../components/flight/AddFlightModal";
@@ -14,20 +14,29 @@ import {
   StatusIcon,
 } from "../../assets/icons";
 
+
 const FlightList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [selectedFlightNumber, setSelectedFlightNumber] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const handleAddFlight = () => setShowAddModal(true);
   const handleShowHistory = (flightNumber: string) => {
     setSelectedFlightNumber(flightNumber);
     setShowHistoryModal(true);
   };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="w-full h-screen flex flex-col bg-gray-100 font-arial">
-      <Navbar onMenuClick={() => {}} />
+      <Navbar onMenuClick={() => { }} />
       <FlightHeader
         onBack={() => navigate("/dashboard")}
         onAddFlight={handleAddFlight}
@@ -130,7 +139,20 @@ const FlightList: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {flights.map((pair, idx) => (
+            {isLoading ? [...Array(6)].map((_, idx) => (
+              <React.Fragment key={`shimmer-${idx}`}>
+                <tr className="border-b border-gray-200">
+                  {[...Array(14)].map((_, cellIdx) => (
+                    <td key={cellIdx} className="py-4 px-3">
+                      <div className="relative h-4 w-20 rounded bg-gray-200 overflow-hidden">
+                        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+                      </div>
+                    </td>
+                  ))}
+                  {/* Repeat for other columns */}
+                </tr>
+              </React.Fragment>
+            )) : flights.map((pair, idx) => (
               <React.Fragment key={idx}>
                 {pair.map((flight, subIdx) => (
                   <FlightRow

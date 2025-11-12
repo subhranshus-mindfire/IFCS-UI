@@ -16,7 +16,7 @@ import IFCSLogo from "../assets/logos/IFCSLogo.png";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: faGauge },
-  { to: "/flights", label: "Flights", icon: faPlaneUp },
+  { to: "/flight-list", label: "Flights", icon: faPlaneUp },
   { to: "/galley-planner", label: "Galley Planner", icon: faServer },
   { to: "/meal-planner", label: "Meal Planner", icon: faBowlRice },
   { to: "/compliance", label: "Compliance", icon: faCircleCheck },
@@ -67,9 +67,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
       <div
         className={`bg-bg-surface ${
-          isMobile ? "fixed" : "static"
-        } top-0 left-0 h-full w-64 bg-[var(--backgroundAccent)] shadow-md py-6 flex flex-col justify-between transition-transform duration-300 z-50
-        ${isOpen || !isMobile ? "translate-x-0" : "-translate-x-full"}`}
+          isMobile ? "fixed h-screen" : "static h-full"
+        } top-0 left-0 w-64 bg-[var(--backgroundAccent)] shadow-md py-6 flex flex-col justify-between transition-transform duration-300 z-50
+        ${isOpen || !isMobile ? "translate-x-0" : "-translate-x-full"} 
+        font-rubik`}
       >
         {isMobile && (
           <div className="flex justify-end px-4 mb-2">
@@ -79,7 +80,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           </div>
         )}
 
-        <nav className="flex-1 px-4 space-y-2 mt-2">
+        {/* UPDATED: Added overflow-y-auto here */}
+        <nav className="flex-1 px-4 space-y-2 mt-2 overflow-y-auto">
           {navItems.map(({ to, label, icon }) => (
             <NavLink
               key={to}

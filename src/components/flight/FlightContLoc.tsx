@@ -14,7 +14,7 @@ const FlightContLoc = () => {
   );
 
   return (
-    <div className="bg-bg-surface font-rubik w-full max-w-full">
+    <div className="bg-bg-surface w-full max-w-full font-rubik">
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Left Section - Items */}
@@ -94,7 +94,7 @@ const FlightContLoc = () => {
         </div>
 
         {/* Middle Section - Details & Galley Locations */}
-        <div className="lg:col-span-6 flex flex-col gap-4">
+        <div className="lg:col-span-6 flex flex-col">
           {/* Details Section */}
           <div className="bg-bg-surface rounded-lg p-4">
             <h2 className="text-base font-normal text-text-primary mb-4">
@@ -113,7 +113,7 @@ const FlightContLoc = () => {
               </div>
 
               {/* Equipment Preview */}
-              <div className="min-h-[150px] p-2 px-4 border border-border-muted">
+              <div className="min-h-[150px] p-2 px-4 border-t border-border-muted">
                 <p className="text-xs text-text-tertiary">Equipment Preview</p>
               </div>
             </div>

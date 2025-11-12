@@ -30,37 +30,37 @@ export const ISSUE_CATEGORIES: IssueCategory[] = [
   {
     id: "delays",
     name: "Delays",
-    issueCount: 3,
+    issueCount: 30,
     icon: "fa-solid fa-clock",
   },
   {
     id: "quality",
     name: "Quality",
-    issueCount: 4,
+    issueCount: 41,
     icon: "fa-solid fa-circle-check",
   },
   {
     id: "compliance",
     name: "Compliance",
-    issueCount: 4,
+    issueCount: 50,
     icon: "fa-solid fa-circle-check",
   },
   {
     id: "provisioning",
     name: "Provisioning",
-    issueCount: 21,
+    issueCount: 31,
     icon: "fa-solid fa-chart-simple",
   },
   {
     id: "unclassified",
     name: "Unclassified",
-    issueCount: 31,
+    issueCount: 90,
     icon: "fa-solid fa-circle-question",
   },
   {
     id: "safety",
     name: "Safety",
-    issueCount: 26,
+    issueCount: 186,
     icon: "fa-solid fa-triangle-exclamation",
   },
 ];

@@ -24,7 +24,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ userName }) => {
 
   return (
     <div
-      className="relative w-full min-h-56 sm:min-h-64 md:min-h-72 lg:min-h-80 rounded-xl overflow-hidden"
+      className="relative font-rubik w-full min-h-56 sm:min-h-64 md:min-h-72 lg:min-h-80 rounded-xl overflow-hidden"
       style={{
         backgroundImage: `url(${dashBg})`,
         backgroundSize: "cover",

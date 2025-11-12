@@ -10,7 +10,7 @@ const Layout: React.FC = () => {
   return (
     <div className="flex flex-col h-screen w-screen bg-gray-50">
       <Navbar onMenuClick={toggleSidebar} />
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main className="flex-1 p-3 lg:p-6 overflow-y-auto">
           <Outlet />

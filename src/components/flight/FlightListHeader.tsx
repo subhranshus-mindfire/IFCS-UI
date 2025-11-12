@@ -33,7 +33,6 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
 
   return (
     <div className="flex flex-col w-full border-b border-gray-300">
-      {/* --- Top Bar --- */}
       <div className="flex items-center justify-left gap-5 bg-red-800 text-white pr-4 py-0">
         <button
           onClick={onBack}
@@ -52,7 +51,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
         </button>
       </div>
 
-      <div className="bg-white px-4 py-3 flex items-center justify-between">
+      <div className="bg-bg-secondary px-4 py-3 flex items-center justify-between">
         <div className="flex flex-col items-left gap-3">
           <h1 className="text-lg font-semibold text-gray-800">Flight Hub</h1>
 
@@ -92,6 +91,44 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                 placeholder="Flight"
                 className="px-3 py-1.5 border border-gray-600 bg-black text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
               />
+            </div>
+            <div className="flex items-center">
+              <input
+                type="text"
+                // value={flightNumber}
+                // onChange={(e) => setFlightNumber(e.target.value)}
+                placeholder="AC Reg"
+                className="px-3 py-1.5 border border-gray-600 bg-black text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+              />
+            </div>
+            <div className="flex items-center">
+              <input
+                type="text"
+                // value={flightNumber}
+                // onChange={(e) => setFlightNumber(e.target.value)}
+                placeholder="AC Type"
+                className="px-3 py-1.5 border border-gray-600 bg-black text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+              />
+            </div>
+            <div className="flex items-center">
+              <input
+                type="text"
+                // value={flightNumber}
+                // onChange={(e) => setFlightNumber(e.target.value)}
+                placeholder="Route"
+                className="px-3 py-1.5 border border-gray-600 bg-black text-white text-sm rounded w-32 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <select
+                // value={station}
+                // onChange={(e) => setStation(e.target.value)}
+                className="px-3 py-1.5 border border-black bg-black text-gray-400 text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="Oman">Oman</option>
+                <option value="Dubai">Dubai</option>
+                <option value="Abu Dhabi">Abu Dhabi</option>
+              </select>
             </div>
           </div>
         </div>

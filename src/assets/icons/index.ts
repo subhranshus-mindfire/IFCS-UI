@@ -11,6 +11,8 @@ import PositionIcon from "./position.svg";
 import BoxIcon from "./box.svg";
 import SortIcon from "./sort.svg";
 import DeleteIcon from "./delete.svg";
+import PlaneIcon from "./plane.svg";
+import SettingsIcon from "./settings.svg";
 import DelayIcon from "./delay.svg";
 import PawsIcon from "./paws.svg";
 import ProvisioningIcon from "./provisioning.svg";
@@ -37,6 +39,8 @@ export {
   DeleteIcon,
   BoxIcon,
   SortIcon,
+  PlaneIcon,
+  SettingsIcon,
   DelayIcon,
   PawsIcon,
   ProvisioningIcon,

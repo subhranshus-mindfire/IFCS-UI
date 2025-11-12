@@ -67,7 +67,16 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
   const [editPlanType, setEditPlanType] = useState<
     "loadingPlan" | "mealPlan" | null
   >(null);
+  const [isLoading, setIsLoading] = useState(true); // ADD THIS
+  // ... rest of existing state
 
+  // ADD THIS useEffect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -140,23 +149,24 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
     planType: "loadingPlan" | "mealPlan",
     legIndex: number
   ) => [
-    {
-      icon: faEye,
-      label: "Plan Details",
-      onClick: () =>
-        console.log(`Plan Details ${planType} clicked for leg`, legIndex),
-    },
-    {
-      icon: faPencilAlt,
-      label: "Edit Plan",
-      onClick: () => {
-        setEditPlanType(planType);
-        setOpenDropdown({ legIndex, type: "editPlan" });
+      {
+        icon: faEye,
+        label: "Plan Details",
+        onClick: () =>
+          console.log(`Plan Details ${planType} clicked for leg`, legIndex),
       },
-    },
-  ];
+      {
+        icon: faPencilAlt,
+        label: "Edit Plan",
+        onClick: () => {
+          setEditPlanType(planType);
+          setOpenDropdown({ legIndex, type: "editPlan" });
+        },
+      },
+    ];
 
   const EditFlightModal = () => {
+
     if (!isEditFlightModalOpen) return null;
 
     const legData =
@@ -434,381 +444,442 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
   return (
     <div className="space-y-4 w-full font-rubik">
       <div className="flex justify-between items-center px-2">
-        <h2 className="text-xl md:text-2xl text-gray-700">Flights (2 Legs)</h2>
-        <div className="relative dropdown-trigger">
-          <FontAwesomeIcon
-            icon={faCog}
-            className="text-red-800 cursor-pointer text-xl hover:text-red-900 transition-colors"
-            onClick={() => toggleDropdown(-1, "main")}
-          />
-          {openDropdown?.legIndex === -1 && openDropdown?.type === "main" && (
-            <Dropdown actions={getMainActions(-1)} />
-          )}
-        </div>
+        {isLoading ? (
+          <div className="relative h-8 w-48 rounded bg-gray-200 overflow-hidden">
+            <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+          </div>
+        ) : (
+          <h2 className="text-xl md:text-2xl text-gray-700">Flights (2 Legs)</h2>
+        )}
+        {!isLoading && (
+          <div className="relative dropdown-trigger">
+            <FontAwesomeIcon
+              icon={faCog}
+              className="text-red-800 cursor-pointer text-xl hover:text-red-900 transition-colors"
+              onClick={() => toggleDropdown(-1, "main")}
+            />
+            {openDropdown?.legIndex === -1 && openDropdown?.type === "main" && (
+              <Dropdown actions={getMainActions(-1)} />
+            )}
+          </div>
+        )}
       </div>
+      {isLoading ? (
+        // Shimmer skeleton for flight legs
+        [...Array(2)].map((_, index) => (
+          <div
+            key={index}
+            className="bg-gray-50 rounded-xl shadow-lg min-w-[1200px] lg:min-w-0"
+          >
+            {/* Flight Header Row Shimmer */}
+            <div className="px-2 sm:px-4 py-3">
+              <div className="grid grid-cols-[repeat(16,minmax(60px,1fr))_auto] xl:grid-cols-[repeat(16,1fr)_auto] gap-1 sm:gap-2">
+                {[...Array(16)].map((_, idx) => (
+                  <div key={idx} className="flex flex-col gap-2">
+                    <div className="relative h-3 w-full rounded bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    </div>
+                    <div className="relative h-5 w-full rounded bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    </div>
+                  </div>
+                ))}
+                <div className="flex items-center justify-center ml-4">
+                  <div className="relative h-5 w-5 rounded-full bg-gray-200 overflow-hidden">
+                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      {legs.map((leg, index) => (
-        <div
-          key={index}
-          className="bg-gray-50 rounded-xl shadow-lg min-w-[1200px] lg:min-w-0"
-          onMouseEnter={() => setHoveredLeg(index)}
-          onMouseLeave={() => setHoveredLeg(null)}
-        >
-          {/* Flight Header Row */}
-          <div className="px-2 sm:px-4 py-3">
-            <div className="grid grid-cols-[repeat(16,minmax(60px,1fr))_auto] xl:grid-cols-[repeat(16,1fr)_auto] gap-1 sm:gap-2 items-center text-xs xl:text-base">
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Route
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.route}
+            {/* Cards Section Shimmer */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2 xl:gap-3 p-2 sm:p-4">
+              {[...Array(5)].map((_, cardIdx) => (
+                <div key={cardIdx} className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 shadow-lg">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="relative h-4 w-24 rounded bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    </div>
+                    <div className="relative h-4 w-4 rounded bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    </div>
+                    <div className="relative h-4 w-3/4 rounded bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Flight #
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600 font-semibold">
-                  {leg.flightNumber}
+              ))}
+            </div>
+          </div>
+        ))
+      ) : (
+        legs.map((leg, index) => (
+          <div
+            key={index}
+            className="bg-gray-50 rounded-xl shadow-lg min-w-[1200px] lg:min-w-0"
+            onMouseEnter={() => setHoveredLeg(index)}
+            onMouseLeave={() => setHoveredLeg(null)}
+          >
+            {/* Flight Header Row */}
+            <div className="px-2 sm:px-4 py-3">
+              <div className="grid grid-cols-[repeat(16,minmax(60px,1fr))_auto] xl:grid-cols-[repeat(16,1fr)_auto] gap-1 sm:gap-2 items-center text-xs xl:text-base">
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Route
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.route}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Type
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.type}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Flight #
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600 font-semibold">
+                    {leg.flightNumber}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Date
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600 font-semibold">
-                  {leg.date}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Type
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.type}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  DEP Time
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600 font-semibold">
-                  {leg.depTime}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Date
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600 font-semibold">
+                    {leg.date}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  ARR Time
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.arrTime}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    DEP Time
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600 font-semibold">
+                    {leg.depTime}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  AC Type
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.acType}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    ARR Time
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.arrTime}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  AC Reg
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.acReg}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    AC Type
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.acType}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Direction
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.direction}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    AC Reg
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.acReg}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Business
-                </span>
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Studio
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.businessStudio}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Direction
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.direction}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Business
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.business}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Business
+                  </span>
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Studio
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.businessStudio}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Economy
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.economy}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Business
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.business}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Crew
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.crew}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Economy
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.economy}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Child
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.child}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Crew
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.crew}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Crew
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.crewCount}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Child
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.child}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] xl:text-xs text-gray-500">
-                  Status
-                </span>
-                <div className="text-sm xl:text-xl text-gray-600">
-                  {leg.status}
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Crew
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.crewCount}
+                  </div>
                 </div>
-              </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] xl:text-xs text-gray-500">
+                    Status
+                  </span>
+                  <div className="text-sm xl:text-xl text-gray-600">
+                    {leg.status}
+                  </div>
+                </div>
 
-              {/* Settings Icon */}
-              <div className="flex items-center justify-center ml-4 relative">
-                {hoveredLeg === index ? (
-                  <div className="dropdown-trigger">
+                {/* Settings Icon */}
+                <div className="flex items-center justify-center ml-4 relative">
+                  {hoveredLeg === index ? (
+                    <div className="dropdown-trigger">
+                      <FontAwesomeIcon
+                        icon={faCog}
+                        className="text-red-800 text-xl cursor-pointer hover:text-red-900 transition-colors"
+                        onClick={() => toggleDropdown(index, "main")}
+                      />
+                      {openDropdown?.legIndex === index &&
+                        openDropdown?.type === "main" && (
+                          <Dropdown actions={getMainActions(index)} />
+                        )}
+                    </div>
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faPlaneDeparture}
+                      className="text-lg text-red-900"
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Cards Section */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2 xl:gap-3 p-2 sm:p-4">
+              {/* Loading Plan Card */}
+              <div className="bg-blue-50 rounded-lg p-3 xl:p-4 relative shadow-lg">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-xs sm:text-sm text-gray-700">
+                    Loading Plan
+                  </h3>
+                  <div className="relative dropdown-trigger">
                     <FontAwesomeIcon
                       icon={faCog}
-                      className="text-red-800 text-xl cursor-pointer hover:text-red-900 transition-colors"
-                      onClick={() => toggleDropdown(index, "main")}
+                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
+                      onClick={() => toggleDropdown(index, "loadingPlan")}
                     />
                     {openDropdown?.legIndex === index &&
-                      openDropdown?.type === "main" && (
-                        <Dropdown actions={getMainActions(index)} />
+                      openDropdown?.type === "loadingPlan" && (
+                        <Dropdown
+                          actions={getPlanCardActions("loadingPlan", index)}
+                          width="w-32"
+                        />
+                      )}
+                    {openDropdown?.legIndex === index &&
+                      openDropdown?.type === "editPlan" &&
+                      editPlanType === "loadingPlan" && (
+                        <div className="dropdown-menu absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 p-2 z-50">
+                          <div className="px-4 py-2 border-b border-gray-200">
+                            <h3 className="text-sm font-semibold text-gray-700">
+                              Select desired loading plan
+                            </h3>
+                          </div>
+                          <select
+                            className="w-full px-4 py-2 text-sm text-gray-700 border-0 focus:outline-none focus:ring-2 focus:ring-red-800 rounded"
+                            defaultValue="Saudi Arabia HM"
+                          >
+                            <option>Saudi Arabia HM</option>
+                            <option>Standard Loading Plan</option>
+                            <option>Express Loading Plan</option>
+                          </select>
+                        </div>
                       )}
                   </div>
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faPlaneDeparture}
-                    className="text-lg text-red-900"
-                  />
-                )}
+                </div>
+                <p className="text-xs sm:text-sm text-gray-800 font-medium break-words">
+                  {leg.loadingPlan}
+                </p>
               </div>
-            </div>
-          </div>
 
-          {/* Cards Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2 xl:gap-3 p-2 sm:p-4">
-            {/* Loading Plan Card */}
-            <div className="bg-blue-50 rounded-lg p-3 xl:p-4 relative shadow-lg">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-xs sm:text-sm text-gray-700">
-                  Loading Plan
-                </h3>
-                <div className="relative dropdown-trigger">
-                  <FontAwesomeIcon
-                    icon={faCog}
-                    className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                    onClick={() => toggleDropdown(index, "loadingPlan")}
-                  />
-                  {openDropdown?.legIndex === index &&
-                    openDropdown?.type === "loadingPlan" && (
-                      <Dropdown
-                        actions={getPlanCardActions("loadingPlan", index)}
-                        width="w-32"
-                      />
-                    )}
-                  {openDropdown?.legIndex === index &&
-                    openDropdown?.type === "editPlan" &&
-                    editPlanType === "loadingPlan" && (
-                      <div className="dropdown-menu absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 p-2 z-50">
-                        <div className="px-4 py-2 border-b border-gray-200">
-                          <h3 className="text-sm font-semibold text-gray-700">
-                            Select desired loading plan
-                          </h3>
+              {/* Meal Plan Card */}
+              <div className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 relative shadow-lg">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-xs sm:text-sm text-gray-700">Meal Plan</h3>
+                  <div className="relative dropdown-trigger">
+                    <FontAwesomeIcon
+                      icon={faCog}
+                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
+                      onClick={() => toggleDropdown(index, "mealPlan")}
+                    />
+                    {openDropdown?.legIndex === index &&
+                      openDropdown?.type === "mealPlan" && (
+                        <Dropdown
+                          actions={getPlanCardActions("mealPlan", index)}
+                          width="w-32"
+                        />
+                      )}
+                    {openDropdown?.legIndex === index &&
+                      openDropdown?.type === "editPlan" &&
+                      editPlanType === "mealPlan" && (
+                        <div className="dropdown-menu absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                          <div className="px-4 py-2 border-b border-gray-200">
+                            <h3 className="text-sm font-semibold text-gray-700">
+                              Select desired meal plan
+                            </h3>
+                          </div>
+                          <select
+                            className="w-full px-4 py-2 text-sm text-gray-700 border-0 focus:outline-none focus:ring-2 focus:ring-red-800 rounded"
+                            defaultValue="No Meal Plan"
+                          >
+                            <option>No Meal Plan</option>
+                            <option>Standard Meal Plan</option>
+                            <option>Premium Meal Plan</option>
+                          </select>
                         </div>
-                        <select
-                          className="w-full px-4 py-2 text-sm text-gray-700 border-0 focus:outline-none focus:ring-2 focus:ring-red-800 rounded"
-                          defaultValue="Saudi Arabia HM"
-                        >
-                          <option>Saudi Arabia HM</option>
-                          <option>Standard Loading Plan</option>
-                          <option>Express Loading Plan</option>
-                        </select>
-                      </div>
-                    )}
+                      )}
+                  </div>
                 </div>
+                <p className="text-xs sm:text-sm text-gray-600 break-words font-semibold ">
+                  {leg.mealPlan}
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-gray-800 font-medium break-words">
-                {leg.loadingPlan}
-              </p>
-            </div>
 
-            {/* Meal Plan Card */}
-            <div className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 relative shadow-lg">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-xs sm:text-sm text-gray-700">Meal Plan</h3>
-                <div className="relative dropdown-trigger">
-                  <FontAwesomeIcon
-                    icon={faCog}
-                    className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                    onClick={() => toggleDropdown(index, "mealPlan")}
-                  />
-                  {openDropdown?.legIndex === index &&
-                    openDropdown?.type === "mealPlan" && (
-                      <Dropdown
-                        actions={getPlanCardActions("mealPlan", index)}
-                        width="w-32"
-                      />
-                    )}
-                  {openDropdown?.legIndex === index &&
-                    openDropdown?.type === "editPlan" &&
-                    editPlanType === "mealPlan" && (
-                      <div className="dropdown-menu absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
-                        <div className="px-4 py-2 border-b border-gray-200">
-                          <h3 className="text-sm font-semibold text-gray-700">
-                            Select desired meal plan
-                          </h3>
-                        </div>
-                        <select
-                          className="w-full px-4 py-2 text-sm text-gray-700 border-0 focus:outline-none focus:ring-2 focus:ring-red-800 rounded"
-                          defaultValue="No Meal Plan"
-                        >
-                          <option>No Meal Plan</option>
-                          <option>Standard Meal Plan</option>
-                          <option>Premium Meal Plan</option>
-                        </select>
-                      </div>
-                    )}
+              {/* Crew Flight Reports Card */}
+              <div className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 relative shadow-lg">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-xs sm:text-sm text-gray-700">
+                    Crew Flight Reports
+                  </h3>
+                  <div className="relative dropdown-trigger">
+                    <FontAwesomeIcon
+                      icon={faCog}
+                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
+                      onClick={() => toggleDropdown(index, "crewFlightReports")}
+                    />
+                    {openDropdown?.legIndex === index &&
+                      openDropdown?.type === "crewFlightReports" && (
+                        <Dropdown
+                          actions={getViewAllAction("Crew Flight Reports", index)}
+                          width="w-32"
+                        />
+                      )}
+                  </div>
                 </div>
+                {leg.crewFlightReports.map((report, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
+                  >
+                    <span className="text-blue-400">📄</span>
+                    <span className="break-words">{report}</span>
+                  </div>
+                ))}
               </div>
-              <p className="text-xs sm:text-sm text-gray-600 break-words font-semibold ">
-                {leg.mealPlan}
-              </p>
-            </div>
 
-            {/* Crew Flight Reports Card */}
-            <div className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 relative shadow-lg">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-xs sm:text-sm text-gray-700">
-                  Crew Flight Reports
-                </h3>
-                <div className="relative dropdown-trigger">
-                  <FontAwesomeIcon
-                    icon={faCog}
-                    className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                    onClick={() => toggleDropdown(index, "crewFlightReports")}
-                  />
-                  {openDropdown?.legIndex === index &&
-                    openDropdown?.type === "crewFlightReports" && (
-                      <Dropdown
-                        actions={getViewAllAction("Crew Flight Reports", index)}
-                        width="w-32"
-                      />
-                    )}
+              {/* Alerts/Messages/Memos Card */}
+              <div className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 relative shadow-lg">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-xs sm:text-sm text-gray-700">
+                    Alerts/Messages/Memos
+                  </h3>
+                  <div className="relative dropdown-trigger">
+                    <FontAwesomeIcon
+                      icon={faCog}
+                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
+                      onClick={() => toggleDropdown(index, "alerts")}
+                    />
+                    {openDropdown?.legIndex === index &&
+                      openDropdown?.type === "alerts" && (
+                        <Dropdown
+                          actions={getViewAllAction(
+                            "Alerts/Messages/Memos",
+                            index
+                          )}
+                          width="w-32"
+                        />
+                      )}
+                  </div>
                 </div>
+                {leg.alerts.map((alert, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
+                  >
+                    <span className="text-gray-400">⚠️</span>
+                    <span className="break-words">{alert}</span>
+                  </div>
+                ))}
               </div>
-              {leg.crewFlightReports.map((report, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
-                >
-                  <span className="text-blue-400">📄</span>
-                  <span className="break-words">{report}</span>
-                </div>
-              ))}
-            </div>
 
-            {/* Alerts/Messages/Memos Card */}
-            <div className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 relative shadow-lg">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-xs sm:text-sm text-gray-700">
-                  Alerts/Messages/Memos
-                </h3>
-                <div className="relative dropdown-trigger">
-                  <FontAwesomeIcon
-                    icon={faCog}
-                    className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                    onClick={() => toggleDropdown(index, "alerts")}
-                  />
-                  {openDropdown?.legIndex === index &&
-                    openDropdown?.type === "alerts" && (
-                      <Dropdown
-                        actions={getViewAllAction(
-                          "Alerts/Messages/Memos",
-                          index
-                        )}
-                        width="w-32"
-                      />
-                    )}
+              {/* Cut Off Times Card */}
+              <div className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 relative shadow-lg">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-xs sm:text-sm text-gray-700">
+                    Cut Off Times
+                  </h3>
+                  <div className="relative dropdown-trigger">
+                    <FontAwesomeIcon
+                      icon={faCog}
+                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
+                      onClick={() => toggleDropdown(index, "cutOffTimes")}
+                    />
+                    {openDropdown?.legIndex === index &&
+                      openDropdown?.type === "cutOffTimes" && (
+                        <Dropdown
+                          actions={getViewAllAction("Cut Off Times", index)}
+                          width="w-32"
+                        />
+                      )}
+                  </div>
                 </div>
-              </div>
-              {leg.alerts.map((alert, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
-                >
-                  <span className="text-gray-400">⚠️</span>
-                  <span className="break-words">{alert}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Cut Off Times Card */}
-            <div className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 relative shadow-lg">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-xs sm:text-sm text-gray-700">
-                  Cut Off Times
-                </h3>
-                <div className="relative dropdown-trigger">
-                  <FontAwesomeIcon
-                    icon={faCog}
-                    className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                    onClick={() => toggleDropdown(index, "cutOffTimes")}
-                  />
-                  {openDropdown?.legIndex === index &&
-                    openDropdown?.type === "cutOffTimes" && (
-                      <Dropdown
-                        actions={getViewAllAction("Cut Off Times", index)}
-                        width="w-32"
-                      />
-                    )}
-                </div>
-              </div>
-              <div className="space-y-1 text-xs sm:text-sm">
-                <div className="flex items-center gap-2 text-gray-600 font-semibold">
-                  <span>🍽️</span>
-                  <span className="break-words">
-                    Meals - {leg.cutOffTimes.meals}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-600 font-semibold">
-                  <span>📦</span>
-                  <span className="break-words">
-                    Commissary - {leg.cutOffTimes.commissary}
-                  </span>
+                <div className="space-y-1 text-xs sm:text-sm">
+                  <div className="flex items-center gap-2 text-gray-600 font-semibold">
+                    <span>🍽️</span>
+                    <span className="break-words">
+                      Meals - {leg.cutOffTimes.meals}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-600 font-semibold">
+                    <span>📦</span>
+                    <span className="break-words">
+                      Commissary - {leg.cutOffTimes.commissary}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        )))}
 
       {/* Edit Flight Modal */}
       <EditFlightModal />

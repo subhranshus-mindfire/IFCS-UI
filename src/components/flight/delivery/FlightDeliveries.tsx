@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type {
   Delivery,
   ContentPreparer,
@@ -19,6 +19,14 @@ const FlightDeliveries: React.FC = () => {
     null
   );
   const [activeTab, setActiveTab] = useState<TabType>("dispatcher");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const selectedDelivery = deliveries.find((d) => d.id === selectedDeliveryId);
 
@@ -53,10 +61,10 @@ const FlightDeliveries: React.FC = () => {
       deliveries.map((d) =>
         d.id === selectedDeliveryId
           ? {
-              ...d,
-              contentPreparers: [...d.contentPreparers, newPreparer],
-              updatedAt: new Date(),
-            }
+            ...d,
+            contentPreparers: [...d.contentPreparers, newPreparer],
+            updatedAt: new Date(),
+          }
           : d
       )
     );
@@ -69,12 +77,12 @@ const FlightDeliveries: React.FC = () => {
       deliveries.map((d) =>
         d.id === selectedDeliveryId
           ? {
-              ...d,
-              contentPreparers: d.contentPreparers.filter(
-                (p) => p.id !== preparerId
-              ),
-              updatedAt: new Date(),
-            }
+            ...d,
+            contentPreparers: d.contentPreparers.filter(
+              (p) => p.id !== preparerId
+            ),
+            updatedAt: new Date(),
+          }
           : d
       )
     );
@@ -90,14 +98,14 @@ const FlightDeliveries: React.FC = () => {
       deliveries.map((d) =>
         d.id === selectedDeliveryId
           ? {
-              ...d,
-              contentPreparers: d.contentPreparers.map((p) =>
-                p.id === preparerId
-                  ? { ...p, signature, signedAt: new Date() }
-                  : p
-              ),
-              updatedAt: new Date(),
-            }
+            ...d,
+            contentPreparers: d.contentPreparers.map((p) =>
+              p.id === preparerId
+                ? { ...p, signature, signedAt: new Date() }
+                : p
+            ),
+            updatedAt: new Date(),
+          }
           : d
       )
     );
@@ -128,6 +136,7 @@ const FlightDeliveries: React.FC = () => {
   };
 
   return (
+
     <div className="flex font-rubik">
       {/* Sidebar */}
       <div className="w-64 min-h-96 bg-bg-surface border border-border-muted rounded-2xl p-4 flex flex-col">
@@ -149,11 +158,10 @@ const FlightDeliveries: React.FC = () => {
             <button
               key={delivery.id}
               onClick={() => setSelectedDeliveryId(delivery.id)}
-              className={`w-full px-4 py-2 rounded-lg text-left transition-colors ${
-                selectedDeliveryId === delivery.id
-                  ? "bg-purple-200 text-text-primary border border-border-accent"
-                  : "bg-bg-secondary text-text-primary hover:bg-gray-200"
-              }`}
+              className={`w-full px-4 py-2 rounded-lg text-left transition-colors ${selectedDeliveryId === delivery.id
+                ? "bg-purple-200 text-text-primary border border-border-accent"
+                : "bg-bg-secondary text-text-primary hover:bg-gray-200"
+                }`}
             >
               Delivery {delivery.deliveryNumber}
             </button>
@@ -162,93 +170,98 @@ const FlightDeliveries: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {selectedDelivery ? (
-          <>
-            {/* Tabs */}
-            <div className="bg-bg-surface px-6 pt-6 pb-2">
-              <div className="bg-bg-secondary rounded-full inline-flex gap-2 overflow-x-auto w-full">
-                <button
-                  onClick={() => setActiveTab("dispatcher")}
-                  className={`px-6 py-3 text-sm whitespace-nowrap rounded-full transition-colors ${
-                    activeTab === "dispatcher"
+      {isLoading ? (
+        <div className="flex-1 p-6 space-y-4">
+          {[...Array(4)].map((_, idx) => (
+            <div key={idx} className="relative h-12 rounded bg-gray-200 overflow-hidden">
+              <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {selectedDelivery ? (
+            <>
+              {/* Tabs */}
+              <div className="bg-bg-surface px-6 pt-6 pb-2">
+                <div className="bg-bg-secondary rounded-full inline-flex gap-2 overflow-x-auto w-full">
+                  <button
+                    onClick={() => setActiveTab("dispatcher")}
+                    className={`px-6 py-3 text-sm whitespace-nowrap rounded-full transition-colors ${activeTab === "dispatcher"
                       ? "bg-gray-300 text-text-primary"
                       : "text-text-secondary hover:text-text-primary"
-                  }`}
-                >
-                  Dispatcher Comments
-                </button>
-                <button
-                  onClick={() => setActiveTab("preparers")}
-                  className={`px-6 py-3 text-sm whitespace-nowrap rounded-full transition-colors ${
-                    activeTab === "preparers"
+                      }`}
+                  >
+                    Dispatcher Comments
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("preparers")}
+                    className={`px-6 py-3 text-sm whitespace-nowrap rounded-full transition-colors ${activeTab === "preparers"
                       ? "bg-gray-300 text-text-primary"
                       : "text-text-secondary hover:text-text-primary"
-                  }`}
-                >
-                  Content Preparers
-                </button>
-                <button
-                  onClick={() => setActiveTab("tsa")}
-                  className={`px-6 py-3 text-sm whitespace-nowrap rounded-full transition-colors ${
-                    activeTab === "tsa"
+                      }`}
+                  >
+                    Content Preparers
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("tsa")}
+                    className={`px-6 py-3 text-sm whitespace-nowrap rounded-full transition-colors ${activeTab === "tsa"
                       ? "bg-gray-300 text-text-primary"
                       : "text-text-secondary hover:text-text-primary"
-                  }`}
-                >
-                  TSA Compliance
-                </button>
-                <button
-                  onClick={() => setActiveTab("driver")}
-                  className={`px-6 py-3 text-sm whitespace-nowrap rounded-full transition-colors ${
-                    activeTab === "driver"
+                      }`}
+                  >
+                    TSA Compliance
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("driver")}
+                    className={`px-6 py-3 text-sm whitespace-nowrap rounded-full transition-colors ${activeTab === "driver"
                       ? "bg-gray-300 text-text-primary"
                       : "text-text-secondary hover:text-text-primary"
-                  }`}
-                >
-                  Driver's Declaration
-                </button>
+                      }`}
+                  >
+                    Driver's Declaration
+                  </button>
+                </div>
+              </div>
+
+              {/* Tab Content */}
+              <div className="flex-1 overflow-y-auto bg-bg-surface px-6 py-2">
+                {activeTab === "dispatcher" && <DispatcherCommentsTab />}
+                {activeTab === "preparers" && (
+                  <ContentPreparersTab
+                    preparers={selectedDelivery.contentPreparers}
+                    onDeletePreparer={handleDeletePreparer}
+                    onUpdateSignature={handleUpdatePreparerSignature}
+                  />
+                )}
+                {activeTab === "tsa" && (
+                  <TSAComplianceTab
+                    onAddPreparer={handleAddPreparer}
+                    tsaCompliance={selectedDelivery.tsaCompliance}
+                    onUpdateCompliance={handleUpdateTSACompliance}
+                  />
+                )}
+                {activeTab === "driver" && (
+                  <DriversDeclarationTab
+                    driversDeclaration={selectedDelivery.driversDeclaration}
+                    onUpdateDeclaration={handleUpdateDriversDeclaration}
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center bg-bg-surface">
+              <div className="text-center">
+                <p className="text-lg text-text-tertiary mb-4">
+                  No delivery selected
+                </p>
+                <p className="text-sm text-text-tertiary">
+                  Add a new delivery or select one from the sidebar
+                </p>
               </div>
             </div>
-
-            {/* Tab Content */}
-            <div className="flex-1 overflow-y-auto bg-bg-surface px-6 py-2">
-              {activeTab === "dispatcher" && <DispatcherCommentsTab />}
-              {activeTab === "preparers" && (
-                <ContentPreparersTab
-                  preparers={selectedDelivery.contentPreparers}
-                  onDeletePreparer={handleDeletePreparer}
-                  onUpdateSignature={handleUpdatePreparerSignature}
-                />
-              )}
-              {activeTab === "tsa" && (
-                <TSAComplianceTab
-                  onAddPreparer={handleAddPreparer}
-                  tsaCompliance={selectedDelivery.tsaCompliance}
-                  onUpdateCompliance={handleUpdateTSACompliance}
-                />
-              )}
-              {activeTab === "driver" && (
-                <DriversDeclarationTab
-                  driversDeclaration={selectedDelivery.driversDeclaration}
-                  onUpdateDeclaration={handleUpdateDriversDeclaration}
-                />
-              )}
-            </div>
-          </>
-        ) : (
-          <div className="flex-1 flex items-center justify-center bg-bg-surface">
-            <div className="text-center">
-              <p className="text-lg text-text-tertiary mb-4">
-                No delivery selected
-              </p>
-              <p className="text-sm text-text-tertiary">
-                Add a new delivery or select one from the sidebar
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>)}
     </div>
   );
 };

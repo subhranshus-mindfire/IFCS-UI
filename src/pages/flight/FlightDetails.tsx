@@ -136,76 +136,79 @@ function FlightDetails() {
         </div>
 
         <div className="overflow-x-auto overflow-y-hidden my-6">
-          <div className="flex font-roboto items-stretch border rounded-full border-border-muted w-full bg-white">
-            {tabKeys.map((tab, index) => (
-              <div
-                key={tab}
-                className="relative flex-1 flex items-center justify-center min-w-0"
-              >
-                <button
-                  onClick={() => tab !== "Invoice" && setActiveTab(tab)}
-                  className={`relative w-full h-full px-2 py-3 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden
-                  ${activeTab === tab
-                      ? "text-bg-button"
-                      : tab === "Invoice"
-                        ? "text-gray-400 cursor-not-allowed"
-                        : "text-text-secondary hover:text-bg-button/80"
-                    }`}
-                  disabled={tab === "Invoice"}
+          {isLoading ? <div className="relative h-16 rounded-full bg-gray-200 overflow-hidden">
+            <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+          </div> :
+            <div className="flex font-roboto items-stretch border rounded-full border-border-muted w-full bg-white">
+              {tabKeys.map((tab, index) => (
+                <div
+                  key={tab}
+                  className="relative flex-1 flex items-center justify-center min-w-0"
                 >
-                  <span
-                    className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-medium
+                  <button
+                    onClick={() => tab !== "Invoice" && setActiveTab(tab)}
+                    className={`relative w-full h-full px-2 py-3 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden
                   ${activeTab === tab
-                        ? "bg-bg-button text-white"
-                        : "bg-bg-tertiary text-text-secondary"
+                        ? "text-bg-button"
+                        : tab === "Invoice"
+                          ? "text-gray-400 cursor-not-allowed"
+                          : "text-text-secondary hover:text-bg-button/80"
                       }`}
+                    disabled={tab === "Invoice"}
                   >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="whitespace-nowrap text-ellipsis overflow-hidden">
-                    {tab}
-                  </span>
-
-                  {/* Bottom border indicator for active tab */}
-                  {activeTab === tab && (
                     <span
-                      className={`absolute bottom-0 h-1 bg-bg-button ${index === 0
-                        ? "left-4 right-0"
-                        : index === tabKeys.length - 1
-                          ? "left-0 right-4"
-                          : "left-0 right-0"
+                      className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-medium
+                  ${activeTab === tab
+                          ? "bg-bg-button text-white"
+                          : "bg-bg-tertiary text-text-secondary"
                         }`}
-                    ></span>
-                  )}
-                </button>
-
-                {/* Separator with pointed edges */}
-                {index < tabKeys.length - 1 && (
-                  <div className="relative w-0 h-12 flex items-center">
-                    <svg
-                      width="16"
-                      height="48"
-                      viewBox="0 0 16 48"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="absolute left-0 z-10"
-                      style={{ transform: "translateX(-50%)" }}
                     >
-                      {/* Vertical line from top, wider pointed middle section, vertical line to bottom */}
-                      <path
-                        d="M8 0 L8 14 L14 24 L8 34 L8 48"
-                        stroke="#D1D5DB"
-                        strokeWidth="1.5"
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="whitespace-nowrap text-ellipsis overflow-hidden">
+                      {tab}
+                    </span>
+
+                    {/* Bottom border indicator for active tab */}
+                    {activeTab === tab && (
+                      <span
+                        className={`absolute bottom-0 h-1 bg-bg-button ${index === 0
+                          ? "left-4 right-0"
+                          : index === tabKeys.length - 1
+                            ? "left-0 right-4"
+                            : "left-0 right-0"
+                          }`}
+                      ></span>
+                    )}
+                  </button>
+
+                  {/* Separator with pointed edges */}
+                  {index < tabKeys.length - 1 && (
+                    <div className="relative w-0 h-12 flex items-center">
+                      <svg
+                        width="16"
+                        height="48"
+                        viewBox="0 0 16 48"
                         fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="miter"
-                      />
-                    </svg>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute left-0 z-10"
+                        style={{ transform: "translateX(-50%)" }}
+                      >
+                        {/* Vertical line from top, wider pointed middle section, vertical line to bottom */}
+                        <path
+                          d="M8 0 L8 14 L14 24 L8 34 L8 48"
+                          stroke="#D1D5DB"
+                          strokeWidth="1.5"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="miter"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>}
         </div>
 
         <div className="bg-white rounded-xl mt-3 sm:mt-4 min-w-full min-h-[250px]">

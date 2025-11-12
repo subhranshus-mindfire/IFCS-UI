@@ -1,12 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faClipboardList,
-  faUsers,
-  faPlaneDeparture,
-  faPlaneCircleCheck,
-  faBoltLightning,
-} from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect } from "react";
 import { flights } from "../../const/flightData";
 import FlightHeader from "../../components/flight/FlightListHeader";
 import { AddFlightModal } from "../../components/flight/AddFlightModal";
@@ -14,6 +6,13 @@ import { FlightHistoryModal } from "../../components/flight/FlightHistoryModal";
 import { FlightRow } from "../../components/flight/FlightRow";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
+import {
+  AirplaneFlightIcon,
+  AirplaneIcon,
+  PlansIcon,
+  SeatIcon,
+  StatusIcon,
+} from "../../assets/icons";
 
 
 const FlightList: React.FC = () => {
@@ -66,10 +65,7 @@ const FlightList: React.FC = () => {
             <tr className="text-sm font-semibold">
               <th colSpan={8} className="py-2 relative">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faPlaneDeparture}
-                    className="text-base"
-                  />
+                  <img src={AirplaneFlightIcon} />
                   <span>Flight</span>
                 </div>
                 {/* Vertical separator */}
@@ -77,37 +73,28 @@ const FlightList: React.FC = () => {
               </th>
               <th colSpan={2} className="py-2 relative">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faPlaneCircleCheck}
-                    className="text-base"
-                  />
+                  <img src={AirplaneIcon} />
                   <span>Aircraft</span>
                 </div>
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
               <th colSpan={1} className="py-2 relative">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faClipboardList}
-                    className="text-base"
-                  />
+                  <img src={PlansIcon} />
                   <span>Plans</span>
                 </div>
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
               <th colSpan={2} className="py-2 relative">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon icon={faUsers} className="text-base" />
+                  <img src={SeatIcon} />
                   <span>PAX</span>
                 </div>
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
               <th colSpan={1} className="py-2">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faBoltLightning}
-                    className="text-base"
-                  />
+                  <img src={StatusIcon} />
                   <span>Status</span>
                 </div>
               </th>

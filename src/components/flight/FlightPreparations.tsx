@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { samplePreparations } from "../../const/samplePreparations";
 import First from "../../assets/logos/preparation/first.svg";
 import Second from "../../assets/logos/preparation/Second.png";
@@ -22,6 +22,14 @@ function FlightPreparations() {
   const [isFlightPrepModalOpen, setisFlightPrepModalOpen] = useState(false);
   const [isFlightPrepaDetailsModal, setIsFlightPrepDetailsModal] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleOpenFlightPrepModal = () => setisFlightPrepModalOpen(true);
   const handleCloseFlightPrepModal = () => setisFlightPrepModalOpen(false);
@@ -115,9 +123,8 @@ function FlightPreparations() {
                       placeholder="Search..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`w-full px-2 py-1 text-xs border border-border-muted rounded focus:outline-none focus:ring-1 focus:ring-bg-accent absolute top-0 left-30 mt-1 bg-bg-surface shadow-lg z-30 transition-all ${
-                        showFilter ? "block" : "hidden"
-                      }`}
+                      className={`w-full px-2 py-1 text-xs border border-border-muted rounded focus:outline-none focus:ring-1 focus:ring-bg-accent absolute top-0 left-30 mt-1 bg-bg-surface shadow-lg z-30 transition-all ${showFilter ? "block" : "hidden"
+                        }`}
                       style={{ width: "150px" }}
                     />
                   </div>
@@ -128,39 +135,54 @@ function FlightPreparations() {
               </tr>
             </thead>
             <tbody>
-              {filteredPreparations.map((prep, idx) => (
-                <tr
-                  key={idx}
-                  className="bg-bg-surface border-b border-border-muted last:border-b-0 px-10 font-rubik text-text-muted"
-                >
-                  <td className="px-3 py-2 text-sm font-medium uppercase text-text-secondary">
-                    {prep.stowage}
-                  </td>
-                  <td className="px-3 py-2 text-sm uppercase text-text-secondary">
-                    {prep.carrier}
-                  </td>
-                  <td className="px-3 py-2 text-sm uppercase text-text-secondary">
-                    {prep.equipment}
-                  </td>
-                  <td className="px-3 py-2 text-sm text-text-secondary">
-                    {prep.preparedBy}
-                  </td>
-                  <td className="px-3 py-2 flex justify-between gap-3 text-text-tertiary no-print">
-                    <img src={First} alt="" className="w-4 h-4" />
-                    <img src={Second} alt="" />
-                    <img src={Third} alt="" />
-                    <img src={Fourth} alt="" />
-                    <img src={Fifth} alt="" />
-                    <img src={Sixth} alt="" />
-                    <img
-                      src={Seventh}
-                      alt="Open modal"
-                      onClick={handleOpenFlightPrepDetailsModal}
-                      className="cursor-pointer hover:scale-110 transition-transform duration-150"
-                    />
-                  </td>
-                </tr>
-              ))}
+              {isLoading ? (
+                [...Array(5)].map((_, idx) => (
+                  <tr key={idx} className="border-b border-border-muted">
+                    {[...Array(5)].map((_, cellIdx) => (
+                      <td key={cellIdx} className="px-3 py-2">
+                        <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden">
+                          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+
+                filteredPreparations.map((prep, idx) => (
+                  <tr
+                    key={idx}
+                    className="bg-bg-surface border-b border-border-muted last:border-b-0 px-10 font-rubik text-text-muted"
+                  >
+                    <td className="px-3 py-2 text-sm font-medium uppercase text-text-secondary">
+                      {prep.stowage}
+                    </td>
+                    <td className="px-3 py-2 text-sm uppercase text-text-secondary">
+                      {prep.carrier}
+                    </td>
+                    <td className="px-3 py-2 text-sm uppercase text-text-secondary">
+                      {prep.equipment}
+                    </td>
+                    <td className="px-3 py-2 text-sm text-text-secondary">
+                      {prep.preparedBy}
+                    </td>
+                    <td className="px-3 py-2 flex justify-between gap-3 text-text-tertiary no-print">
+                      <img src={First} alt="" className="w-4 h-4" />
+                      <img src={Second} alt="" />
+                      <img src={Third} alt="" />
+                      <img src={Fourth} alt="" />
+                      <img src={Fifth} alt="" />
+                      <img src={Sixth} alt="" />
+                      <img
+                        src={Seventh}
+                        alt="Open modal"
+                        onClick={handleOpenFlightPrepDetailsModal}
+                        className="cursor-pointer hover:scale-110 transition-transform duration-150"
+                      />
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

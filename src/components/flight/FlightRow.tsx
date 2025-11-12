@@ -234,9 +234,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         <div className="font-medium text-text-primary">{flight.acType}</div>
         <div className="text-text-tertiary">{flight.acReg}</div>
       </td>
-      <td className="text-center py-2 px-3 text-2xl font-medium text-text-primary">
-        6:66
-      </td>
+      {/* Removed the 'Ground Time' column's cell */}
       <td className="py-2 px-3 text-sm text-text-secondary leading-tight">
         {flight.plan && <div className="mb-1">📄 {flight.plan}</div>}
         {flight.mealPlan && <div>{flight.mealPlan}</div>}
@@ -257,14 +255,15 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         {activePopover === "paxTotal" && <PaxPopover />}
       </td>
 
-      {/* --- PAX Cabins Cell --- */}
+      {/* --- PAX Cabins Cell with Grid Borders --- */}
       <td
         ref={paxCabinsTriggerRef}
         onClick={() => handlePopover("paxCabins")}
         className="py-2 px-3 text-sm text-text-secondary relative cursor-pointer"
       >
-        <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-left">
-          <div>
+        <div className="grid grid-cols-2 text-left border border-border-muted">
+          {/* Top-Left */}
+          <div className="py-1 px-1 border-b border-r border-border-muted">
             <span className="text-left text-text-secondary">
               Business Studio
             </span>
@@ -273,21 +272,24 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               {flight.pax.business}
             </span>
           </div>
-          <div>
+          {/* Top-Right */}
+          <div className="py-1 px-1 border-b border-border-muted">
             <span className="text-left text-text-secondary">Economy</span>
             <span className="text-left font-medium text-text-primary">
               {" "}
               {flight.pax.economy}
             </span>
           </div>
-          <div>
+          {/* Bottom-Left */}
+          <div className="py-1 px-1 border-r border-border-muted">
             <span className="text-left text-text-secondary">Business</span>
             <span className="text-left font-medium text-text-primary">
               {" "}
               {flight.pax.first}
             </span>
           </div>
-          <div>
+          {/* Bottom-Right */}
+          <div className="py-1 px-1">
             <span className="text-left text-text-secondary">Crew</span>
             <span className="text-left font-medium text-text-primary">
               {" "}

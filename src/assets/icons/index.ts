@@ -31,6 +31,7 @@ import ListChecksIcon from "./listChecks.svg";
 import PlansIcon from "./plans.svg";
 import StatusIcon from "./status.svg";
 import CalendarIcon from "./calendar.svg";
+import IFCSLogo from "./IFCSLogo.svg";
 
 export {
   AddIcon,
@@ -66,4 +67,5 @@ export {
   ListChecksIcon,
   StatusIcon,
   CalendarIcon,
+  IFCSLogo,
 };

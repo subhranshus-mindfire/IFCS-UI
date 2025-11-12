@@ -9,6 +9,7 @@ import Navbar from "../../components/Navbar";
 import {
   AirplaneFlightIcon,
   AirplaneIcon,
+  IFCSLogo,
   PlansIcon,
   SeatIcon,
   StatusIcon,
@@ -68,7 +69,7 @@ const FlightList: React.FC = () => {
                 </div>
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
               </th>
-              <th colSpan={2} className="py-2 relative">
+              <th colSpan={1} className="py-2 relative">
                 <div className="flex items-center justify-center gap-2">
                   <img src={AirplaneIcon} />
                   <span>Aircraft</span>
@@ -104,34 +105,33 @@ const FlightList: React.FC = () => {
                 boxShadow: "inset 0 1px 0 0 #EAE9EC",
               }}
             >
-              <th className="py-2 px-3 font-medium">Airline</th>
-              <th className="py-2 px-3 font-medium">Route</th>
-              <th className="py-2 px-3 font-medium">Flight #</th>
-              <th className="py-2 px-3 font-medium">Type</th>
-              <th className="py-2 px-3 font-medium">Date</th>
-              <th className="py-2 px-3 font-medium">Departure</th>
-              <th className="py-2 px-3 font-medium">Arrival</th>
-              <th className="py-2 px-3 font-medium relative">
+              <th className="py-2 px-3 text-sm font-light">Airline</th>
+              <th className="py-2 px-3 text-[13px] font-light">Route</th>
+              <th className="py-2 px-3 text-[13px] font-light">Flight #</th>
+              <th className="py-2 px-3 text-[13px] font-light">Type</th>
+              <th className="py-2 px-3 text-[13px] font-light">Date</th>
+              <th className="py-2 px-3 text-[13px] font-light">Departure</th>
+              <th className="py-2 px-3 text-[13px] font-light">Arrival</th>
+              <th className="py-2 px-3 text-[13px] font-light relative">
                 Status
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
               </th>
-              <th className="py-2 px-3 text-center font-medium">
+              <th className="py-2 px-3 text-center text-[13px] font-light relative">
                 AC Type/AC Reg
-              </th>
-              <th className="py-2 px-3 text-center font-medium relative">
-                Ground Time
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
               </th>
-              <th className="py-2 px-3 font-medium relative">
+              <th className="py-2 px-3 text-[13px] font-light relative">
                 Loading plan / Meal plan
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
               </th>
-              <th className="py-2 px-3 text-center font-medium">Total</th>
-              <th className="py-2 px-3 text-center font-medium relative">
+              <th className="py-2 px-3 text-center text-[13px] font-light">
+                Total
+              </th>
+              <th className="py-2 px-3 text-center text-[13px] font-light relative">
                 Cabins
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
               </th>
-              <th className="py-2 px-3 font-medium"></th>
+              <th className="py-2 px-3 text-[13px] font-light"></th>
             </tr>
           </thead>
           <tbody>
@@ -139,7 +139,7 @@ const FlightList: React.FC = () => {
               ? [...Array(6)].map((_, idx) => (
                   <React.Fragment key={`shimmer-${idx}`}>
                     <tr className="border-b border-border-muted">
-                      {[...Array(14)].map((_, cellIdx) => (
+                      {[...Array(13)].map((_, cellIdx) => (
                         <td
                           key={cellIdx}
                           className="py-4 px-3 animate-pulse duration-"
@@ -163,7 +163,7 @@ const FlightList: React.FC = () => {
                     ))}
                     {idx < flights.length - 1 && (
                       <tr>
-                        <td colSpan={14} className="h-7 bg-bg-secondary"></td>
+                        <td colSpan={13} className="h-7 bg-bg-secondary"></td>
                       </tr>
                     )}
                   </React.Fragment>
@@ -172,10 +172,8 @@ const FlightList: React.FC = () => {
         </table>
       </div>
 
-      <div className="bg-text-secondary h-8 flex items-center px-4">
-        <span className="text-sm text-text-surface font-semibold">
-          Galley X Planner
-        </span>
+      <div className=" h-8 flex items-center px-4">
+        <img src={IFCSLogo} />
       </div>
     </div>
   );

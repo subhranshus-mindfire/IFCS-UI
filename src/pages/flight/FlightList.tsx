@@ -13,6 +13,7 @@ import { AddFlightModal } from "../../components/flight/AddFlightModal";
 import { FlightHistoryModal } from "../../components/flight/FlightHistoryModal";
 import { FlightRow } from "../../components/flight/FlightRow";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../components/Navbar";
 
 const FlightList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -27,6 +28,7 @@ const FlightList: React.FC = () => {
 
   return (
     <div className="w-full h-screen flex flex-col bg-gray-100 font-arial">
+      <Navbar onMenuClick={() => {}} />
       <FlightHeader
         onBack={() => navigate("/dashboard")}
         onAddFlight={handleAddFlight}

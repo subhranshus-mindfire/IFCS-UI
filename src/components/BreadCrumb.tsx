@@ -17,51 +17,68 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   const navigate = useNavigate();
 
   const handleHomePress = () => {
-    if (flightId) {
-      navigate(`/dashboard/flight/${flightId}`);
-    } else {
-      navigate("/dashboard");
-    }
+    if (flightId) navigate(`/dashboard/flight/${flightId}`);
+    else navigate("/dashboard");
   };
+
   const handleFlightsPress = () => {
     navigate(`/flight-list`);
   };
+
   const formatScreenName = (name: string) =>
     name.replace(/([A-Z])/g, " $1").trim();
 
   return (
-    <nav className="flex font-rubik items-center w-full bg-white py-3 text-sm">
+    <nav className="flex font-rubik items-center w-full py-3 text-sm">
+      {/* Home */}
       <button
         onClick={handleHomePress}
-        className=" text-text-muted font-normal hover:text-bg-button transition-colors"
+        className="text-text-muted font-normal hover:text-bg-button transition-colors"
       >
         Home
       </button>
+
+      {/* Flights */}
       <span className="mx-2 text-gray-400 text-base">›</span>
       <button
         onClick={handleFlightsPress}
-        className="mx-1 text-text-muted font-normal hover:text-bg-button transition-colors"
+        className={`mx-1 text-text-muted font-normal hover:text-bg-button transition-colors ${
+          currentScreen === "Flights" ? "text-text-primary font-medium" : ""
+        }`}
       >
         Flights
       </button>
-      <span className="mx-2 text-gray-400 text-base">›</span>{" "}
-      <button
-        onClick={handleDetailsNav}
-        className={`mx-1 text-text-muted font-normal hover:text-bg-button transition-colors, ${
-          currentScreen === "Details" &&
-          "text-text-primary text-base font-regular"
-        }`}
-      >
-        Flight Details
-      </button>
-      {currentScreen !== "Details" && (
+
+      {/* Stop here if current screen is Flights */}
+      {currentScreen !== "Flights" && (
         <>
-          <span className="mx-2 text-gray-400 text-base">›</span>{" "}
-          <span className="mx-1 text-text-primary font-medium text-base ">
+          <span className="mx-2 text-gray-400 text-base">›</span>
+
+          {/* Flight Details */}
+          <button
+            onClick={handleDetailsNav}
+            className={`mx-1 text-text-muted font-normal hover:text-bg-button transition-colors ${
+              currentScreen === "Details"
+                ? "text-text-primary text-base font-regular"
+                : ""
+            }`}
+          >
+            Flight Details
+          </button>
+        </>
+      )}
+
+      {/* Show deeper level only if not Details */}
+      {currentScreen !== "Flights" && currentScreen !== "Details" && (
+        <>
+          <span className="mx-2 text-gray-400 text-base">›</span>
+          <span className="mx-1 text-text-primary font-medium text-base">
             {formatScreenName(currentScreen)}
           </span>
         </>
       )}
+
+      {/* Optional sub-item */}
       {subItem && (
         <>
           <span className="mx-2 text-gray-400 text-base">›</span>

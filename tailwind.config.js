@@ -9,5 +9,13 @@ module.exports = {
           '2xl': '1736px',
         },
       },
-      // ... other configurations
+     keyframes: {
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        }
+      },
+      animation: {
+        shimmer: 'shimmer 1.5s infinite',
+      }
     }

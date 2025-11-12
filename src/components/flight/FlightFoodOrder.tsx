@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { sampleFoodOrders } from "../../const/foodOrder";
 import { AddItemModal } from "./AddItemModal";
 import DynamicLoadingModal from "./AddDynamicLoadingModal";
@@ -14,6 +14,14 @@ function FlightFoodOrder() {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAddDynamicModalOpen, setIsDynamicAddModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleAddItem = () => setIsAddModalOpen(true);
   const handleCloseModal = () => setIsAddModalOpen(false);
@@ -120,9 +128,8 @@ function FlightFoodOrder() {
                       placeholder="Search..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`w-full px-2 py-1 text-xs border border-border-muted rounded focus:outline-none focus:ring-1 focus:ring-bg-button absolute top-6 bg-bg-surface shadow-lg z-30 transition-all ${
-                        showFilter ? "block" : "hidden"
-                      }`}
+                      className={`w-full px-2 py-1 text-xs border border-border-muted rounded focus:outline-none focus:ring-1 focus:ring-bg-button absolute top-6 bg-bg-surface shadow-lg z-30 transition-all ${showFilter ? "block" : "hidden"
+                        }`}
                       style={{ width: "150px" }}
                     />
                   </div>
@@ -165,33 +172,45 @@ function FlightFoodOrder() {
             </thead>
 
             <tbody>
-              {filteredFoodOrders.map((order, idx) => (
-                <tr
-                  key={idx}
-                  className="bg-bg-surface border-b border-border-muted last:border-b-0 text-text-muted hover:bg-bg-accent/20 transition"
-                >
-                  <td className="px-3 py-2 text-sm font-medium uppercase">
-                    {order.station}
-                  </td>
-                  <td className="px-3 py-2 text-sm uppercase">
-                    {order.flight}
-                  </td>
-                  <td className="px-3 py-2 text-sm uppercase">{order.seat}</td>
-                  <td className="px-3 py-2 text-sm">{order.passenger}</td>
-                  <td className="px-3 py-2 text-sm uppercase">{order.sku}</td>
-                  <td className="px-3 py-2 text-sm uppercase">{order.cabin}</td>
-                  <td className="px-3 py-2 text-sm">{order.name}</td>
-                  <td className="px-2 py-2 text-center text-sm border-l border-border-muted">
-                    {order.ordered}
-                  </td>
-                  <td className="px-2 py-2 text-center text-sm">
-                    {order.distributed}
-                  </td>
-                  <td className="px-2 py-2 text-center text-sm">
-                    {order.loaded}
-                  </td>
-                </tr>
-              ))}
+              {isLoading ? (
+                [...Array(6)].map((_, idx) => (
+                  <tr key={idx} className="border-b border-border-muted">
+                    {[...Array(10)].map((_, cellIdx) => (
+                      <td key={cellIdx} className="px-3 py-2">
+                        <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden">
+                          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                ))) :
+                filteredFoodOrders.map((order, idx) => (
+                  <tr
+                    key={idx}
+                    className="bg-bg-surface border-b border-border-muted last:border-b-0 text-text-muted hover:bg-bg-accent/20 transition"
+                  >
+                    <td className="px-3 py-2 text-sm font-medium uppercase">
+                      {order.station}
+                    </td>
+                    <td className="px-3 py-2 text-sm uppercase">
+                      {order.flight}
+                    </td>
+                    <td className="px-3 py-2 text-sm uppercase">{order.seat}</td>
+                    <td className="px-3 py-2 text-sm">{order.passenger}</td>
+                    <td className="px-3 py-2 text-sm uppercase">{order.sku}</td>
+                    <td className="px-3 py-2 text-sm uppercase">{order.cabin}</td>
+                    <td className="px-3 py-2 text-sm">{order.name}</td>
+                    <td className="px-2 py-2 text-center text-sm border-l border-border-muted">
+                      {order.ordered}
+                    </td>
+                    <td className="px-2 py-2 text-center text-sm">
+                      {order.distributed}
+                    </td>
+                    <td className="px-2 py-2 text-center text-sm">
+                      {order.loaded}
+                    </td>
+                  </tr>
+                ))}
 
               {filteredFoodOrders.length === 0 && (
                 <tr>

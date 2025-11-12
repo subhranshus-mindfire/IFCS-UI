@@ -1,32 +1,42 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faClipboardList,
-  faUsers,
-  faPlaneDeparture,
-  faPlaneCircleCheck,
-  faBoltLightning,
-} from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect } from "react";
 import { flights } from "../../const/flightData";
 import FlightHeader from "../../components/flight/FlightListHeader";
 import { AddFlightModal } from "../../components/flight/AddFlightModal";
 import { FlightHistoryModal } from "../../components/flight/FlightHistoryModal";
 import { FlightRow } from "../../components/flight/FlightRow";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../components/Navbar";
+import {
+  AirplaneFlightIcon,
+  AirplaneIcon,
+  PlansIcon,
+  SeatIcon,
+  StatusIcon,
+} from "../../assets/icons";
+
 
 const FlightList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [selectedFlightNumber, setSelectedFlightNumber] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const handleAddFlight = () => setShowAddModal(true);
   const handleShowHistory = (flightNumber: string) => {
     setSelectedFlightNumber(flightNumber);
     setShowHistoryModal(true);
   };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="w-full h-screen flex flex-col bg-gray-100 font-arial">
+      <Navbar onMenuClick={() => { }} />
       <FlightHeader
         onBack={() => navigate("/dashboard")}
         onAddFlight={handleAddFlight}
@@ -55,10 +65,7 @@ const FlightList: React.FC = () => {
             <tr className="text-sm font-semibold">
               <th colSpan={8} className="py-2 relative">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faPlaneDeparture}
-                    className="text-base"
-                  />
+                  <img src={AirplaneFlightIcon} />
                   <span>Flight</span>
                 </div>
                 {/* Vertical separator */}
@@ -66,37 +73,28 @@ const FlightList: React.FC = () => {
               </th>
               <th colSpan={2} className="py-2 relative">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faPlaneCircleCheck}
-                    className="text-base"
-                  />
+                  <img src={AirplaneIcon} />
                   <span>Aircraft</span>
                 </div>
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
               <th colSpan={1} className="py-2 relative">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faClipboardList}
-                    className="text-base"
-                  />
+                  <img src={PlansIcon} />
                   <span>Plans</span>
                 </div>
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
               <th colSpan={2} className="py-2 relative">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon icon={faUsers} className="text-base" />
+                  <img src={SeatIcon} />
                   <span>PAX</span>
                 </div>
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-600"></div>
               </th>
               <th colSpan={1} className="py-2">
                 <div className="flex items-center justify-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faBoltLightning}
-                    className="text-base"
-                  />
+                  <img src={StatusIcon} />
                   <span>Status</span>
                 </div>
               </th>
@@ -141,7 +139,20 @@ const FlightList: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {flights.map((pair, idx) => (
+            {isLoading ? [...Array(6)].map((_, idx) => (
+              <React.Fragment key={`shimmer-${idx}`}>
+                <tr className="border-b border-gray-200">
+                  {[...Array(14)].map((_, cellIdx) => (
+                    <td key={cellIdx} className="py-4 px-3">
+                      <div className="relative h-4 w-20 rounded bg-gray-200 overflow-hidden">
+                        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+                      </div>
+                    </td>
+                  ))}
+                  {/* Repeat for other columns */}
+                </tr>
+              </React.Fragment>
+            )) : flights.map((pair, idx) => (
               <React.Fragment key={idx}>
                 {pair.map((flight, subIdx) => (
                   <FlightRow

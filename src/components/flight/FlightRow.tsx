@@ -3,7 +3,6 @@ import {
   faUtensils,
   faExclamationTriangle,
   faCog,
-  faUsers,
   faCheckCircle,
   faBox,
   faMagnifyingGlass,
@@ -21,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import type { Flight } from "../../const/flightData";
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../Dropdown";
+import { SeatIcon } from "../../assets/icons";
 
 interface FlightRowProps {
   flight: Flight;
@@ -233,7 +233,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         className="text-center py-2 px-3 relative cursor-pointer"
       >
         <div className="flex flex-col items-center justify-center gap-1">
-          <FontAwesomeIcon icon={faUsers} className="text-gray-500 text-lg" />
+          <img src={SeatIcon} />
           <span className="font-bold text-base">{flight.paxTotal}</span>
         </div>
         {activePopover === "paxTotal" && <PaxPopover />}

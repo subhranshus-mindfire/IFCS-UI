@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type PreparedBy = string;
 type Item = {
@@ -26,6 +26,14 @@ const itemsList: Item[] = [
 
 const FlightGalleys = () => {
   const [selectedPrep, setSelectedPrep] = useState("Commissary");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row w-full gap-4 bg-bg-surface font-rubik">
@@ -37,22 +45,30 @@ const FlightGalleys = () => {
         </h2>
 
         <div className="space-y-2">
-          {preparedByList.map((prep, idx) => {
-            const active = prep === selectedPrep;
-            return (
-              <button
-                key={idx}
-                onClick={() => setSelectedPrep(prep)}
-                className={`w-full text-left px-3 py-2 rounded-md text-sm border border-bg-secondary
+          {isLoading ? (
+            [...Array(4)].map((_, idx) => (
+              <div key={idx} className="relative h-9 rounded-md bg-gray-200 overflow-hidden">
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+              </div>
+            ))
+          ) : (
+            preparedByList.map((prep, idx) => {
+              const active = prep === selectedPrep;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedPrep(prep)}
+                  className={`w-full text-left px-3 py-2 rounded-md text-sm border border-bg-secondary
                 ${active
-                    ? "bg-bg-accent text-text-primary font-normal border-bg-accent"
-                    : "hover:bg-gray-100 text-text-muted"
-                  }`}
-              >
-                {prep}
-              </button>
-            );
-          })}
+                      ? "bg-bg-accent text-text-primary font-normal border-bg-accent"
+                      : "hover:bg-gray-100 text-text-muted"
+                    }`}
+                >
+                  {prep}
+                </button>
+              );
+            })
+          )}
         </div>
       </div>
 
@@ -78,13 +94,27 @@ const FlightGalleys = () => {
             </thead>
 
             <tbody>
-              {itemsList.map((item, index) => (
-                <tr key={index} className="border-b border-bg-secondary text-text-muted">
-                  <td className="py-3 px-4">{item.code}</td>
-                  <td className="py-3 px-4">{item.label}</td>
-                  <td className="py-3 px-4 text-left">{item.qty}</td>
-                </tr>
-              ))}
+              {isLoading ? (
+                [...Array(7)].map((_, idx) => (
+                  <tr key={idx} className="border-b border-bg-secondary">
+                    {[...Array(3)].map((_, cellIdx) => (
+                      <td key={cellIdx} className="py-3 px-4">
+                        <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden">
+                          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                itemsList.map((item, index) => (
+                  <tr key={index} className="border-b border-bg-secondary text-text-muted">
+                    <td className="py-3 px-4">{item.code}</td>
+                    <td className="py-3 px-4">{item.label}</td>
+                    <td className="py-3 px-4 text-left">{item.qty}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -24,6 +24,13 @@ import SettingIcon from "./setting.svg";
 import DropdownIcon from "./dropdownIcon.svg";
 import DropdownRevIcon from "./dropdownIconRev.svg";
 import RedirectIcon from "./redirect.svg";
+import SeatIcon from "./seat.svg";
+import AirplaneIcon from "./airplane.svg";
+import AirplaneFlightIcon from "./airplaneFlight.svg";
+import ListChecksIcon from "./listChecks.svg";
+import PlansIcon from "./plans.svg";
+import StatusIcon from "./status.svg";
+import CalendarIcon from "./calendar.svg";
 
 export {
   AddIcon,
@@ -52,4 +59,11 @@ export {
   DropdownIcon,
   DropdownRevIcon,
   RedirectIcon,
+  SeatIcon,
+  AirplaneIcon,
+  AirplaneFlightIcon,
+  PlansIcon,
+  ListChecksIcon,
+  StatusIcon,
+  CalendarIcon,
 };

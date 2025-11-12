@@ -144,9 +144,8 @@ const FlightList: React.FC = () => {
                 <tr className="border-b border-gray-200">
                   {[...Array(14)].map((_, cellIdx) => (
                     <td key={cellIdx} className="py-4 px-3">
-                      <div className="relative h-4 w-20 rounded bg-gray-200 overflow-hidden">
-                        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                      </div>
+                      <div className="relative h-4 w-20 rounded bg-gray-200 animate-pulse duration-75 overflow-hidden" >
+                        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>  </div>
                     </td>
                   ))}
                   {/* Repeat for other columns */}

@@ -8,14 +8,18 @@ module.exports = {
           'xl': '1280px',
           '2xl': '1736px',
         },
+        keyframes: {
+          shimmer: {
+            '0%': { transform: 'translateX(-100%)' },
+            '100%': { transform: 'translateX(100%)' },
+          }
+        },
+        animation: {
+          shimmer: 'shimmer 1.5s infinite',
+        },
+          colors: {
+        testBlue: '#1E90FF', // 👈 Added a custom color to test
       },
-     keyframes: {
-        shimmer: {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' },
-        }
       },
-      animation: {
-        shimmer: 'shimmer 1.5s infinite',
-      }
+     
     }

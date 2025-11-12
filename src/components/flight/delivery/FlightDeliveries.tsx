@@ -173,7 +173,7 @@ const FlightDeliveries: React.FC = () => {
       {isLoading ? (
         <div className="flex-1 p-6 space-y-4">
           {[...Array(4)].map((_, idx) => (
-            <div key={idx} className="relative h-12 rounded bg-gray-200 overflow-hidden">
+            <div key={idx} className="relative h-12 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
               <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
             </div>
           ))}

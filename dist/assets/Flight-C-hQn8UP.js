@@ -1,1 +1,0 @@
-import{j as t}from"./index-CpkXZBWQ.js";import{f as i}from"./index-DkOusSSV.js";import{N as a}from"./NavigationCard-e5M9MlT3.js";function e(){return t.jsx("div",{className:"flex flex-row justify-around",children:t.jsx(a,{title:"Standard view",icon:i,to:"/flight-list"})})}export{e as default};

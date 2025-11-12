@@ -33,6 +33,21 @@ import StatusIcon from "./status.svg";
 import CalendarIcon from "./calendar.svg";
 import IFCSLogo from "./IFCSLogo.svg";
 
+// --- Status Icons ---
+import CheckCircleIcon from "./statusicons/CheckCircle.svg";
+import ClipboardTextIcon from "./statusicons/ClipboardText.svg";
+import ForkKnifeIcon from "./statusicons/ForkKnife.svg";
+import GuardIcon from "./statusicons/Guard.svg";
+import InvoiceIcon from "./statusicons/Invoice.svg";
+import LassoIcon from "./statusicons/Lasso.svg";
+import LockKeyIcon from "./statusicons/LockKey.svg";
+import PackageSealedIcon from "./statusicons/Package-sealed.svg";
+import ReceiptIcon from "./statusicons/Receipt.svg";
+import SignatureIcon from "./statusicons/Signature.svg";
+import StillTruckIcon from "./statusicons/Still-Truck.svg";
+import ThermometerSimpleIcon from "./statusicons/ThermometerSimple.svg";
+import WarningIcon from "./statusicons/Warning.svg";
+
 export {
   AddIcon,
   CheckIcon,
@@ -68,4 +83,19 @@ export {
   StatusIcon,
   CalendarIcon,
   IFCSLogo,
+
+  // --- Status Icons ---
+  CheckCircleIcon,
+  ClipboardTextIcon,
+  ForkKnifeIcon,
+  GuardIcon,
+  InvoiceIcon,
+  LassoIcon,
+  LockKeyIcon,
+  PackageSealedIcon,
+  ReceiptIcon,
+  SignatureIcon,
+  StillTruckIcon,
+  ThermometerSimpleIcon,
+  WarningIcon,
 };

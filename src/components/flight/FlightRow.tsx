@@ -1,15 +1,5 @@
 import {
-  faClipboardList,
-  faUtensils,
-  faExclamationTriangle,
   faCog,
-  faCheckCircle,
-  faBox,
-  faMagnifyingGlass,
-  faLock,
-  faWrench,
-  faComment,
-  faFileAlt,
   faEye,
   faHistory,
   faPen,
@@ -20,7 +10,19 @@ import { useNavigate } from "react-router-dom";
 import type { Flight } from "../../const/flightData";
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../Dropdown";
-import { SeatIcon } from "../../assets/icons";
+import {
+  CheckCircleIcon,
+  ClipboardTextIcon,
+  ForkKnifeIcon,
+  GuardIcon,
+  LassoIcon,
+  LockKeyIcon,
+  PackageSealedIcon,
+  ReceiptIcon,
+  SeatIcon,
+  SignatureIcon,
+  WarningIcon,
+} from "../../assets/icons";
 
 interface FlightRowProps {
   flight: Flight;
@@ -303,46 +305,16 @@ export const FlightRow: React.FC<FlightRowProps> = ({
       {/* --- Actions Cell --- */}
       <td className="py-2 px-3 text-base">
         <div className="flex items-center justify-end pe-2 gap-3 text-text-tertiary">
-          <FontAwesomeIcon
-            icon={faExclamationTriangle}
-            className="hover:text-yellow-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faUtensils}
-            className="hover:text-green-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faClipboardList}
-            className="hover:text-bg-button cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            className="hover:text-bg-primary cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faBox}
-            className="hover:text-orange-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faLock}
-            className="hover:text-red-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faCheckCircle}
-            className="hover:text-green-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faWrench}
-            className="hover:text-bg-button cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faComment}
-            className="hover:text-bg-primary cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faFileAlt}
-            className="hover:text-text-secondary cursor-pointer"
-          />
+          <img src={WarningIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={ForkKnifeIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={ClipboardTextIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={GuardIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={PackageSealedIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={LockKeyIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={CheckCircleIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={LassoIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={SignatureIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={ReceiptIcon} className="h-4 w-4 cursor-pointer" />
           <div className="relative inline-block" ref={menuRef}>
             <FontAwesomeIcon
               icon={faCog}

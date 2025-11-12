@@ -1,4 +1,4 @@
-import{j as r,L as l}from"./index-CpkXZBWQ.js";import{F as o,Y as i}from"./index-DkOusSSV.js";const m=({title:s,icon:t,to:a,active:e=!0})=>r.jsx(l,{to:a,onClick:n=>{e||n.preventDefault()},children:r.jsxs("div",{className:`
+import{j as r,L as l}from"./index-UlnawPua.js";import{F as o,S as i}from"./index-CaTMPo9n.js";const m=({title:s,icon:t,to:a,active:e=!0})=>r.jsx(l,{to:a,onClick:n=>{e||n.preventDefault()},children:r.jsxs("div",{className:`
           relative md:w-100 w-70 h-40 flex flex-col justify-center items-center 
           px-10 border border-[var(--backgroundAccent)] rounded-2xl
           transition-transform duration-300 ease-in-out

@@ -59,7 +59,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
             onClick={handleDetailsNav}
             className={`mx-1 text-text-muted font-normal hover:text-bg-button transition-colors ${
               currentScreen === "Details"
-                ? "text-text-primary text-base font-regular"
+                ? "text-text-primary text-base font-medium"
                 : ""
             }`}
           >

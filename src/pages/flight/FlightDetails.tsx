@@ -30,7 +30,15 @@ function FlightDetails() {
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem("activeTab") || tabKeys[0];
   });
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
   useEffect(() => {
     localStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
@@ -49,7 +57,7 @@ function FlightDetails() {
 
   return (
     <>
-      <Navbar onMenuClick={() => {}} />
+      <Navbar onMenuClick={() => { }} />
       <div className="p-2 sm:p-8">
         <Breadcrumb
           handleDetailsNav={() => setActiveTab("Details")}
@@ -57,62 +65,74 @@ function FlightDetails() {
         />
 
         <div className="flex flex-wrap font-rubik gap-4 mt-6">
-          <div>
-            <span className="text-text-tertiary text-sm font-normal">
-              Flight:{" "}
-            </span>
-            <span className="font-medium text-base text-text-secondary">
-              {flight.flightNumber}
-            </span>
-          </div>
-          <div>
-            <span className="text-text-tertiary text-sm font-normal">
-              Route:{" "}
-            </span>
-            <span className="font-medium text-base text-text-secondary">
-              {flight.route}
-            </span>
-          </div>
-          <div>
-            <span className="text-text-tertiary text-sm font-normal">
-              Date:{" "}
-            </span>
-            <span className="font-medium text-base text-text-secondary">
-              {flight.date}
-            </span>
-          </div>
-          <div>
-            <span className="text-text-tertiary text-sm font-normal">
-              Aircraft:{" "}
-            </span>
-            <span className="font-medium text-base text-text-secondary">
-              {flight.acType}
-            </span>
-          </div>
-          <div>
-            <span className="text-text-tertiary text-sm font-normal">
-              AC Reg.:{" "}
-            </span>
-            <span className="font-medium text-base text-text-secondary">
-              {flight.acReg}
-            </span>
-          </div>
-          <div>
-            <span className="text-text-tertiary text-sm font-normal">
-              Destination:{" "}
-            </span>
-            <span className="font-medium text-base text-text-secondary">
-              {flight.departure}
-            </span>
-          </div>
-          <div>
-            <span className="text-text-tertiary text-sm font-normal">
-              Loading Plan:{" "}
-            </span>
-            <span className="font-medium text-base text-text-secondary">
-              {flight.plan}
-            </span>
-          </div>
+          {isLoading ? ([...Array(7)].map((_, idx) => (
+            <div key={idx} className="flex gap-2">
+              <div className="relative h-4 w-16 rounded bg-gray-200 overflow-hidden">
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+              </div>
+              <div className="relative h-4 w-24 rounded bg-gray-200 overflow-hidden">
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+              </div>
+            </div>
+          ))) :
+            <>
+              <div>
+                <span className="text-text-tertiary text-sm font-normal">
+                  Flight:{" "}
+                </span>
+                <span className="font-medium text-base text-text-secondary">
+                  {flight.flightNumber}
+                </span>
+              </div>
+              <div>
+                <span className="text-text-tertiary text-sm font-normal">
+                  Route:{" "}
+                </span>
+                <span className="font-medium text-base text-text-secondary">
+                  {flight.route}
+                </span>
+              </div>
+              <div>
+                <span className="text-text-tertiary text-sm font-normal">
+                  Date:{" "}
+                </span>
+                <span className="font-medium text-base text-text-secondary">
+                  {flight.date}
+                </span>
+              </div>
+              <div>
+                <span className="text-text-tertiary text-sm font-normal">
+                  Aircraft:{" "}
+                </span>
+                <span className="font-medium text-base text-text-secondary">
+                  {flight.acType}
+                </span>
+              </div>
+              <div>
+                <span className="text-text-tertiary text-sm font-normal">
+                  AC Reg.:{" "}
+                </span>
+                <span className="font-medium text-base text-text-secondary">
+                  {flight.acReg}
+                </span>
+              </div>
+              <div>
+                <span className="text-text-tertiary text-sm font-normal">
+                  Destination:{" "}
+                </span>
+                <span className="font-medium text-base text-text-secondary">
+                  {flight.departure}
+                </span>
+              </div>
+              <div>
+                <span className="text-text-tertiary text-sm font-normal">
+                  Loading Plan:{" "}
+                </span>
+                <span className="font-medium text-base text-text-secondary">
+                  {flight.plan}
+                </span>
+              </div>
+            </>}
         </div>
 
         <div className="overflow-x-auto overflow-y-hidden my-6">
@@ -125,22 +145,20 @@ function FlightDetails() {
                 <button
                   onClick={() => tab !== "Invoice" && setActiveTab(tab)}
                   className={`relative w-full h-full px-2 py-3 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden
-                  ${
-                    activeTab === tab
+                  ${activeTab === tab
                       ? "text-bg-button"
                       : tab === "Invoice"
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "text-text-secondary hover:text-bg-button/80"
-                  }`}
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-text-secondary hover:text-bg-button/80"
+                    }`}
                   disabled={tab === "Invoice"}
                 >
                   <span
                     className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-medium
-                  ${
-                    activeTab === tab
-                      ? "bg-bg-button text-white"
-                      : "bg-bg-tertiary text-text-secondary"
-                  }`}
+                  ${activeTab === tab
+                        ? "bg-bg-button text-white"
+                        : "bg-bg-tertiary text-text-secondary"
+                      }`}
                   >
                     {String(index + 1).padStart(2, "0")}
                   </span>
@@ -151,13 +169,12 @@ function FlightDetails() {
                   {/* Bottom border indicator for active tab */}
                   {activeTab === tab && (
                     <span
-                      className={`absolute bottom-0 h-1 bg-bg-button ${
-                        index === 0
-                          ? "left-4 right-0"
-                          : index === tabKeys.length - 1
+                      className={`absolute bottom-0 h-1 bg-bg-button ${index === 0
+                        ? "left-4 right-0"
+                        : index === tabKeys.length - 1
                           ? "left-0 right-4"
                           : "left-0 right-0"
-                      }`}
+                        }`}
                     ></span>
                   )}
                 </button>

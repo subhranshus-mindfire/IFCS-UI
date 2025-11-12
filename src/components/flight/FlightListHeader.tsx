@@ -67,7 +67,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
               <select
                 value={station}
                 onChange={(e) => setStation(e.target.value)}
-                className="px-3 py-1.5 border border-gray-200 bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-2 focus:border-bg-button"
+                className="px-3 py-1.5 border border-gray-200 bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-1 focus:border-border-accent"
               >
                 <option value="">Station</option>
                 <option value="Oman">Oman</option>
@@ -82,7 +82,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-2 focus:border-bg-button w-40 appearance-none"
+                  className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-1 focus:border-border-accent w-40 appearance-none"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                   <FontAwesomeIcon icon={faCalendar} color="black" />
@@ -96,32 +96,32 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                 value={flightNumber}
                 onChange={(e) => setFlightNumber(e.target.value)}
                 placeholder="Flight"
-                className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-32 focus:outline-none focus:ring-2 focus:border-bg-button placeholder-gray-500"
+                className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-32 focus:outline-none focus:ring-1 focus:border-border-accent placeholder-gray-500"
               />
             </div>
             <div className="flex items-center">
               <input
                 type="text"
                 placeholder="AC Reg"
-                className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-32 focus:outline-none focus:ring-2 focus:border-bg-button placeholder-gray-500"
+                className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-32 focus:outline-none focus:ring-1 focus:border-border-accent placeholder-gray-500"
               />
             </div>
             <div className="flex items-center">
               <input
                 type="text"
                 placeholder="AC Type"
-                className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-32 focus:outline-none focus:ring-2 focus:border-bg-button placeholder-gray-500"
+                className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-32 focus:outline-none focus:ring-1 focus:border-border-accent placeholder-gray-500"
               />
             </div>
             <div className="flex items-center">
               <input
                 type="text"
                 placeholder="Route"
-                className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-32 focus:outline-none focus:ring-2 focus:border-bg-button placeholder-gray-500"
+                className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-32 focus:outline-none focus:ring-1 focus:border-border-accent placeholder-gray-500"
               />
             </div>
             <div className="flex items-center gap-2">
-              <select className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-2 focus:border-bg-button">
+              <select className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-1 focus:border-border-accent">
                 <option value="Oman">Oman</option>
                 <option value="Dubai">Dubai</option>
                 <option value="Abu Dhabi">Abu Dhabi</option>

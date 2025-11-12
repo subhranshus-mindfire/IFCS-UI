@@ -12,7 +12,7 @@ import {
   faBars,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import IFCSLogo from "../assets/logos/IFCSLogo.png";
+import { IFCSLogo } from "../assets/icons";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: faGauge },

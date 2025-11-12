@@ -1,0 +1,29 @@
+{
+  "flightDetails": {
+    "notFound": "Vuelo no encontrado",
+    "backButton": "Vuelos",
+    "info": {
+      "title": "Vuelo {{flightNumber}}",
+      "route": "Ruta",
+      "departure": "Sal",
+      "arrival": "Lleg"
+    },
+    "tabs": {
+      "details": "DETALLES",
+      "preparations": "PREPARACIONES",
+      "food_orders": "PEDIDOS DE COMIDA",
+      "content_locn": "UBIC. DE CONTENIDO",
+      "galleys": "GALERAS",
+      "labels_reports": "ETIQUETAS/INFORMES",
+      "deliveries": "ENTREGAS",
+      "invoice": "FACTURA"
+    },
+    "detailsPane": {
+      "aircraft": "Aeronave",
+      "groundTime": "Tiempo en Tierra",
+      "plan": "Plan",
+      "passengers": "Pasajeros",
+      "total": "total"
+    }
+  }
+}

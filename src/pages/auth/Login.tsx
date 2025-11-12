@@ -1,7 +1,7 @@
 import sky from "../../assets/sky.png";
-import IFCSLogo from "../../assets/logos/IFCSLogo.png";
 import galleyLogo2 from "../../assets/logos/galleyLogo2.png";
 import Button from "../../components/Button";
+import { IFCSLogo } from "../../assets/icons";
 
 const Login: React.FC = () => {
   return (

@@ -2,15 +2,17 @@ import { create } from 'zustand';
 import { flights } from '../const/flightData';
 import type { FlightStoreState } from '../types/Flight';
 
+
 export const useFlightStore = create<FlightStoreState>((set) => ({
     flights: [],
     isLoading: false,
     error: null,
 
-    fetchFlights: async () => {
+    fetchFlights: async (filters) => {
         set({ isLoading: true, error: null });
 
         try {
+            console.log(filters)
             await new Promise(resolve => setTimeout(resolve, 1000));
             set({ flights: flights, isLoading: false });
 

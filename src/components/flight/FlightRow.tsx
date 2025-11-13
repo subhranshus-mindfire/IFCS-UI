@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-
-import type { Flight } from "../../const/flightData";
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../Dropdown";
 import {
@@ -20,6 +18,7 @@ import {
   EditIcon,
   HistoryIcon
 } from "../../assets/icons";
+import type { Flight } from "../../types/Flight";
 
 interface FlightRowProps {
   flight: Flight;

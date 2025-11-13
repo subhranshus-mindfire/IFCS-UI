@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import type { Flight } from "../const/flightData";
+import type { Flight } from "../types/Flight";
+
 
 type PreparationData = {
   stowage: string;

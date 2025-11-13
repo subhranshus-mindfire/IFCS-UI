@@ -6,6 +6,8 @@ import {
   faRotateRight,
   faClock,
   faCalendar,
+  faArrowLeft,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumb } from "../BreadCrumb";
 import type { FlightFilters } from "../../types/Flight";
@@ -26,11 +28,31 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
   completeFlights = 48,
   inProgressFlights = 0,
   waitingFlights = 62,
+  onAddFlight,
+  onBack,
   onFilterChange,
   currentFilters,
 }) => {
   return (
     <div className="flex flex-col w-full border-b border-gray-300">
+      <div className="flex items-center justify-left gap-5 bg-red-800 text-white pr-4 py-0">
+        <button
+          onClick={onBack}
+          className="flex items-center h-full gap-2 py-4 px-4 bg-black hover:text-blue-400 transition-colors"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+          <span className="text-sm font-medium">Back</span>
+        </button>
+
+        <button
+          onClick={onAddFlight}
+          className="flex items-center gap-2 text-white py-1.5 rounded-md text-sm font-medium transition-colors"
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          <span>Add Flight</span>
+        </button>
+      </div>
+
       <div className="bg-bg-surface px-4 py-3 flex items-center justify-between">
         <div className="flex flex-col items-left gap-3">
           <Breadcrumb

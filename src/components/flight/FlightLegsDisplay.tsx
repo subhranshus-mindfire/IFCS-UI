@@ -726,7 +726,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-800 font-medium wrap-break-word">
+                <p className="text-xs sm:text-sm text-gray-800 font-medium wrap-break-words">
                   {leg.loadingPlan}
                 </p>
               </div>

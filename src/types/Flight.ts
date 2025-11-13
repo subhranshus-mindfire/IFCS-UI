@@ -25,11 +25,20 @@ export interface Flight {
     arrivalType: "actual" | "estimated" | "scheduled";
 }
 
+export interface FlightFilters {
+    station?: string;
+    date?: string;
+    flight?: string;
+    acReg?: string;
+    acType?: string;
+    route?: string;
+    client?: string;
+}
 export interface FlightStoreState {
     flights: Flight[][];
     isLoading: boolean;
     error: string | null;
-    fetchFlights: () => Promise<void>;
+    fetchFlights: (filters?: FlightFilters) => Promise<void>;
 }
 
 

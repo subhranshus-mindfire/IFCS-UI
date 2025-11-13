@@ -42,9 +42,8 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
       <span className="mx-2 text-gray-400 text-base">›</span>
       <button
         onClick={handleFlightsPress}
-        className={`mx-1 text-text-muted font-normal hover:text-bg-button transition-colors ${
-          currentScreen === "Flights" ? "text-text-primary font-medium" : ""
-        }`}
+        className={`mx-1 text-text-muted font-normal hover:text-bg-button transition-colors ${currentScreen === "Flights" ? "text-text-primary font-medium" : ""
+          }`}
       >
         Flights
       </button>
@@ -57,11 +56,10 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
           {/* Flight Details */}
           <button
             onClick={handleDetailsNav}
-            className={`mx-1 text-text-muted font-normal hover:text-bg-button transition-colors ${
-              currentScreen === "Details"
+            className={`mx-1 text-text-muted font-normal hover:text-bg-button transition-colors ${currentScreen === "Details"
                 ? "text-text-primary text-base font-medium"
                 : ""
-            }`}
+              }`}
           >
             Flight Details
           </button>
@@ -69,7 +67,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
       )}
 
       {/* Show deeper level only if not Details */}
-      {currentScreen !== "Flights" && currentScreen !== "Details" && (
+      {currentScreen !== "Flights" && currentScreen !== "Info" && (
         <>
           <span className="mx-2 text-gray-400 text-base">›</span>
           <span className="mx-1 text-text-primary font-medium text-base">

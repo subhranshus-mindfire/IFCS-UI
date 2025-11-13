@@ -1,160 +1,225 @@
-import { useState } from "react";
+import type React from "react"
 
-export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
-  onClose,
-}) => {
-  const [flightType, setFlightType] = useState("J");
+import { useState } from "react"
+
+const AIRPORT_OPTIONS = ["ADA", "ADD", "ADL", "AKL", "ALG", "AMM", "AMS", "ARN", "ASW", "ATH"]
+
+export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const [flightType, setFlightType] = useState("J")
+  const [manualPairing, setManualPairing] = useState(false)
+  const [manualLoading, setManualLoading] = useState(false)
+  const [manualMeal, setManualMeal] = useState(false)
+  const [departureAirportSearch, setDepartureAirportSearch] = useState("")
+  const [arrivalAirportSearch, setArrivalAirportSearch] = useState("")
+  const [showDepartureOptions, setShowDepartureOptions] = useState(false)
+  const [showArrivalOptions, setShowArrivalOptions] = useState(false)
+
+  const filteredDepartureAirports = AIRPORT_OPTIONS.filter((airport) =>
+    airport.toUpperCase().includes(departureAirportSearch.toUpperCase()),
+  )
+
+  const filteredArrivalAirports = AIRPORT_OPTIONS.filter((airport) =>
+    airport.toUpperCase().includes(arrivalAirportSearch.toUpperCase()),
+  )
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       {/* Modal */}
-      <div className="bg-bg-secondary rounded-lg shadow-md w-full max-w-md p-3 border border-borderLight">
-        <div className="space-y-3 text-xs">
+      <div className="bg-white rounded shadow-lg w-full max-w-md p-6">
+        <div className="space-y-5 text-sm">
           {/* Row 1 */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-5">
             <div>
-              <label className="block text-textTertiary mb-0.5 text-[11px]">
-                Airline Code
-              </label>
-              <select className="w-full border border-borderLight rounded px-1.5 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary">
+              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Airline Code</label>
+              <select className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400">
                 <option value=""></option>
+                <option value="ADA">WY</option>
+                <option value="ADD">OV</option>
               </select>
             </div>
             <div>
-              <label className="block text-textTertiary mb-0.5 text-[11px]">
-                Direction
-              </label>
-              <select className="w-full border border-borderLight rounded px-1.5 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary">
+              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Direction</label>
+              <select className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400">
                 <option value=""></option>
+                <option value="inbound">[O/B]</option>
+                <option value="outbound">[I/B]</option>
               </select>
             </div>
             <div>
-              <label className="block text-textTertiary mb-0.5 text-[11px]">
-                Flight Type
-              </label>
-              <div className="flex gap-1">
+              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Flight Type</label>
+              <div className="flex gap-3 pt-1">
                 {["J", "P"].map((type) => (
-                  <label
-                    key={type}
-                    className="flex items-center gap-0.5 cursor-pointer"
-                  >
+                  <label key={type} className="flex items-center gap-1.5 cursor-pointer">
                     <input
                       type="radio"
                       name="flightType"
                       value={type}
                       checked={flightType === type}
                       onChange={(e) => setFlightType(e.target.value)}
-                      className="w-3 h-3 bg-surface accent-accentPrimary"
+                      className="w-4 h-4 bg-white"
                     />
-                    <span className="text-[11px] text-textPrimary">{type}</span>
+                    <span className="text-sm text-gray-800">{type}</span>
                   </label>
                 ))}
               </div>
             </div>
           </div>
-
           {/* Row 2 */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-5">
             {[
               { label: "Date", type: "date" },
-              { label: "Departure", type: "time" },
-              { label: "Arrival", type: "time" },
+              { label: "Departure Time", type: "time" },
+              { label: "Arrival Time", type: "time" },
             ].map((field) => (
               <div key={field.label}>
-                <label className="block text-textTertiary mb-0.5 text-[11px]">
-                  {field.label}
-                </label>
+                <label className="block text-gray-700 mb-1.5 text-xs font-medium">{field.label}</label>
                 <input
                   type={field.type}
-                  className="w-full border border-borderLight rounded px-1.5 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary"
+                  className="w-full border border-gray-300 rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-orange-500"
                 />
               </div>
             ))}
           </div>
 
-          {/* Row 3 */}
-          <div className="grid grid-cols-3 gap-2">
-            {["Flight No.", "Dep. Airport", "Arr. Airport"].map((label) => (
-              <div key={label}>
-                <label className="block text-textTertiary mb-0.5 text-[11px]">
-                  {label}
-                </label>
-                <input
-                  type="text"
-                  className="w-full border border-borderLight rounded px-1.5 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary"
-                />
-              </div>
-            ))}
+          {/* Row 3 - Departure Airport and Arrival Airport converted to searchable select */}
+          <div className="grid grid-cols-3 gap-5">
+            <div>
+              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Flight Number</label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400"
+              />
+            </div>
+            <div className="relative">
+              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Departure Airport</label>
+              <input
+                type="text"
+                placeholder="Search..."
+                value={departureAirportSearch}
+                onChange={(e) => setDepartureAirportSearch(e.target.value)}
+                onFocus={() => setShowDepartureOptions(true)}
+                className="w-full border border-gray-300 rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400"
+              />
+              {showDepartureOptions && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10 max-h-40 overflow-y-auto">
+                  {filteredDepartureAirports.map((airport) => (
+                    <div
+                      key={airport}
+                      onClick={() => {
+                        setDepartureAirportSearch(airport)
+                        setShowDepartureOptions(false)
+                      }}
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-800"
+                    >
+                      {airport}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="relative">
+              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Arrival Airport</label>
+              <input
+                type="text"
+                placeholder="Search..."
+                value={arrivalAirportSearch}
+                onChange={(e) => setArrivalAirportSearch(e.target.value)}
+                onFocus={() => setShowArrivalOptions(true)}
+                className="w-full border border-gray-300 rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400"
+              />
+              {showArrivalOptions && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10 max-h-40 overflow-y-auto">
+                  {filteredArrivalAirports.map((airport) => (
+                    <div
+                      key={airport}
+                      onClick={() => {
+                        setArrivalAirportSearch(airport)
+                        setShowArrivalOptions(false)
+                      }}
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-800"
+                    >
+                      {airport}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Row 4 */}
-          <div className="flex items-start gap-1">
+          <div className="flex items-start gap-8">
             <div className="w-1/3">
-              <label className="block text-textTertiary mb-0.5 text-[11px]">
-                Aircraft Reg
-              </label>
-              <select className="w-[90%] border border-borderLight rounded px-1 py-1 text-textPrimary bg-surface focus:outline-none focus:border-accentPrimary">
+              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Aircraft Reg</label>
+              <select className="w-full border border-gray-300 rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-orange-500">
                 <option value=""></option>
               </select>
             </div>
 
             <div className="flex-1">
-              <label className="block text-textTertiary mb-0.5 text-[11px]">
-                PAX Count
-              </label>
-              <div className="flex items-start">
-                {["Business studio", "Business", "Economy", "Crew"].map(
-                  (type) => (
-                    <div
-                      key={type}
-                      className="flex flex-col items-center justify-start min-h-[44px] px-0"
-                      style={{ width: 35 }}
-                    >
-                      <input
-                        type="number"
-                        className="w-[30px] border border-borderLight rounded py-0.5 text-xs text-textPrimary text-center bg-surface focus:outline-none focus:border-accentPrimary"
-                      />
-                      <label className="mt-1 text-[7px] text-textTertiary leading-tight text-center break-words w-full">
-                        {type}
-                      </label>
-                    </div>
-                  )
-                )}
+              <label className="block text-gray-700 mb-1.5 text-xs font-medium">PAX Count</label>
+              <div className="grid grid-cols-4 gap-2">
+                {[
+                  { label: "Business Studio", key: "bs" },
+                  { label: "Business", key: "b" },
+                  { label: "Economy", key: "e" },
+                  { label: "Crew", key: "c" },
+                ].map((type) => (
+                  <div key={type.key} className="flex flex-col items-center bg-gray-50 rounded p-2">
+                    <input
+                      type="number"
+                      className="w-full border border-gray-300 rounded py-1 text-sm text-gray-800 text-center bg-white focus:outline-none focus:border-orange-500"
+                    />
+                    <label className="mt-1 text-[9px] text-gray-700 leading-tight text-center">{type.label}</label>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
           {/* Manual toggles */}
-          <div className="space-y-0.5 pt-1">
+          <div className="space-y-2 pt-2">
             {[
-              "Manual Pairing",
-              "Manual Loading Plan Selection",
-              "Manual Meal Plan Selection",
-            ].map((label) => (
+              { label: "Manual Pairing", checked: manualPairing, onChange: setManualPairing },
+              { label: "Manual Loading Plan Selection", checked: manualLoading, onChange: setManualLoading },
+              { label: "Manual Meal Plan Selection", checked: manualMeal, onChange: setManualMeal },
+            ].map((item) => (
               <label
-                key={label}
-                className="flex items-center justify-between pe-6 gap-1 cursor-pointer text-[11px] text-textPrimary"
+                key={item.label}
+                className="flex items-center justify-between gap-2 cursor-pointer text-sm text-gray-800"
               >
-                <span>{label}</span>
-                <input
-                  type="checkbox"
-                  className="w-3 h-3 border-borderLight bg-surface accent-accentPrimary"
-                />
+                <span>{item.label}</span>
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked && item.label !== "Manual Pairing" ? "border-green-500" : "border-gray-300"
+                    }`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    item.onChange(!item.checked)
+                  }}
+                >
+                  {item.checked && (
+                    <svg
+                      className={`w-3.5 h-3.5 ${item.label !== "Manual Pairing" ? "text-green-500" : "text-gray-400"} `}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
               </label>
             ))}
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-center gap-2 pt-2">
-            {["Cancel", "Save", "Save & Add"].map((btn, i) => (
+          <div className="flex justify-center gap-3 pt-4">
+            {["Cancel", "Save", "Save and Add"].map((btn, i) => (
               <button
-                key={btn}
+                key={i}
                 onClick={btn === "Cancel" ? onClose : undefined}
-                className={`px-3 py-1 rounded-full transition-colors text-xs font-medium ${
-                  i === 0
-                    ? "bg-surface text-textSecondary hover:bg-borderLight"
-                    : "bg-accentPrimary text-text-secondary hover:bg-accentPrimaryHover"
-                }`}
+                className={`px-6 py-1.5 rounded-xl transition-colors text-sm 
+                   bg-gray-200 text-gray-700 hover:bg-gray-300
+                  `}
               >
                 {btn}
               </button>
@@ -163,5 +228,5 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

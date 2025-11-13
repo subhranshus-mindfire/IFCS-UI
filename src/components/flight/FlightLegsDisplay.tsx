@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPencilAlt,
   faShoppingCart,
@@ -6,7 +5,6 @@ import {
   faChartLine,
   faPlaneCircleCheck,
   faEye,
-  faPlaneDeparture,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown";

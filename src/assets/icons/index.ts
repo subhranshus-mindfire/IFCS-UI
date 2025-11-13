@@ -48,6 +48,13 @@ import StillTruckIcon from "./statusicons/Still-Truck.svg";
 import ThermometerSimpleIcon from "./statusicons/ThermometerSimple.svg";
 import WarningIcon from "./statusicons/Warning.svg";
 
+//--- Flight List ACtion Icons ---
+import DetailIcon from "./flightlistActionIcons/detail.svg";
+import HistoryIcon from "./flightlistActionIcons/history.svg";
+import EditIcon from "./flightlistActionIcons/edit.svg";
+import CogIcon from "./flightlistActionIcons/cog.svg"
+
+
 export {
   AddIcon,
   CheckIcon,
@@ -98,4 +105,9 @@ export {
   StillTruckIcon,
   ThermometerSimpleIcon,
   WarningIcon,
+
+  DetailIcon,
+  HistoryIcon,
+  EditIcon,
+  CogIcon
 };

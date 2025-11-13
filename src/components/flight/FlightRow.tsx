@@ -1,10 +1,3 @@
-import {
-  faCog,
-  faEye,
-  faHistory,
-  faPen,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
 import type { Flight } from "../../const/flightData";
@@ -22,6 +15,10 @@ import {
   SeatIcon,
   SignatureIcon,
   WarningIcon,
+  CogIcon,
+  DetailIcon,
+  EditIcon,
+  HistoryIcon
 } from "../../assets/icons";
 
 interface FlightRowProps {
@@ -316,26 +313,28 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           <img src={SignatureIcon} className="h-4 w-4 cursor-pointer" />
           <img src={ReceiptIcon} className="h-4 w-4 cursor-pointer" />
           <div className="relative inline-block" ref={menuRef}>
-            <FontAwesomeIcon
-              icon={faCog}
+            {/* <FontAwesomeIcon
+              icon={}
               className="text-red-500 hover:text-red-700 cursor-pointer"
               onClick={() => setOpen(!open)}
-            />
+            /> */}
+            <img src={CogIcon} className="h-4 w-4 cursor-pointer" onClick={() => setOpen(!open)} />
+
             {open && (
               <Dropdown
                 actions={[
                   {
-                    icon: faEye,
+                    icon: <img src={DetailIcon} className="h-4 w-4 cursor-pointer" />,
                     label: "Details",
                     onClick: handleFlightDetails,
                   },
                   {
-                    icon: faPen,
+                    icon: <img src={EditIcon} className="h-4 w-4 cursor-pointer" />,
                     label: "Edit",
                     onClick: handleFlightDetails,
                   },
                   {
-                    icon: faHistory,
+                    icon: <img src={HistoryIcon} className="h-4 w-4 cursor-pointer" />,
                     label: "History",
                     onClick: handleHistory,
                   },

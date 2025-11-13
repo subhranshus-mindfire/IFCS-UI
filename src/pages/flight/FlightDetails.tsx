@@ -20,7 +20,7 @@ const tabKeys = [
   "Galleys",
   "Labels/Reports",
   "Deliveries",
-  "Invoice",
+  "Invoice"
 ];
 
 function FlightDetails() {

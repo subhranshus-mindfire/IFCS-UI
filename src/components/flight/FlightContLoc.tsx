@@ -30,10 +30,10 @@ const FlightContLoc = () => {
           <div className="flex justify-between items-center p-4 border-b border-border-muted">
             {isLoading ? (
               <>
-                <div className="relative h-5 w-16 rounded bg-gray-200 overflow-hidden">
+                <div className="relative h-5 w-16 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                   <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                 </div>
-                <div className="relative h-4 w-20 rounded bg-gray-200 overflow-hidden">
+                <div className="relative h-4 w-20 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                   <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                 </div>
               </>
@@ -51,7 +51,7 @@ const FlightContLoc = () => {
           <div className="flex overflow-x-auto px-4 pt-4 pb-2 gap-2">
             {isLoading ? (
               [...Array(3)].map((_, idx) => (
-                <div key={idx} className="relative h-7 w-28 rounded-full bg-gray-200 overflow-hidden">
+                <div key={idx} className="relative h-7 w-28 rounded-full bg-gray-200 overflow-hidden animate-pulse duration-75">
                   <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                 </div>
               ))
@@ -89,10 +89,10 @@ const FlightContLoc = () => {
           <div className="px-4 pb-4 pt-2 border-b border-border-muted">
             {isLoading ? (
               <div className="flex items-center gap-2">
-                <div className="relative flex-1 h-10 rounded-2xl bg-gray-200 overflow-hidden">
+                <div className="relative flex-1 h-10 rounded-2xl bg-gray-200 overflow-hidden animate-pulse duration-75">
                   <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                 </div>
-                <div className="relative h-10 w-10 rounded-lg bg-gray-200 overflow-hidden">
+                <div className="relative h-10 w-10 rounded-lg bg-gray-200 overflow-hidden animate-pulse duration-75">
                   <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                 </div>
               </div>
@@ -116,7 +116,7 @@ const FlightContLoc = () => {
             {isLoading ? (
               [...Array(8)].map((_, idx) => (
                 <div key={idx} className="px-4 py-3 rounded-lg mb-2">
-                  <div className="relative h-5 w-full rounded bg-gray-200 overflow-hidden">
+                  <div className="relative h-5 w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
@@ -142,7 +142,7 @@ const FlightContLoc = () => {
           {/* Details Section */}
           <div className="bg-bg-surface rounded-lg p-4">
             {isLoading ? (
-              <div className="relative h-6 w-32 mb-4 rounded bg-gray-200 overflow-hidden">
+              <div className="relative h-6 w-32 mb-4 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
               </div>
             ) : (
@@ -155,17 +155,17 @@ const FlightContLoc = () => {
             {isLoading ? (
               <div className="border border-border-muted rounded-2xl">
                 <div className="p-2 px-4">
-                  <div className="relative h-5 w-3/4 mb-3 rounded bg-gray-200 overflow-hidden">
+                  <div className="relative h-5 w-3/4 mb-3 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
                 <div className="p-2 px-4 border-t border-border-muted">
-                  <div className="relative h-5 w-full mb-2 rounded bg-gray-200 overflow-hidden">
+                  <div className="relative h-5 w-full mb-2 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
                 <div className="min-h-[150px] p-2 px-4 border-t border-border-muted">
-                  <div className="relative h-32 w-full rounded bg-gray-200 overflow-hidden">
+                  <div className="relative h-32 w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
@@ -192,7 +192,7 @@ const FlightContLoc = () => {
           <div className="bg-bg-surface rounded-lg flex-1 p-4">
             <div className="">
               {isLoading ? (
-                <div className="relative h-6 w-40 mb-4 rounded bg-gray-200 overflow-hidden">
+                <div className="relative h-6 w-40 mb-4 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                   <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                 </div>
               ) : (
@@ -222,17 +222,17 @@ const FlightContLoc = () => {
                       [...Array(5)].map((_, idx) => (
                         <tr key={idx} className="border-b border-border-muted">
                           <td className="py-3 px-4">
-                            <div className="relative h-4 w-24 rounded bg-gray-200 overflow-hidden">
+                            <div className="relative h-4 w-24 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                               <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                             </div>
                           </td>
                           <td className="py-3 px-4">
-                            <div className="relative h-4 w-16 rounded bg-gray-200 overflow-hidden">
+                            <div className="relative h-4 w-16 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                               <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                             </div>
                           </td>
                           <td className="py-3 px-4 text-right">
-                            <div className="relative h-4 w-8 ml-auto rounded bg-gray-200 overflow-hidden">
+                            <div className="relative h-4 w-8 ml-auto rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                               <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                             </div>
                           </td>
@@ -277,7 +277,7 @@ const FlightContLoc = () => {
         <div className="lg:col-span-3 bg-bg-surface flex flex-col">
           <div className="p-4">
             {isLoading ? (
-              <div className="relative h-6 w-48 rounded bg-gray-200 overflow-hidden">
+              <div className="relative h-6 w-48 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
               </div>
             ) : (
@@ -291,37 +291,37 @@ const FlightContLoc = () => {
             {/* Aircraft Image with Floating Buttons */}
             {isLoading ? (
               <div className="relative w-full h-full flex items-center justify-center">
-                <div className="relative h-[500px] w-full rounded bg-gray-200 overflow-hidden">
+                <div className="relative h-[500px] w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                   <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                 </div>
                 {/* Shimmer for buttons */}
                 <div className="absolute top-[10%] left-[20%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden">
+                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
                 <div className="absolute top-[5%] right-[5%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden">
+                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
                 <div className="absolute bottom-[20%] left-[20%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden">
+                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
                 <div className="absolute bottom-[15%] right-[5%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden">
+                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
                 <div className="absolute bottom-[5%] left-[30%]">
-                  <div className="relative h-7 w-20 rounded-md bg-gray-200 overflow-hidden">
+                  <div className="relative h-7 w-20 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
                 <div className="absolute bottom-[5%] right-[30%]">
-                  <div className="relative h-7 w-20 rounded-md bg-gray-200 overflow-hidden">
+                  <div className="relative h-7 w-20 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
                     <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>

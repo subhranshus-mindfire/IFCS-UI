@@ -47,7 +47,7 @@ const FlightGalleys = () => {
         <div className="space-y-2">
           {isLoading ? (
             [...Array(4)].map((_, idx) => (
-              <div key={idx} className="relative h-9 rounded-md bg-gray-200 overflow-hidden">
+              <div key={idx} className="relative h-9 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
               </div>
             ))
@@ -99,7 +99,7 @@ const FlightGalleys = () => {
                   <tr key={idx} className="border-b border-bg-secondary">
                     {[...Array(3)].map((_, cellIdx) => (
                       <td key={cellIdx} className="py-3 px-4">
-                        <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden">
+                        <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                           <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                         </div>
                       </td>

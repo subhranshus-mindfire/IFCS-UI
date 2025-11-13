@@ -445,7 +445,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
     <div className="space-y-4 w-full font-rubik">
       <div className="flex justify-between items-center px-2">
         {isLoading ? (
-          <div className="relative h-8 w-48 rounded bg-gray-200 overflow-hidden">
+          <div className="relative h-8 w-48 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
             <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
           </div>
         ) : (
@@ -476,17 +476,17 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
               <div className="grid grid-cols-[repeat(16,minmax(60px,1fr))_auto] xl:grid-cols-[repeat(16,1fr)_auto] gap-1 sm:gap-2">
                 {[...Array(16)].map((_, idx) => (
                   <div key={idx} className="flex flex-col gap-2">
-                    <div className="relative h-3 w-full rounded bg-gray-200 overflow-hidden">
-                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    <div className="relative h-3 w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
-                    <div className="relative h-5 w-full rounded bg-gray-200 overflow-hidden">
-                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    <div className="relative h-5 w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
                   </div>
                 ))}
                 <div className="flex items-center justify-center ml-4">
-                  <div className="relative h-5 w-5 rounded-full bg-gray-200 overflow-hidden">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                  <div className="relative h-5 w-5 rounded-full bg-gray-200 overflow-hidden animate-pulse duration-75">
+                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                   </div>
                 </div>
               </div>
@@ -497,19 +497,19 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
               {[...Array(5)].map((_, cardIdx) => (
                 <div key={cardIdx} className="bg-white rounded-lg p-3 xl:p-4 border border-gray-200 shadow-lg">
                   <div className="flex items-start justify-between mb-3">
-                    <div className="relative h-4 w-24 rounded bg-gray-200 overflow-hidden">
-                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    <div className="relative h-4 w-24 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
-                    <div className="relative h-4 w-4 rounded bg-gray-200 overflow-hidden">
-                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    <div className="relative h-4 w-4 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden">
-                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
-                    <div className="relative h-4 w-3/4 rounded bg-gray-200 overflow-hidden">
-                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                    <div className="relative h-4 w-3/4 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
+                      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
                   </div>
                 </div>
@@ -726,7 +726,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-800 font-medium break-words">
+                <p className="text-xs sm:text-sm text-gray-800 font-medium wrap-break-words">
                   {leg.loadingPlan}
                 </p>
               </div>
@@ -769,7 +769,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600 break-words font-semibold ">
+                <p className="text-xs sm:text-sm text-gray-600 wrap-break-words font-semibold ">
                   {leg.mealPlan}
                 </p>
               </div>
@@ -801,7 +801,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
                   >
                     <span className="text-blue-400">📄</span>
-                    <span className="break-words">{report}</span>
+                    <span className="wrap-break-words">{report}</span>
                   </div>
                 ))}
               </div>
@@ -836,7 +836,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
                   >
                     <span className="text-gray-400">⚠️</span>
-                    <span className="break-words">{alert}</span>
+                    <span className="wrap-break-words">{alert}</span>
                   </div>
                 ))}
               </div>
@@ -865,13 +865,13 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 <div className="space-y-1 text-xs sm:text-sm">
                   <div className="flex items-center gap-2 text-gray-600 font-semibold">
                     <span>🍽️</span>
-                    <span className="break-words">
+                    <span className="wrap-break-words">
                       Meals - {leg.cutOffTimes.meals}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600 font-semibold">
                     <span>📦</span>
-                    <span className="break-words">
+                    <span className="wrap-break-words">
                       Commissary - {leg.cutOffTimes.commissary}
                     </span>
                   </div>

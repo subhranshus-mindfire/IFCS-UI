@@ -36,7 +36,7 @@ const FlightList: React.FC = () => {
 
   return (
     <div className="w-full h-screen flex flex-col bg-bg-secondary font-arial">
-      <Navbar onMenuClick={() => {}} />
+      <Navbar onMenuClick={() => { }} />
       <FlightHeader
         onBack={() => navigate("/dashboard")}
         onAddFlight={handleAddFlight}
@@ -137,37 +137,37 @@ const FlightList: React.FC = () => {
           <tbody>
             {isLoading
               ? [...Array(6)].map((_, idx) => (
-                  <React.Fragment key={`shimmer-${idx}`}>
-                    <tr className="border-b border-border-muted">
-                      {[...Array(13)].map((_, cellIdx) => (
-                        <td
-                          key={cellIdx}
-                          className="py-4 px-3 animate-pulse duration-"
-                        >
-                          <div className="relative h-4 w-20 rounded bg-bg-secondary overflow-hidden">
-                            <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                          </div>
-                        </td>
-                      ))}
-                    </tr>
-                  </React.Fragment>
-                ))
-              : flights.map((pair, idx) => (
-                  <React.Fragment key={idx}>
-                    {pair.map((flight, subIdx) => (
-                      <FlightRow
-                        key={`${idx}-${subIdx}`}
-                        flight={flight}
-                        onShowHistory={handleShowHistory}
-                      />
+                <React.Fragment key={`shimmer-${idx}`}>
+                  <tr className="border-b border-border-muted">
+                    {[...Array(13)].map((_, cellIdx) => (
+                      <td
+                        key={cellIdx}
+                        className="py-4 px-3"
+                      >
+                        <div className="relative h-4 w-20 rounded bg-bg-secondary overflow-hidden animate-pulse duration-75">
+                          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+                        </div>
+                      </td>
                     ))}
-                    {idx < flights.length - 1 && (
-                      <tr>
-                        <td colSpan={13} className="h-7 bg-bg-secondary"></td>
-                      </tr>
-                    )}
-                  </React.Fragment>
-                ))}
+                  </tr>
+                </React.Fragment>
+              ))
+              : flights.map((pair, idx) => (
+                <React.Fragment key={idx}>
+                  {pair.map((flight, subIdx) => (
+                    <FlightRow
+                      key={`${idx}-${subIdx}`}
+                      flight={flight}
+                      onShowHistory={handleShowHistory}
+                    />
+                  ))}
+                  {idx < flights.length - 1 && (
+                    <tr>
+                      <td colSpan={13} className="h-7 bg-bg-secondary"></td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))}
           </tbody>
         </table>
       </div>

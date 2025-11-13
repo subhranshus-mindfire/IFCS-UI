@@ -116,7 +116,7 @@ const FlightLabels = () => {
         {isLoading ? (
           [...Array(2)].map((_, idx) => (
             <div key={idx} className="flex-1">
-              <div className="relative h-10 rounded-full bg-gray-200 overflow-hidden">
+              <div className="relative h-10 rounded-full bg-gray-200 overflow-hidden animate-pulse duration-75">
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
               </div>
             </div>
@@ -143,7 +143,7 @@ const FlightLabels = () => {
           {/* OUTBOUND CARD */}
           <div className="bg-white p-5 rounded-2xl border border-bg-secondary">
             {isLoading ? (
-              <div className="relative h-7 w-48 mb-4 rounded bg-gray-200 overflow-hidden">
+              <div className="relative h-7 w-48 mb-4 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
               </div>
             ) : (
@@ -157,12 +157,12 @@ const FlightLabels = () => {
               {isLoading ? (
                 [...Array(4)].map((_, idx) => (
                   <div key={idx}>
-                    <div className="relative h-5 w-24 mb-2 rounded bg-gray-200 overflow-hidden">
+                    <div className="relative h-5 w-24 mb-2 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                       <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
                     <div className="bg-bg-tertiary py-6 rounded-lg">
                       <div className="mx-0 2xl:mx-10">
-                        <div className="relative h-40 rounded-xl bg-gray-200 overflow-hidden">
+                        <div className="relative h-40 rounded-xl bg-gray-200 overflow-hidden animate-pulse duration-75">
                           <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                         </div>
                       </div>
@@ -195,7 +195,7 @@ const FlightLabels = () => {
           {/* INBOUND CARD */}
           <div className="bg-white p-5 rounded-2xl border border-bg-secondary">
             {isLoading ? (
-              <div className="relative h-7 w-48 mb-4 rounded bg-gray-200 overflow-hidden">
+              <div className="relative h-7 w-48 mb-4 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
               </div>
             ) : (
@@ -207,7 +207,7 @@ const FlightLabels = () => {
               {isLoading ? (
                 [...Array(2)].map((_, idx) => (
                   <div key={idx}>
-                    <div className="relative h-5 w-24 mb-2 rounded bg-gray-200 overflow-hidden">
+                    <div className="relative h-5 w-24 mb-2 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                       <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
                     <div className="bg-bg-tertiary py-6 rounded-lg">

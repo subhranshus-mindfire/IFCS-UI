@@ -177,7 +177,7 @@ function FlightFoodOrder() {
                   <tr key={idx} className="border-b border-border-muted">
                     {[...Array(10)].map((_, cellIdx) => (
                       <td key={cellIdx} className="px-3 py-2">
-                        <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden">
+                        <div className="relative h-4 w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                           <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                         </div>
                       </td>

@@ -67,10 +67,10 @@ function FlightDetails() {
         <div className="flex flex-wrap font-rubik gap-4 mt-6">
           {isLoading ? ([...Array(7)].map((_, idx) => (
             <div key={idx} className="flex gap-2">
-              <div className="relative h-4 w-16 rounded bg-gray-200 overflow-hidden">
+              <div className="relative h-4 w-16 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
               </div>
-              <div className="relative h-4 w-24 rounded bg-gray-200 overflow-hidden">
+              <div className="relative h-4 w-24 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                 <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
               </div>
             </div>
@@ -136,7 +136,7 @@ function FlightDetails() {
         </div>
 
         <div className="overflow-x-auto overflow-y-hidden my-6">
-          {isLoading ? <div className="relative h-16 rounded-full bg-gray-200 overflow-hidden">
+          {isLoading ? <div className="relative h-16 rounded-full bg-gray-200 overflow-hidden animate-pulse duration-75">
             <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
           </div> :
             <div className="flex font-roboto items-stretch border rounded-full border-border-muted w-full bg-white">

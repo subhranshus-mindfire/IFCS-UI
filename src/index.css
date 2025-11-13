@@ -15,6 +15,22 @@
 
 @import "tailwindcss";
 
+@layer utilities {
+  .animate-shimmer {
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
 @theme {
   --font-arial: "Arial", sans-serif;
   --font-rubik: "Rubik", sans-serif;
@@ -32,7 +48,10 @@
   --color-text-secondary: #4F4B58;
   --color-text-tertiary: #A09CAB;
   --color-text-muted: #7A7A7A;
-  --color-text-surface: #FFFFFF
+
+  --color-text-surface: #FFFFFF;
+
+
 }
 
 button {

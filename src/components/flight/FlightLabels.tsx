@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import GalleyLabel from "../GalleyLabel";
-import type { Flight } from "../../const/flightData";
+import type { Flight } from "../../types/Flight";
 import PDFModalViewer from "../pdf/PDFModalViewer.tsx";
 
 type PreparationData = {

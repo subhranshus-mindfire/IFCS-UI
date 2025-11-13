@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { flights } from "../../const/flightData";
 import FlightHeader from "../../components/flight/FlightListHeader";
 import { AddFlightModal } from "../../components/flight/AddFlightModal";
 import { FlightHistoryModal } from "../../components/flight/FlightHistoryModal";
@@ -14,12 +13,13 @@ import {
   SeatIcon,
   StatusIcon,
 } from "../../assets/icons";
+import { useFlightStore } from "../../store/flight";
 
 const FlightList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [selectedFlightNumber, setSelectedFlightNumber] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
+  const { flights, isLoading, error, fetchFlights } = useFlightStore();
   const navigate = useNavigate();
   const handleAddFlight = () => setShowAddModal(true);
   const handleShowHistory = (flightNumber: string) => {
@@ -27,12 +27,8 @@ const FlightList: React.FC = () => {
     setShowHistoryModal(true);
   };
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+    fetchFlights();
+  }, [fetchFlights]);
 
   return (
     <div className="w-full h-screen flex flex-col bg-bg-secondary font-arial">
@@ -135,7 +131,7 @@ const FlightList: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {isLoading
+            {isLoading && !error
               ? [...Array(6)].map((_, idx) => (
                 <React.Fragment key={`shimmer-${idx}`}>
                   <tr className="border-b border-border-muted">

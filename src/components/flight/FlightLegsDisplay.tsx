@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCog,
   faPencilAlt,
   faShoppingCart,
   faUsers,
@@ -13,6 +12,7 @@ import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown";
 import Button from "../Button";
 import { Field, FieldLabel, FieldContent } from "../Field";
+import { CogIcon, AirPlaneTakeOffIcon, NoteBookIcon, WarningIcon } from "../../assets/icons";
 
 interface FlightLegData {
   route: string;
@@ -67,10 +67,8 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
   const [editPlanType, setEditPlanType] = useState<
     "loadingPlan" | "mealPlan" | null
   >(null);
-  const [isLoading, setIsLoading] = useState(true); // ADD THIS
-  // ... rest of existing state
+  const [isLoading, setIsLoading] = useState(true);
 
-  // ADD THIS useEffect
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -453,11 +451,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
         )}
         {!isLoading && (
           <div className="relative dropdown-trigger">
-            <FontAwesomeIcon
-              icon={faCog}
-              className="text-red-800 cursor-pointer text-xl hover:text-red-900 transition-colors"
-              onClick={() => toggleDropdown(-1, "main")}
-            />
+            <img src={CogIcon} className="h-6 w-6 cursor-pointer" onClick={() => toggleDropdown(-1, "main")} />
             {openDropdown?.legIndex === -1 && openDropdown?.type === "main" && (
               <Dropdown actions={getMainActions(-1)} />
             )}
@@ -500,7 +494,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     <div className="relative h-4 w-24 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                       <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
-                    <div className="relative h-4 w-4 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
+                    <div className="relative h-5 w-5   cursor-pointer    rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                       <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
                     </div>
                   </div>
@@ -664,21 +658,16 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 <div className="flex items-center justify-center ml-4 relative">
                   {hoveredLeg === index ? (
                     <div className="dropdown-trigger">
-                      <FontAwesomeIcon
-                        icon={faCog}
-                        className="text-red-800 text-xl cursor-pointer hover:text-red-900 transition-colors"
-                        onClick={() => toggleDropdown(index, "main")}
-                      />
+                      <img src={CogIcon} className="h-6 w-6 cursor-pointer" onClick={() => toggleDropdown(index, "main")} />
+
                       {openDropdown?.legIndex === index &&
                         openDropdown?.type === "main" && (
                           <Dropdown actions={getMainActions(index)} />
                         )}
                     </div>
                   ) : (
-                    <FontAwesomeIcon
-                      icon={faPlaneDeparture}
-                      className="text-lg text-red-900"
-                    />
+                    <img src={AirPlaneTakeOffIcon} className="h-6 w-6 cursor-pointer" />
+
                   )}
                 </div>
               </div>
@@ -693,16 +682,13 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Loading Plan
                   </h3>
                   <div className="relative dropdown-trigger">
-                    <FontAwesomeIcon
-                      icon={faCog}
-                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                      onClick={() => toggleDropdown(index, "loadingPlan")}
-                    />
+                    <img src={CogIcon} className="h-5 w-5   cursor-pointer   " onClick={() => toggleDropdown(index, "loadingPlan")} />
+
                     {openDropdown?.legIndex === index &&
                       openDropdown?.type === "loadingPlan" && (
                         <Dropdown
                           actions={getPlanCardActions("loadingPlan", index)}
-                          width="w-32"
+                          width="w-35"
                         />
                       )}
                     {openDropdown?.legIndex === index &&
@@ -736,16 +722,13 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-xs sm:text-sm text-gray-700">Meal Plan</h3>
                   <div className="relative dropdown-trigger">
-                    <FontAwesomeIcon
-                      icon={faCog}
-                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                      onClick={() => toggleDropdown(index, "mealPlan")}
-                    />
+                    <img src={CogIcon} className="h-5 w-5   cursor-pointer   " onClick={() => toggleDropdown(index, "mealPlan")} />
+
                     {openDropdown?.legIndex === index &&
                       openDropdown?.type === "mealPlan" && (
                         <Dropdown
                           actions={getPlanCardActions("mealPlan", index)}
-                          width="w-32"
+                          width="w-35"
                         />
                       )}
                     {openDropdown?.legIndex === index &&
@@ -781,16 +764,13 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Crew Flight Reports
                   </h3>
                   <div className="relative dropdown-trigger">
-                    <FontAwesomeIcon
-                      icon={faCog}
-                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                      onClick={() => toggleDropdown(index, "crewFlightReports")}
-                    />
+                    <img src={CogIcon} className="h-5 w-5   cursor-pointer   " onClick={() => toggleDropdown(index, "crewFlightReports")} />
+
                     {openDropdown?.legIndex === index &&
                       openDropdown?.type === "crewFlightReports" && (
                         <Dropdown
                           actions={getViewAllAction("Crew Flight Reports", index)}
-                          width="w-32"
+                          width="w-35"
                         />
                       )}
                   </div>
@@ -800,7 +780,8 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     key={idx}
                     className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
                   >
-                    <span className="text-blue-400">📄</span>
+                    <span className="text-blue-400"> <img src={NoteBookIcon} className="h-4 w-4 " />
+                    </span>
                     <span className="wrap-break-words">{report}</span>
                   </div>
                 ))}
@@ -813,11 +794,8 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Alerts/Messages/Memos
                   </h3>
                   <div className="relative dropdown-trigger">
-                    <FontAwesomeIcon
-                      icon={faCog}
-                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                      onClick={() => toggleDropdown(index, "alerts")}
-                    />
+                    <img src={CogIcon} className="h-5 w-5   cursor-pointer   " onClick={() => toggleDropdown(index, "alerts")} />
+
                     {openDropdown?.legIndex === index &&
                       openDropdown?.type === "alerts" && (
                         <Dropdown
@@ -825,7 +803,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                             "Alerts/Messages/Memos",
                             index
                           )}
-                          width="w-32"
+                          width="w-35"
                         />
                       )}
                   </div>
@@ -835,7 +813,8 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     key={idx}
                     className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
                   >
-                    <span className="text-gray-400">⚠️</span>
+                    <span className="text-gray-400"> <img src={WarningIcon} className="h-4 w-4 " />
+                    </span>
                     <span className="wrap-break-words">{alert}</span>
                   </div>
                 ))}
@@ -848,16 +827,12 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Cut Off Times
                   </h3>
                   <div className="relative dropdown-trigger">
-                    <FontAwesomeIcon
-                      icon={faCog}
-                      className="text-red-800 cursor-pointer text-xs sm:text-sm"
-                      onClick={() => toggleDropdown(index, "cutOffTimes")}
-                    />
+                    <img src={CogIcon} className="h-5 w-5   cursor-pointer   " onClick={() => toggleDropdown(index, "cutOffTimes")} />
                     {openDropdown?.legIndex === index &&
                       openDropdown?.type === "cutOffTimes" && (
                         <Dropdown
                           actions={getViewAllAction("Cut Off Times", index)}
-                          width="w-32"
+                          width="w-35"
                         />
                       )}
                   </div>

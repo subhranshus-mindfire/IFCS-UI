@@ -1,15 +1,5 @@
 import {
-  faClipboardList,
-  faUtensils,
-  faExclamationTriangle,
   faCog,
-  faCheckCircle,
-  faBox,
-  faMagnifyingGlass,
-  faLock,
-  faWrench,
-  faComment,
-  faFileAlt,
   faEye,
   faHistory,
   faPen,
@@ -20,7 +10,19 @@ import { useNavigate } from "react-router-dom";
 import type { Flight } from "../../const/flightData";
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../Dropdown";
-import { SeatIcon } from "../../assets/icons";
+import {
+  CheckCircleIcon,
+  ClipboardTextIcon,
+  ForkKnifeIcon,
+  GuardIcon,
+  LassoIcon,
+  LockKeyIcon,
+  PackageSealedIcon,
+  ReceiptIcon,
+  SeatIcon,
+  SignatureIcon,
+  WarningIcon,
+} from "../../assets/icons";
 
 interface FlightRowProps {
   flight: Flight;
@@ -85,20 +87,20 @@ export const FlightRow: React.FC<FlightRowProps> = ({
   }, []);
 
   const getStatusColor = (status: string) => {
-    if (status.toLowerCase() === "actual") return "text-blue-500";
-    if (status.toLowerCase() === "scheduled") return "text-gray-500";
-    return "text-gray-800";
+    if (status.toLowerCase() === "actual") return "text-bg-button";
+    if (status.toLowerCase() === "scheduled") return "text-text-tertiary";
+    return "text-text-primary";
   };
 
   const TimePopover = () => (
     <div
       ref={popoverRef}
-      className="absolute z-20 w-78 bg-white shadow-lg rounded-md border border-gray-200 p-4 top-full mt-2 left-1/2 -translate-x-1/2"
+      className="absolute z-20 w-78 bg-bg-surface shadow-lg rounded-md border border-border-muted p-4 top-full mt-2 left-1/2 -translate-x-1/2"
       onClick={(e) => e.stopPropagation()}
     >
       <table className="w-full text-sm text-left border-collapse">
         <thead>
-          <tr className="text-gray-800">
+          <tr className="text-text-primary">
             <th className="py-1 font-bold"></th>
             <th className="py-1 px-2 font-bold text-center">Scheduled</th>
             <th className="py-1 px-2 font-bold text-center">Estimated</th>
@@ -106,7 +108,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           </tr>
         </thead>
         <tbody>
-          <tr className="text-gray-800">
+          <tr className="text-text-secondary">
             <td className="py-1 font-bold">Departure</td>
             <td className="py-1 px-2 font-medium text-center">
               {flight.departure}
@@ -114,7 +116,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
             <td className="py-1 px-2 font-medium text-center"></td>
             <td className="py-1 px-2 font-medium text-center"></td>
           </tr>
-          <tr className="text-gray-800">
+          <tr className="text-text-secondary">
             <td className="py-1 font-bold">Arrival</td>
             <td className="py-1 px-2 font-medium text-center">
               {flight.arrival}
@@ -130,33 +132,41 @@ export const FlightRow: React.FC<FlightRowProps> = ({
   const PaxPopover = () => (
     <div
       ref={popoverRef}
-      className="absolute z-20 w-64 bg-white shadow-lg rounded-md border border-gray-200 p-4 top-full mt-2 left-1/2 -translate-x-1/2"
+      className="absolute z-20 w-64 bg-bg-surface shadow-lg rounded-md border border-border-muted p-4 top-full mt-2 left-1/2 -translate-x-1/2"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="flex flex-col gap-2 text-sm text-gray-800">
-        <h3 className="font-bold text-lg text-black">Passenger Count</h3>
+      <div className="flex flex-col gap-2 text-sm text-text-secondary">
+        <h3 className="font-bold text-lg text-text-primary">Passenger Count</h3>
         <div className="flex justify-between mt-2">
           <span>Business Studio</span>
-          <span className="font-medium text-black">{flight.pax.business}</span>
+          <span className="font-medium text-text-primary">
+            {flight.pax.business}
+          </span>
         </div>
         <div className="flex justify-between">
           <span>Business</span>
-          <span className="font-medium text-black">{flight.pax.first}</span>
+          <span className="font-medium text-text-primary">
+            {flight.pax.first}
+          </span>
         </div>
         <div className="flex justify-between">
           <span>Economy</span>
-          <span className="font-medium text-black">{flight.pax.economy}</span>
+          <span className="font-medium text-text-primary">
+            {flight.pax.economy}
+          </span>
         </div>
         <div className="flex justify-between">
           <span>Crew</span>
-          <span className="font-medium text-black">{flight.pax.premium}</span>
+          <span className="font-medium text-text-primary">
+            {flight.pax.premium}
+          </span>
         </div>
       </div>
     </div>
   );
 
   return (
-    <tr className="border-b border-gray-300 hover:bg-gray-50 text-sm bg-white font-arial">
+    <tr className="border-b border-border-muted hover:bg-bg-accent/20 text-sm bg-bg-surface font-arial">
       <td className="text-center py-2 px-3">
         <img
           src={logoUrl}
@@ -164,14 +174,16 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           className="h-7 w-7 mx-auto"
         />
       </td>
-      <td className="text-left font-sm py-2 px-0">{flight.route}</td>
-      <td className="text-left text-lg font-bold text-black py-2 px-3">
+      <td className="text-left font-sm py-2 px-0 text-text-secondary">
+        {flight.route}
+      </td>
+      <td className="text-left text-lg font-bold text-text-primary py-2 px-3">
         {flight.flightNumber}
       </td>
-      <td className="text-left font-semibold text-lg py-2 px-3">
+      <td className="text-left font-semibold text-lg py-2 px-3 text-text-primary">
         {flight.type}
       </td>
-      <td className="text-left font-semibold text-lg py-2 px-3">
+      <td className="text-left font-semibold text-lg py-2 px-3 text-text-secondary">
         {flight.date}
       </td>
 
@@ -187,8 +199,10 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         >
           {flight.departureType}
         </div>
-        <div className="font-bold text-lg">{flight.departure}</div>
-        <div className="text-blue-500 font-semibold text-sm">
+        <div className="font-bold text-lg text-text-primary">
+          {flight.departure}
+        </div>
+        <div className="text-bg-button font-semibold text-sm">
           {flight.depStation}
         </div>
         {activePopover === "departure" && <TimePopover />}
@@ -204,8 +218,10 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         >
           {flight.arrivalType}
         </div>
-        <div className="font-bold text-lg">{flight.arrival}</div>
-        <div className="text-blue-500 font-semibold text-sm">
+        <div className="font-bold text-lg text-text-primary">
+          {flight.arrival}
+        </div>
+        <div className="text-bg-button font-semibold text-sm">
           {flight.arrStation}
         </div>
         {activePopover === "arrival" && <TimePopover />}
@@ -217,11 +233,11 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         </span>
       </td>
       <td className="text-center py-2 px-3 text-sm">
-        <div className="font-medium">{flight.acType}</div>
-        <div className="text-gray-600">{flight.acReg}</div>
+        <div className="font-medium text-text-primary">{flight.acType}</div>
+        <div className="text-text-tertiary">{flight.acReg}</div>
       </td>
-      <td className="text-center py-2 px-3 text-2xl font-medium">6:66</td>
-      <td className="py-2 px-3 text-sm text-gray-700 leading-tight">
+      {/* Removed the 'Ground Time' column's cell */}
+      <td className="py-2 px-3 text-sm text-text-secondary leading-tight">
         {flight.plan && <div className="mb-1">📄 {flight.plan}</div>}
         {flight.mealPlan && <div>{flight.mealPlan}</div>}
         {!flight.mealPlan && <div className="text-red-500">no meal plan</div>}
@@ -234,36 +250,53 @@ export const FlightRow: React.FC<FlightRowProps> = ({
       >
         <div className="flex flex-col items-center justify-center gap-1">
           <img src={SeatIcon} />
-          <span className="font-bold text-base">{flight.paxTotal}</span>
+          <span className="font-bold text-base text-text-primary">
+            {flight.paxTotal}
+          </span>
         </div>
         {activePopover === "paxTotal" && <PaxPopover />}
       </td>
 
-      {/* --- PAX Cabins Cell --- */}
+      {/* --- PAX Cabins Cell with Grid Borders --- */}
       <td
         ref={paxCabinsTriggerRef}
         onClick={() => handlePopover("paxCabins")}
-        className="py-2 px-3 text-sm text-gray-700 relative cursor-pointer"
+        className="py-2 px-3 text-sm text-text-secondary relative cursor-pointer"
       >
-        <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-left">
-          <div>
-            <span className="text-left text-gray-900">Business Studio</span>
-            <span className="text-left font-medium">
+        <div className="grid grid-cols-2 text-left border border-border-muted">
+          {/* Top-Left */}
+          <div className="py-1 px-1 border-b border-r border-border-muted">
+            <span className="text-left text-text-secondary">
+              Business Studio
+            </span>
+            <span className="text-left font-medium text-text-primary">
               {" "}
               {flight.pax.business}
             </span>
           </div>
-          <div>
-            <span className="text-left text-gray-900">Economy</span>
-            <span className="text-left font-medium"> {flight.pax.economy}</span>
+          {/* Top-Right */}
+          <div className="py-1 px-1 border-b border-border-muted">
+            <span className="text-left text-text-secondary">Economy</span>
+            <span className="text-left font-medium text-text-primary">
+              {" "}
+              {flight.pax.economy}
+            </span>
           </div>
-          <div>
-            <span className="text-left text-gray-900">Business</span>
-            <span className="text-left font-medium"> {flight.pax.first}</span>
+          {/* Bottom-Left */}
+          <div className="py-1 px-1 border-r border-border-muted">
+            <span className="text-left text-text-secondary">Business</span>
+            <span className="text-left font-medium text-text-primary">
+              {" "}
+              {flight.pax.first}
+            </span>
           </div>
-          <div>
-            <span className="text-left text-gray-900">Crew</span>
-            <span className="text-left font-medium"> {flight.pax.premium}</span>
+          {/* Bottom-Right */}
+          <div className="py-1 px-1">
+            <span className="text-left text-text-secondary">Crew</span>
+            <span className="text-left font-medium text-text-primary">
+              {" "}
+              {flight.pax.premium}
+            </span>
           </div>
         </div>
         {activePopover === "paxCabins" && <PaxPopover />}
@@ -271,48 +304,17 @@ export const FlightRow: React.FC<FlightRowProps> = ({
 
       {/* --- Actions Cell --- */}
       <td className="py-2 px-3 text-base">
-        <div className="flex items-center justify-end pe-2 gap-3 text-gray-400">
-          {/* FIX: Re-added all icons */}
-          <FontAwesomeIcon
-            icon={faExclamationTriangle}
-            className="hover:text-yellow-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faUtensils}
-            className="hover:text-green-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faClipboardList}
-            className="hover:text-blue-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            className="hover:text-purple-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faBox}
-            className="hover:text-orange-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faLock}
-            className="hover:text-red-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faCheckCircle}
-            className="hover:text-green-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faWrench}
-            className="hover:text-blue-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faComment}
-            className="hover:text-purple-500 cursor-pointer"
-          />
-          <FontAwesomeIcon
-            icon={faFileAlt}
-            className="hover:text-gray-600 cursor-pointer"
-          />
+        <div className="flex items-center justify-end pe-2 gap-3 text-text-tertiary">
+          <img src={WarningIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={ForkKnifeIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={ClipboardTextIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={GuardIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={PackageSealedIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={LockKeyIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={CheckCircleIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={LassoIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={SignatureIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={ReceiptIcon} className="h-4 w-4 cursor-pointer" />
           <div className="relative inline-block" ref={menuRef}>
             <FontAwesomeIcon
               icon={faCog}

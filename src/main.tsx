@@ -1,13 +1,23 @@
-import { StrictMode, Suspense } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.tsx";
-import "../src/i18next.ts";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import './index.css'
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Suspense fallback={<div>Loading...</div>}>
+async function enableMocking() {
+  if (import.meta.env.DEV) {
+    const { worker } = await import('./mocks/browser')
+    await worker.start({
+      onUnhandledRequest: 'bypass',
+    })
+    console.log('%c[MSW] Mock API enabled', 'color: #66cdaa')
+  }
+}
+
+enableMocking().then(() => {
+  const root = ReactDOM.createRoot(document.getElementById('root')!)
+  root.render(
+    <React.StrictMode>
       <App />
-    </Suspense>
-  </StrictMode>
-);
+    </React.StrictMode>
+  )
+})

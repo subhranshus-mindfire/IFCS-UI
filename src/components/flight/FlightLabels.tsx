@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import GalleyLabel from "../GalleyLabel";
 import type { Flight } from "../../const/flightData";
+import PDFModalViewer from "../pdf/PDFModalViewer.tsx";
 
 type PreparationData = {
   stowage: string;
   carrier: string;
   equipment: string;
   preparedBy: string;
+  pdfUrl: string;
 };
-
 
 const FlightLabels = () => {
   const [activeTab, setActiveTab] = useState("LABELS");
@@ -21,7 +22,6 @@ const FlightLabels = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // ✅ Modal state
   const [selectedLabel, setSelectedLabel] = useState<null | {
     preparation: PreparationData;
     flight: Flight;
@@ -49,33 +49,69 @@ const FlightLabels = () => {
     arrivalType: "scheduled",
   };
 
-  const outboundGroups = {
+  const outboundGroups: Record<string, PreparationData[]> = {
     Commissary: [
-      { stowage: "1202A", carrier: "PURSER KIT", equipment: "Commissary", preparedBy: "John Doe" },
+      {
+        stowage: "1202A",
+        carrier: "PURSER KIT",
+        equipment: "Commissary",
+        preparedBy: "John Doe",
+        pdfUrl: "/pdfs/purser-kit.pdf"
+      },
     ],
     "Duty Free": [
-      { stowage: "5202F", carrier: "HHC", equipment: "Duty Free", preparedBy: "John Doe" },
+      {
+        stowage: "5202F",
+        carrier: "HHC",
+        equipment: "Duty Free",
+        preparedBy: "John Doe",
+        pdfUrl: "/pdfs/hhc-dutyfree.pdf"
+      },
     ],
     Meals: [
-      { stowage: "1201F", carrier: "PILOT TSU / SNX OB", equipment: "Meals", preparedBy: "John Doe" },
+      {
+        stowage: "1201F",
+        carrier: "PILOT TSU / SNX OB",
+        equipment: "Meals",
+        preparedBy: "John Doe",
+        pdfUrl: "/pdfs/pilot-meals.pdf"
+      },
     ],
     Kitchen: [
-      { stowage: "1203F", carrier: "CLUB DAIRY EUROPE", equipment: "Kitchen", preparedBy: "John Doe" },
+      {
+        stowage: "1203F",
+        carrier: "CLUB DAIRY EUROPE",
+        equipment: "Kitchen",
+        preparedBy: "John Doe",
+        pdfUrl: "/pdfs/kitchen-europe.pdf"
+      },
     ],
   };
 
-  const inboundGroups = {
+  const inboundGroups: Record<string, PreparationData[]> = {
     Title: [
-      { stowage: "1202", carrier: "PURSER KIT", equipment: "Title", preparedBy: "John Doe" },
+      {
+        stowage: "1202",
+        carrier: "PURSER KIT",
+        equipment: "Title",
+        preparedBy: "John Doe",
+        pdfUrl: "../../assets/pdfs/WY407_11_06_2025_Tray Set Up_IB.pdf"
+      },
     ],
     Meals: [
-      { stowage: "1201F", carrier: "PILOT TSU / SNX OB", equipment: "Meals", preparedBy: "John Doe" },
+      {
+        stowage: "1201F",
+        carrier: "PILOT TSU / SNX OB",
+        equipment: "Meals",
+        preparedBy: "John Doe",
+        pdfUrl: "/pdfs/inbound-meals.pdf"
+      },
     ],
   };
 
   return (
     <div className="min-h-screen font-rubik">
-      {/* ✅ Top Tabs */}
+
       <div className="flex gap-2 mb-6 bg-bg-secondary p-1 rounded-full w-full">
         {isLoading ? (
           [...Array(2)].map((_, idx) => (
@@ -103,7 +139,8 @@ const FlightLabels = () => {
 
       {activeTab === "LABELS" && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* ✅ OUTBOUND LABELS CARD */}
+
+          {/* OUTBOUND CARD */}
           <div className="bg-white p-5 rounded-2xl border border-bg-secondary">
             {isLoading ? (
               <div className="relative h-7 w-48 mb-4 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
@@ -155,7 +192,7 @@ const FlightLabels = () => {
             </div>
           </div>
 
-          {/* ✅ INBOUND LABELS CARD */}
+          {/* INBOUND CARD */}
           <div className="bg-white p-5 rounded-2xl border border-bg-secondary">
             {isLoading ? (
               <div className="relative h-7 w-48 mb-4 rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
@@ -204,6 +241,7 @@ const FlightLabels = () => {
                 )))}
             </div>
           </div>
+
         </div>
       )}
 
@@ -214,26 +252,12 @@ const FlightLabels = () => {
         </div>
       )}
 
-      {/* ✅ MODAL */}
+      {/* MODAL */}
       {selectedLabel && (
-        <div className="fixed inset-0 bg-[rgb(0,0,0,0.5)] backdrop-blur-sm flex justify-center items-center z-50 p-6">
-          <div className="bg-white rounded-2xl shadow-2xl p-10 w-fit relative animate-[fadeIn_0.2s_ease]">
-
-            {/* ✅ Close button */}
-            <button
-              onClick={() => setSelectedLabel(null)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl"
-            >
-              ✖
-            </button>
-
-            {/* ✅ Full Galley Label Preview */}
-            <GalleyLabel
-              preparation={selectedLabel.preparation}
-              flight={selectedLabel.flight}
-            />
-          </div>
-        </div>
+        <PDFModalViewer
+          file={selectedLabel.preparation.pdfUrl}
+          onClose={() => setSelectedLabel(null)}
+        />
       )}
     </div>
   );

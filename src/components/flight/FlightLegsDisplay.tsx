@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown";
 import Button from "../Button";
 import { Field, FieldLabel, FieldContent } from "../Field";
-import { CogIcon, AirPlaneTakeOffIcon, NoteBookIcon, WarningIcon, ForkKnifeIcon, DatabaseIcon } from "../../assets/icons";
+import { CogIcon, NoteBookIcon, WarningIcon, ForkKnifeIcon, DatabaseIcon, AirplaneIcon } from "../../assets/icons";
 
 interface FlightLegData {
   route: string;
@@ -513,13 +513,13 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
         legs.map((leg, index) => (
           <div
             key={index}
-            className="bg-gray-50 rounded-xl shadow hover:border hover:border-gray-300 lg:min-w-0"
+            className=" rounded-xl shadow border border-gray-200 hover:border-2 lg:min-w-0"
             onMouseEnter={() => setHoveredLeg(index)}
             onMouseLeave={() => setHoveredLeg(null)}
           >
             {/* Flight Header Row */}
             <div className="flex justify-between px-2 sm:px-4 py-3">
-              <div className="flex gap-4 xl:gap-12 items-center text-xs xl:text-base overflow-x-auto">
+              <div className="flex gap-4 xl:gap-9 items-center text-xs xl:text-base overflow-x-auto">
                 <div className="flex flex-col">
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Route
@@ -532,7 +532,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Flight #
                   </span>
-                  <div className="text-sm xl:text-xl text-gray-600 font-semibold">
+                  <div className="text-sm xl:text-xl text-gray-600 font-medium">
                     {leg.flightNumber}
                   </div>
                 </div>
@@ -548,7 +548,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Date
                   </span>
-                  <div className="text-sm xl:text-xl text-gray-600 font-semibold">
+                  <div className="text-sm xl:text-xl text-gray-600 font-medium">
                     {leg.date}
                   </div>
                 </div>
@@ -556,7 +556,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     DEP Time
                   </span>
-                  <div className="text-sm xl:text-xl text-gray-600 font-semibold">
+                  <div className="text-sm xl:text-xl text-gray-600 font-medium">
                     {leg.depTime}
                   </div>
                 </div>
@@ -608,7 +608,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     {leg.economy}
                   </div>
                 </div>
-                {/* <div className="flex flex-col hidden">
+                <div className="flex flex-col">
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Crew
                   </span>
@@ -616,7 +616,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     {leg.crew}
                   </div>
                 </div>
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Child
                   </span>
@@ -655,7 +655,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 ) : (
-                  <img src={AirPlaneTakeOffIcon} className="h-6 w-6 cursor-pointer" />
+                  <img src={AirplaneIcon} className="h-6 w-6 cursor-pointer" />
 
                 )}
               </div>

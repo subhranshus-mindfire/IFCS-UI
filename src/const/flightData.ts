@@ -8,7 +8,7 @@ export const flights: Flight[][] = [
       route: "MCT-MNL-MCT",
       flightNumber: "WY843",
       type: "J",
-      date: "Nov 14",
+      date: "14 Nov 2025",
       departure: "09:10",
       arrival: "21:37",
       depStation: "MCT",
@@ -28,13 +28,14 @@ export const flights: Flight[][] = [
       },
       departureType: "scheduled",
       arrivalType: "scheduled",
+      client: "Oman Air"
     },
     {
       airlineCode: "WY",
       route: "MCT-MNL-MCT",
       flightNumber: "WY844",
       type: "J",
-      date: "Nov 15",
+      date: "15 Nov 2025",
       departure: "07:15",
       arrival: "12:00",
       depStation: "MNL",
@@ -54,6 +55,7 @@ export const flights: Flight[][] = [
       },
       departureType: "scheduled",
       arrivalType: "scheduled",
+      client: "Oman Air"
     },
   ],
   [
@@ -62,7 +64,7 @@ export const flights: Flight[][] = [
       route: "MCT-KUL-MCT",
       flightNumber: "WY821",
       type: "J",
-      date: "Nov 14",
+      date: "14 Nov 2025",
       departure: "22:32",
       arrival: "09:16",
       depStation: "MCT",
@@ -82,13 +84,14 @@ export const flights: Flight[][] = [
       },
       departureType: "scheduled",
       arrivalType: "scheduled",
+      client: "Oman Air"
     },
     {
       airlineCode: "WY",
       route: "MCT-KUL-MCT",
       flightNumber: "WY822",
       type: "J",
-      date: "Nov 15",
+      date: "15 Nov 2025",
       departure: "09:25",
       arrival: "12:10",
       depStation: "KUL",
@@ -108,6 +111,7 @@ export const flights: Flight[][] = [
       },
       departureType: "scheduled",
       arrivalType: "scheduled",
+      client: "Oman Air"
     },
   ],
   [
@@ -116,7 +120,7 @@ export const flights: Flight[][] = [
       route: "MCT-CAI-MCT",
       flightNumber: "WY407",
       type: "J",
-      date: "Nov 14",
+      date: "14 Nov 2025",
       departure: "22:38",
       arrival: "00:45",
       depStation: "MCT",
@@ -136,13 +140,14 @@ export const flights: Flight[][] = [
       },
       departureType: "scheduled",
       arrivalType: "scheduled",
+      client: "Oman Air"
     },
     {
       airlineCode: "WY",
       route: "MCT-CAI-MCT",
       flightNumber: "WY408",
       type: "J",
-      date: "Nov 15",
+      date: "15 Nov 2025",
       departure: "02:10",
       arrival: "07:00",
       depStation: "CAI",
@@ -162,6 +167,7 @@ export const flights: Flight[][] = [
       },
       departureType: "scheduled",
       arrivalType: "scheduled",
+      client: "Oman Air"
     },
   ],
   [
@@ -170,7 +176,7 @@ export const flights: Flight[][] = [
       route: "MCT-BKK-MCT",
       flightNumber: "WY817",
       type: "J",
-      date: "Nov 14",
+      date: "14 Nov 2025",
       departure: "22:12",
       arrival: "06:43",
       depStation: "MCT",
@@ -190,13 +196,14 @@ export const flights: Flight[][] = [
       },
       departureType: "scheduled",
       arrivalType: "scheduled",
+      client: "Oman Air"
     },
     {
       airlineCode: "WY",
       route: "MCT-BKK-MCT",
       flightNumber: "WY818",
       type: "J",
-      date: "Nov 15",
+      date: "15 Nov 2025",
       departure: "09:00",
       arrival: "12:10",
       depStation: "BKK",
@@ -216,6 +223,7 @@ export const flights: Flight[][] = [
       },
       departureType: "scheduled",
       arrivalType: "scheduled",
+      client: "Oman Air"
     },
   ],
 ];

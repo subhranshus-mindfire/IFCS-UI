@@ -17,20 +17,21 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
             // Filter the flights based on the filters
             let filteredFlights = flights;
             if (filters) {
-                // Filter by date if provided
                 if (filters.date) {
                     filteredFlights = filteredFlights.filter(pair =>
                         pair.some(flight => {
-                            // Convert flight date format "Nov 03" to match filter format "YYYY-MM-DD"
-                            const [month, day] = flight.date.split(' ');
+                            // flight.date = "14 Nov 2025"
+                            const [day, month, year] = flight.date.split(' ');
+
                             const monthMap: { [key: string]: string } = {
-                                'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04',
-                                'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08',
-                                'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
+                                Jan: "01", Feb: "02", Mar: "03", Apr: "04",
+                                May: "05", Jun: "06", Jul: "07", Aug: "08",
+                                Sep: "09", Oct: "10", Nov: "11", Dec: "12",
                             };
-                            const year = new Date().getFullYear();
-                            const flightDate = `${year}-${monthMap[month]}-${day}`;
-                            return flightDate === filters.date;
+
+                            const flightDate = `${year}-${monthMap[month]}-${day.padStart(2, "0")}`;
+
+                            return flightDate === filters.date;  // filters.date = "2025-11-14"
                         })
                     );
                 }
@@ -47,10 +48,10 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
                 }
 
                 // Filter by flight number if provided
-                if (filters.flight) {
+                if (filters.flightNumber) {
                     filteredFlights = filteredFlights.filter(pair =>
                         pair.some(flight =>
-                            flight.flightNumber?.toLowerCase().includes(filters.flight!.toLowerCase())
+                            flight.flightNumber?.toLowerCase().includes(filters.flightNumber!.toLowerCase())
                         )
                     );
                 }

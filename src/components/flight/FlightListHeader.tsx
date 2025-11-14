@@ -72,8 +72,8 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
 
               <input
                 type="text"
-                value={currentFilters.flight || ""}
-                onChange={(e) => onFilterChange("flight", e.target.value)}
+                value={currentFilters.flightNumber || ""}
+                onChange={(e) => onFilterChange("flightNumber", e.target.value)}
                 placeholder="Flight"
                 className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-28 focus:outline-none  focus:border-bg-button placeholder-gray-400"
               />

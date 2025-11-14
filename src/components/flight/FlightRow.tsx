@@ -6,7 +6,6 @@ import {
   ClipboardTextIcon,
   ForkKnifeIcon,
   GuardIcon,
-  LassoIcon,
   LockKeyIcon,
   PackageSealedIcon,
   ReceiptIcon,
@@ -16,18 +15,27 @@ import {
   CogIcon,
   DetailIcon,
   EditIcon,
-  HistoryIcon
+  HistoryIcon,
+  ThermometerIcon,
+  TruckIcon
 } from "../../assets/icons";
 import type { Flight } from "../../types/Flight";
+import { Tooltip } from "../common/Tooltip";
 
 interface FlightRowProps {
   flight: Flight;
   onShowHistory: (flightNumber: string) => void;
+  hideRoute?: boolean;
+  isFirstInPair?: boolean;
+  isLastInPair?: boolean;
 }
 
 export const FlightRow: React.FC<FlightRowProps> = ({
   flight,
   onShowHistory,
+  hideRoute = false,
+  isFirstInPair = false,
+  isLastInPair = false,
 }) => {
   const logoUrl = `https://content.airhex.com/content/logos/airlines_${flight.airlineCode}_100_100_s.png`;
 
@@ -163,7 +171,10 @@ export const FlightRow: React.FC<FlightRowProps> = ({
   );
 
   return (
-    <tr className="border-b border-border-muted hover:bg-bg-accent/20 text-sm bg-bg-surface font-arial">
+    // <tr className="border-b border-border-muted hover:bg-bg-accent/20 text-sm bg-bg-surface font-arial">
+    <tr className={`border-b border-border-muted hover:bg-bg-accent/20 text-sm bg-bg-surface font-arial relative ${isFirstInPair ? 'shadow-[0_-2px_4px_rgba(0,0,0,0.08)]' : ''
+      } ${isLastInPair ? 'shadow-[0_2px_4px_rgba(0,0,0,0.08)]' : ''
+      }`}>
       <td className="text-center py-2 px-3">
         <img
           src={logoUrl}
@@ -172,7 +183,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         />
       </td>
       <td className="text-left font-sm py-2 px-0 text-text-secondary">
-        {flight.route}
+        {!hideRoute && flight.route}
       </td>
       <td className="text-left text-lg font-bold text-text-primary py-2 px-3">
         {flight.flightNumber}
@@ -308,40 +319,67 @@ export const FlightRow: React.FC<FlightRowProps> = ({
 
       {/* --- Actions Cell --- */}
       <td className="py-2 px-3 text-base">
-        <div className="flex items-center justify-end pe-2 gap-3 text-text-tertiary">
-          <img src={WarningIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
-          <img src={ForkKnifeIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
-          <img src={ClipboardTextIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
-          <img src={GuardIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
-          <img src={PackageSealedIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
-          <img src={LockKeyIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
-          <img src={CheckCircleIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
-          <img src={LassoIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
-          <img src={SignatureIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
-          <img src={ReceiptIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+        <div className="flex items-center justify-end  3xl:justify-between  pe-2 box-border gap-2 xl:gap-3  text-text-tertiary">
+          <img src={WarningIcon} className="h-5 w-5  xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+          <Tooltip text="Meals">
+            <img src={ForkKnifeIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+          </Tooltip>
+
+          <Tooltip text="Build">
+            <img src={PackageSealedIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+
+          </Tooltip>
+
+          <Tooltip text="Seal">
+            <img src={SignatureIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+
+          </Tooltip>
+
+          <Tooltip text="Lock">
+            <img src={LockKeyIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+
+          </Tooltip>
+
+          <Tooltip text="Check">
+            <img src={CheckCircleIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+          </Tooltip>
+
+          <Tooltip text="Temperature">
+            <img src={ThermometerIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+          </Tooltip>
+
+          <Tooltip text="Delivery">
+            <img src={TruckIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+
+          </Tooltip>
+
+          <Tooltip text="Customs">
+            <img src={GuardIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+
+
+          </Tooltip>
+          <img src={ClipboardTextIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+
+
+          <img src={ReceiptIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
           <div className="relative inline-block" ref={menuRef}>
-            {/* <FontAwesomeIcon
-              icon={}
-              className="text-red-500 hover:text-red-700 cursor-pointer"
-              onClick={() => setOpen(!open)}
-            /> */}
-            <img src={CogIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" onClick={() => setOpen(!open)} />
+            <img src={CogIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" onClick={() => setOpen(!open)} />
 
             {open && (
               <Dropdown
                 actions={[
                   {
-                    icon: <img src={DetailIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />,
+                    icon: <img src={DetailIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />,
                     label: "Details",
                     onClick: handleFlightDetails,
                   },
                   {
-                    icon: <img src={EditIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />,
+                    icon: <img src={EditIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />,
                     label: "Edit",
                     onClick: handleFlightDetails,
                   },
                   {
-                    icon: <img src={HistoryIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />,
+                    icon: <img src={HistoryIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />,
                     label: "History",
                     onClick: handleHistory,
                   },

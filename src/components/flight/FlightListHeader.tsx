@@ -53,7 +53,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
         </button>
       </div>
 
-      <div className="bg-bg-surface px-4 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div className="bg-bg-surface px-4 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 md:gap-3 lg:gap-4">
         <div className="flex flex-col gap-3">
           <Breadcrumb
             currentScreen={"Flights"}
@@ -131,28 +131,28 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
         </div>
 
         {/* Stats (responsive grid) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+        <div className="grid grid-cols-4 gap-6">
 
           <div className="text-center">
-            <div className="text-2xl font-bold text-gray-800">{totalFlights}</div>
+            <div className="text-lg md:text-2xl font-bold text-gray-800">{totalFlights}</div>
             <div className="text-xs text-gray-600 font-medium">Flights</div>
             <FontAwesomeIcon icon={faPlane} className="text-blue-400 text-lg mt-1" />
           </div>
 
           <div className="text-center">
-            <div className="text-2xl font-bold text-gray-800">{completeFlights}</div>
+            <div className="text-lg md:text-2xl font-bold text-gray-800">{completeFlights}</div>
             <div className="text-xs text-gray-600 font-medium">Complete</div>
             <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 text-lg mt-1" />
           </div>
 
           <div className="text-center">
-            <div className="text-2xl font-bold text-gray-800">{inProgressFlights}</div>
+            <div className="text-lg md:text-2xl font-bold text-gray-800">{inProgressFlights}</div>
             <div className="text-xs text-gray-600 font-medium">In Progress</div>
             <FontAwesomeIcon icon={faRotateRight} className="text-yellow-500 text-lg mt-1" />
           </div>
 
           <div className="text-center">
-            <div className="text-2xl font-bold text-gray-800">{waitingFlights}</div>
+            <div className="text-lg md:text-2xl font-bold text-gray-800">{waitingFlights}</div>
             <div className="text-xs text-gray-600 font-medium">Waiting</div>
             <FontAwesomeIcon icon={faClock} className="text-blue-400 text-lg mt-1" />
           </div>

@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import Navbar from "../../components/Navbar";
 
 const tabKeys = [
-  "Info",
+  "Flight Info",
   "Preparations",
   "Food Orders",
   "Content Locn",
@@ -60,7 +60,7 @@ function FlightDetails() {
       <Navbar onMenuClick={() => { }} />
       <div className="p-2 sm:p-8">
         <Breadcrumb
-          handleDetailsNav={() => setActiveTab("Info")}
+          handleDetailsNav={() => setActiveTab("Flight Info")}
           currentScreen={activeTab}
         />
 
@@ -213,7 +213,7 @@ function FlightDetails() {
 
         <div className="bg-white rounded-xl mt-3 sm:mt-4 min-w-full min-h-[250px]">
           {/* Use the tab keys for conditional rendering */}
-          {activeTab === "Info" && (
+          {activeTab === "Flight Info" && (
             <FlightLegsDisplay
               legs={[
                 {
@@ -273,7 +273,7 @@ function FlightDetails() {
               ]}
             />
           )}
-          {activeTab !== "Info" && (
+          {activeTab !== "Flight Info" && (
             <div className="flex items-center justify-center w-full h-full">
               <div className="w-full">
                 {activeTab === "Preparations" && <FlightPreparations />}

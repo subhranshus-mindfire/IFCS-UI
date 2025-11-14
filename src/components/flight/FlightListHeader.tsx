@@ -1,16 +1,7 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlane,
-  faCheckCircle,
-  faRotateRight,
-  faClock,
-  faCalendar,
-  faArrowLeft,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumb } from "../BreadCrumb";
 import type { FlightFilters } from "../../types/Flight";
+import { AirPlaneTakeOffThin, CheckCircleIconThin, ClockClockWise, PlayCircleThin, PlusCircle } from "../../assets/icons";
 
 interface FlightHeaderProps {
   totalFlights?: number;
@@ -29,138 +20,141 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
   inProgressFlights = 0,
   waitingFlights = 62,
   onAddFlight,
-  onBack,
   onFilterChange,
   currentFilters,
 }) => {
   return (
-    <div className="flex flex-col w-full border-b border-gray-300">
-      <div className="flex flex-wrap items-center gap-5 bg-red-800 text-white pr-4 py-0">
-        <button
-          onClick={onBack}
-          className="flex items-center h-full gap-2 py-4 px-4 bg-black hover:text-blue-400 transition-colors"
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-          <span className="text-sm font-medium">Back</span>
-        </button>
+    <div className="flex flex-col w-full">
+      <div className="bg-bg-surface px-4 py-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+        <div className="flex flex-col gap-3 flex-1">
+          {/* Breadcrumb and Add Flight Button */}
+          <div className="flex items-center justify-between">
+            <Breadcrumb
+              currentScreen={"Flights"}
+              handleDetailsNav={() => { }}
+            />
+            <button
+              onClick={onAddFlight}
+              className="flex h-8 w-34  items-center  justify-center bg-bg-secondary hover:bg-bg-tertiary gap-2 px-3 py-4.5 border border-border-muted rounded-xl text-sm font-normal text-gray-700  transition-colors"
+            >
+              <img src={PlusCircle} className=" h-5 w-5" />
 
-        <button
-          onClick={onAddFlight}
-          className="flex items-center gap-2 text-white py-1.5 rounded-md text-sm font-medium transition-colors"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          <span>Add Flight</span>
-        </button>
-      </div>
-
-      <div className="bg-bg-surface px-4 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 md:gap-3 lg:gap-4">
-        <div className="flex flex-col gap-3">
-          <Breadcrumb
-            currentScreen={"Flights"}
-            handleDetailsNav={() => { }}
-          />
+              <span>Add Flight</span>
+            </button>
+          </div>
 
           {/* Filters */}
-          <div className="flex flex-wrap items-center gap-1">
+          <div className="flex flex-wrap items-center">
+            <div className="flex flex-wrap items-center gap-2">
+              <select
+                value={currentFilters.station || ""}
+                onChange={(e) => onFilterChange("station", e.target.value)}
+                className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded focus:outline-none  focus:border-bg-button w-28 appearance-none"
+                style={{
+                  backgroundImage: 'none'
+                }}
+              >
+                <option value="">Station</option>
+                <option value="MCT">MCT</option>
+                <option value="MNL">MNL</option>
+                <option value="KUL">KUL</option>
+                <option value="CAI">CAI</option>
+              </select>
 
-            <select
-              value={currentFilters.station || ""}
-              onChange={(e) => onFilterChange("station", e.target.value)}
-              className="px-3 py-1.5 border border-gray-200 bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-1 focus:border-border-accent w-28 sm:w-32"
-            >
-              <option value="">Station</option>
-              <option value="Oman">Oman</option>
-              <option value="Dubai">Dubai</option>
-              <option value="Abu Dhabi">Abu Dhabi</option>
-            </select>
+              <div className="relative w-36">
+                <input
+                  type="date"
+                  value={currentFilters.date || ""}
+                  onChange={(e) => onFilterChange("date", e.target.value)}
+                  className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-full focus:outline-none  focus:border-bg-button"
+                />
+              </div>
 
-            <div className="relative w-36 sm:w-40">
               <input
-                type="date"
-                value={currentFilters.date || ""}
-                onChange={(e) => onFilterChange("date", e.target.value)}
-                className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-600 text-sm rounded w-full focus:outline-none focus:ring-1 focus:border-border-accent appearance-none"
+                type="text"
+                value={currentFilters.flightNumber || ""}
+                onChange={(e) => onFilterChange("flightNumber", e.target.value)}
+                placeholder="Flight"
+                className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-28 focus:outline-none  focus:border-bg-button placeholder-gray-400"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <FontAwesomeIcon icon={faCalendar} color="black" />
-              </span>
+
+              <input
+                type="text"
+                value={currentFilters.acReg || ""}
+                onChange={(e) => onFilterChange("acReg", e.target.value)}
+                placeholder="AC Reg"
+                className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-28 focus:outline-none  focus:border-bg-button placeholder-gray-400"
+              />
+
+              <input
+                type="text"
+                value={currentFilters.acType || ""}
+                onChange={(e) => onFilterChange("acType", e.target.value)}
+                placeholder="AC Type"
+                className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-28 focus:outline-none  focus:border-bg-button placeholder-gray-400"
+              />
+
+              <input
+                type="text"
+                value={currentFilters.route || ""}
+                onChange={(e) => onFilterChange("route", e.target.value)}
+                placeholder="Route"
+                className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-28 focus:outline-none  focus:border-bg-button placeholder-gray-400"
+              />
+
+              <select
+                value={currentFilters.client || ""}
+                onChange={(e) => onFilterChange("client", e.target.value)}
+                className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded focus:outline-none  focus:border-bg-button w-28 appearance-none"
+                style={{
+                  backgroundImage: 'none'
+                }}
+              >
+                <option value="Oman">Oman Air</option>
+                <option value="Dubai">Salam Air</option>
+                <option value="Abu Dhabi">All</option>
+              </select>
             </div>
+            {/* Stats */}
+            <div className="flex items-center gap-8 ml-auto">
+              <div className="flex flex-col items-center">
+                <div className="text-xl font-semibold text-gray-800">{totalFlights}</div>
+                <div className="flex items-center gap-1">
+                  <img src={AirPlaneTakeOffThin} className=" h-5 w-5" />
+                  <div className="text-xs text-gray-600">Flights</div>
+                </div>
+              </div>
 
-            <input
-              type="text"
-              value={currentFilters.flightNumber || ""}
-              onChange={(e) => onFilterChange("flightNumber", e.target.value)}
-              placeholder="Flight"
-              className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-28 sm:w-32 focus:outline-none focus:ring-1 focus:border-border-accent placeholder-gray-500"
-            />
+              <div className="flex flex-col items-center">
+                <div className="text-xl font-semibold text-gray-800">{completeFlights}</div>
+                <div className="flex items-center gap-1">
+                  <img src={CheckCircleIconThin} className=" h-5 w-5" />
+                  <div className="text-xs text-gray-600">Complete</div>
+                </div>
+              </div>
 
-            <input
-              type="text"
-              value={currentFilters.acReg || ""}
-              onChange={(e) => onFilterChange("acReg", e.target.value)}
-              placeholder="AC Reg"
-              className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-28 sm:w-32 focus:outline-none focus:ring-1 focus:border-border-accent placeholder-gray-500"
-            />
+              <div className="flex flex-col items-center">
+                <div className="text-xl font-semibold text-gray-800">{inProgressFlights}</div>
+                <div className="flex items-center gap-1">
+                  <img src={PlayCircleThin} className=" h-5 w-5" />
+                  <div className="text-xs text-gray-600">In Progress</div>
+                </div>
+              </div>
 
-            <input
-              type="text"
-              value={currentFilters.acType || ""}
-              onChange={(e) => onFilterChange("acType", e.target.value)}
-              placeholder="AC Type"
-              className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-28 sm:w-32 focus:outline-none focus:ring-1 focus:border-border-accent placeholder-gray-500"
-            />
-
-            <input
-              type="text"
-              value={currentFilters.route || ""}
-              onChange={(e) => onFilterChange("route", e.target.value)}
-              placeholder="Route"
-              className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-800 text-sm rounded w-28 sm:w-32 focus:outline-none focus:ring-1 focus:border-border-accent placeholder-gray-500"
-            />
-
-            <select
-              value={currentFilters.client || ""}
-              onChange={(e) => onFilterChange("client", e.target.value)}
-              className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-1 focus:border-border-accent w-28 sm:w-32"
-            >
-              <option value="Oman">Oman</option>
-              <option value="Dubai">Dubai</option>
-              <option value="Abu Dhabi">Abu Dhabi</option>
-            </select>
+              <div className="flex flex-col items-center">
+                <div className="text-xl font-semibold text-gray-800">{waitingFlights}</div>
+                <div className="flex items-center gap-1">
+                  <img src={ClockClockWise} className=" h-5 w-5" />
+                  <div className="text-xs text-gray-600">Waiting</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Stats (responsive grid) */}
-        <div className="grid grid-cols-4 gap-6">
 
-          <div className="text-center">
-            <div className="text-lg md:text-2xl font-bold text-gray-800">{totalFlights}</div>
-            <div className="text-xs text-gray-600 font-medium">Flights</div>
-            <FontAwesomeIcon icon={faPlane} className="text-blue-400 text-lg mt-1" />
-          </div>
-
-          <div className="text-center">
-            <div className="text-lg md:text-2xl font-bold text-gray-800">{completeFlights}</div>
-            <div className="text-xs text-gray-600 font-medium">Complete</div>
-            <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 text-lg mt-1" />
-          </div>
-
-          <div className="text-center">
-            <div className="text-lg md:text-2xl font-bold text-gray-800">{inProgressFlights}</div>
-            <div className="text-xs text-gray-600 font-medium">In Progress</div>
-            <FontAwesomeIcon icon={faRotateRight} className="text-yellow-500 text-lg mt-1" />
-          </div>
-
-          <div className="text-center">
-            <div className="text-lg md:text-2xl font-bold text-gray-800">{waitingFlights}</div>
-            <div className="text-xs text-gray-600 font-medium">Waiting</div>
-            <FontAwesomeIcon icon={faClock} className="text-blue-400 text-lg mt-1" />
-          </div>
-
-        </div>
       </div>
     </div>
-
   );
 };
 

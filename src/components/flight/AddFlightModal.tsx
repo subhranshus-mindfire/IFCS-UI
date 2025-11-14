@@ -257,7 +257,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
             {["Cancel", "Save", "Save and Add"].map((btn, i) => (
               <button
                 key={i}
-                onClick={btn === "Cancel" ? onClose : undefined}
+                onClick={btn === "Cancel" ? onClose : onClose}
                 className={`px-6 py-1.5 rounded-xl transition-colors text-sm 
                 bg-gray-200 text-gray-700 hover:bg-gray-300  `}
               >

@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown";
 import Button from "../Button";
 import { Field, FieldLabel, FieldContent } from "../Field";
-import { CogIcon, AirPlaneTakeOffIcon, NoteBookIcon, WarningIcon } from "../../assets/icons";
+import { CogIcon, AirPlaneTakeOffIcon, NoteBookIcon, WarningIcon, ForkKnifeIcon, DatabaseIcon } from "../../assets/icons";
 
 interface FlightLegData {
   route: string;
@@ -513,13 +513,13 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
         legs.map((leg, index) => (
           <div
             key={index}
-            className="bg-gray-50 rounded-xl shadow-lg min-w-[1200px] lg:min-w-0"
+            className="bg-gray-50 rounded-xl shadow hover:border hover:border-gray-300 lg:min-w-0"
             onMouseEnter={() => setHoveredLeg(index)}
             onMouseLeave={() => setHoveredLeg(null)}
           >
             {/* Flight Header Row */}
-            <div className="px-2 sm:px-4 py-3">
-              <div className="grid grid-cols-[repeat(16,minmax(60px,1fr))_auto] xl:grid-cols-[repeat(16,1fr)_auto] gap-1 sm:gap-2 items-center text-xs xl:text-base">
+            <div className="flex justify-between px-2 sm:px-4 py-3">
+              <div className="flex gap-4 xl:gap-12 items-center text-xs xl:text-base overflow-x-auto">
                 <div className="flex flex-col">
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Route
@@ -596,17 +596,6 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Business
                   </span>
-                  <span className="text-[10px] xl:text-xs text-gray-500">
-                    Studio
-                  </span>
-                  <div className="text-sm xl:text-xl text-gray-600">
-                    {leg.businessStudio}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[10px] xl:text-xs text-gray-500">
-                    Business
-                  </span>
                   <div className="text-sm xl:text-xl text-gray-600">
                     {leg.business}
                   </div>
@@ -619,7 +608,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     {leg.economy}
                   </div>
                 </div>
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col hidden">
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Crew
                   </span>
@@ -650,29 +639,30 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   <div className="text-sm xl:text-xl text-gray-600">
                     {leg.status}
                   </div>
-                </div>
+                </div> */}
 
                 {/* Settings Icon */}
-                <div className="flex items-center justify-center ml-4 relative">
-                  {hoveredLeg === index ? (
-                    <div className="dropdown-trigger">
-                      <img src={CogIcon} className="h-6 w-6 cursor-pointer" onClick={() => toggleDropdown(index, "main")} />
 
-                      {openDropdown?.legIndex === index &&
-                        openDropdown?.type === "main" && (
-                          <Dropdown actions={getMainActions(index)} />
-                        )}
-                    </div>
-                  ) : (
-                    <img src={AirPlaneTakeOffIcon} className="h-6 w-6 cursor-pointer" />
+              </div>
+              <div className="flex items-center justify-center ml-4 relative">
+                {hoveredLeg === index ? (
+                  <div className="dropdown-trigger">
+                    <img src={CogIcon} className="h-6 w-6 cursor-pointer" onClick={() => toggleDropdown(index, "main")} />
 
-                  )}
-                </div>
+                    {openDropdown?.legIndex === index &&
+                      openDropdown?.type === "main" && (
+                        <Dropdown actions={getMainActions(index)} />
+                      )}
+                  </div>
+                ) : (
+                  <img src={AirPlaneTakeOffIcon} className="h-6 w-6 cursor-pointer" />
+
+                )}
               </div>
             </div>
 
             {/* Cards Section */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2 xl:gap-3 p-2 sm:p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-2 xl:gap-3 p-2 sm:p-4">
               {/* Loading Plan Card */}
               <div className="bg-blue-50 rounded-lg p-3 xl:p-4 relative shadow-lg">
                 <div className="flex items-start justify-between mb-2">
@@ -773,7 +763,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 </div>
-                {leg.crewFlightReports.map((report, idx) => (
+                {leg.crewFlightReports.map((report: string, idx: number) => (
                   <div
                     key={idx}
                     className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
@@ -806,7 +796,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 </div>
-                {leg.alerts.map((alert, idx) => (
+                {leg.alerts.map((alert: string, idx: number) => (
                   <div
                     key={idx}
                     className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
@@ -837,13 +827,13 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                 </div>
                 <div className="space-y-1 text-xs sm:text-sm">
                   <div className="flex items-center gap-2 text-gray-600 font-semibold">
-                    <span>🍽️</span>
+                    <span><img src={ForkKnifeIcon} alt="" className="h-4 w-4" /></span>
                     <span className="wrap-break-words">
                       Meals - {leg.cutOffTimes.meals}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600 font-semibold">
-                    <span>📦</span>
+                    <span><img src={DatabaseIcon} alt="" className="h-4 w-4" /></span>
                     <span className="wrap-break-words">
                       Commissary - {leg.cutOffTimes.commissary}
                     </span>

@@ -60,6 +60,8 @@ import CogIcon from "./flightlistActionIcons/cog.svg"
 // --- Flight Detail Icon ---
 import AirPlaneTakeOffIcon from "./flighDetailIcons/airplane-takeoff-fill.svg";
 import NoteBookIcon from "./flighDetailIcons/notebook.svg";
+import DatabaseIcon from "./flighDetailIcons/database.svg";
+
 
 
 export {
@@ -122,5 +124,5 @@ export {
   // --- Flight Detail Icon ---
   AirPlaneTakeOffIcon,
   NoteBookIcon,
-
+  DatabaseIcon
 };

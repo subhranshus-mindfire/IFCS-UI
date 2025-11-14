@@ -139,11 +139,11 @@ function FlightDetails() {
           {isLoading ? <div className="relative h-16 rounded-full bg-gray-200 overflow-hidden animate-pulse duration-75">
             <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
           </div> :
-            <div className="flex font-roboto items-stretch border rounded-full border-border-muted w-full bg-white">
+            <div className="flex font-roboto items-stretch border rounded-full border-border-muted w-full bg-white overflow-x-auto">
               {tabKeys.map((tab, index) => (
                 <div
                   key={tab}
-                  className="relative flex-1 flex items-center justify-center min-w-0"
+                  className="relative flex-1 flex items-center justify-center"
                 >
                   <button
                     onClick={() => tab !== "Invoice" && setActiveTab(tab)}

@@ -31,7 +31,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
 }) => {
   return (
     <div className="flex flex-col w-full">
-      <div className="bg-bg-surface px-4 py-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      <div className="bg-bg-surface px-4 py-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
         <div className="flex flex-col gap-3 flex-1">
           {/* Breadcrumb and Add Flight Button */}
           <div className="flex items-center justify-between">
@@ -52,12 +52,13 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
               <select
                 value={currentFilters.station || ""}
                 onChange={(e) => onFilterChange("station", e.target.value)}
-                className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded focus:outline-none  focus:border-bg-button w-28 appearance-none"
+                className={`px-3 py-2 border border-gray-300 bg-white text-sm rounded focus:outline-none focus:border-bg-button w-28 appearance-none ${currentFilters.station ? "text-gray-700 font-normal" : "text-gray-400 font-light"
+                  }`}
                 style={{
                   backgroundImage: "none",
                 }}
               >
-                <option value="">Station</option>
+                <option value="" className="text-gray-400">Station</option>
                 <option value="MCT">MCT</option>
                 <option value="MNL">MNL</option>
                 <option value="KUL">KUL</option>

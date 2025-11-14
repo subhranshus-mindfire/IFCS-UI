@@ -276,9 +276,9 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         onClick={() => handlePopover("paxCabins")}
         className="py-2 px-3 text-sm text-text-secondary relative cursor-pointer"
       >
-        <div className="grid grid-cols-2 text-left border border-border-muted">
+        <div className="grid grid-cols-2 text-left ">
           {/* Top-Left */}
-          <div className="py-1 px-1 border-b border-r border-border-muted">
+          <div className="py-1 px-1 ">
             <span className="text-left text-text-secondary">
               Business Studio
             </span>
@@ -288,7 +288,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
             </span>
           </div>
           {/* Top-Right */}
-          <div className="py-1 px-1 border-b border-border-muted">
+          <div className="py-1 px-1 d">
             <span className="text-left text-text-secondary">Economy</span>
             <span className="text-left font-medium text-text-primary">
               {" "}
@@ -296,7 +296,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
             </span>
           </div>
           {/* Bottom-Left */}
-          <div className="py-1 px-1 border-r border-border-muted">
+          <div className="py-1 px-1 ">
             <span className="text-left text-text-secondary">Business</span>
             <span className="text-left font-medium text-text-primary">
               {" "}

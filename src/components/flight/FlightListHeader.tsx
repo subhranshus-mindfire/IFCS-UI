@@ -35,7 +35,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
 }) => {
   return (
     <div className="flex flex-col w-full border-b border-gray-300">
-      <div className="flex flex-wrap items-center gap-5 bg-red-800 text-white pr-4 py-0">
+      <div className="flex flex-wrap items-center gap-5 bg-bg-secondary text-white pr-4 py-0">
         <button
           onClick={onBack}
           className="flex items-center h-full gap-2 py-4 px-4 bg-black hover:text-blue-400 transition-colors"
@@ -46,7 +46,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
 
         <button
           onClick={onAddFlight}
-          className="flex items-center gap-2 text-white py-1.5 rounded-md text-sm font-medium transition-colors"
+          className="flex items-center gap-2 text-black py-1.5 rounded-md text-sm font-medium transition-colors"
         >
           <FontAwesomeIcon icon={faPlus} />
           <span>Add Flight</span>
@@ -69,9 +69,10 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
               className="px-3 py-1.5 border border-gray-200 bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-1 focus:border-border-accent w-28 sm:w-32"
             >
               <option value="">Station</option>
-              <option value="Oman">Oman</option>
-              <option value="Dubai">Dubai</option>
-              <option value="Abu Dhabi">Abu Dhabi</option>
+              <option value="MCT">MCT</option>
+              <option value="MNL">MNL</option>
+              <option value="KUL">KUL</option>
+              <option value="CAI">CAI</option>
             </select>
 
             <div className="relative w-36 sm:w-40">
@@ -123,9 +124,9 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
               onChange={(e) => onFilterChange("client", e.target.value)}
               className="px-3 py-1.5 border border-border-muted bg-bg-surface text-gray-600 text-sm rounded focus:outline-none focus:ring-1 focus:border-border-accent w-28 sm:w-32"
             >
-              <option value="Oman">Oman</option>
-              <option value="Dubai">Dubai</option>
-              <option value="Abu Dhabi">Abu Dhabi</option>
+              <option value="Oman">Oman Air</option>
+              <option value="Dubai">Salam Air</option>
+              <option value="Abu Dhabi">All</option>
             </select>
           </div>
         </div>

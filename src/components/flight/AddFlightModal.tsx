@@ -230,7 +230,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               >
                 <span>{item.label}</span>
                 <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked && item.label !== "Manual Pairing" ? "border-green-500" : "border-border-muted"
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked ? "border-green-500" : "border-border-muted"
                     }`}
                   onClick={(e) => {
                     e.preventDefault()
@@ -239,7 +239,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                 >
                   {item.checked && (
                     <svg
-                      className={`w-3.5 h-3.5 ${item.label !== "Manual Pairing" ? "text-green-500" : "text-gray-400"} `}
+                      className={`w-3.5 h-3.5  text-green-500 `}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

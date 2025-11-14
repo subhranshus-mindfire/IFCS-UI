@@ -168,7 +168,11 @@ const FlightList: React.FC = () => {
                 </React.Fragment>
               ))
               : flights.map((pair, idx) => (
+
                 <React.Fragment key={idx}>
+                  {idx === 0 && (<tr>
+                    <td colSpan={13} className="h-7 bg-bg-quaternary"></td>
+                  </tr>)}
                   {pair.map((flight, subIdx) => (
                     <FlightRow
                       key={`${idx}-${subIdx}`}
@@ -178,7 +182,7 @@ const FlightList: React.FC = () => {
                   ))}
                   {idx < flights.length - 1 && (
                     <tr>
-                      <td colSpan={13} className="h-7 bg-bg-secondary"></td>
+                      <td colSpan={13} className="h-7 bg-bg-quaternary"></td>
                     </tr>
                   )}
                 </React.Fragment>

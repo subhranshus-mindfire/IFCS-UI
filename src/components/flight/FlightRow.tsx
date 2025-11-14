@@ -111,6 +111,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
             </td>
             <td className="py-1 px-2 font-medium text-center"></td>
             <td className="py-1 px-2 font-medium text-center"></td>
+
           </tr>
           <tr className="text-text-secondary">
             <td className="py-1 font-bold">Arrival</td>
@@ -223,20 +224,24 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         {activePopover === "arrival" && <TimePopover />}
       </td>
 
-      <td className="text-left py-2 px-3">
+      <td className="text-left py-2 px-3 relative">
         <span className={`font-semibold text-base ${flight.status}`}>
           {flight.status}
         </span>
+        <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
       </td>
-      <td className="text-center py-2 px-3 text-sm">
+
+      <td className="text-center py-2 px-3 text-sm relative">
         <div className="font-medium text-text-primary">{flight.acType}</div>
         <div className="text-text-tertiary">{flight.acReg}</div>
+        <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
       </td>
       {/* Removed the 'Ground Time' column's cell */}
-      <td className="py-2 px-3 text-sm text-text-secondary leading-tight">
+      <td className="py-2 px-3 text-sm text-text-secondary leading-tight relative">
         {flight.plan && <div className="mb-1">📄 {flight.plan}</div>}
         {flight.mealPlan && <div>{flight.mealPlan}</div>}
         {!flight.mealPlan && <div className="text-red-500">no meal plan</div>}
+        <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
       </td>
 
       <td
@@ -251,6 +256,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           </span>
         </div>
         {activePopover === "paxTotal" && <PaxPopover />}
+
       </td>
 
       {/* --- PAX Cabins Cell with Grid Borders --- */}
@@ -296,44 +302,46 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           </div>
         </div>
         {activePopover === "paxCabins" && <PaxPopover />}
+        <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
+
       </td>
 
       {/* --- Actions Cell --- */}
       <td className="py-2 px-3 text-base">
         <div className="flex items-center justify-end pe-2 gap-3 text-text-tertiary">
-          <img src={WarningIcon} className="h-4 w-4 cursor-pointer" />
-          <img src={ForkKnifeIcon} className="h-4 w-4 cursor-pointer" />
-          <img src={ClipboardTextIcon} className="h-4 w-4 cursor-pointer" />
-          <img src={GuardIcon} className="h-4 w-4 cursor-pointer" />
-          <img src={PackageSealedIcon} className="h-4 w-4 cursor-pointer" />
-          <img src={LockKeyIcon} className="h-4 w-4 cursor-pointer" />
-          <img src={CheckCircleIcon} className="h-4 w-4 cursor-pointer" />
-          <img src={LassoIcon} className="h-4 w-4 cursor-pointer" />
-          <img src={SignatureIcon} className="h-4 w-4 cursor-pointer" />
-          <img src={ReceiptIcon} className="h-4 w-4 cursor-pointer" />
+          <img src={WarningIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+          <img src={ForkKnifeIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+          <img src={ClipboardTextIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+          <img src={GuardIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+          <img src={PackageSealedIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+          <img src={LockKeyIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+          <img src={CheckCircleIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+          <img src={LassoIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+          <img src={SignatureIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
+          <img src={ReceiptIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />
           <div className="relative inline-block" ref={menuRef}>
             {/* <FontAwesomeIcon
               icon={}
               className="text-red-500 hover:text-red-700 cursor-pointer"
               onClick={() => setOpen(!open)}
             /> */}
-            <img src={CogIcon} className="h-4 w-4 cursor-pointer" onClick={() => setOpen(!open)} />
+            <img src={CogIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" onClick={() => setOpen(!open)} />
 
             {open && (
               <Dropdown
                 actions={[
                   {
-                    icon: <img src={DetailIcon} className="h-4 w-4 cursor-pointer" />,
+                    icon: <img src={DetailIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />,
                     label: "Details",
                     onClick: handleFlightDetails,
                   },
                   {
-                    icon: <img src={EditIcon} className="h-4 w-4 cursor-pointer" />,
+                    icon: <img src={EditIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />,
                     label: "Edit",
                     onClick: handleFlightDetails,
                   },
                   {
-                    icon: <img src={HistoryIcon} className="h-4 w-4 cursor-pointer" />,
+                    icon: <img src={HistoryIcon} className="h-4 w-4 md:w-5 md:h-5 lg:h-6 lg:w-6 cursor-pointer" />,
                     label: "History",
                     onClick: handleHistory,
                   },

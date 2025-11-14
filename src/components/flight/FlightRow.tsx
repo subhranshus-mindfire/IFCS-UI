@@ -320,66 +320,66 @@ export const FlightRow: React.FC<FlightRowProps> = ({
       {/* --- Actions Cell --- */}
       <td className="py-2 px-3 text-base">
         <div className="flex items-center justify-end  3xl:justify-between  pe-2 box-border gap-2 xl:gap-3  text-text-tertiary">
-          <img src={WarningIcon} className="h-5 w-5  xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+          <img src={WarningIcon} className="h-5 w-5   3xl:h-6 3xl:w-6 cursor-pointer" />
           <Tooltip text="Meals">
-            <img src={ForkKnifeIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+            <img src={ForkKnifeIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
           </Tooltip>
 
           <Tooltip text="Build">
-            <img src={PackageSealedIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+            <img src={PackageSealedIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
 
           </Tooltip>
 
           <Tooltip text="Seal">
-            <img src={SignatureIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+            <img src={SignatureIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
 
           </Tooltip>
 
           <Tooltip text="Lock">
-            <img src={LockKeyIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+            <img src={LockKeyIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
 
           </Tooltip>
 
           <Tooltip text="Check">
-            <img src={CheckCircleIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+            <img src={CheckCircleIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
           </Tooltip>
 
           <Tooltip text="Temperature">
-            <img src={ThermometerIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+            <img src={ThermometerIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
           </Tooltip>
 
           <Tooltip text="Delivery">
-            <img src={TruckIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+            <img src={TruckIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
 
           </Tooltip>
 
           <Tooltip text="Customs">
-            <img src={GuardIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+            <img src={GuardIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
 
 
           </Tooltip>
-          <img src={ClipboardTextIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+          <img src={ClipboardTextIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
 
 
-          <img src={ReceiptIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />
+          <img src={ReceiptIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />
           <div className="relative inline-block" ref={menuRef}>
-            <img src={CogIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" onClick={() => setOpen(!open)} />
+            <img src={CogIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" onClick={() => setOpen(!open)} />
 
             {open && (
               <Dropdown
                 actions={[
                   {
-                    icon: <img src={DetailIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />,
+                    icon: <img src={DetailIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />,
                     label: "Details",
                     onClick: handleFlightDetails,
                   },
                   {
-                    icon: <img src={EditIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />,
+                    icon: <img src={EditIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />,
                     label: "Edit",
                     onClick: handleFlightDetails,
                   },
                   {
-                    icon: <img src={HistoryIcon} className="h-5 w-5 xl:h-6 xl:w-6 3xl:w-8 3xl:h-8 cursor-pointer" />,
+                    icon: <img src={HistoryIcon} className="h-5 w-5  3xl:h-6 3xl:w-6 cursor-pointer" />,
                     label: "History",
                     onClick: handleHistory,
                   },

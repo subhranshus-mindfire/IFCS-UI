@@ -94,7 +94,7 @@ function FlightDetails() {
               </div>
               <div>
                 <span className="text-text-tertiary text-sm font-normal">
-                  Date:{" "}
+                  Complete Date:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
                   {flight.date}
@@ -121,7 +121,7 @@ function FlightDetails() {
                   Destination:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flight.departure}
+                  {flight.arrStation}
                 </span>
               </div>
               <div>
@@ -225,7 +225,7 @@ function FlightDetails() {
                   arrTime: flight.arrival,
                   acType: flight.acType,
                   acReg: flight.acReg,
-                  direction: "",
+                  direction: "[O/B]",
                   businessStudio: 0,
                   business: parseInt(flight.pax.business.split("/")[0]) || 4,
                   economy: parseInt(flight.pax.economy.split("/")[0]) || 118,
@@ -253,7 +253,7 @@ function FlightDetails() {
                   arrTime: "05:40",
                   acType: flight.acType,
                   acReg: flight.acReg,
-                  direction: "",
+                  direction: "[O/B]",
                   businessStudio: 0,
                   business: 7,
                   economy: 108,

@@ -171,7 +171,6 @@ export const FlightRow: React.FC<FlightRowProps> = ({
   );
 
   return (
-    // <tr className="border-b border-border-muted hover:bg-bg-accent/20 text-sm bg-bg-surface font-arial">
     <tr className={`border-b border-border-muted hover:bg-bg-accent/20 text-sm bg-bg-surface font-arial relative ${isFirstInPair ? 'shadow-[0_-2px_4px_rgba(0,0,0,0.08)]' : ''
       } ${isLastInPair ? 'shadow-[0_2px_4px_rgba(0,0,0,0.08)]' : ''
       }`}>

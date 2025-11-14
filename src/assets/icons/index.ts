@@ -50,6 +50,8 @@ import SignatureIcon from "./statusicons/Signature.svg";
 import StillTruckIcon from "./statusicons/Still-Truck.svg";
 import ThermometerSimpleIcon from "./statusicons/ThermometerSimple.svg";
 import WarningIcon from "./statusicons/Warning.svg";
+import ThermometerIcon from "./statusicons/thermometer.svg";
+import TruckIcon from "./statusicons/truck.svg";
 
 //--- Flight List Action Icons ---
 import DetailIcon from "./flightlistActionIcons/detail.svg";
@@ -114,6 +116,8 @@ export {
   StillTruckIcon,
   ThermometerSimpleIcon,
   WarningIcon,
+  ThermometerIcon,
+  TruckIcon,
 
   //--- Flight List Action Icons ---
   DetailIcon,

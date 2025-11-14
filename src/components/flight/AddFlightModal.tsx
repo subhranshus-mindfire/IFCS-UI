@@ -183,6 +183,16 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               <label className="block text-gray-700 mb-1.5 text-xs font-medium">Aircraft Reg</label>
               <select className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-orange-500">
                 <option value=""></option>
+                <option value="A4O-BAA">A4O-BAA</option>
+                <option value="A4O-BAB">A4O-BAB</option>
+                <option value="A4O-BAC">A4O-BAC</option>
+                <option value="A4O-BAE">A4O-BAE</option>
+                <option value="A4O-BI">A4O-BI</option>
+                <option value="A4O-BK">A4O-BK</option>
+                <option value="A4O-BQ">A4O-BQ</option>
+                <option value="A4O-BT">A4O-BT</option>
+                <option value="A4O-BUBCF">A4O-BUBCF</option>
+                <option value="A4O-BW">A4O-BW</option>
               </select>
             </div>
 

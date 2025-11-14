@@ -23,7 +23,7 @@ const FlightList: React.FC = () => {
   const [selectedFlightNumber, setSelectedFlightNumber] = useState<string>("");
   const currentDate = new Date();
   const day = String(currentDate.getDate()).padStart(2, '0');
-  const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
   const year = currentDate.getFullYear();
   const dateString = `${year}-${month}-${day}`;
   const [Filters, setFilters] = useState<FlightFilters>({

@@ -584,7 +584,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     {leg.acReg}
                   </div>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col it">
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Direction
                   </span>
@@ -815,7 +815,6 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Cut Off Times
                   </h3>
                   <div className="relative dropdown-trigger">
-                    <img src={CogIcon} className="h-5 w-5   cursor-pointer   " onClick={() => toggleDropdown(index, "cutOffTimes")} />
                     {openDropdown?.legIndex === index &&
                       openDropdown?.type === "cutOffTimes" && (
                         <Dropdown

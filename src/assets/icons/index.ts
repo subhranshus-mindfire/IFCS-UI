@@ -52,6 +52,11 @@ import ThermometerSimpleIcon from "./statusicons/ThermometerSimple.svg";
 import WarningIcon from "./statusicons/Warning.svg";
 import ThermometerIcon from "./statusicons/thermometer.svg";
 import TruckIcon from "./statusicons/truck.svg";
+import PlusCircle from "./plusCircle.svg";
+import AirPlaneTakeOffThin from "./airplane-takeoff-thin.svg"
+import CheckCircleIconThin from "./check-circle-thin.svg";
+import ClockClockWise from "./clock-clockwise-thin.svg";
+import PlayCircleThin from "./play-circle-thin.svg";
 
 //--- Flight List Action Icons ---
 import DetailIcon from "./flightlistActionIcons/detail.svg";
@@ -102,6 +107,13 @@ export {
   CalendarIcon,
   IFCSLogo,
 
+  // --- Flight List ---
+  PlusCircle,
+  AirPlaneTakeOffThin,
+  CheckCircleIconThin,
+  ClockClockWise,
+  PlayCircleThin,
+
   // --- Status Icons ---
   CheckCircleIcon,
   ClipboardTextIcon,
@@ -124,6 +136,7 @@ export {
   HistoryIcon,
   EditIcon,
   CogIcon,
+
 
   // --- Flight Detail Icon ---
   AirPlaneTakeOffIcon,

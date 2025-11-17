@@ -21,6 +21,7 @@ import {
 } from "../../assets/icons";
 import type { Flight } from "../../types/Flight";
 import { Tooltip } from "../common/Tooltip";
+import { PDFConfigModal, type PDFConfig } from "./PDFConfigModal";
 
 interface FlightRowProps {
   flight: Flight;
@@ -41,6 +42,24 @@ export const FlightRow: React.FC<FlightRowProps> = ({
 
   const [open, setOpen] = useState<boolean>(false);
   const [activePopover, setActivePopover] = useState<string | null>(null);
+  const [showPDFConfig, setShowPDFConfig] = useState(false);
+
+  // Add handler for PDF view
+  // Update the handlePDFView function in FlightRow.tsx
+  const handlePDFView = (config: PDFConfig) => {
+    setShowPDFConfig(false);
+
+    // Open PDF in new tab - browser will show native PDF viewer with print/download
+    const params = new URLSearchParams({
+      scale: config.scalePercentage,
+      orientation: config.orientation,
+    });
+
+    window.open(
+      `/meal-count-pdf/${flight.flightNumber}?${params.toString()}`,
+      '_blank'
+    );
+  };
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -171,223 +190,237 @@ export const FlightRow: React.FC<FlightRowProps> = ({
   );
 
   return (
-    <tr className={`border-b border-border-muted hover:bg-bg-accent/20 text-sm bg-bg-surface font-arial relative ${isFirstInPair ? 'shadow-[0_-2px_4px_rgba(0,0,0,0.08)]' : ''
-      } ${isLastInPair ? 'shadow-[0_2px_4px_rgba(0,0,0,0.08)]' : ''
-      }`}>
-      <td className="text-center py-2 px-3">
-        <img
-          src={logoUrl}
-          alt={flight.airlineCode}
-          className="h-7 w-7 mx-auto"
+    <>
+      {showPDFConfig && (
+        <PDFConfigModal
+          flightNumber={flight.flightNumber}
+          onClose={() => setShowPDFConfig(false)}
+          onView={handlePDFView}
         />
-      </td>
-      <td className="text-left font-sm py-2 px-0 text-text-secondary">
-        {!hideRoute && flight.route}
-      </td>
-      <td className="text-left text-lg font-bold text-text-primary py-2 px-3">
-        {flight.flightNumber}
-      </td>
-      <td className="text-left font-semibold text-lg py-2 px-3 text-text-primary">
-        {flight.type}
-      </td>
-      <td className="text-left font-semibold text-lg py-2 px-3 text-text-secondary">
-        {flight.date}
-      </td>
+      )}
+      <tr className={`border-b border-border-muted hover:bg-bg-accent/20 text-sm bg-bg-surface font-arial relative ${isFirstInPair ? 'shadow-[0_-2px_4px_rgba(0,0,0,0.08)]' : ''
+        } ${isLastInPair ? 'shadow-[0_2px_4px_rgba(0,0,0,0.08)]' : ''
+        }`}>
 
-      <td
-        ref={departureTriggerRef}
-        onClick={() => handlePopover("departure")}
-        className="text-left py-2 px-3 relative cursor-pointer"
-      >
-        <div
-          className={`font-light text-sm ${getStatusColor(
-            flight.departureType
-          )}`}
+        <td className="text-center py-2 px-3">
+          <img
+            src={logoUrl}
+            alt={flight.airlineCode}
+            className="h-7 w-7 mx-auto"
+          />
+        </td>
+        <td className="text-left font-sm py-2 px-0 text-text-secondary">
+          {!hideRoute && flight.route}
+        </td>
+        <td className="text-left text-lg font-bold text-text-primary py-2 px-3">
+          {flight.flightNumber}
+        </td>
+        <td className="text-left font-semibold text-lg py-2 px-3 text-text-primary">
+          {flight.type}
+        </td>
+        <td className="text-left font-semibold text-lg py-2 px-3 text-text-secondary">
+          {flight.date}
+        </td>
+
+        <td
+          ref={departureTriggerRef}
+          onClick={() => handlePopover("departure")}
+          className="text-left py-2 px-3 relative cursor-pointer"
         >
-          {flight.departureType}
-        </div>
-        <div className="font-bold text-lg text-text-primary">
-          {flight.departure}
-        </div>
-        <div className="text-bg-button font-semibold text-sm">
-          {flight.depStation}
-        </div>
-        {activePopover === "departure" && <TimePopover />}
-      </td>
+          <div
+            className={`font-light text-sm ${getStatusColor(
+              flight.departureType
+            )}`}
+          >
+            {flight.departureType}
+          </div>
+          <div className="font-bold text-lg text-text-primary">
+            {flight.departure}
+          </div>
+          <div className="text-bg-button font-semibold text-sm">
+            {flight.depStation}
+          </div>
+          {activePopover === "departure" && <TimePopover />}
+        </td>
 
-      <td
-        ref={arrivalTriggerRef}
-        onClick={() => handlePopover("arrival")}
-        className="text-left py-2 px-3 relative cursor-pointer"
-      >
-        <div
-          className={`font-light text-sm ${getStatusColor(flight.arrivalType)}`}
+        <td
+          ref={arrivalTriggerRef}
+          onClick={() => handlePopover("arrival")}
+          className="text-left py-2 px-3 relative cursor-pointer"
         >
-          {flight.arrivalType}
-        </div>
-        <div className="font-bold text-lg text-text-primary">
-          {flight.arrival}
-        </div>
-        <div className="text-bg-button font-semibold text-sm">
-          {flight.arrStation}
-        </div>
-        {activePopover === "arrival" && <TimePopover />}
-      </td>
+          <div
+            className={`font-light text-sm ${getStatusColor(flight.arrivalType)}`}
+          >
+            {flight.arrivalType}
+          </div>
+          <div className="font-bold text-lg text-text-primary">
+            {flight.arrival}
+          </div>
+          <div className="text-bg-button font-semibold text-sm">
+            {flight.arrStation}
+          </div>
+          {activePopover === "arrival" && <TimePopover />}
+        </td>
 
-      <td className="text-left py-2 px-3 relative">
-        <span className={`font-semibold text-base ${flight.status}`}>
-          {flight.status}
-        </span>
-        <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
-      </td>
-
-      <td className="text-center py-2 px-3 text-sm relative">
-        <div className="font-medium text-text-primary">{flight.acType}</div>
-        <div className="text-text-tertiary">{flight.acReg}</div>
-        <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
-      </td>
-      {/* Removed the 'Ground Time' column's cell */}
-      <td className="py-2 px-3 text-sm text-text-secondary leading-tight relative">
-        {flight.plan && <div className="mb-1">📄 {flight.plan}</div>}
-        {flight.mealPlan && <div>{flight.mealPlan}</div>}
-        {!flight.mealPlan && <div className="text-red-500">no meal plan</div>}
-        <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
-      </td>
-
-      <td
-        ref={paxTotalTriggerRef}
-        onClick={() => handlePopover("paxTotal")}
-        className="text-center py-2 px-3 relative cursor-pointer"
-      >
-        <div className="flex flex-col items-center justify-center gap-1">
-          <img src={SeatIcon} />
-          <span className="font-bold text-base text-text-primary">
-            {flight.paxTotal}
+        <td className="text-left py-2 px-3 relative">
+          <span className={`font-semibold text-base ${flight.status}`}>
+            {flight.status}
           </span>
-        </div>
-        {activePopover === "paxTotal" && <PaxPopover />}
+          <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
+        </td>
 
-      </td>
+        <td className="text-center py-2 px-3 text-sm relative">
+          <div className="font-medium text-text-primary">{flight.acType}</div>
+          <div className="text-text-tertiary">{flight.acReg}</div>
+          <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
+        </td>
+        {/* Removed the 'Ground Time' column's cell */}
+        <td className="py-2 px-3 text-sm text-text-secondary leading-tight relative">
+          {flight.plan && <div className="mb-1">📄 {flight.plan}</div>}
+          {flight.mealPlan && <div>{flight.mealPlan}</div>}
+          {!flight.mealPlan && <div className="text-red-500">no meal plan</div>}
+          <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
+        </td>
 
-      {/* --- PAX Cabins Cell with Grid Borders --- */}
-      <td
-        ref={paxCabinsTriggerRef}
-        onClick={() => handlePopover("paxCabins")}
-        className="py-2 px-3 text-sm text-text-secondary relative cursor-pointer"
-      >
-        <div className="grid grid-cols-2 text-left ">
-          {/* Top-Left */}
-          <div className="py-1 px-1 ">
-            <span className="text-left text-text-secondary">
-              Business Studio
-            </span>
-            <span className="text-left font-medium text-text-primary">
-              {" "}
-              {flight.pax.business}
-            </span>
-          </div>
-          {/* Top-Right */}
-          <div className="py-1 px-1 d">
-            <span className="text-left text-text-secondary">Economy</span>
-            <span className="text-left font-medium text-text-primary">
-              {" "}
-              {flight.pax.economy}
+        <td
+          ref={paxTotalTriggerRef}
+          onClick={() => handlePopover("paxTotal")}
+          className="text-center py-2 px-3 relative cursor-pointer"
+        >
+          <div className="flex flex-col items-center justify-center gap-1">
+            <img src={SeatIcon} />
+            <span className="font-bold text-base text-text-primary">
+              {flight.paxTotal}
             </span>
           </div>
-          {/* Bottom-Left */}
-          <div className="py-1 px-1 ">
-            <span className="text-left text-text-secondary">Business</span>
-            <span className="text-left font-medium text-text-primary">
-              {" "}
-              {flight.pax.first}
-            </span>
+          {activePopover === "paxTotal" && <PaxPopover />}
+
+        </td>
+
+        {/* --- PAX Cabins Cell with Grid Borders --- */}
+        <td
+          ref={paxCabinsTriggerRef}
+          onClick={() => handlePopover("paxCabins")}
+          className="py-2 px-3 text-sm text-text-secondary relative cursor-pointer"
+        >
+          <div className="grid grid-cols-2 text-left ">
+            {/* Top-Left */}
+            <div className="py-1 px-1 ">
+              <span className="text-left text-text-secondary">
+                Business Studio
+              </span>
+              <span className="text-left font-medium text-text-primary">
+                {" "}
+                {flight.pax.business}
+              </span>
+            </div>
+            {/* Top-Right */}
+            <div className="py-1 px-1 d">
+              <span className="text-left text-text-secondary">Economy</span>
+              <span className="text-left font-medium text-text-primary">
+                {" "}
+                {flight.pax.economy}
+              </span>
+            </div>
+            {/* Bottom-Left */}
+            <div className="py-1 px-1 ">
+              <span className="text-left text-text-secondary">Business</span>
+              <span className="text-left font-medium text-text-primary">
+                {" "}
+                {flight.pax.first}
+              </span>
+            </div>
+            {/* Bottom-Right */}
+            <div className="py-1 px-1">
+              <span className="text-left text-text-secondary">Crew</span>
+              <span className="text-left font-medium text-text-primary">
+                {" "}
+                {flight.pax.premium}
+              </span>
+            </div>
           </div>
-          {/* Bottom-Right */}
-          <div className="py-1 px-1">
-            <span className="text-left text-text-secondary">Crew</span>
-            <span className="text-left font-medium text-text-primary">
-              {" "}
-              {flight.pax.premium}
-            </span>
-          </div>
-        </div>
-        {activePopover === "paxCabins" && <PaxPopover />}
-        <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
+          {activePopover === "paxCabins" && <PaxPopover />}
+          <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
 
-      </td>
+        </td>
 
-      {/* --- Actions Cell --- */}
-      <td className="py-2 px-3 text-base">
-        <div className="flex items-center justify-end  3xl:justify-between  pe-2 box-border gap-2 xl:gap-3  text-text-tertiary">
-          <img src={WarningIcon} className="h-4.5 w-4.5   3xl:h-6 3xl:w-6 cursor-pointer" />
-          <Tooltip text="Meals">
-            <img src={ForkKnifeIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-          </Tooltip>
-
-          <Tooltip text="Build">
-            <img src={PackageSealedIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-
-          </Tooltip>
-
-          <Tooltip text="Seal">
-            <img src={SignatureIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-
-          </Tooltip>
-
-          <Tooltip text="Lock">
-            <img src={LockKeyIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-          </Tooltip>
-
-          <Tooltip text="Check">
-            <img src={CheckCircleIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-          </Tooltip>
-
-          <Tooltip text="Temperature">
-            <img src={ThermometerIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-          </Tooltip>
-
-          <Tooltip text="Delivery">
-            <img src={TruckIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-
-          </Tooltip>
-
-          <Tooltip text="Customs">
-            <img src={GuardIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-
-
-          </Tooltip>
-          <img src={ClipboardTextIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-
-
-          <img src={ReceiptIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
-          <div className="relative inline-block" ref={menuRef}>
-            <img src={CogIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" onClick={() => setOpen(!open)} />
-
-            {open && (
-              <Dropdown
-                actions={[
-                  {
-                    icon: <img src={DetailIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />,
-                    label: "Details",
-                    onClick: handleFlightDetails,
-                  },
-                  {
-                    icon: <img src={EditIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />,
-                    label: "Edit",
-                    onClick: handleFlightDetails,
-                  },
-                  {
-                    icon: <img src={HistoryIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />,
-                    label: "History",
-                    onClick: handleHistory,
-                  },
-                ]}
-                width="w-36"
+        {/* --- Actions Cell --- */}
+        <td className="py-2 px-3 text-base">
+          <div className="flex items-center justify-end  3xl:justify-between  pe-2 box-border gap-2 xl:gap-3  text-text-tertiary">
+            <img src={WarningIcon} className="h-4.5 w-4.5   3xl:h-6 3xl:w-6 cursor-pointer" />
+            <Tooltip text="Meals">
+              <img
+                src={ForkKnifeIcon}
+                className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer"
+                onClick={() => setShowPDFConfig(true)}
               />
-            )}
+            </Tooltip>
+
+            <Tooltip text="Build">
+              <img src={PackageSealedIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
+
+            </Tooltip>
+
+            <Tooltip text="Seal">
+              <img src={SignatureIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
+
+            </Tooltip>
+
+            <Tooltip text="Lock">
+              <img src={LockKeyIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
+            </Tooltip>
+
+            <Tooltip text="Check">
+              <img src={CheckCircleIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
+            </Tooltip>
+
+            <Tooltip text="Temperature">
+              <img src={ThermometerIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
+            </Tooltip>
+
+            <Tooltip text="Delivery">
+              <img src={TruckIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
+
+            </Tooltip>
+
+            <Tooltip text="Customs">
+              <img src={GuardIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
+
+
+            </Tooltip>
+            <img src={ClipboardTextIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
+
+
+            <img src={ReceiptIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />
+            <div className="relative inline-block" ref={menuRef}>
+              <img src={CogIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" onClick={() => setOpen(!open)} />
+
+              {open && (
+                <Dropdown
+                  actions={[
+                    {
+                      icon: <img src={DetailIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />,
+                      label: "Details",
+                      onClick: handleFlightDetails,
+                    },
+                    {
+                      icon: <img src={EditIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />,
+                      label: "Edit",
+                      onClick: handleFlightDetails,
+                    },
+                    {
+                      icon: <img src={HistoryIcon} className="h-4.5 w-4.5  3xl:h-6 3xl:w-6 cursor-pointer" />,
+                      label: "History",
+                      onClick: handleHistory,
+                    },
+                  ]}
+                  width="w-36"
+                />
+              )}
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
+        </td>
+      </tr>
+    </>
   );
 };

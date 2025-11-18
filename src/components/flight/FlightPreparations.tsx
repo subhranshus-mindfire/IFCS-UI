@@ -2,27 +2,67 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { samplePreparations } from "../../const/samplePreparations";
-import First from "../../assets/logos/preparation/first.svg";
-import Second from "../../assets/logos/preparation/Second.png";
-import Third from "../../assets/logos/preparation/third.png";
-import Fourth from "../../assets/logos/preparation/forth.png";
-import Fifth from "../../assets/logos/preparation/fifth.png";
-import Sixth from "../../assets/logos/preparation/sixth.png";
-import Seventh from "../../assets/logos/preparation/seventh.png";
 import DynamicLoadingModal from "./AddDynamicLoadingModal";
 import { FlightPreparationDetailsModal } from "./FlightPreparationDetailsModal";
 import RedirectBtn from "../common/RedirectBtn";
-import { AddIcon, PrintIcon } from "../../assets/icons";
+import {
+  AddIcon,
+  PrintIcon,
+  PrepArchive,
+  PrepSignatureIcon,
+  PrepLockKeyIcon,
+  PrepCheckIcon,
+  PrepTruckIcon,
+  PrepInfoIcon,
+  PrepQRIcon
+} from "../../assets/icons";
+import { PromptModal } from "./PromptModal";
+
+// Define types for completed actions
+type CompletedActionsState = {
+  [key: string]: number[];
+};
+
+interface PromptModalState {
+  isOpen: boolean;
+  rowIndex: number | null;
+  actionIndex: number | null;
+  actionName: string;
+  isBlocked: boolean;
+  isCompleted: boolean;
+}
 
 function FlightPreparations() {
   const tableRef = useRef<HTMLDivElement>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [showFilter, setshowFilter] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showFilter, setshowFilter] = useState<boolean>(false);
 
-  const [isFlightPrepModalOpen, setisFlightPrepModalOpen] = useState(false);
-  const [isFlightPrepaDetailsModal, setIsFlightPrepDetailsModal] =
-    useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isFlightPrepModalOpen, setisFlightPrepModalOpen] = useState<boolean>(false);
+  const [isFlightPrepaDetailsModal, setIsFlightPrepDetailsModal] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // Track completed actions for each row
+  const [completedActions, setCompletedActions] = useState<CompletedActionsState>({});
+
+  // Modal state
+  const [promptModal, setPromptModal] = useState<PromptModalState>({
+    isOpen: false,
+    rowIndex: null,
+    actionIndex: null,
+    actionName: "",
+    isBlocked: false,
+    isCompleted: false
+  });
+
+  const actionNames: string[] = [
+    "Scan Action",
+    "Preparation Action",
+    "Seal Action",
+    "Lock Action",
+    "Verify Action",
+    "Delivery Action"
+  ];
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -34,10 +74,101 @@ function FlightPreparations() {
   const handleOpenFlightPrepModal = () => setisFlightPrepModalOpen(true);
   const handleCloseFlightPrepModal = () => setisFlightPrepModalOpen(false);
 
-  const handleOpenFlightPrepDetailsModal = () =>
-    setIsFlightPrepDetailsModal(true);
-  const handleCloseFlightPrepDetailsModal = () =>
-    setIsFlightPrepDetailsModal(false);
+  const handleOpenFlightPrepDetailsModal = () => setIsFlightPrepDetailsModal(true);
+  const handleCloseFlightPrepDetailsModal = () => setIsFlightPrepDetailsModal(false);
+
+  const handleIconClick = (rowIndex: number, stepIndex: number, actionLabel: string) => {
+    const rowKey = `row-${rowIndex}`;
+    const completedForRow = completedActions[rowKey] || [];
+
+    const isCompleted = completedForRow.includes(stepIndex);
+
+    if (isCompleted) {
+      setPromptModal({
+        isOpen: true,
+        rowIndex,
+        actionIndex: stepIndex,
+        actionName: actionLabel,
+        isBlocked: false,
+        isCompleted: true
+      });
+      return;
+    }
+
+    if (stepIndex > 0 && !completedForRow.includes(stepIndex - 1)) {
+      setPromptModal({
+        isOpen: true,
+        rowIndex,
+        actionIndex: stepIndex,
+        actionName: actionLabel,
+        isBlocked: true,
+        isCompleted: false
+      });
+      return;
+    }
+
+    // Show confirmation modal
+    setPromptModal({
+      isOpen: true,
+      rowIndex,
+      actionIndex: stepIndex,
+      actionName: actionLabel,
+      isBlocked: false,
+      isCompleted: false
+    });
+  };
+
+  const handleConfirm = () => {
+    const { rowIndex, actionIndex, isCompleted } = promptModal;
+
+    if (rowIndex === null || actionIndex === null) return;
+
+    const rowKey = `row-${rowIndex}`;
+
+    if (isCompleted) {
+      setCompletedActions(prev => ({
+        ...prev,
+        [rowKey]: (prev[rowKey] || []).filter(idx => idx < actionIndex)
+      }));
+    } else {
+      setCompletedActions(prev => ({
+        ...prev,
+        [rowKey]: [...(prev[rowKey] || []), actionIndex]
+      }));
+    }
+
+    setPromptModal({
+      isOpen: false,
+      rowIndex: null,
+      actionIndex: null,
+      actionName: "",
+      isBlocked: false,
+      isCompleted: false
+    });
+  };
+
+  const handleClose = () => {
+    setPromptModal({
+      isOpen: false,
+      rowIndex: null,
+      actionIndex: null,
+      actionName: "",
+      isBlocked: false,
+      isCompleted: false
+    });
+  };
+
+  const isActionCompleted = (rowIndex: number, actionIndex: number): boolean => {
+    const rowKey = `row-${rowIndex}`;
+    return (completedActions[rowKey] || []).includes(actionIndex);
+  };
+
+  const isActionDisabled = (rowIndex: number, actionIndex: number): boolean => {
+    if (actionIndex === 0) return false;
+    const rowKey = `row-${rowIndex}`;
+    const completedForRow = completedActions[rowKey] || [];
+    return !completedForRow.includes(actionIndex) && !completedForRow.includes(actionIndex - 1);
+  };
 
   const filteredPreparations = samplePreparations.filter((p) =>
     p.preparedBy.toLowerCase().includes(searchTerm.toLowerCase())
@@ -70,6 +201,15 @@ function FlightPreparations() {
       }
     }
   };
+
+  const actionIcons = [
+    PrepQRIcon,
+    PrepArchive,
+    PrepSignatureIcon,
+    PrepLockKeyIcon,
+    PrepCheckIcon,
+    PrepTruckIcon
+  ];
 
   return (
     <div className="bg-bg-surface">
@@ -148,7 +288,6 @@ function FlightPreparations() {
                   </tr>
                 ))
               ) : (
-
                 filteredPreparations.map((prep, idx) => (
                   <tr
                     key={idx}
@@ -166,18 +305,33 @@ function FlightPreparations() {
                     <td className="px-3 py-2 text-sm text-text-secondary">
                       {prep.preparedBy}
                     </td>
-                    <td className="px-3 py-2 flex justify-between gap-3 text-text-tertiary no-print">
-                      <img src={First} alt="" className="w-4 h-4" />
-                      <img src={Second} alt="" />
-                      <img src={Third} alt="" />
-                      <img src={Fourth} alt="" />
-                      <img src={Fifth} alt="" />
-                      <img src={Sixth} alt="" />
-                      <img
-                        src={Seventh}
-                        alt="Open modal"
+                    <td className="px-3 py-2 flex justify-between gap-2 text-text-tertiary no-print">
+                      {actionIcons.map((Icon, actionIdx) => {
+                        const completed = isActionCompleted(idx, actionIdx);
+                        const disabled = isActionDisabled(idx, actionIdx);
+                        return (
+                          <span title={`${actionNames[actionIdx]}${completed
+                            ? " (Completed - Click to uncheck)"
+                            : disabled
+                              ? " (Locked)"
+                              : ""
+                            }`}>
+                            <Icon key={actionIdx} color="#008000"
+                              className={`w-6 h-6 cursor-pointer transition-all duration-150 ${disabled
+                                ? "opacity-40 cursor-not-allowed"
+                                : "hover:scale-110"
+                                } ${completed ? "fill-green-600 stroke-green-600" : "fill-text-primary stroke-text-primary"}`}
+                              onClick={() =>
+                                handleIconClick(idx, actionIdx, actionNames[actionIdx])
+                              }
+                            />
+                          </span>
+
+                        )
+                      })}
+                      <PrepInfoIcon
                         onClick={handleOpenFlightPrepDetailsModal}
-                        className="cursor-pointer hover:scale-110 transition-transform duration-150"
+                        className="cursor-pointer hover:scale-110 transition-transform duration-150 w-6 h-6 fill-text-primary stroke-text-primary"
                       />
                     </td>
                   </tr>
@@ -188,16 +342,28 @@ function FlightPreparations() {
         </div>
       </div>
 
-      {isFlightPrepModalOpen && (
-        <DynamicLoadingModal onClose={handleCloseFlightPrepModal} />
-      )}
-      {isFlightPrepaDetailsModal && (
-        <FlightPreparationDetailsModal
-          onClose={handleCloseFlightPrepDetailsModal}
-          open={false}
-        />
-      )}
-    </div>
+      {
+        isFlightPrepModalOpen && (
+          <DynamicLoadingModal onClose={handleCloseFlightPrepModal} />
+        )
+      }
+      {
+        isFlightPrepaDetailsModal && (
+          <FlightPreparationDetailsModal
+            onClose={handleCloseFlightPrepDetailsModal}
+            open={false}
+          />
+        )
+      }
+      <PromptModal
+        isOpen={promptModal.isOpen}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+        actionName={promptModal.actionName}
+        isBlocked={promptModal.isBlocked}
+        isCompleted={promptModal.isCompleted}
+      />
+    </div >
   );
 }
 

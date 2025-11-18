@@ -34,8 +34,6 @@ import CalendarIcon from "./calendar.svg";
 import IFCSLogo from "./IFCSLogo.svg";
 
 
-
-
 // --- Status Icons ---
 import CheckCircleIcon from "./statusicons/CheckCircle.svg";
 import ClipboardTextIcon from "./statusicons/ClipboardText.svg";
@@ -68,6 +66,17 @@ import CogIcon from "./flightlistActionIcons/cog.svg"
 import AirPlaneTakeOffIcon from "./flighDetailIcons/airplane-takeoff-fill.svg";
 import NoteBookIcon from "./flighDetailIcons/notebook.svg";
 import DatabaseIcon from "./flighDetailIcons/database.svg";
+
+
+// Flight Preparations Action Icons
+import PrepArchive from "./preparations_details/archive.svg?react";
+import PrepCheckIcon from "./preparations_details/check-circle.svg?react";
+import PrepLockKeyIcon from "./preparations_details/lock-key.svg?react";
+import PrepInfoIcon from "./preparations_details/info.svg?react";
+import PrepSignatureIcon from "./preparations_details/signature.svg?react";
+import PrepTruckIcon from "./preparations_details/truck.svg?react";
+import PrepQRIcon from "./preparations_details/qr-code.svg?react";
+
 
 
 
@@ -141,5 +150,14 @@ export {
   // --- Flight Detail Icon ---
   AirPlaneTakeOffIcon,
   NoteBookIcon,
-  DatabaseIcon
+  DatabaseIcon,
+
+  // Preparations Action Icons
+  PrepCheckIcon,
+  PrepLockKeyIcon,
+  PrepSignatureIcon,
+  PrepTruckIcon,
+  PrepArchive,
+  PrepInfoIcon,
+  PrepQRIcon
 };

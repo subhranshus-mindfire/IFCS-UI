@@ -3,12 +3,158 @@ import { galleryItems } from "../../const/galleyItems";
 import flightSkeletonImage from "../../assets/flight-skeleton.jpeg";
 import { SortIcon } from "../../assets/icons";
 
+
+interface GalleyPosition {
+  name: string;
+  position: 'Forward Left' | 'Forward Right' | 'Mid Left' | 'Mid Right' | 'Aft Left' | 'Aft Right' | 'Cargo Left' | 'Cargo Right';
+}
+
+interface ProcessedGalleyPosition extends GalleyPosition {
+  gridArea: string;
+}
+
+
+
+// 1. Maps the high-level position to the base grid area name
+const positionToGridAreaBase = (position: string): string => {
+  return positionAreaMap[position as keyof typeof positionAreaMap] || '';
+};
+
+// 2. Processes galleys to assign unique stacked grid area names
+const processGalleyPositions = (galleys: GalleyPosition[]): ProcessedGalleyPosition[] => {
+  const counts: Record<string, number> = {};
+
+  return galleys.map((galley) => {
+    const baseArea = positionToGridAreaBase(galley.position);
+    const count = counts[galley.position] || 0;
+    counts[galley.position] = count + 1;
+
+    let gridArea = baseArea;
+    if (count > 0) {
+      gridArea = `${baseArea}-${count + 1}`;
+    }
+
+    return {
+      ...galley,
+      gridArea,
+    };
+  });
+};
+
+// Define base names for all possible grid areas (Updated with Mid Left and Mid Right)
+const positionAreaMap: Record<GalleyPosition['position'], string> = {
+  'Forward Left': 'forward-left',
+  'Forward Right': 'forward-right',
+  'Mid Left': 'mid-left',
+  'Mid Right': 'mid-right',
+  'Aft Left': 'aft-left',
+  'Aft Right': 'aft-right',
+  'Cargo Left': 'cargo-left',
+  'Cargo Right': 'cargo-right',
+};
+
+const generateDynamicGridStyle = (processedGalleys: ProcessedGalleyPosition[]) => {
+  const maxStacking: Record<string, number> = {};
+  for (const galley of processedGalleys) {
+    const baseArea = positionToGridAreaBase(galley.position);
+    const match = galley.gridArea.match(/-(\d+)$/);
+    const index = match ? parseInt(match[1]) : 1;
+    maxStacking[baseArea] = Math.max(maxStacking[baseArea] || 0, index);
+  }
+
+  // --- HEIGHT & SPACING CONSTANTS (Fixed Pixel Heights for tighter control) ---
+  const FUNCTIONAL_ROW_HEIGHT = '45px';
+
+  // INCREASED: Larger fixed pixel height for the Forward/Mid separation
+  const SPACER_ONE_HEIGHT = '65px'; // Increased from 30px
+
+  const CARGO_ROWS_HEIGHT = '30px';
+
+  // --- STACK COUNT CALCULATION ---
+  const maxForwardStack = Math.max(maxStacking['forward-left'] || 0, maxStacking['forward-right'] || 0, 1);
+  const maxMidStack = Math.max(maxStacking['mid-left'] || 0, maxStacking['mid-right'] || 0, 1);
+  const maxAftStack = Math.max(maxStacking['aft-left'] || 0, maxStacking['aft-right'] || 0, 1);
+
+  // --- DYNAMIC ROW DEFINITIONS ---
+  const forwardRows = `repeat(${maxForwardStack}, ${FUNCTIONAL_ROW_HEIGHT})`;
+  const midRows = `repeat(${maxMidStack}, ${FUNCTIONAL_ROW_HEIGHT})`;
+  const aftRows = `repeat(${maxAftStack}, ${FUNCTIONAL_ROW_HEIGHT})`;
+
+  // --- AREAS STRING GENERATION ---
+  let areasString = '';
+
+  // 1. FORWARD ROWS (G1, G2L, G2R)
+  for (let i = 1; i <= maxForwardStack; i++) {
+    const leftArea = i === 1 ? positionAreaMap['Forward Left'] : `${positionAreaMap['Forward Left']}-${i}`;
+    const rightArea = i === 1 ? positionAreaMap['Forward Right'] : `${positionAreaMap['Forward Right']}-${i}`;
+    areasString += `"${leftArea} . . ${rightArea}" \n`;
+  }
+
+  // 2. SPACER ROW 1 (Fixed, LARGER gap before Mid)
+  areasString += `". spacer-1 spacer-1 ." \n`;
+
+  // 3. MIDDLE ROWS (G3)
+  for (let i = 1; i <= maxMidStack; i++) {
+    const leftArea = i === 1 ? positionAreaMap['Mid Left'] : `${positionAreaMap['Mid Left']}-${i}`;
+    const rightArea = i === 1 ? positionAreaMap['Mid Right'] : `${positionAreaMap['Mid Right']}-${i}`;
+    areasString += `"${leftArea} . . ${rightArea}" \n`;
+  }
+
+  // 4. FLEXIBLE AIRCRAFT BODY ROW (Absorbs remaining space between Mid and Aft)
+  areasString += `". aircraft-body aircraft-body ." \n`;
+
+  // 5. AFT ROWS (G5, G6)
+  for (let i = maxAftStack; i >= 1; i--) {
+    const leftArea = i === 1 ? positionAreaMap['Aft Left'] : `${positionAreaMap['Aft Left']}-${i}`;
+    const rightArea = i === 1 ? positionAreaMap['Aft Right'] : `${positionAreaMap['Aft Right']}-${i}`;
+    areasString += `"${leftArea} . . ${rightArea}" \n`;
+  }
+
+  // 6. CARGO ROW (Bulk, Belly)
+  areasString += `". ${positionAreaMap['Cargo Left']} ${positionAreaMap['Cargo Right']} ."`;
+
+  return {
+    gridTemplateRows: `${forwardRows} ${SPACER_ONE_HEIGHT} ${midRows} 1fr ${aftRows} ${CARGO_ROWS_HEIGHT}`,
+    gridTemplateAreas: areasString.trim(),
+  };
+};
+
 const FlightContLoc = () => {
   const [selectedItem, setSelectedItem] = useState(galleryItems[0]);
   const [activeContentTab, setActiveContentTab] = useState("static");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGalley, setSelectedGalley] = useState<string | null>("G1");
   const [isLoading, setIsLoading] = useState(true);
+
+  const dynamicGalleyData: GalleyPosition[] = [
+    { name: "G1", position: "Forward Right" },
+    { name: "G2L", position: "Forward Left" },
+    { name: "G2R", position: "Forward Right" },
+    { name: "G2R", position: "Forward Right" },
+    { name: "G3", position: "Mid Right" },
+    { name: "G3", position: "Mid Right" },
+    { name: "G5", position: "Aft Left" },
+    { name: "G6", position: "Aft Right" },
+  ];
+
+  const fixedCargoData: GalleyPosition[] = [
+    { name: "Bulk", position: "Cargo Left" },
+    { name: "Belly", position: "Cargo Right" },
+  ];
+
+  const processedGalleys = processGalleyPositions([...dynamicGalleyData, ...fixedCargoData]);
+
+  const updatedProcessedGalleys = processedGalleys.map(g => {
+    if (g.position === 'Mid Right' || g.position === 'Mid Left') {
+      return {
+        ...g,
+        gridArea: g.gridArea.replace('mid-center', positionAreaMap[g.position]) // Corrected mapping
+      };
+    }
+    return g;
+  });
+
+  const dynamicGridStyle = generateDynamicGridStyle(processedGalleys);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -287,118 +433,49 @@ const FlightContLoc = () => {
             )}
           </div>
 
-          <div className="flex-1 flex items-center justify-center p-6 relative rounded-2xl border border-border-muted">
+          <div className="flex-1 flex items-center justify-center p-6  md:px-0 xl:p-6 relative rounded-2xl border border-border-muted">
             {/* Aircraft Image with Floating Buttons */}
             {isLoading ? (
               <div className="relative w-full h-full flex items-center justify-center">
-                <div className="relative h-[500px] w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
+                <div className="relative h-[550px] w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                   <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                </div>
-                {/* Shimmer for buttons */}
-                <div className="absolute top-[10%] left-[20%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute top-[5%] right-[5%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute bottom-[20%] left-[20%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute bottom-[15%] right-[5%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute bottom-[5%] left-[30%]">
-                  <div className="relative h-7 w-20 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute bottom-[5%] right-[30%]">
-                  <div className="relative h-7 w-20 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
                 </div>
               </div>
             ) : (
               <div className="relative w-full h-full flex items-center justify-center">
-                <img
-                  src={flightSkeletonImage}
-                  alt="Aircraft Layout"
-                  className="max-h-[500px] w-auto object-contain"
-                />
 
-                {/* G100 Button - Top Left */}
-                <button
-                  className={`absolute top-[10%] left-[20%] px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "G100"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("G100")}
+                {/* Applying the dynamic styles */}
+                <div
+                  className="galley-grid w-full px-4 md:px-65 lg:px-0 xl:px-8 max-w-full h-[550px]"
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '30% 20% 20% 30%',
+                    gridTemplateRows: dynamicGridStyle.gridTemplateRows,
+                    gridTemplateAreas: dynamicGridStyle.gridTemplateAreas,
+                    position: 'relative'
+                  }}
                 >
-                  G100
-                </button>
+                  <img
+                    src={flightSkeletonImage}
+                    alt="Aircraft Layout"
+                    className="absolute inset-0 w-full h-full object-contain"
+                  />
 
-                {/* G200 Button - Top Right */}
-                <button
-                  className={`absolute top-[5%] right-[5%] px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "G200"
-                    ? "bg-bg-primary text-white border-2 border-bg-primary"
-                    : "bg-bg-primary/80 text-white border border-bg-primary"
-                    }`}
-                  onClick={() => setSelectedGalley("G200")}
-                >
-                  G200
-                </button>
-
-                {/* G300 Button - Bottom Left */}
-                <button
-                  className={`absolute bottom-[20%] left-[20%] px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "G300"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("G300")}
-                >
-                  G300
-                </button>
-
-                {/* G400 Button - Bottom Right */}
-                <button
-                  className={`absolute bottom-[15%] right-[5%] px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "G400"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("G400")}
-                >
-                  G400
-                </button>
-
-                {/* BULK Button - Bottom Center Left */}
-                <button
-                  className={`absolute bottom-[5%] left-[30%] px-5 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "Bulk"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("Bulk")}
-                >
-                  Bulk
-                </button>
-
-                {/* BELLY Button - Bottom Center Right */}
-                <button
-                  className={`absolute bottom-[5%] right-[30%] px-5 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "Belly"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("Belly")}
-                >
-                  Belly
-                </button>
+                  {updatedProcessedGalleys.map((galley: ProcessedGalleyPosition) => (
+                    <button
+                      key={galley.name}
+                      className={`z-10 px-4 py-1.5 rounded-md text-xs font-medium transition-colors justify-self-center self-center
+                              ${selectedGalley === galley.name
+                          ? "bg-bg-accent text-text-primary border-2 border-border-accent"
+                          : "bg-bg-secondary text-text-secondary border border-border-muted"
+                        }`}
+                      style={{ gridArea: galley.gridArea }}
+                      onClick={() => setSelectedGalley(galley.name)}
+                    >
+                      {galley.name}
+                    </button>
+                  ))}
+                </div>
               </div>)}
           </div>
         </div>

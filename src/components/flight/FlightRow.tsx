@@ -19,9 +19,9 @@ import {
   ThermometerIcon,
   TruckIcon
 } from "../../assets/icons";
-import type { Flight } from "../../types/Flight";
+import type { Flight, PDFConfig } from "../../types/Flight";
 import { Tooltip } from "../common/Tooltip";
-import { PDFConfigModal, type PDFConfig } from "./PDFConfigModal";
+import { PDFConfigModal } from "./PDFConfigModal";
 
 interface FlightRowProps {
   flight: Flight;

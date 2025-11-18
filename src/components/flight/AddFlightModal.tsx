@@ -52,7 +52,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
   return (
     <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center z-50">
       {/* Modal */}
-      <div className="w-full  text-sm underline max-w-md bg-green-600 text-gray-800 text-center py-1.5 rounded-t">
+      <div className="w-full  text-sm underline max-w-md bg-green-600 text-text-primary text-center py-1.5 rounded-t">
         Create Mode
       </div>
       <div className="bg-white  shadow-lg w-full max-w-md p-6">
@@ -61,23 +61,23 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
           {/* Row 1 */}
           <div className="grid grid-cols-3 gap-5">
             <div>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Airline Code</label>
-              <select className="w-full border border-border-muted rounded px-3 py-2 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400">
+              <label className="block text-text-primary mb-1.5 text-xs font-medium">Airline Code</label>
+              <select className="w-full border border-border-muted rounded px-3 py-2 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400">
                 <option value=""></option>
                 <option value="ADA">WY</option>
                 <option value="ADD">OV</option>
               </select>
             </div>
             <div>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Direction</label>
-              <select className="w-full border border-border-muted rounded px-3 py-2 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400">
+              <label className="block text-text-primary mb-1.5 text-xs font-medium">Direction</label>
+              <select className="w-full border border-border-muted rounded px-3 py-2 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400">
                 <option value=""></option>
                 <option value="inbound">[O/B]</option>
                 <option value="outbound">[I/B]</option>
               </select>
             </div>
             <div>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Flight Type</label>
+              <label className="block text-text-primary mb-1.5 text-xs font-medium">Flight Type</label>
               <div className="flex gap-3 pt-1">
                 {["J", "P"].map((type) => (
                   <label key={type} className="flex items-center gap-1.5 cursor-pointer">
@@ -89,7 +89,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                       onChange={(e) => setFlightType(e.target.value)}
                       className="w-4 h-4 bg-white"
                     />
-                    <span className="text-sm text-gray-800">{type}</span>
+                    <span className="text-sm text-text-primary">{type}</span>
                   </label>
                 ))}
               </div>
@@ -103,10 +103,10 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               { label: "Arrival Time", type: "time" },
             ].map((field) => (
               <div key={field.label}>
-                <label className="block text-gray-700 mb-1.5 text-xs font-medium">{field.label}</label>
+                <label className="block text-text-primary mb-1.5 text-xs font-medium">{field.label}</label>
                 <input
                   type={field.type}
-                  className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-orange-500"
+                  className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-orange-500"
                 />
               </div>
             ))}
@@ -115,21 +115,21 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
           {/* Row 3 - Departure Airport and Arrival Airport converted to searchable select */}
           <div className="grid grid-cols-3 gap-5">
             <div>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Flight Number</label>
+              <label className="block text-text-primary mb-1.5 text-xs font-medium">Flight Number</label>
               <input
                 type="text"
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400"
+                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
               />
             </div>
             <div className="relative" ref={departureRef}>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Departure Airport</label>
+              <label className="block text-text-primary mb-1.5 text-xs font-medium">Departure Airport</label>
               <input
                 type="text"
                 placeholder="Search..."
                 value={departureAirportSearch}
                 onChange={(e) => setDepartureAirportSearch(e.target.value)}
                 onFocus={() => setShowDepartureOptions(true)}
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400"
+                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
               />
               {showDepartureOptions && (
                 <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
@@ -140,7 +140,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                         setDepartureAirportSearch(airport)
                         setShowDepartureOptions(false)
                       }}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-800"
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-primary"
                     >
                       {airport}
                     </div>
@@ -149,14 +149,14 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               )}
             </div>
             <div className="relative" ref={arrivalRef}>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Arrival Airport</label>
+              <label className="block text-text-primary mb-1.5 text-xs font-medium">Arrival Airport</label>
               <input
                 type="text"
                 placeholder="Search..."
                 value={arrivalAirportSearch}
                 onChange={(e) => setArrivalAirportSearch(e.target.value)}
                 onFocus={() => setShowArrivalOptions(true)}
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400"
+                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
               />
               {showArrivalOptions && (
                 <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
@@ -167,7 +167,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                         setArrivalAirportSearch(airport)
                         setShowArrivalOptions(false)
                       }}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-800"
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-primary"
                     >
                       {airport}
                     </div>
@@ -180,8 +180,8 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
           {/* Row 4 */}
           <div className="flex items-start gap-8">
             <div className="w-1/3">
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Aircraft Reg</label>
-              <select className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-orange-500">
+              <label className="block text-text-primary mb-1.5 text-xs font-medium">Aircraft Reg</label>
+              <select className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-orange-500">
                 <option value=""></option>
                 <option value="A4O-BAA">A4O-BAA</option>
                 <option value="A4O-BAB">A4O-BAB</option>
@@ -197,7 +197,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
             </div>
 
             <div className="flex-1">
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">PAX Count</label>
+              <label className="block text-text-primary mb-1.5 text-xs font-medium">PAX Count</label>
               <div className="grid grid-cols-4 gap-2">
                 {[
                   { label: "Business Studio", key: "bs" },
@@ -208,9 +208,9 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   <div key={type.key} className="flex flex-col items-center bg-gray-50 rounded p-2">
                     <input
                       type="number"
-                      className="w-full border border-border-muted rounded py-1 text-sm text-gray-800 text-center bg-white focus:outline-none focus:border-orange-500"
+                      className="w-full border border-border-muted rounded py-1 text-sm text-text-primary text-center bg-white focus:outline-none focus:border-orange-500"
                     />
-                    <label className="mt-1 text-[9px] text-gray-700 leading-tight text-center">{type.label}</label>
+                    <label className="mt-1 text-[9px] text-text-primary leading-tight text-center">{type.label}</label>
                   </div>
                 ))}
               </div>
@@ -226,7 +226,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
             ].map((item) => (
               <label
                 key={item.label}
-                className="flex items-center justify-between gap-2 cursor-pointer text-sm text-gray-800"
+                className="flex items-center justify-between gap-2 cursor-pointer text-sm text-text-primary"
               >
                 <span>{item.label}</span>
                 <div
@@ -259,7 +259,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                 key={i}
                 onClick={btn === "Cancel" ? onClose : onClose}
                 className={`px-6 py-1.5 rounded-xl transition-colors text-sm 
-                bg-gray-200 text-gray-700 hover:bg-gray-300  `}
+                bg-bg-button-gray text-text-primary hover:bg-bg-button-gray-hover `}
               >
                 {btn}
               </button>

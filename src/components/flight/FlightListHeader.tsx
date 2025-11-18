@@ -35,7 +35,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
             />
             <button
               onClick={onAddFlight}
-              className="flex h-8 w-34  items-center  justify-center bg-bg-secondary hover:bg-bg-tertiary gap-2 px-3 py-4.5 border border-border-muted rounded-xl text-sm font-normal text-gray-700  transition-colors"
+              className="flex h-8 w-34  items-center  justify-center bg-bg-button-gray hover:bg-bg-button-gray-hover gap-2 px-3 py-4.5 border border-border-muted rounded-xl text-sm font-normal text-gray-700  transition-colors"
             >
               <img src={PlusCircle} className=" h-5 w-5" />
 

@@ -57,3 +57,19 @@ export interface HistoryEntry {
 export interface FlightHistory {
     [flightId: string]: HistoryEntry[];
 }
+
+//****************************MEAL COUNT MODAL****************************************/
+export interface PDFConfigModalProps {
+    flightNumber: string;
+    onClose: () => void;
+    onView: (config: PDFConfig) => void;
+}
+
+export interface PDFConfig {
+    numberPagesFrom: string;
+    recordRange: string;
+    paperSize: string;
+    orientation: "portrait" | "landscape";
+    scalePercentage: string;
+}
+

@@ -28,12 +28,12 @@ export const FlightHistoryModal: React.FC<FlightHistoryModalProps> = ({
       <div className="bg-white rounded-lg shadow-md w-full max-w-xl max-h-[80vh] flex flex-col text-sm">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-          <h2 className="text-base font-semibold text-gray-900">
+          <h2 className="text-base font-semibold text-text-primary">
             Flight {flightNumber}
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-text-secondary hover:text-text-tertiary transition-colors"
           >
             <FontAwesomeIcon icon={faXmark} size="sm" />
           </button>
@@ -41,7 +41,7 @@ export const FlightHistoryModal: React.FC<FlightHistoryModalProps> = ({
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-4 py-3">
-          <h3 className="text-sm font-semibold text-gray-800 mb-3">
+          <h3 className="text-sm font-semibold text-text-primary mb-3">
             Flight Changes Timeline
           </h3>
 
@@ -62,13 +62,13 @@ export const FlightHistoryModal: React.FC<FlightHistoryModalProps> = ({
 
                   {/* Entry content */}
                   <div className="flex-1">
-                    <div className="text-xs text-gray-500 mb-0.5">
+                    <div className="text-xs text-text-tertiary mb-0.5">
                       {entry.timestamp}
                     </div>
 
                     <button
                       onClick={() => toggleExpand(index)}
-                      className="flex items-center gap-1.5 text-blue-600 hover:text-blue-700 font-medium transition-colors text-sm"
+                      className="flex items-center gap-1.5 text-bg-button hover:text-bg-button-text-hover font-medium transition-colors text-sm"
                     >
                       <span>{entry.label}</span>
                       <FontAwesomeIcon
@@ -85,13 +85,13 @@ export const FlightHistoryModal: React.FC<FlightHistoryModalProps> = ({
                         <table className="w-full text-xs">
                           <thead>
                             <tr className="bg-gray-100">
-                              <th className="px-3 py-1.5 text-left font-semibold text-gray-800 border-r border-gray-200">
+                              <th className="px-3 py-1.5 text-left font-semibold text-text-primary border-r border-gray-200">
                                 FIELD
                               </th>
-                              <th className="px-3 py-1.5 text-left font-semibold text-gray-800 border-r border-gray-200">
+                              <th className="px-3 py-1.5 text-left font-semibold text-text-primary border-r border-gray-200">
                                 PREVIOUS
                               </th>
-                              <th className="px-3 py-1.5 text-left font-semibold text-gray-800">
+                              <th className="px-3 py-1.5 text-left font-semibold text-text-primary">
                                 NOW
                               </th>
                             </tr>
@@ -102,13 +102,13 @@ export const FlightHistoryModal: React.FC<FlightHistoryModalProps> = ({
                                 key={changeIndex}
                                 className="border-t border-gray-200 hover:bg-gray-50"
                               >
-                                <td className="px-3 py-1.5 font-medium text-gray-900 border-r border-gray-200">
+                                <td className="px-3 py-1.5 font-medium text-text-primary border-r border-gray-200">
                                   {change.field}
                                 </td>
-                                <td className="px-3 py-1.5 text-red-600 border-r border-gray-200">
+                                <td className="px-3 py-1.5 text-red border-r border-gray-200">
                                   {change.previously}
                                 </td>
-                                <td className="px-3 py-1.5 text-green-600 font-medium">
+                                <td className="px-3 py-1.5 text-green font-medium">
                                   {change.now}
                                 </td>
                               </tr>
@@ -128,7 +128,7 @@ export const FlightHistoryModal: React.FC<FlightHistoryModalProps> = ({
         <div className="flex justify-end px-4 py-3 border-t border-gray-200">
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md transition-colors font-medium text-sm"
+            className="px-4 py-1.5 bg-bg-button-gray hover:bg-bg-button-gray-hover text-text-secondary rounded-md transition-colors font-medium text-sm"
           >
             Close
           </button>

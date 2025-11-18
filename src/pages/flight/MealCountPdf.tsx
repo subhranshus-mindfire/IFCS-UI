@@ -1,19 +1,19 @@
 import React from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+// import { useParams, useSearchParams } from "react-router-dom";
 import { IFCSLogo } from "../../assets/icons";
 
 const MealCountPDF: React.FC = () => {
-    const params = useParams();
-    const [searchParams] = useSearchParams();
+    // const params = useParams();
+    // const [searchParams] = useSearchParams();
 
-    const flightNumber = params.flightNumber as string;
-    const scale = searchParams.get("scale") || "100";
+    // const flightNumber = params.flightNumber as string;
+    // const scale = searchParams.get("scale") || "100";
 
-    const currentDate = new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-    });
+    // const currentDate = new Date().toLocaleDateString("en-US", {
+    //     year: "numeric",
+    //     month: "short",
+    //     day: "2-digit",
+    // });
 
     return (
         <div className="min-h-screen bg-white p-8">

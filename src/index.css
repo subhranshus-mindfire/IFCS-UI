@@ -1,0 +1,59 @@
+@font-face {
+  font-family: 'Arial';
+  src: url('./assets/fonts/ARIAL.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/Rubik.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'roboto';
+  src: url('./assets//fonts/Roboto.ttf') format('truetype');
+}
+
+@import "tailwindcss";
+
+@layer utilities {
+  .animate-shimmer {
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
+@theme {
+  --font-arial: "Arial", sans-serif;
+  --font-rubik: "Rubik", sans-serif;
+  --font-roboto: "roboto", sans-serif;
+  --color-bg-accent: #E2D8FD;
+  --color-bg-button: #602AF3;
+  --color-bg-primary: #B79EFA;
+  --color-bg-secondary: #dfdddd;
+  --color-bg-tertiary: #F5F5F5;
+  --color-bg-quaternary: #faf9f9;
+  --color-bg-surface: #FFFFFF;
+  --color-border-accent: #B79EFA;
+  --color-border-secondary: #c1c2c3;
+  --color-border-muted: #EAE9EC;
+  --color-text-primary: #27262C;
+  --color-text-secondary: #4F4B58;
+  --color-text-tertiary: #A09CAB;
+  --color-text-muted: #7A7A7A;
+  --color-text-surface: #FFFFFF;
+  --breakpoint-3xl: 120rem
+}
+
+button {
+  cursor: pointer;
+
+}

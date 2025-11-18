@@ -47,6 +47,7 @@ const FlightLabels = () => {
     pax: { first: "12", business: "24", premium: "36", economy: "108" },
     departureType: "scheduled",
     arrivalType: "scheduled",
+    client: "Oman Air"
   };
 
   const outboundGroups: Record<string, PreparationData[]> = {

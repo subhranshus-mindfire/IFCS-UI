@@ -1,7 +1,13 @@
 import React from "react";
 import { Breadcrumb } from "../BreadCrumb";
 import type { FlightFilters } from "../../types/Flight";
-import { AirPlaneTakeOffThin, CheckCircleIconThin, ClockClockWise, PlayCircleThin, PlusCircle } from "../../assets/icons";
+import {
+  AirPlaneTakeOffThin,
+  CheckCircleIconThin,
+  ClockClockWise,
+  PlayCircleThin,
+  PlusCircle,
+} from "../../assets/icons";
 
 interface FlightHeaderProps {
   totalFlights?: number;
@@ -29,10 +35,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
         <div className="flex flex-col gap-3 flex-1">
           {/* Breadcrumb and Add Flight Button */}
           <div className="flex items-center justify-between">
-            <Breadcrumb
-              currentScreen={"Flights"}
-              handleDetailsNav={() => { }}
-            />
+            <Breadcrumb currentScreen={"Flights"} handleDetailsNav={() => {}} />
             <button
               onClick={onAddFlight}
               className="flex h-8 w-34  items-center  justify-center bg-bg-button-gray hover:bg-bg-button-gray-hover gap-2 px-3 py-4.5 border border-border-muted rounded-xl text-sm font-normal text-gray-700  transition-colors"
@@ -52,7 +55,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                 className={`px-3 py-2 border border-gray-300 bg-white text-sm rounded focus:outline-none focus:border-bg-button w-28 appearance-none ${currentFilters.station ? "text-gray-700 font-normal" : "text-gray-400 font-light"
                   }`}
                 style={{
-                  backgroundImage: 'none'
+                  backgroundImage: "none",
                 }}
               >
                 <option value="" className="text-gray-400">Station</option>
@@ -108,7 +111,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                 onChange={(e) => onFilterChange("client", e.target.value)}
                 className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded focus:outline-none  focus:border-bg-button w-28 appearance-none"
                 style={{
-                  backgroundImage: 'none'
+                  backgroundImage: "none",
                 }}
               >
                 <option value="Oman">Oman Air</option>
@@ -119,7 +122,9 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
             {/* Stats */}
             <div className="flex items-center gap-8 ml-auto">
               <div className="flex flex-col items-center">
-                <div className="text-xl font-semibold text-gray-800">{totalFlights}</div>
+                <div className="text-xl font-semibold text-gray-800">
+                  {totalFlights}
+                </div>
                 <div className="flex items-center gap-1">
                   <img src={AirPlaneTakeOffThin} className=" h-5 w-5" />
                   <div className="text-xs text-gray-600">Flights</div>
@@ -127,7 +132,9 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
               </div>
 
               <div className="flex flex-col items-center">
-                <div className="text-xl font-semibold text-gray-800">{completeFlights}</div>
+                <div className="text-xl font-semibold text-gray-800">
+                  {completeFlights}
+                </div>
                 <div className="flex items-center gap-1">
                   <img src={CheckCircleIconThin} className=" h-5 w-5" />
                   <div className="text-xs text-gray-600">Complete</div>
@@ -135,7 +142,9 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
               </div>
 
               <div className="flex flex-col items-center">
-                <div className="text-xl font-semibold text-gray-800">{inProgressFlights}</div>
+                <div className="text-xl font-semibold text-gray-800">
+                  {inProgressFlights}
+                </div>
                 <div className="flex items-center gap-1">
                   <img src={PlayCircleThin} className=" h-5 w-5" />
                   <div className="text-xs text-gray-600">In Progress</div>
@@ -143,7 +152,9 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
               </div>
 
               <div className="flex flex-col items-center">
-                <div className="text-xl font-semibold text-gray-800">{waitingFlights}</div>
+                <div className="text-xl font-semibold text-gray-800">
+                  {waitingFlights}
+                </div>
                 <div className="flex items-center gap-1">
                   <img src={ClockClockWise} className=" h-5 w-5" />
                   <div className="text-xs text-gray-600">Waiting</div>
@@ -152,8 +163,6 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
   );

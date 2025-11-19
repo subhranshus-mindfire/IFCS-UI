@@ -1,6 +1,6 @@
-import type { Flight, FlightHistory, FlightInfo } from "../types/Flight";
+import type { Flight, FlightHistoryEntry, FlightList } from "../types/Flight";
 
-export const flightsInfo: FlightInfo[][] = [
+export const flights: Flight[][] = [
   [
     {
       airlineCode: "WY",
@@ -228,7 +228,7 @@ export const flightsInfo: FlightInfo[][] = [
 ];
 
 
-export const flights: Flight[][] = [
+export const flightList: FlightList[][] = [
   [
     {
       "id": "2c7f7d4d-cf83-491f-a5be-e0125a702c50",
@@ -3917,214 +3917,122 @@ export const flights: Flight[][] = [
 
 
 
-export const flightHistoryData: FlightHistory = {
-  WY843: [
-    {
-      timestamp: "10/31/2025, 04:35:29 PM",
-      label: "Flight Created",
-      changes: [
-        { field: "AircraftConfig", previously: "N/A", now: "|.C30Y258WA|" },
-        { field: "AircraftGroup", previously: "N/A", now: "|789|" },
-        { field: "AircraftRegistration", previously: "N/A", now: "|A40SE|" },
-        { field: "AirlineDesignator", previously: "N/A", now: "|WY|" },
-        { field: "DestinationArrival", previously: "N/A", now: "|MNL|" },
-        { field: "DestinationDeparture", previously: "N/A", now: "|MCT|" },
-        { field: "FlightNumber", previously: "N/A", now: "|843|" },
-      ],
-    },
-    {
-      timestamp: "11/01/2025, 03:17:19 AM",
-      label: "View Changes",
-      changes: [
-        { field: "DepartureTime", previously: "09:00", now: "09:10" },
-        { field: "ArrivalTime", previously: "21:25", now: "21:37" },
-        { field: "Status", previously: "Scheduled", now: "Delayed" },
-        { field: "PAXCount", previously: "245", now: "270" },
-      ],
-    },
-    {
-      timestamp: "11/03/2025, 08:08:02 AM",
-      label: "Final Update",
-      changes: [
-        { field: "Status", previously: "Delayed", now: "Departed" },
-        { field: "ActualDeparture", previously: "N/A", now: "09:12" },
-        { field: "MealPlan", previously: "Standard", now: "Modified" },
-      ],
-    },
-  ],
 
-  WY844: [
-    {
-      timestamp: "10/30/2025, 02:15:10 PM",
-      label: "Flight Created",
-      changes: [
-        { field: "AircraftConfig", previously: "N/A", now: "|.C30Y258WA|" },
-        { field: "AircraftGroup", previously: "N/A", now: "|789|" },
-        { field: "AircraftRegistration", previously: "N/A", now: "|A40SD|" },
-        { field: "DestinationDeparture", previously: "N/A", now: "|MNL|" },
-        { field: "DestinationArrival", previously: "N/A", now: "|MCT|" },
-      ],
-    },
-    {
-      timestamp: "10/31/2025, 09:22:45 AM",
-      label: "View Changes",
-      changes: [
-        { field: "Status", previously: "Scheduled", now: "On Time" },
-        { field: "PAXCount", previously: "230", now: "252" },
-      ],
-    },
-  ],
-
-  WY821: [
-    {
-      timestamp: "10/30/2025, 11:12:55 AM",
-      label: "Flight Created",
-      changes: [
-        { field: "AircraftConfig", previously: "N/A", now: "|.C12Y156WA|" },
-        { field: "AircraftGroup", previously: "N/A", now: "|738|" },
-        { field: "AircraftRegistration", previously: "N/A", now: "|A40MC|" },
-        { field: "DestinationArrival", previously: "N/A", now: "|KUL|" },
-        { field: "DestinationDeparture", previously: "N/A", now: "|MCT|" },
-      ],
-    },
-    {
-      timestamp: "11/01/2025, 01:43:18 PM",
-      label: "Schedule Adjustment",
-      changes: [
-        { field: "DepartureTime", previously: "22:20", now: "22:32" },
-        { field: "ArrivalTime", previously: "09:05", now: "09:16" },
-        { field: "Status", previously: "Scheduled", now: "Updated" },
-      ],
-    },
-    {
-      timestamp: "11/02/2025, 09:04:05 PM",
-      label: "View Changes",
-      changes: [
-        { field: "Gate", previously: "C4", now: "C6" },
-        { field: "PAXCount", previously: "155", now: "159" },
-      ],
-    },
-  ],
-
-  WY822: [
-    {
-      timestamp: "10/31/2025, 09:05:02 AM",
-      label: "Flight Created",
-      changes: [
-        { field: "AircraftConfig", previously: "N/A", now: "|.C12Y156WA|" },
-        { field: "AircraftRegistration", previously: "N/A", now: "|A40MC|" },
-        { field: "DestinationDeparture", previously: "N/A", now: "|KUL|" },
-        { field: "DestinationArrival", previously: "N/A", now: "|MCT|" },
-      ],
-    },
-    {
-      timestamp: "11/02/2025, 06:44:22 PM",
-      label: "View Changes",
-      changes: [
-        { field: "Status", previously: "Scheduled", now: "Boarding" },
-        { field: "PAXCount", previously: "140", now: "148" },
-      ],
-    },
-  ],
-
-  WY407: [
-    {
-      timestamp: "10/30/2025, 03:25:49 PM",
-      label: "Flight Created",
-      changes: [
-        { field: "AircraftGroup", previously: "N/A", now: "|738|" },
-        { field: "AircraftRegistration", previously: "N/A", now: "|A40MH|" },
-        { field: "DestinationArrival", previously: "N/A", now: "|CAI|" },
-        { field: "DestinationDeparture", previously: "N/A", now: "|MCT|" },
-      ],
-    },
-    {
-      timestamp: "11/01/2025, 05:17:41 AM",
-      label: "Timing Adjustment",
-      changes: [
-        { field: "DepartureTime", previously: "22:30", now: "22:38" },
-        { field: "ArrivalTime", previously: "00:40", now: "00:45" },
-        { field: "Status", previously: "Scheduled", now: "Confirmed" },
-      ],
-    },
-    {
-      timestamp: "11/02/2025, 07:55:19 PM",
-      label: "Load Update",
-      changes: [
-        { field: "PAXCount", previously: "98", now: "104" },
-        { field: "MealPlan", previously: "Standard", now: "Modified" },
-      ],
-    },
-  ],
-
-  WY408: [
-    {
-      timestamp: "10/31/2025, 08:45:00 AM",
-      label: "Flight Created",
-      changes: [
-        { field: "AircraftGroup", previously: "N/A", now: "|738|" },
-        { field: "AircraftRegistration", previously: "N/A", now: "|A40MH|" },
-        { field: "DestinationDeparture", previously: "N/A", now: "|CAI|" },
-        { field: "DestinationArrival", previously: "N/A", now: "|MCT|" },
-      ],
-    },
-    {
-      timestamp: "11/01/2025, 07:29:50 PM",
-      label: "Load Adjustment",
-      changes: [
-        { field: "PAXCount", previously: "150", now: "164" },
-        { field: "Status", previously: "Scheduled", now: "Boarding" },
-      ],
-    },
-  ],
-
-  WY817: [
-    {
-      timestamp: "10/30/2025, 07:55:40 PM",
-      label: "Flight Created",
-      changes: [
-        { field: "AircraftGroup", previously: "N/A", now: "|789|" },
-        { field: "AircraftRegistration", previously: "N/A", now: "|A40SK|" },
-        { field: "DestinationArrival", previously: "N/A", now: "|BKK|" },
-        { field: "DestinationDeparture", previously: "N/A", now: "|MCT|" },
-      ],
-    },
-    {
-      timestamp: "11/01/2025, 02:02:22 PM",
-      label: "Timing Adjustment",
-      changes: [
-        { field: "DepartureTime", previously: "22:00", now: "22:12" },
-        { field: "ArrivalTime", previously: "06:30", now: "06:43" },
-      ],
-    },
-    {
-      timestamp: "11/03/2025, 09:10:17 AM",
-      label: "Load Update",
-      changes: [
-        { field: "PAXCount", previously: "260", now: "275" },
-        { field: "Status", previously: "Scheduled", now: "Departed" },
-      ],
-    },
-  ],
-
-  WY818: [
-    {
-      timestamp: "10/31/2025, 10:42:13 AM",
-      label: "Flight Created",
-      changes: [
-        { field: "AircraftGroup", previously: "N/A", now: "|789|" },
-        { field: "AircraftRegistration", previously: "N/A", now: "|A40SK|" },
-        { field: "DestinationDeparture", previously: "N/A", now: "|BKK|" },
-        { field: "DestinationArrival", previously: "N/A", now: "|MCT|" },
-      ],
-    },
-    {
-      timestamp: "11/02/2025, 01:38:28 AM",
-      label: "Status Update",
-      changes: [
-        { field: "Status", previously: "Scheduled", now: "Boarding" },
-        { field: "PAXCount", previously: "105", now: "112" },
-      ],
-    },
-  ],
-};
+export const flightHistory: FlightHistoryEntry[] = [
+  {
+    "id": "e4afc11a-4479-4954-a4dd-a6806a210927",
+    "fmId": "FU0083",
+    "flightId": "de3f5460-0d8c-4ebd-914b-c8cd15b57da5",
+    "flightUpdateFileId": null,
+    "airlineDesignator": "WY",
+    "flightNumber": "WY395",
+    "flightNumberSuffix": null,
+    "departureDestination": "FRA",
+    "actualArrival": "2025-12-16T15:49:18.352Z",
+    "actualDeparture": "2025-12-16T02:50:52.193Z",
+    "estimatedArrival": null,
+    "estimatedDeparture": null,
+    "scheduledArrival": "2025-12-16T15:39:38.038Z",
+    "scheduledDeparture": "2025-12-16T02:39:38.038Z",
+    "arrivalDestination": "MCT",
+    "flightRouteNumber": null,
+    "status": "Landed",
+    "syncKeyWithoutDestination": "WY395-FRA",
+    "syncKeyWithDestination": "WY395-FRA-MCT",
+    "flightTypeIataCode": "J",
+    "dataSource": "External API",
+    "sourceData": null,
+    "sourceFileName": "flight_update_WY395_2025-12-15.xml",
+    "updateIndexWithinFile": 4,
+    "updateTimestamp": "2025-12-15T22:52:00.000Z",
+    "createdAt": "2025-12-15T22:52:00.000Z",
+    "updatedAt": "2025-12-15T22:52:00.000Z"
+  },
+  {
+    "id": "e8dd34eb-5160-470f-b62a-a9e8cb303147",
+    "fmId": "FU0082",
+    "flightId": "de3f5460-0d8c-4ebd-914b-c8cd15b57da5",
+    "flightUpdateFileId": null,
+    "airlineDesignator": "WY",
+    "flightNumber": "WY395",
+    "flightNumberSuffix": null,
+    "departureDestination": "FRA",
+    "actualArrival": null,
+    "actualDeparture": null,
+    "estimatedArrival": "2025-12-16T15:38:26.348Z",
+    "estimatedDeparture": "2025-12-16T03:07:34.327Z",
+    "scheduledArrival": "2025-12-16T15:53:15.122Z",
+    "scheduledDeparture": "2025-12-16T02:53:15.122Z",
+    "arrivalDestination": "MCT",
+    "flightRouteNumber": null,
+    "status": "Scheduled",
+    "syncKeyWithoutDestination": "WY395-FRA",
+    "syncKeyWithDestination": "WY395-FRA-MCT",
+    "flightTypeIataCode": "J",
+    "dataSource": "Manual Entry",
+    "sourceData": null,
+    "sourceFileName": "flight_update_WY395_2025-12-15.xml",
+    "updateIndexWithinFile": 3,
+    "updateTimestamp": "2025-12-15T20:52:00.000Z",
+    "createdAt": "2025-12-15T20:52:00.000Z",
+    "updatedAt": "2025-12-15T20:52:00.000Z"
+  },
+  {
+    "id": "2204d5ee-60ad-4331-bdd3-eb414193b468",
+    "fmId": "FU0081",
+    "flightId": "de3f5460-0d8c-4ebd-914b-c8cd15b57da5",
+    "flightUpdateFileId": null,
+    "airlineDesignator": "WY",
+    "flightNumber": "WY395",
+    "flightNumberSuffix": null,
+    "departureDestination": "FRA",
+    "actualArrival": null,
+    "actualDeparture": null,
+    "estimatedArrival": "2025-12-16T15:55:24.671Z",
+    "estimatedDeparture": "2025-12-16T03:03:19.799Z",
+    "scheduledArrival": "2025-12-16T15:52:12.519Z",
+    "scheduledDeparture": "2025-12-16T02:52:12.519Z",
+    "arrivalDestination": "MCT",
+    "flightRouteNumber": null,
+    "status": "Landed",
+    "syncKeyWithoutDestination": "WY395-FRA",
+    "syncKeyWithDestination": "WY395-FRA-MCT",
+    "flightTypeIataCode": "J",
+    "dataSource": "Manual Entry",
+    "sourceData": null,
+    "sourceFileName": "flight_update_WY395_2025-12-15.xml",
+    "updateIndexWithinFile": 2,
+    "updateTimestamp": "2025-12-15T19:52:00.000Z",
+    "createdAt": "2025-12-15T19:52:00.000Z",
+    "updatedAt": "2025-12-15T19:52:00.000Z"
+  },
+  {
+    "id": "16f7219e-ff20-492d-9eb0-f787987b1c0f",
+    "fmId": "FU0080",
+    "flightId": "de3f5460-0d8c-4ebd-914b-c8cd15b57da5",
+    "flightUpdateFileId": null,
+    "airlineDesignator": "WY",
+    "flightNumber": "WY395",
+    "flightNumberSuffix": null,
+    "departureDestination": "FRA",
+    "actualArrival": null,
+    "actualDeparture": null,
+    "estimatedArrival": "2025-12-16T15:52:59.636Z",
+    "estimatedDeparture": "2025-12-16T02:50:24.008Z",
+    "scheduledArrival": "2025-12-16T15:52:24.727Z",
+    "scheduledDeparture": "2025-12-16T02:52:24.727Z",
+    "arrivalDestination": "MCT",
+    "flightRouteNumber": null,
+    "status": "In Flight",
+    "syncKeyWithoutDestination": "WY395-FRA",
+    "syncKeyWithDestination": "WY395-FRA-MCT",
+    "flightTypeIataCode": "J",
+    "dataSource": "Manual Entry",
+    "sourceData": null,
+    "sourceFileName": "flight_update_WY395_2025-12-15.xml",
+    "updateIndexWithinFile": 1,
+    "updateTimestamp": "2025-12-15T15:52:00.000Z",
+    "createdAt": "2025-12-15T15:52:00.000Z",
+    "updatedAt": "2025-12-15T15:52:00.000Z"
+  }
+]

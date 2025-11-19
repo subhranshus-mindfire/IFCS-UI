@@ -1,4 +1,4 @@
-export interface FlightInfo {
+export interface Flight {
   airlineCode: string;
   route: string;
   flightNumber: string;
@@ -64,7 +64,7 @@ export interface MealPlan {
   name: string;
 }
 
-export interface Flight {
+export interface FlightList {
   id: string;
   fmId: string | null;
   isCancelled: boolean;
@@ -137,7 +137,7 @@ export interface FlightFilters {
   search?: string
 }
 export interface FlightStoreState {
-  flights: Flight[][];
+  flights: FlightList[][];
   isLoading: boolean;
   error: string | null;
   fetchFlights: (filters?: FlightFilters) => Promise<void>;
@@ -149,14 +149,54 @@ export interface ChangeRecord {
   now: string;
 }
 
-export interface HistoryEntry {
-  timestamp: string;
-  label: string;
-  changes: ChangeRecord[];
+export interface HistoryChange {
+  field: string;
+  previously: string;
+  now: string;
 }
 
-export interface FlightHistory {
-  [flightId: string]: HistoryEntry[];
+export interface HistoryEntryDisplay {
+  timestamp: string;
+  label: string;
+  changes: HistoryChange[];
+}
+
+export interface FlightHistoryEntry {
+  id: string;
+  fmId: string;
+  flightId: string;
+  flightNumber: string;
+  airlineDesignator: string;
+  flightUpdateFileId: string | null;
+  flightNumberSuffix: string | null;
+  flightRouteNumber: string | null;
+  syncKeyWithoutDestination: string | null;
+  syncKeyWithDestination: string | null;
+  sourceData: string | null;
+  status: string | null;
+  estimatedDeparture: string | null;
+  actualDeparture: string | null;
+  estimatedArrival: string | null;
+  actualArrival: string | null;
+  departureDestination: string | null;
+  arrivalDestination: string | null;
+  dataSource: string | null;
+  flightTypeIataCode: string;
+  sourceFileName: string;
+  updateIndexWithinFile: number;
+  updateTimestamp: string;
+  scheduledDeparture: string;
+  scheduledArrival: string;
+  createdAt: string;
+  updatedAt: string;
+
+}
+
+export interface FlightHistoryStoreState {
+  rawHistory: FlightHistoryEntry[];
+  isLoading: boolean;
+  error: string | null;
+  fetchFlightHistory: (flightNumber: string) => Promise<void>;
 }
 
 //****************************MEAL COUNT MODAL****************************************/

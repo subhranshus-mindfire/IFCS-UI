@@ -19,25 +19,25 @@ import {
   ThermometerIcon,
   TruckIcon
 } from "../../assets/icons";
-import type { Flight, PDFConfig } from "../../types/Flight";
+import type { FlightList, PDFConfig } from "../../types/Flight";
 import { Tooltip } from "../common/Tooltip";
 import { PDFConfigModal } from "./PDFConfigModal";
 
 interface FlightRowProps {
-  flight: Flight;
+  flight: FlightList;
   onShowHistory: (flightNumber: string) => void;
   hideRoute?: boolean;
   isFirstInPair?: boolean;
   isLastInPair?: boolean;
 }
 
-const getDepartureType = (flight: Flight): { time: string | null; type: string } => {
+const getDepartureType = (flight: FlightList): { time: string | null; type: string } => {
   if (flight.actualDepartureUtc) return { time: formatTime(flight.actualDepartureUtc), type: "Actual" };
   if (flight.estimatedDepartureUtc) return { time: formatTime(flight.estimatedDepartureUtc), type: "Estimated" };
   return { time: formatTime(flight.scheduledDeparture), type: "Scheduled" };
 };
 
-const getArrivalType = (flight: Flight): { time: string | null; type: string } => {
+const getArrivalType = (flight: FlightList): { time: string | null; type: string } => {
   if (flight.actualArrivalUtc) return { time: formatTime(flight.actualArrivalUtc), type: "Actual" };
   if (flight.estimatedArrivalUtc) return { time: formatTime(flight.estimatedArrivalUtc), type: "Estimated" };
   return { time: formatTime(flight.scheduledArrival), type: "Scheduled" };

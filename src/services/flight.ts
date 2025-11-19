@@ -27,7 +27,7 @@ export async function fetchFlights(
     // Map local filters to API parameters
     if (filters.search) params.search = filters.search;
     if (filters.station) params.station = filters.station;
-    if (filters.date) params.date = filters.date;
+    // if (filters.date) params.date = filters.date;
     if (filters.flight) params.flightNumber = filters.flight;
     if (filters.route) params.route = filters.route;
     if (filters.status) params.status = filters.status;

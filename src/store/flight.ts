@@ -19,29 +19,26 @@
 //       console.error("Failed to fetch flights:", err);
 //       let errorMessage = "Failed to load flight data.";
 
-//       // Improved error handling (assuming the error structure from the service call)
-//       if (err instanceof Error) {
+//        if (err instanceof Error) {
 //         errorMessage = err.message;
 //       }
-//       // Note: Full Axios error handling is now mostly handled within the service,
-//       // which should re-throw a standard Error or just the original error.
 
 //       set({ error: errorMessage, isLoading: false });
 //     }
 //   },
 // }));
-// store/flight.ts (or wherever your store is located)
+
 
 import { create } from "zustand";
-import type { FlightStoreState, FlightFilters, Flight } from "../types/Flight";
-import { flights as mockFlights } from "../const/flightData"; // <-- Import mock data
+import type { FlightStoreState, FlightFilters, FlightList } from "../types/Flight";
+import { flightList as mockFlights } from "../const/flightData"; // <-- Import mock data
 
 // Helper function to extract date (YYYY-MM-DD) from ISO string
 const extractDate = (isoString: string | null | undefined): string | undefined =>
   isoString ? isoString.substring(0, 10) : undefined;
 
 // Function to check if a flight (or pair member) matches the current filters
-const filterFlights = (flightPair: Flight[], filters: FlightFilters): boolean => {
+const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolean => {
   // Check if ANY flight in the pair matches the criteria
   return flightPair.some(flight => {
     let match = true;

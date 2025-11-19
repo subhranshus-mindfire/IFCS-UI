@@ -27,8 +27,11 @@ const FlightList: React.FC = () => {
   const year = currentDate.getFullYear();
   const dateString = `${year}-${month}-${day}`;
   const [Filters, setFilters] = useState<FlightFilters>({
-    date: dateString,
-    client: "Oman"
+    page: 1,
+    limit: 50,
+    sortBy: 'scheduledDeparture',
+    order: 'desc',
+    date: dateString
   });
   const { flights, isLoading, error, fetchFlights } = useFlightStore();
   const navigate = useNavigate();

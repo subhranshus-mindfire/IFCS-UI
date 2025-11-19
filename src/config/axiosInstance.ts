@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '', // fallback to relative URLs
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://ifcsde-apise-ppluvmz2chnl-1091653442.ca-central-1.elb.amazonaws.com/api/v1', // fallback to relative URLs
   headers: {
     'Content-Type': 'application/json',
   },

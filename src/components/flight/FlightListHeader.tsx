@@ -35,7 +35,7 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
         <div className="flex flex-col gap-3 flex-1">
           {/* Breadcrumb and Add Flight Button */}
           <div className="flex items-center justify-between">
-            <Breadcrumb currentScreen={"Flights"} handleDetailsNav={() => {}} />
+            <Breadcrumb currentScreen={"Flights"} handleDetailsNav={() => { }} />
             <button
               onClick={onAddFlight}
               className="flex h-8 w-34  items-center  justify-center bg-bg-button-gray hover:bg-bg-button-gray-hover gap-2 px-3 py-4.5 border border-border-muted rounded-xl text-sm font-normal text-gray-700  transition-colors"
@@ -107,8 +107,6 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
               />
 
               <select
-                value={currentFilters.client || ""}
-                onChange={(e) => onFilterChange("client", e.target.value)}
                 className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded focus:outline-none  focus:border-bg-button w-28 appearance-none"
                 style={{
                   backgroundImage: "none",

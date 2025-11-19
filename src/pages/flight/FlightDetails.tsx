@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { flights } from "../../const/flightData";
+import { flightsInfo as flights } from "../../const/flightData";
 import FlightPreparations from "../../components/flight/FlightPreparations";
 import FlightFoodOrder from "../../components/flight/FlightFoodOrder";
 import FlightGalleys from "../../components/flight/FlightGalleys";

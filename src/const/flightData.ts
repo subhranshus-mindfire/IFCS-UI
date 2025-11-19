@@ -1,0 +1,444 @@
+import type { Flight, FlightHistory } from "../types/Flight";
+
+
+export const flights: Flight[][] = [
+  [
+    {
+      airlineCode: "WY",
+      route: "MCT-MNL-MCT",
+      flightNumber: "WY843",
+      type: "J",
+      date: "14 Nov 2025",
+      departure: "09:10",
+      arrival: "21:37",
+      depStation: "MCT",
+      arrStation: "MNL",
+      status: "Scheduled",
+      acType: "B787-9",
+      acReg: "A4OSH",
+      groundTime: "",
+      plan: "Europe / Far East Single",
+      mealPlan: null,
+      paxTotal: 270,
+      pax: {
+        first: "0",
+        business: "26",
+        premium: "0",
+        economy: "244",
+      },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
+      client: "Oman Air"
+    },
+    {
+      airlineCode: "WY",
+      route: "MCT-MNL-MCT",
+      flightNumber: "WY844",
+      type: "J",
+      date: "15 Nov 2025",
+      departure: "07:15",
+      arrival: "12:00",
+      depStation: "MNL",
+      arrStation: "MCT",
+      status: "Scheduled",
+      acType: "B787-9",
+      acReg: "A4OSH",
+      groundTime: "",
+      plan: "No Match",
+      mealPlan: null,
+      paxTotal: 252,
+      pax: {
+        first: "0",
+        business: "7",
+        premium: "0",
+        economy: "245",
+      },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
+      client: "Oman Air"
+    },
+  ],
+  [
+    {
+      airlineCode: "WY",
+      route: "MCT-KUL-MCT",
+      flightNumber: "WY821",
+      type: "J",
+      date: "14 Nov 2025",
+      departure: "22:32",
+      arrival: "09:16",
+      depStation: "MCT",
+      arrStation: "KUL",
+      status: "Scheduled",
+      acType: "B737-8",
+      acReg: "A4OMC",
+      groundTime: "",
+      plan: "Europe / Far East Single",
+      mealPlan: null,
+      paxTotal: 159,
+      pax: {
+        first: "0",
+        business: "12",
+        premium: "0",
+        economy: "147",
+      },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
+      client: "Oman Air"
+    },
+    {
+      airlineCode: "WY",
+      route: "MCT-KUL-MCT",
+      flightNumber: "WY822",
+      type: "J",
+      date: "15 Nov 2025",
+      departure: "09:25",
+      arrival: "12:10",
+      depStation: "KUL",
+      arrStation: "MCT",
+      status: "Scheduled",
+      acType: "B737-8",
+      acReg: "A4OMC",
+      groundTime: "",
+      plan: "",
+      mealPlan: null,
+      paxTotal: 148,
+      pax: {
+        first: "0",
+        business: "8",
+        premium: "0",
+        economy: "140",
+      },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
+      client: "Oman Air"
+    },
+  ],
+  [
+    {
+      airlineCode: "WY",
+      route: "MCT-CAI-MCT",
+      flightNumber: "WY407",
+      type: "J",
+      date: "14 Nov 2025",
+      departure: "22:38",
+      arrival: "00:45",
+      depStation: "MCT",
+      arrStation: "CAI",
+      status: "Scheduled",
+      acType: "B737-800",
+      acReg: "A4OMH",
+      groundTime: "",
+      plan: "ISC-MEA Double",
+      mealPlan: null,
+      paxTotal: 104,
+      pax: {
+        first: "0",
+        business: "3",
+        premium: "0",
+        economy: "101",
+      },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
+      client: "Oman Air"
+    },
+    {
+      airlineCode: "WY",
+      route: "MCT-CAI-MCT",
+      flightNumber: "WY408",
+      type: "J",
+      date: "15 Nov 2025",
+      departure: "02:10",
+      arrival: "07:00",
+      depStation: "CAI",
+      arrStation: "MCT",
+      status: "Scheduled",
+      acType: "B737-800",
+      acReg: "A4OMH",
+      groundTime: "",
+      plan: "",
+      mealPlan: null,
+      paxTotal: 164,
+      pax: {
+        first: "0",
+        business: "11",
+        premium: "0",
+        economy: "153",
+      },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
+      client: "Oman Air"
+    },
+  ],
+  [
+    {
+      airlineCode: "WY",
+      route: "MCT-BKK-MCT",
+      flightNumber: "WY817",
+      type: "J",
+      date: "14 Nov 2025",
+      departure: "22:12",
+      arrival: "06:43",
+      depStation: "MCT",
+      arrStation: "BKK",
+      status: "Scheduled",
+      acType: "B787-9",
+      acReg: "A4OSK",
+      groundTime: "",
+      plan: "World Class Single",
+      mealPlan: null,
+      paxTotal: 275,
+      pax: {
+        first: "0",
+        business: "26",
+        premium: "0",
+        economy: "249",
+      },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
+      client: "Oman Air"
+    },
+    {
+      airlineCode: "WY",
+      route: "MCT-BKK-MCT",
+      flightNumber: "WY818",
+      type: "J",
+      date: "15 Nov 2025",
+      departure: "09:00",
+      arrival: "12:10",
+      depStation: "BKK",
+      arrStation: "MCT",
+      status: "Scheduled",
+      acType: "B787-9",
+      acReg: "A4OSK",
+      groundTime: "",
+      plan: "",
+      mealPlan: null,
+      paxTotal: 112,
+      pax: {
+        first: "0",
+        business: "15",
+        premium: "0",
+        economy: "97",
+      },
+      departureType: "scheduled",
+      arrivalType: "scheduled",
+      client: "Oman Air"
+    },
+  ],
+];
+
+
+
+
+export const flightHistoryData: FlightHistory = {
+  WY843: [
+    {
+      timestamp: "10/31/2025, 04:35:29 PM",
+      label: "Flight Created",
+      changes: [
+        { field: "AircraftConfig", previously: "N/A", now: "|.C30Y258WA|" },
+        { field: "AircraftGroup", previously: "N/A", now: "|789|" },
+        { field: "AircraftRegistration", previously: "N/A", now: "|A40SE|" },
+        { field: "AirlineDesignator", previously: "N/A", now: "|WY|" },
+        { field: "DestinationArrival", previously: "N/A", now: "|MNL|" },
+        { field: "DestinationDeparture", previously: "N/A", now: "|MCT|" },
+        { field: "FlightNumber", previously: "N/A", now: "|843|" },
+      ],
+    },
+    {
+      timestamp: "11/01/2025, 03:17:19 AM",
+      label: "View Changes",
+      changes: [
+        { field: "DepartureTime", previously: "09:00", now: "09:10" },
+        { field: "ArrivalTime", previously: "21:25", now: "21:37" },
+        { field: "Status", previously: "Scheduled", now: "Delayed" },
+        { field: "PAXCount", previously: "245", now: "270" },
+      ],
+    },
+    {
+      timestamp: "11/03/2025, 08:08:02 AM",
+      label: "Final Update",
+      changes: [
+        { field: "Status", previously: "Delayed", now: "Departed" },
+        { field: "ActualDeparture", previously: "N/A", now: "09:12" },
+        { field: "MealPlan", previously: "Standard", now: "Modified" },
+      ],
+    },
+  ],
+
+  WY844: [
+    {
+      timestamp: "10/30/2025, 02:15:10 PM",
+      label: "Flight Created",
+      changes: [
+        { field: "AircraftConfig", previously: "N/A", now: "|.C30Y258WA|" },
+        { field: "AircraftGroup", previously: "N/A", now: "|789|" },
+        { field: "AircraftRegistration", previously: "N/A", now: "|A40SD|" },
+        { field: "DestinationDeparture", previously: "N/A", now: "|MNL|" },
+        { field: "DestinationArrival", previously: "N/A", now: "|MCT|" },
+      ],
+    },
+    {
+      timestamp: "10/31/2025, 09:22:45 AM",
+      label: "View Changes",
+      changes: [
+        { field: "Status", previously: "Scheduled", now: "On Time" },
+        { field: "PAXCount", previously: "230", now: "252" },
+      ],
+    },
+  ],
+
+  WY821: [
+    {
+      timestamp: "10/30/2025, 11:12:55 AM",
+      label: "Flight Created",
+      changes: [
+        { field: "AircraftConfig", previously: "N/A", now: "|.C12Y156WA|" },
+        { field: "AircraftGroup", previously: "N/A", now: "|738|" },
+        { field: "AircraftRegistration", previously: "N/A", now: "|A40MC|" },
+        { field: "DestinationArrival", previously: "N/A", now: "|KUL|" },
+        { field: "DestinationDeparture", previously: "N/A", now: "|MCT|" },
+      ],
+    },
+    {
+      timestamp: "11/01/2025, 01:43:18 PM",
+      label: "Schedule Adjustment",
+      changes: [
+        { field: "DepartureTime", previously: "22:20", now: "22:32" },
+        { field: "ArrivalTime", previously: "09:05", now: "09:16" },
+        { field: "Status", previously: "Scheduled", now: "Updated" },
+      ],
+    },
+    {
+      timestamp: "11/02/2025, 09:04:05 PM",
+      label: "View Changes",
+      changes: [
+        { field: "Gate", previously: "C4", now: "C6" },
+        { field: "PAXCount", previously: "155", now: "159" },
+      ],
+    },
+  ],
+
+  WY822: [
+    {
+      timestamp: "10/31/2025, 09:05:02 AM",
+      label: "Flight Created",
+      changes: [
+        { field: "AircraftConfig", previously: "N/A", now: "|.C12Y156WA|" },
+        { field: "AircraftRegistration", previously: "N/A", now: "|A40MC|" },
+        { field: "DestinationDeparture", previously: "N/A", now: "|KUL|" },
+        { field: "DestinationArrival", previously: "N/A", now: "|MCT|" },
+      ],
+    },
+    {
+      timestamp: "11/02/2025, 06:44:22 PM",
+      label: "View Changes",
+      changes: [
+        { field: "Status", previously: "Scheduled", now: "Boarding" },
+        { field: "PAXCount", previously: "140", now: "148" },
+      ],
+    },
+  ],
+
+  WY407: [
+    {
+      timestamp: "10/30/2025, 03:25:49 PM",
+      label: "Flight Created",
+      changes: [
+        { field: "AircraftGroup", previously: "N/A", now: "|738|" },
+        { field: "AircraftRegistration", previously: "N/A", now: "|A40MH|" },
+        { field: "DestinationArrival", previously: "N/A", now: "|CAI|" },
+        { field: "DestinationDeparture", previously: "N/A", now: "|MCT|" },
+      ],
+    },
+    {
+      timestamp: "11/01/2025, 05:17:41 AM",
+      label: "Timing Adjustment",
+      changes: [
+        { field: "DepartureTime", previously: "22:30", now: "22:38" },
+        { field: "ArrivalTime", previously: "00:40", now: "00:45" },
+        { field: "Status", previously: "Scheduled", now: "Confirmed" },
+      ],
+    },
+    {
+      timestamp: "11/02/2025, 07:55:19 PM",
+      label: "Load Update",
+      changes: [
+        { field: "PAXCount", previously: "98", now: "104" },
+        { field: "MealPlan", previously: "Standard", now: "Modified" },
+      ],
+    },
+  ],
+
+  WY408: [
+    {
+      timestamp: "10/31/2025, 08:45:00 AM",
+      label: "Flight Created",
+      changes: [
+        { field: "AircraftGroup", previously: "N/A", now: "|738|" },
+        { field: "AircraftRegistration", previously: "N/A", now: "|A40MH|" },
+        { field: "DestinationDeparture", previously: "N/A", now: "|CAI|" },
+        { field: "DestinationArrival", previously: "N/A", now: "|MCT|" },
+      ],
+    },
+    {
+      timestamp: "11/01/2025, 07:29:50 PM",
+      label: "Load Adjustment",
+      changes: [
+        { field: "PAXCount", previously: "150", now: "164" },
+        { field: "Status", previously: "Scheduled", now: "Boarding" },
+      ],
+    },
+  ],
+
+  WY817: [
+    {
+      timestamp: "10/30/2025, 07:55:40 PM",
+      label: "Flight Created",
+      changes: [
+        { field: "AircraftGroup", previously: "N/A", now: "|789|" },
+        { field: "AircraftRegistration", previously: "N/A", now: "|A40SK|" },
+        { field: "DestinationArrival", previously: "N/A", now: "|BKK|" },
+        { field: "DestinationDeparture", previously: "N/A", now: "|MCT|" },
+      ],
+    },
+    {
+      timestamp: "11/01/2025, 02:02:22 PM",
+      label: "Timing Adjustment",
+      changes: [
+        { field: "DepartureTime", previously: "22:00", now: "22:12" },
+        { field: "ArrivalTime", previously: "06:30", now: "06:43" },
+      ],
+    },
+    {
+      timestamp: "11/03/2025, 09:10:17 AM",
+      label: "Load Update",
+      changes: [
+        { field: "PAXCount", previously: "260", now: "275" },
+        { field: "Status", previously: "Scheduled", now: "Departed" },
+      ],
+    },
+  ],
+
+  WY818: [
+    {
+      timestamp: "10/31/2025, 10:42:13 AM",
+      label: "Flight Created",
+      changes: [
+        { field: "AircraftGroup", previously: "N/A", now: "|789|" },
+        { field: "AircraftRegistration", previously: "N/A", now: "|A40SK|" },
+        { field: "DestinationDeparture", previously: "N/A", now: "|BKK|" },
+        { field: "DestinationArrival", previously: "N/A", now: "|MCT|" },
+      ],
+    },
+    {
+      timestamp: "11/02/2025, 01:38:28 AM",
+      label: "Status Update",
+      changes: [
+        { field: "Status", previously: "Scheduled", now: "Boarding" },
+        { field: "PAXCount", previously: "105", now: "112" },
+      ],
+    },
+  ],
+};

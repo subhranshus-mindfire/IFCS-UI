@@ -1,123 +1,90 @@
 import { useEffect, useState } from "react";
-import { galleryItems } from "../../const/galleyItems";
-import flightSkeletonImage from "../../assets/flight-skeleton.jpeg";
-import { SortIcon } from "../../assets/icons";
-
+import { galleryItems } from "../../const/galleyItems"; // Assuming this is defined
+import flightSkeletonImage from "../../assets/flight-skeleton.jpeg"; // Assuming this is defined
+import { SortIcon } from "../../assets/icons"; // Assuming this is defined
+import React from "react"; // Explicit import for React is good practice
 
 interface GalleyPosition {
   name: string;
   position: 'Forward Left' | 'Forward Right' | 'Mid Left' | 'Mid Right' | 'Aft Left' | 'Aft Right' | 'Cargo Left' | 'Cargo Right';
 }
 
-interface ProcessedGalleyPosition extends GalleyPosition {
-  gridArea: string;
+// Updated interface to use x and y for position
+interface GalleyCoordinate extends GalleyPosition {
+  x: string; // Used for horizontal positioning percentage (e.g., "15%", "40%")
+  y: string; // Used for vertical positioning pixels (e.g., "22.5px")
+  isBottom?: boolean; // Flag for positions that use 'bottom' instead of 'top'
 }
 
 
-
-// 1. Maps the high-level position to the base grid area name
-const positionToGridAreaBase = (position: string): string => {
-  return positionAreaMap[position as keyof typeof positionAreaMap] || '';
-};
-
-// 2. Processes galleys to assign unique stacked grid area names
-const processGalleyPositions = (galleys: GalleyPosition[]): ProcessedGalleyPosition[] => {
-  const counts: Record<string, number> = {};
-
-  return galleys.map((galley) => {
-    const baseArea = positionToGridAreaBase(galley.position);
-    const count = counts[galley.position] || 0;
-    counts[galley.position] = count + 1;
-
-    let gridArea = baseArea;
-    if (count > 0) {
-      gridArea = `${baseArea}-${count + 1}`;
-    }
-
-    return {
-      ...galley,
-      gridArea,
-    };
-  });
-};
-
-// Define base names for all possible grid areas (Updated with Mid Left and Mid Right)
-const positionAreaMap: Record<GalleyPosition['position'], string> = {
-  'Forward Left': 'forward-left',
-  'Forward Right': 'forward-right',
-  'Mid Left': 'mid-left',
-  'Mid Right': 'mid-right',
-  'Aft Left': 'aft-left',
-  'Aft Right': 'aft-right',
-  'Cargo Left': 'cargo-left',
-  'Cargo Right': 'cargo-right',
-};
-
-const generateDynamicGridStyle = (processedGalleys: ProcessedGalleyPosition[]) => {
-  const maxStacking: Record<string, number> = {};
-  for (const galley of processedGalleys) {
-    const baseArea = positionToGridAreaBase(galley.position);
-    const match = galley.gridArea.match(/-(\d+)$/);
-    const index = match ? parseInt(match[1]) : 1;
-    maxStacking[baseArea] = Math.max(maxStacking[baseArea] || 0, index);
+// The new mock data with consistent x and y properties
+const mockGalleyCoordinates: GalleyCoordinate[] = [
+  {
+    name: "G1",
+    position: "Forward Right",
+    y: "22.5px", // equivalent to 'top'
+    x: "15%",    // equivalent to 'right'
+  },
+  {
+    name: "G2L",
+    position: "Forward Left",
+    y: "67.5px",
+    x: "15%",    // equivalent to 'left'
+  },
+  {
+    name: "G2R-1",
+    position: "Forward Right",
+    y: "67.5px",
+    x: "15%",
+  },
+  {
+    name: "G2R-2",
+    position: "Forward Right",
+    y: "112.5px",
+    x: "15%",
+  },
+  {
+    name: "G3-1",
+    position: "Mid Right",
+    y: "222.5px",
+    x: "15%",
+  },
+  {
+    name: "G3-2",
+    position: "Mid Right",
+    y: "267.5px",
+    x: "15%",
+  },
+  {
+    name: "G5",
+    position: "Aft Left",
+    y: "52.5px",
+    x: "15%",
+    isBottom: true, // Uses 'bottom' instead of 'top'
+  },
+  {
+    name: "G6",
+    position: "Aft Right",
+    y: "52.5px",
+    x: "15%",
+    isBottom: true, // Uses 'bottom' instead of 'top'
+  },
+  {
+    name: "Bulk",
+    position: "Cargo Left",
+    y: "15px",
+    x: "40%",
+    isBottom: true, // Uses 'bottom' instead of 'top'
+  },
+  {
+    name: "Belly",
+    position: "Cargo Right",
+    y: "15px",
+    x: "60%",
+    isBottom: true, // Uses 'bottom' instead of 'top'
   }
+];
 
-  // --- HEIGHT & SPACING CONSTANTS (Fixed Pixel Heights for tighter control) ---
-  const FUNCTIONAL_ROW_HEIGHT = '45px';
-
-  // INCREASED: Larger fixed pixel height for the Forward/Mid separation
-  const SPACER_ONE_HEIGHT = '65px'; // Increased from 30px
-
-  const CARGO_ROWS_HEIGHT = '30px';
-
-  // --- STACK COUNT CALCULATION ---
-  const maxForwardStack = Math.max(maxStacking['forward-left'] || 0, maxStacking['forward-right'] || 0, 1);
-  const maxMidStack = Math.max(maxStacking['mid-left'] || 0, maxStacking['mid-right'] || 0, 1);
-  const maxAftStack = Math.max(maxStacking['aft-left'] || 0, maxStacking['aft-right'] || 0, 1);
-
-  // --- DYNAMIC ROW DEFINITIONS ---
-  const forwardRows = `repeat(${maxForwardStack}, ${FUNCTIONAL_ROW_HEIGHT})`;
-  const midRows = `repeat(${maxMidStack}, ${FUNCTIONAL_ROW_HEIGHT})`;
-  const aftRows = `repeat(${maxAftStack}, ${FUNCTIONAL_ROW_HEIGHT})`;
-
-  // --- AREAS STRING GENERATION ---
-  let areasString = '';
-
-  // 1. FORWARD ROWS (G1, G2L, G2R)
-  for (let i = 1; i <= maxForwardStack; i++) {
-    const leftArea = i === 1 ? positionAreaMap['Forward Left'] : `${positionAreaMap['Forward Left']}-${i}`;
-    const rightArea = i === 1 ? positionAreaMap['Forward Right'] : `${positionAreaMap['Forward Right']}-${i}`;
-    areasString += `"${leftArea} . . ${rightArea}" \n`;
-  }
-
-  // 2. SPACER ROW 1 (Fixed, LARGER gap before Mid)
-  areasString += `". spacer-1 spacer-1 ." \n`;
-
-  // 3. MIDDLE ROWS (G3)
-  for (let i = 1; i <= maxMidStack; i++) {
-    const leftArea = i === 1 ? positionAreaMap['Mid Left'] : `${positionAreaMap['Mid Left']}-${i}`;
-    const rightArea = i === 1 ? positionAreaMap['Mid Right'] : `${positionAreaMap['Mid Right']}-${i}`;
-    areasString += `"${leftArea} . . ${rightArea}" \n`;
-  }
-
-  // 4. FLEXIBLE AIRCRAFT BODY ROW (Absorbs remaining space between Mid and Aft)
-  areasString += `". aircraft-body aircraft-body ." \n`;
-
-  // 5. AFT ROWS (G5, G6)
-  for (let i = maxAftStack; i >= 1; i--) {
-    const leftArea = i === 1 ? positionAreaMap['Aft Left'] : `${positionAreaMap['Aft Left']}-${i}`;
-    const rightArea = i === 1 ? positionAreaMap['Aft Right'] : `${positionAreaMap['Aft Right']}-${i}`;
-    areasString += `"${leftArea} . . ${rightArea}" \n`;
-  }
-
-  // 6. CARGO ROW (Bulk, Belly)
-  areasString += `". ${positionAreaMap['Cargo Left']} ${positionAreaMap['Cargo Right']} ."`;
-
-  return {
-    gridTemplateRows: `${forwardRows} ${SPACER_ONE_HEIGHT} ${midRows} 1fr ${aftRows} ${CARGO_ROWS_HEIGHT}`,
-    gridTemplateAreas: areasString.trim(),
-  };
-};
 
 const FlightContLoc = () => {
   const [selectedItem, setSelectedItem] = useState(galleryItems[0]);
@@ -126,35 +93,8 @@ const FlightContLoc = () => {
   const [selectedGalley, setSelectedGalley] = useState<string | null>("G1");
   const [isLoading, setIsLoading] = useState(true);
 
-  const dynamicGalleyData: GalleyPosition[] = [
-    { name: "G1", position: "Forward Right" },
-    { name: "G2L", position: "Forward Left" },
-    { name: "G2R", position: "Forward Right" },
-    { name: "G2R", position: "Forward Right" },
-    { name: "G3", position: "Mid Right" },
-    { name: "G3", position: "Mid Right" },
-    { name: "G5", position: "Aft Left" },
-    { name: "G6", position: "Aft Right" },
-  ];
-
-  const fixedCargoData: GalleyPosition[] = [
-    { name: "Bulk", position: "Cargo Left" },
-    { name: "Belly", position: "Cargo Right" },
-  ];
-
-  const processedGalleys = processGalleyPositions([...dynamicGalleyData, ...fixedCargoData]);
-
-  const updatedProcessedGalleys = processedGalleys.map(g => {
-    if (g.position === 'Mid Right' || g.position === 'Mid Left') {
-      return {
-        ...g,
-        gridArea: g.gridArea.replace('mid-center', positionAreaMap[g.position]) // Corrected mapping
-      };
-    }
-    return g;
-  });
-
-  const dynamicGridStyle = generateDynamicGridStyle(processedGalleys);
+  // Use the new mock coordinates
+  const finalProcessedGalleys: GalleyCoordinate[] = mockGalleyCoordinates;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -167,10 +107,53 @@ const FlightContLoc = () => {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  /**
+   * Generates the dynamic CSS style object from the GalleyCoordinate.
+   * This handles translating the generic 'x' and 'y' into specific CSS properties 
+   * (top/bottom, left/right, and the necessary translateX/translateY for centering).
+   */
+  const getGalleyStyle = (galley: GalleyCoordinate): React.CSSProperties => {
+    const style: React.CSSProperties = {};
+    let transformValue = '';
+
+    // 1. Vertical Positioning (y -> top or bottom)
+    if (galley.isBottom) {
+      style.bottom = galley.y;
+    } else {
+      style.top = galley.y;
+    }
+
+    // 2. Horizontal Positioning and Transform (x -> left or right + centering transform)
+    const isLeft = galley.position.includes('Left');
+    const isCargo = galley.position.includes('Cargo');
+
+    if (isLeft) {
+      style.left = galley.x;
+      // Center the button horizontally over the 'left' coordinate
+      transformValue = 'translateX(-50%)';
+    } else { // Right positions
+      style.right = galley.x;
+      // Center the button horizontally over the 'right' coordinate
+      transformValue = 'translateX(50%)';
+    }
+
+    // Special case for Cargo to include translateY(50%) for vertical centering from the bottom edge
+    if (isCargo) {
+      // The Cargo positions are centered at the bottom, translating up 50% of their height.
+      transformValue += ' translateY(50%)';
+    }
+
+    // Apply the final transform
+    style.transform = transformValue.trim();
+
+    return style;
+  };
+
   return (
     <div className="bg-bg-surface w-full max-w-full font-rubik">
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+
         {/* Left Section - Items */}
         <div className="lg:col-span-3 bg-bg-secondary flex flex-col rounded-2xl border border-border-muted ">
           <div className="flex justify-between items-center p-4 border-b border-border-muted">
@@ -395,7 +378,7 @@ const FlightContLoc = () => {
                           </td>
                         </tr>
                       ) : (
-                        selectedItem.locations.map((location, index) => (
+                        selectedItem.locations.map((location: { name: string, storage: string, qty: number }, index: number) => (
                           <tr
                             key={index}
                             className="border-b border-border-muted last:border-b-0"
@@ -444,14 +427,10 @@ const FlightContLoc = () => {
             ) : (
               <div className="relative w-full h-full flex items-center justify-center">
 
-                {/* Applying the dynamic styles */}
+                {/* Absolute positioning container */}
                 <div
-                  className="galley-grid w-full px-4 md:px-65 lg:px-0 xl:px-8 max-w-full h-[550px]"
+                  className="galley-layout-absolute w-full px-4 md:px-65 lg:px-0 xl:px-8 max-w-full h-[550px]"
                   style={{
-                    display: 'grid',
-                    gridTemplateColumns: '30% 20% 20% 30%',
-                    gridTemplateRows: dynamicGridStyle.gridTemplateRows,
-                    gridTemplateAreas: dynamicGridStyle.gridTemplateAreas,
                     position: 'relative'
                   }}
                 >
@@ -461,15 +440,15 @@ const FlightContLoc = () => {
                     className="absolute inset-0 w-full h-full object-contain"
                   />
 
-                  {updatedProcessedGalleys.map((galley: ProcessedGalleyPosition) => (
+                  {finalProcessedGalleys.map((galley: GalleyCoordinate) => (
                     <button
                       key={galley.name}
-                      className={`z-10 px-4 py-1.5 rounded-md text-xs font-medium transition-colors justify-self-center self-center
+                      className={`z-10 px-4 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap absolute 
                               ${selectedGalley === galley.name
                           ? "bg-bg-accent text-text-primary border-2 border-border-accent"
                           : "bg-bg-secondary text-text-secondary border border-border-muted"
                         }`}
-                      style={{ gridArea: galley.gridArea }}
+                      style={getGalleyStyle(galley)} // <-- Using the function here
                       onClick={() => setSelectedGalley(galley.name)}
                     >
                       {galley.name}

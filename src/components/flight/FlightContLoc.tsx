@@ -1,35 +1,30 @@
 import { useEffect, useState } from "react";
-import { galleryItems } from "../../const/galleyItems"; // Assuming this is defined
-import flightSkeletonImage from "../../assets/flight-skeleton.jpeg"; // Assuming this is defined
-import { SortIcon } from "../../assets/icons"; // Assuming this is defined
-import React from "react"; // Explicit import for React is good practice
+import { galleryItems } from "../../const/galleyItems";
+import flightSkeletonImage from "../../assets/flight-skeleton.jpeg";
+import { SortIcon } from "../../assets/icons";
+import React from "react";
 
-interface GalleyPosition {
+
+interface GalleyCoordinate {
   name: string;
-  position: 'Forward Left' | 'Forward Right' | 'Mid Left' | 'Mid Right' | 'Aft Left' | 'Aft Right' | 'Cargo Left' | 'Cargo Right';
-}
-
-// Updated interface to use x and y for position
-interface GalleyCoordinate extends GalleyPosition {
-  x: string; // Used for horizontal positioning percentage (e.g., "15%", "40%")
-  y: string; // Used for vertical positioning pixels (e.g., "22.5px")
-  isBottom?: boolean; // Flag for positions that use 'bottom' instead of 'top'
+  position: 'Forward Left' | 'Forward Right' | 'Mid Left' | 'Mid Right' | 'Aft Left' | 'Aft Right';
+  x: string;
+  y: string;
 }
 
 
-// The new mock data with consistent x and y properties
 const mockGalleyCoordinates: GalleyCoordinate[] = [
   {
     name: "G1",
     position: "Forward Right",
-    y: "22.5px", // equivalent to 'top'
-    x: "15%",    // equivalent to 'right'
+    y: "22.5px",
+    x: "15%",
   },
   {
     name: "G2L",
     position: "Forward Left",
     y: "67.5px",
-    x: "15%",    // equivalent to 'left'
+    x: "15%",
   },
   {
     name: "G2R-1",
@@ -60,28 +55,12 @@ const mockGalleyCoordinates: GalleyCoordinate[] = [
     position: "Aft Left",
     y: "52.5px",
     x: "15%",
-    isBottom: true, // Uses 'bottom' instead of 'top'
   },
   {
     name: "G6",
     position: "Aft Right",
     y: "52.5px",
     x: "15%",
-    isBottom: true, // Uses 'bottom' instead of 'top'
-  },
-  {
-    name: "Bulk",
-    position: "Cargo Left",
-    y: "15px",
-    x: "40%",
-    isBottom: true, // Uses 'bottom' instead of 'top'
-  },
-  {
-    name: "Belly",
-    position: "Cargo Right",
-    y: "15px",
-    x: "60%",
-    isBottom: true, // Uses 'bottom' instead of 'top'
   }
 ];
 
@@ -90,10 +69,10 @@ const FlightContLoc = () => {
   const [selectedItem, setSelectedItem] = useState(galleryItems[0]);
   const [activeContentTab, setActiveContentTab] = useState("static");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedGalley, setSelectedGalley] = useState<string | null>("G1");
+  const [selectedGalleys, setSelectedGalleys] = useState<string[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
 
-  // Use the new mock coordinates
   const finalProcessedGalleys: GalleyCoordinate[] = mockGalleyCoordinates;
 
   useEffect(() => {
@@ -109,44 +88,45 @@ const FlightContLoc = () => {
 
   /**
    * Generates the dynamic CSS style object from the GalleyCoordinate.
-   * This handles translating the generic 'x' and 'y' into specific CSS properties 
-   * (top/bottom, left/right, and the necessary translateX/translateY for centering).
+   * Logic to use 'bottom' for Aft positions.
    */
   const getGalleyStyle = (galley: GalleyCoordinate): React.CSSProperties => {
     const style: React.CSSProperties = {};
     let transformValue = '';
 
-    // 1. Vertical Positioning (y -> top or bottom)
-    if (galley.isBottom) {
+    const isAft = galley.position.includes('Aft');
+    const isLeft = galley.position.includes('Left');
+
+    if (isAft) {
       style.bottom = galley.y;
     } else {
       style.top = galley.y;
     }
 
-    // 2. Horizontal Positioning and Transform (x -> left or right + centering transform)
-    const isLeft = galley.position.includes('Left');
-    const isCargo = galley.position.includes('Cargo');
-
     if (isLeft) {
       style.left = galley.x;
-      // Center the button horizontally over the 'left' coordinate
       transformValue = 'translateX(-50%)';
-    } else { // Right positions
+    } else {
       style.right = galley.x;
-      // Center the button horizontally over the 'right' coordinate
       transformValue = 'translateX(50%)';
     }
 
-    // Special case for Cargo to include translateY(50%) for vertical centering from the bottom edge
-    if (isCargo) {
-      // The Cargo positions are centered at the bottom, translating up 50% of their height.
-      transformValue += ' translateY(50%)';
-    }
-
-    // Apply the final transform
     style.transform = transformValue.trim();
 
     return style;
+  };
+
+  /**
+   * Toggles the selection state for a galley name in the array.
+   */
+  const toggleGalleySelection = (galleyName: string) => {
+    setSelectedGalleys(prevSelected => {
+      if (prevSelected.includes(galleyName)) {
+        return prevSelected.filter(name => name !== galleyName);
+      } else {
+        return [...prevSelected, galleyName];
+      }
+    });
   };
 
   return (
@@ -444,12 +424,12 @@ const FlightContLoc = () => {
                     <button
                       key={galley.name}
                       className={`z-10 px-4 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap absolute 
-                              ${selectedGalley === galley.name
+                              ${selectedGalleys.includes(galley.name)
                           ? "bg-bg-accent text-text-primary border-2 border-border-accent"
-                          : "bg-bg-secondary text-text-secondary border border-border-muted"
+                          : "bg-bg-secondary text-text-secondary border border-border-muted" // Default, uncolored state
                         }`}
-                      style={getGalleyStyle(galley)} // <-- Using the function here
-                      onClick={() => setSelectedGalley(galley.name)}
+                      style={getGalleyStyle(galley)}
+                      onClick={() => toggleGalleySelection(galley.name)}
                     >
                       {galley.name}
                     </button>

@@ -1,3 +1,5 @@
+import type { Label } from "../components/Label";
+
 export interface Flight {
   airlineCode: string;
   route: string;
@@ -125,6 +127,10 @@ export interface FlightStats {
   total: number;
   completed: number;
   waiting: number;
+}
+
+export interface FieldLabelProps extends React.ComponentProps<typeof Label> {
+  require?: boolean;
 }
 
 export interface FlightFilters {
@@ -320,10 +326,48 @@ export interface PDFConfig {
 //****************************PREPARATION****************************************/
 
 export interface PreparationItem {
-  stowage: string;
-  carrier: string;
+  position: string;
+  nameDisplay: string;
   equipment: string;
   preparedBy: string;
+
+  id: string;
+  flightId: string;
+  storageId: string;
+  code: string;
+  name: string;
+  priority: number;
+  date: string;
+
+  isContentPrepared: boolean;
+  isDynamicLoadingIncomplete: boolean;
+  assemblyProcessFlag: string;
+  loadedTruckFlag: string;
+
+  isTrackConsumption: boolean;
+  weight: number;
+  availableWeight: number;
+  quantity: number;
+  sealTagNumber: string;
+
+  qrCodeUrl: string;
+  dynamicLoadingQrCodeUrl: string;
+  labelUrl: string;
+  report: string;
+
+  createdAt: string;
+  updatedAt: string;
+
+  packingStandardId: string;
+  parentStorageId: string;
+  galleyConfigurationId: string;
+  galleyCode: string;
+  galleyPosition: string;
+  positionRap: string;
+  rotationCode: string;
+  direction: string;
+  qrCode: string;
+  dynamicLoadingQrCode: string;
 }
 
 export interface PromptModalState {

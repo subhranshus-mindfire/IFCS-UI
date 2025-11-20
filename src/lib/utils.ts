@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import type { FlightList } from '../types/Flight';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -58,3 +59,71 @@ export function formatLocalTimeFromISO(isoString: string | undefined | null): st
   return `${hours}:${minutes}`;
 }
 
+
+export const getDepartureType = (flight: FlightList): { time: string | null; type: string } => {
+  if (flight.actualDepartureUtc) return { time: formatTimeInHHMM(flight.actualDepartureUtc), type: "Actual" };
+  if (flight.estimatedDepartureUtc) return { time: formatTimeInHHMM(flight.estimatedDepartureUtc), type: "Estimated" };
+  return { time: formatTimeInHHMM(flight.scheduledDeparture), type: "Scheduled" };
+};
+
+export const getArrivalType = (flight: FlightList): { time: string | null; type: string } => {
+  if (flight.actualArrivalUtc) return { time: formatTimeInHHMM(flight.actualArrivalUtc), type: "Actual" };
+  if (flight.estimatedArrivalUtc) return { time: formatTimeInHHMM(flight.estimatedArrivalUtc), type: "Estimated" };
+  return { time: formatTimeInHHMM(flight.scheduledArrival), type: "Scheduled" };
+};
+
+export const formatTimeInHHMM = (isoString: string | null | undefined): string | null => {
+  if (!isoString) return null;
+  try {
+    return new Date(isoString).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+  } catch {
+    return isoString.substring(11, 16);
+  }
+};
+
+export const formatDate = (isoString: string | null | undefined): string | null => {
+  if (!isoString) return null;
+  try {
+    return new Date(isoString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+    });
+  } catch {
+    return isoString.substring(5, 10).replace('-', ' ');
+  }
+};
+
+
+
+export const getPaxCount = (count: number | null | undefined): string => {
+  return count !== null && count !== undefined ? String(count) : "0";
+}
+
+/**
+ * Dynamically extracts cabin counts from the paxCounts object, excluding null/zero counts.
+ */
+export const getDynamicCabinCounts = (paxCounts: FlightList['paxCounts']) => {
+  return Object.entries(paxCounts)
+    .filter(([key, count]) =>
+      key !== 'totalCount' &&
+      count !== null &&
+      count !== undefined
+    )
+    .map(([key, count]) => ({
+      label: getCabinLabel(key),
+      count: count,
+      key: key
+    }));
+};
+
+/**
+ * GENERIC UTILITY: Converts a camelCase/PascalCase key to a readable label.
+ * E.g., 'businessStudioCount' -> 'Business Studio'
+ */
+export const getCabinLabel = (key: string): string => {
+  let label = key.replace(/Count|Total/g, '');
+
+  label = label.replace(/([A-Z])/g, ' $1').trim();
+
+  return label.charAt(0).toUpperCase() + label.slice(1);
+};

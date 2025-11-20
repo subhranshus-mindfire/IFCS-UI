@@ -66,3 +66,18 @@ button {
   cursor: pointer;
 
 }
+
+.hide-date-icon::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  width: 1em;
+  /* Ensures the click target space remains */
+  height: 1em;
+  cursor: pointer;
+}
+
+.hide-date-icon::-webkit-datetime-edit-year-field,
+.hide-date-icon::-webkit-datetime-edit-month-field,
+.hide-date-icon::-webkit-datetime-edit-day-field,
+.hide-date-icon::-webkit-datetime-edit-text {
+  padding: 0;
+}

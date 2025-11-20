@@ -19,7 +19,7 @@ export const handlers = [
     return HttpResponse.json({ message: 'Invalid credentials' }, { status: 401 })
   }),
 
-  http.get('/api/v1/flights/:flightId', async ({ params }) => {
+  http.get('/flights/:flightId', async ({ params }) => {
     console.log(params)
     return HttpResponse.json({
       "success": true,
@@ -36,7 +36,7 @@ export const handlers = [
           "aircraftConfigId": "94c280e1-55a5-4863-840e-9a5e1bfcedeb",
           "aircraftId": "b2f84d04-ee01-44f4-8655-e23810d36143",
           "airlineId": "e7facd9d-c3e1-431a-a8d8-f4e98bcb626d",
-          "flightNumber": "EK388",
+          "flightNumber": "WY249",
           "flightNumberSuffix": null,
           "direction": "Outbound",
           "departureDestination": "LHR",
@@ -123,7 +123,7 @@ export const handlers = [
           "aircraftConfigId": "40f8d32f-aec6-45f7-a7f5-578f2df0834c",
           "aircraftId": "5bb021a5-9ce0-4460-9f0f-e979bca3aa7e",
           "airlineId": "e7facd9d-c3e1-431a-a8d8-f4e98bcb626d",
-          "flightNumber": "EK389",
+          "flightNumber": "WY248",
           "flightNumberSuffix": null,
           "direction": "Inbound",
           "departureDestination": "SIN",

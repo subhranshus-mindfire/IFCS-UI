@@ -18,23 +18,25 @@ import {
 import { PromptModal } from "./PromptModal";
 import { usePreparationStore } from "../../store/preparation";
 import type { PromptModalState } from "../../types/Flight";
+import SignatureModal from "./delivery/SignatureModal";
+import SealNumberModal from "./SealNumberModal";
+import QRCodeModal from "./QRCodeModal";
 
 type CompletedActionsState = {
   [key: string]: number[];
 };
 
-
-
 function FlightPreparations() {
   const tableRef = useRef<HTMLDivElement>(null);
+  const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState<boolean>(false);
+  const [selectedQRCodeUrl, setSelectedQRCodeUrl] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showFilter, setshowFilter] = useState<boolean>(false);
-
+  const [isSignaturModalOpen, setSignatureModalOpen] = useState<boolean>(false);
+  const [isSealNumberModalOpen, setIsSealNumberModalOpen] = useState<boolean>(false); // Add this
   const [isFlightPrepModalOpen, setisFlightPrepModalOpen] = useState<boolean>(false);
   const [isFlightPrepaDetailsModal, setIsFlightPrepDetailsModal] = useState<boolean>(false);
   const [completedActions, setCompletedActions] = useState<CompletedActionsState>({});
-
-  // Modal state
   const [promptModal, setPromptModal] = useState<PromptModalState>({
     isOpen: false,
     rowIndex: null,
@@ -63,6 +65,17 @@ function FlightPreparations() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+  const handleSaveSignature = () => {
+    setSignatureModalOpen(false);
+    setIsSealNumberModalOpen(true);
+
+  };
+
+  const handleSaveSealNumber = (sealNumber: string) => {
+    console.log("Seal Number:", sealNumber); // You can store this in your state/store
+    setIsSealNumberModalOpen(false);
+    handleConfirm(); // Complete the action after seal number is saved
+  };
 
   const handleOpenFlightPrepModal = () => setisFlightPrepModalOpen(true);
   const handleCloseFlightPrepModal = () => setisFlightPrepModalOpen(false);
@@ -70,10 +83,18 @@ function FlightPreparations() {
   const handleOpenFlightPrepDetailsModal = () => setIsFlightPrepDetailsModal(true);
   const handleCloseFlightPrepDetailsModal = () => setIsFlightPrepDetailsModal(false);
 
+
   const handleIconClick = (rowIndex: number, stepIndex: number, actionLabel: string) => {
     const rowKey = `row-${rowIndex}`;
     const completedForRow = completedActions[rowKey] || [];
-
+    if (stepIndex === 0 && actionLabel === "Scan Action") {
+      const prep = filteredPreparations[rowIndex];
+      if (prep && prep.qrCodeUrl) {
+        setSelectedQRCodeUrl(prep.qrCodeUrl);
+        setIsQRCodeModalOpen(true);
+      }
+      return;
+    }
     const isCompleted = completedForRow.includes(stepIndex);
 
     if (isCompleted) {
@@ -88,7 +109,7 @@ function FlightPreparations() {
       return;
     }
 
-    if (stepIndex > 0 && !completedForRow.includes(stepIndex - 1)) {
+    if (stepIndex >= 2 && !completedForRow.includes(stepIndex - 1)) {
       setPromptModal({
         isOpen: true,
         rowIndex,
@@ -100,7 +121,28 @@ function FlightPreparations() {
       return;
     }
 
-    // Show confirmation modal
+    if (stepIndex === 2 && actionLabel === "Seal Action") {
+      setPromptModal(prev => ({
+        ...prev,
+        rowIndex,
+        actionIndex: stepIndex,
+        actionName: actionLabel,
+        isBlocked: false,
+        isCompleted: false
+      }));
+      setSignatureModalOpen(true);
+      return;
+    }
+
+    if (stepIndex === 0 && actionLabel === "Scan Action") {
+      const newCompletedActions = {
+        ...completedActions,
+        [rowKey]: [...(completedActions[rowKey] || []), stepIndex]
+      };
+      setCompletedActions(newCompletedActions);
+      return;
+    }
+
     setPromptModal({
       isOpen: true,
       rowIndex,
@@ -157,7 +199,7 @@ function FlightPreparations() {
   };
 
   const isActionDisabled = (rowIndex: number, actionIndex: number): boolean => {
-    if (actionIndex === 0) return false;
+    if (actionIndex === 0 || actionIndex === 1) return false;
     const rowKey = `row-${rowIndex}`;
     const completedForRow = completedActions[rowKey] || [];
     return !completedForRow.includes(actionIndex) && !completedForRow.includes(actionIndex - 1);
@@ -181,7 +223,7 @@ function FlightPreparations() {
                 table { border-collapse: collapse; width: 100%; }
                 th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
                 th { background: #f5f5f5; }
-                .no-print { display: none; }
+                .no-print { display: none !important; }
               </style>
             </head>
             <body>
@@ -206,6 +248,26 @@ function FlightPreparations() {
 
   return (
     <div className="bg-bg-surface">
+      <SignatureModal
+        isOpen={isSignaturModalOpen}
+        onClose={() => { setSignatureModalOpen(false) }}
+        onSave={handleSaveSignature}
+        title=""
+      />
+      {/* Add Seal Number Modal */}
+      <SealNumberModal
+        isOpen={isSealNumberModalOpen}
+        onClose={() => { setIsSealNumberModalOpen(false) }}
+        onSave={handleSaveSealNumber}
+        title="Enter Seal Number"
+      />
+      {/* Add QR Code Modal */}
+      <QRCodeModal
+        isOpen={isQRCodeModalOpen}
+        onClose={() => setIsQRCodeModalOpen(false)}
+        qrCodeUrl={selectedQRCodeUrl}
+        title="Scan QR Code"
+      />
       {/* Header */}
       <div className="font-rubik flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
         <h2 className="text-base font-normal text-text-primary">
@@ -248,7 +310,7 @@ function FlightPreparations() {
                       <span>Prepared By</span>
                       <FontAwesomeIcon
                         icon={faFilter}
-                        className="w-3 h-3 text-text-tertiary hover:text-text-secondary"
+                        className="w-3 h-3 text-text-tertiary no-print hover:text-text-secondary"
                       />
                     </div>
 
@@ -257,7 +319,7 @@ function FlightPreparations() {
                       placeholder="Search..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`w-full px-2 py-1 text-xs border border-border-muted rounded focus:outline-none focus:ring-1 focus:ring-bg-accent absolute top-0 left-30 mt-1 bg-bg-surface shadow-lg z-30 transition-all ${showFilter ? "block" : "hidden"
+                      className={`w-full no-print px-2 py-1 text-xs border border-border-muted rounded focus:outline-none focus:ring-1 focus:ring-bg-accent absolute top-0 left-30 mt-1 bg-bg-surface shadow-lg z-30 transition-all ${showFilter ? "block" : "hidden"
                         }`}
                       style={{ width: "150px" }}
                     />
@@ -288,10 +350,10 @@ function FlightPreparations() {
                     className="bg-bg-surface border-b border-border-muted last:border-b-0 px-10 font-rubik text-text-muted"
                   >
                     <td className="px-3 py-2 text-sm font-medium uppercase text-text-secondary">
-                      {prep.stowage}
+                      {prep.position}
                     </td>
                     <td className="px-3 py-2 text-sm uppercase text-text-secondary">
-                      {prep.carrier}
+                      {prep.nameDisplay}
                     </td>
                     <td className="px-3 py-2 text-sm uppercase text-text-secondary">
                       {prep.equipment}

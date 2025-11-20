@@ -27,7 +27,6 @@ const extractDate = (isoString: string | null | undefined): string | undefined =
   isoString ? isoString.substring(0, 10) : undefined;
 
 const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolean => {
-  console.log(filters, "filters")
   return flightPair.some(flight => {
     let match = true;
 

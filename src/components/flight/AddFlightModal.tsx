@@ -7,6 +7,7 @@ import {
   FieldLabel,
   FieldContent
 } from "../Field";
+import { CalendarIcon } from "../../assets/icons";
 import Button from "../Button";
 
 const AIRPORT_OPTIONS = ["ADA", "ADD", "ADL", "AKL", "ALG", "AMM", "AMS", "ARN", "ASW", "ATH"]
@@ -179,10 +180,10 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
           {/* Row 1: Airline Code, Direction, Flight Type */}
           <div className="grid grid-cols-3 gap-4">
             <Field>
-              <FieldLabel className="text-sm text-text-secondary ">Airline Code</FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Airline Code</FieldLabel>
               <FieldContent>
                 <select
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
                   name="airlineCode"
                   value={formState.airlineCode}
                   onChange={handleInputChange}
@@ -194,10 +195,10 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               </FieldContent>
             </Field>
             <Field>
-              <FieldLabel className="text-sm text-text-secondary ">Direction</FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Direction</FieldLabel>
               <FieldContent>
                 <select
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
                   name="direction"
                   value={formState.direction}
                   onChange={handleInputChange}
@@ -209,7 +210,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               </FieldContent>
             </Field>
             <Field>
-              <FieldLabel className="text-sm text-text-secondary ">Flight Type</FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Flight Type</FieldLabel>
               <FieldContent>
                 <div className="flex items-center gap-4 pt-2">
                   {["J", "P"].map((type) => (
@@ -230,47 +231,72 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
             </Field>
           </div>
 
-          {/* Row 2: Date, Departure Time, Arrival Time */}
+          {/* Row 2: Date, Departure Time, Arrival Time (Customized Date) */}
           <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: "Date", type: "date", name: "date", value: formState.date },
-              { label: "Departure Time", type: "time", name: "departureTime", value: formState.departureTime },
-              { label: "Arrival Time", type: "time", name: "arrivalTime", value: formState.arrivalTime },
-            ].map((field) => (
-              <Field key={field.label}>
-                <FieldLabel className="text-sm text-text-secondary ">{field.label}</FieldLabel>
-                <FieldContent>
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Date</FieldLabel>
+              <FieldContent >
+                <label className="relative cursor-pointer">
                   <input
-                    type={field.type}
-                    name={field.name}
-                    value={field.value}
+                    type="date"
+                    name="date"
+                    value={formState.date}
                     onChange={handleInputChange}
-                    // Increased padding for consistent height
-                    className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                    className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none focus:border-bg-button appearance-none pr-8 hide-date-icon cursor-pointer"
                   />
-                </FieldContent>
-              </Field>
-            ))}
+                  <img
+                    src={CalendarIcon}
+                    className="absolute right-6 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
+                  />
+                </label>
+              </FieldContent>
+            </Field>
+
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Departure Time</FieldLabel>
+              <FieldContent>
+                <input
+                  type="time"
+                  name="departureTime"
+                  value={formState.departureTime}
+                  onChange={handleInputChange}
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none focus:border-bg-button"
+                />
+              </FieldContent>
+            </Field>
+
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Arrival Time</FieldLabel>
+              <FieldContent>
+                <input
+                  type="time"
+                  name="arrivalTime"
+                  value={formState.arrivalTime}
+                  onChange={handleInputChange}
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none focus:border-bg-button"
+                />
+              </FieldContent>
+            </Field>
           </div>
 
           {/* Row 3: Flight Number, Departure Airport, Arrival Airport */}
           <div className="grid grid-cols-3 gap-4">
             <Field>
-              <FieldLabel className="text-sm text-text-secondary ">Flight Number</FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Flight Number</FieldLabel>
               <FieldContent>
                 <input
                   type="text"
                   name="flightNumber"
                   value={formState.flightNumber}
                   onChange={handleInputChange}
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
                 />
               </FieldContent>
             </Field>
 
             {/* Departure Airport (Searchable Select) */}
             <Field>
-              <FieldLabel className="text-sm text-text-secondary ">Departure Airport</FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Departure Airport</FieldLabel>
               <FieldContent className="relative" ref={departureRef}>
                 <input
                   type="text"
@@ -279,10 +305,10 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   value={formState.departureAirport}
                   onChange={handleInputChange}
                   onFocus={() => setShowDepartureOptions(true)}
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
                 />
                 {showDepartureOptions && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
                     {filteredDepartureAirports.map((airport) => (
                       <div
                         key={airport}
@@ -302,7 +328,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 
             {/* Arrival Airport (Searchable Select) */}
             <Field>
-              <FieldLabel className="text-sm text-text-secondary ">Arrival Airport</FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Arrival Airport</FieldLabel>
               <FieldContent className="relative" ref={arrivalRef}>
                 <input
                   type="text"
@@ -311,10 +337,10 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   value={formState.arrivalAirport}
                   onChange={handleInputChange}
                   onFocus={() => setShowArrivalOptions(true)}
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
                 />
                 {showArrivalOptions && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
                     {filteredArrivalAirports.map((airport) => (
                       <div
                         key={airport}
@@ -336,10 +362,10 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
           {/* Row 4: Aircraft Reg and PAX Count */}
           <div className="grid grid-cols-3 gap-4">
             <Field className="col-span-1">
-              <FieldLabel className="text-sm text-text-secondary ">Aircraft Reg</FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Aircraft Reg</FieldLabel>
               <FieldContent>
                 <select
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
                   name="aircraftReg"
                   value={formState.aircraftReg}
                   onChange={handleInputChange}
@@ -368,7 +394,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                         name={`pax.${type.key}`}
                         value={formState.pax[type.key] === 0 ? '' : formState.pax[type.key]}
                         onChange={(e) => handlePaxChange(type.key, e.target.value)}
-                        className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                        className="w-full border border-border-secondary rounded px-3 py-2 text-center text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
                         min="0"
                       />
                       <span className="text-[0.65rem] text-text-secondary text-center mt-1">
@@ -393,7 +419,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                 className="flex items-center justify-between" >
                 <label className="text-text-secondary">{item.label}</label>
                 <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked ? "border-green-500" : "border-border-muted"
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked ? "border-green-500" : "border-border-secondary"
                     }`}
                   onClick={(e) => {
                     e.preventDefault()
@@ -416,7 +442,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
           </div>
 
           {/* Footer Buttons */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-border-muted">
+          <div className="flex justify-end gap-3 pt-4 border-t border-border-secondary">
             <Button
               onClick={onClose}
               className="px-6 py-2 bg-bg-button-gray text-text-secondary rounded hover:bg-gray-200 transition-colors"
@@ -431,14 +457,14 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
             >
               {isLoading ? 'Saving...' : 'Save'}
             </Button>
-            {/* <Button
+            <Button
               onClick={() => handleSubmit(false)} // Save and Add Next
               className={`px-6 py-2 text-white rounded transition-opacity 
                 ${isLoading ? 'bg-bg-button-gray cursor-not-allowed' : 'bg-bg-button hover:bg-bg-button-hover'} `}
               disabled={isLoading}
             >
               {isLoading ? 'Saving...' : 'Save and Add'}
-            </Button> */}
+            </Button>
           </div>
         </div>
       </div>

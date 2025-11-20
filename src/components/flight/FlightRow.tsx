@@ -19,77 +19,13 @@ import {
   ThermometerIcon,
   TruckIcon
 } from "../../assets/icons";
-import type { FlightList, FlightRowProps, PDFConfig } from "../../types/Flight";
+import type { FlightRowProps, PDFConfig } from "../../types/Flight";
 import { Tooltip } from "../common/Tooltip";
 import { PDFConfigModal } from "./PDFConfigModal";
+import { formatDate, formatTimeInHHMM, getArrivalType, getDepartureType, getDynamicCabinCounts, getPaxCount } from "../../lib/utils";
 
 
-const getDepartureType = (flight: FlightList): { time: string | null; type: string } => {
-  if (flight.actualDepartureUtc) return { time: formatTime(flight.actualDepartureUtc), type: "Actual" };
-  if (flight.estimatedDepartureUtc) return { time: formatTime(flight.estimatedDepartureUtc), type: "Estimated" };
-  return { time: formatTime(flight.scheduledDeparture), type: "Scheduled" };
-};
 
-const getArrivalType = (flight: FlightList): { time: string | null; type: string } => {
-  if (flight.actualArrivalUtc) return { time: formatTime(flight.actualArrivalUtc), type: "Actual" };
-  if (flight.estimatedArrivalUtc) return { time: formatTime(flight.estimatedArrivalUtc), type: "Estimated" };
-  return { time: formatTime(flight.scheduledArrival), type: "Scheduled" };
-};
-
-const formatTime = (isoString: string | null | undefined): string | null => {
-  if (!isoString) return null;
-  try {
-    return new Date(isoString).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-  } catch {
-    return isoString.substring(11, 16);
-  }
-};
-
-const formatDate = (isoString: string | null | undefined): string | null => {
-  if (!isoString) return null;
-  try {
-    return new Date(isoString).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
-  } catch {
-    return isoString.substring(0, 10);
-  }
-};
-
-
-const getPaxCount = (count: number | null | undefined): string => {
-  return count !== null && count !== undefined ? String(count) : "0";
-}
-
-/**
- * Dynamically extracts cabin counts from the paxCounts object, excluding null/zero counts.
- */
-const getDynamicCabinCounts = (paxCounts: FlightList['paxCounts']) => {
-  return Object.entries(paxCounts)
-    // Filter out 'totalCount' and entries where the count is zero, null, or undefined
-    .filter(([key, count]) =>
-      key !== 'totalCount' &&
-      count !== null &&
-      count !== undefined &&
-      count > 0
-    )
-    // Map the result to an array of objects with the label and value
-    .map(([key, count]) => ({
-      label: getCabinLabel(key),
-      count: count,
-      key: key // Keep the key for React 'key' attribute
-    }));
-};
-
-/**
- * GENERIC UTILITY: Converts a camelCase/PascalCase key to a readable label.
- * E.g., 'businessStudioCount' -> 'Business Studio'
- */
-const getCabinLabel = (key: string): string => {
-  let label = key.replace(/Count|Total/g, '');
-
-  label = label.replace(/([A-Z])/g, ' $1').trim();
-
-  return label.charAt(0).toUpperCase() + label.slice(1);
-};
 
 export const FlightRow: React.FC<FlightRowProps> = ({
   flight,
@@ -197,26 +133,26 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           <tr className="text-text-secondary">
             <td className="py-1 font-bold">Departure</td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTime(flight.scheduledDeparture || flight.scheduledDepartureUtc)}
+              {formatTimeInHHMM(flight.scheduledDeparture || flight.scheduledDepartureUtc)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTime(flight.estimatedDeparture || flight.estimatedDepartureUtc)}
+              {formatTimeInHHMM(flight.estimatedDeparture || flight.estimatedDepartureUtc)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTime(flight.actualDeparture || flight.actualDepartureUtc)}
+              {formatTimeInHHMM(flight.actualDeparture || flight.actualDepartureUtc)}
             </td>
 
           </tr>
           <tr className="text-text-secondary">
             <td className="py-1 font-bold">Arrival</td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTime(flight.scheduledArrivalUtc || flight.scheduledArrival)}
+              {formatTimeInHHMM(flight.scheduledArrivalUtc || flight.scheduledArrival)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTime(flight.estimatedArrivalUtc)}
+              {formatTimeInHHMM(flight.estimatedArrivalUtc)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTime(flight.actualArrivalUtc)}
+              {formatTimeInHHMM(flight.actualArrivalUtc)}
             </td>
           </tr>
         </tbody>
@@ -370,7 +306,6 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           <div className="flex flex-col items-center justify-center gap-1">
             <img src={SeatIcon} alt="Seats" />
             <span className="font-bold text-base text-text-primary">
-              {/* REFACTORED: Use paxCounts.totalCount */}
               {getPaxCount(flight.paxCounts.totalCount)}
             </span>
           </div>
@@ -395,7 +330,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               ))}
             </div>
           ) : (
-            <div className="text-center text-xs text-text-tertiary pt-2">N/A</div>
+            <div className="text-center text-xs text-text-tertiary pt-2"></div>
           )}
           {activePopover === "paxCabins" && <PaxPopover />}
           <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
@@ -446,10 +381,11 @@ export const FlightRow: React.FC<FlightRowProps> = ({
 
         </td> */}
 
-        {/* --- Actions Cell (Unchanged) --- */}
         <td className="py-2 px-3 text-base">
           <div className="flex items-center justify-between  pe-2 box-border gap-2  3xl:gap-3  text-text-tertiary">
-            <img src={WarningColouredIcon} className="h-4.5 w-4.5   3xl:h-6 3xl:w-6 cursor-pointer" alt="Warning" />
+            <Tooltip text="Distribution incomplete">
+              <img src={WarningColouredIcon} className="h-4.5 w-4.5   3xl:h-6 3xl:w-6 cursor-pointer" alt="Warning" />
+            </Tooltip>
             <Tooltip text="Meals">
               <img
                 src={ForkKnifeIcon}

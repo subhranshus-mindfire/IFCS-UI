@@ -23,10 +23,10 @@ interface FlightHeaderProps {
 }
 
 const FlightHeader: React.FC<FlightHeaderProps> = ({
-  totalFlights = 110,
-  completeFlights = 48,
+  totalFlights = 0,
+  completeFlights = 0,
   inProgressFlights = 0,
-  waitingFlights = 62,
+  waitingFlights = 0,
   onAddFlight,
   onFilterChange,
   currentFilters,

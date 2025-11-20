@@ -19,7 +19,7 @@ export const handlers = [
     return HttpResponse.json({ message: 'Invalid credentials' }, { status: 401 })
   }),
 
-  http.get('/flights/:flightId', async ({ params }) => {
+  http.get('/api/v1/flights/:flightId', async ({ params }) => {
     console.log(params)
     return HttpResponse.json({
       "success": true,

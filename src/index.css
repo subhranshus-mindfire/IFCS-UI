@@ -35,8 +35,15 @@
   --font-arial: "Arial", sans-serif;
   --font-rubik: "Rubik", sans-serif;
   --font-roboto: "roboto", sans-serif;
+  --color-green: #00a63e;
+  --color-red: #da4723;
+  --color-orange: #e86d1a;
   --color-bg-accent: #E2D8FD;
   --color-bg-button: #602AF3;
+  --color-bg-button-hover: #6e40ec;
+  --color-bg-button-text-hover: #4d21c5;
+  --color-bg-button-gray: #d1d5dc;
+  --color-bg-button-gray-hover: #ebe6e7;
   --color-bg-primary: #B79EFA;
   --color-bg-secondary: #dfdddd;
   --color-bg-tertiary: #F5F5F5;
@@ -50,10 +57,27 @@
   --color-text-tertiary: #A09CAB;
   --color-text-muted: #7A7A7A;
   --color-text-surface: #FFFFFF;
-  --breakpoint-3xl: 120rem
+
+  --breakpoint-3xl: 120rem;
+
 }
 
 button {
   cursor: pointer;
 
+}
+
+.hide-date-icon::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  width: 1em;
+  /* Ensures the click target space remains */
+  height: 1em;
+  cursor: pointer;
+}
+
+.hide-date-icon::-webkit-datetime-edit-year-field,
+.hide-date-icon::-webkit-datetime-edit-month-field,
+.hide-date-icon::-webkit-datetime-edit-day-field,
+.hide-date-icon::-webkit-datetime-edit-text {
+  padding: 0;
 }

@@ -227,7 +227,6 @@ export const flights: Flight[][] = [
   ],
 ];
 
-
 export const flightList: FlightList[][] = [
   [
     {
@@ -3914,9 +3913,6 @@ export const flightList: FlightList[][] = [
     }
   ]
 ]
-
-
-
 
 export const flightHistory: FlightHistoryEntry[] = [
   {

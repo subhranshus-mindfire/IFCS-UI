@@ -1,24 +1,62 @@
 import type React from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
+import { useFlightStore } from "../../store/flight";
+import type { AddFlightPayload, AddFormState } from "../../types/Flight";
 
-import { useState, useRef, useEffect } from "react"
 
 const AIRPORT_OPTIONS = ["ADA", "ADD", "ADL", "AKL", "ALG", "AMM", "AMS", "ARN", "ASW", "ATH"]
+const AIRCRAFT_REG_OPTIONS = [
+  "A4O-BAA", "A4O-BAB", "A4O-BAC", "A4O-BAE", "A4O-BI",
+  "A4O-BK", "A4O-BQ", "A4O-BT", "A4O-BUBCF", "A4O-BW"
+];
+
 
 export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [flightType, setFlightType] = useState("J")
-  const [manualPairing, setManualPairing] = useState(false)
-  const [manualLoading, setManualLoading] = useState(false)
-  const [manualMeal, setManualMeal] = useState(false)
-  const [departureAirportSearch, setDepartureAirportSearch] = useState("")
-  const [arrivalAirportSearch, setArrivalAirportSearch] = useState("")
-  const [showDepartureOptions, setShowDepartureOptions] = useState(false)
-  const [showArrivalOptions, setShowArrivalOptions] = useState(false)
+  const [formState, setFormState] = useState<AddFormState>({
+    airlineCode: "",
+    direction: "",
+    flightType: "J",
+    date: "",
+    departureTime: "",
+    arrivalTime: "",
+    flightNumber: "",
+    aircraftReg: "",
+    pax: { businessStudio: 0, business: 0, economy: 0, crew: 0 },
+    manualPairing: false,
+    manualLoadingPlanSelection: false,
+    manualMealPlanSelection: false,
+    departureAirport: "",
+    arrivalAirport: ""
+  });
 
-  // refs for dropdown containers
+  const [showDepartureOptions, setShowDepartureOptions] = useState(false);
+  const [showArrivalOptions, setShowArrivalOptions] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  const { addFlight, isLoading, error } = useFlightStore();
+
   const departureRef = useRef<HTMLDivElement | null>(null)
   const arrivalRef = useRef<HTMLDivElement | null>(null)
 
-  // close dropdowns when clicking/tapping outside
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({ ...prev, [name]: value }));
+  };
+  const handlePaxChange = (key: keyof AddFormState['pax'], value: string) => {
+    const num = parseInt(value, 10);
+
+    const numericValue = (!isNaN(num) && num >= 0) ? num : 0;
+
+    setFormState(prev => ({
+      ...prev,
+      pax: { ...prev.pax, [key]: numericValue }
+    }));
+  };
+
+  const handleToggleChange = (name: keyof AddFormState, checked: boolean) => {
+    setFormState(prev => ({ ...prev, [name]: checked }));
+  };
+
   useEffect(() => {
     function handleOutside(event: Event) {
       const target = event.target as Node | null
@@ -42,12 +80,72 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
   }, [])
 
   const filteredDepartureAirports = AIRPORT_OPTIONS.filter((airport) =>
-    airport.toUpperCase().includes(departureAirportSearch.toUpperCase()),
+    airport.toUpperCase().includes(formState.departureAirport.toUpperCase()),
   )
 
   const filteredArrivalAirports = AIRPORT_OPTIONS.filter((airport) =>
-    airport.toUpperCase().includes(arrivalAirportSearch.toUpperCase()),
+    airport.toUpperCase().includes(formState.arrivalAirport.toUpperCase()),
   )
+
+  const handleSubmit = useCallback(async (shouldClose: boolean) => {
+    setLocalError(null);
+    const { date, departureTime, arrivalTime, flightNumber, departureAirport, arrivalAirport } = formState;
+
+    if (!flightNumber || !date || !departureTime || !arrivalTime || !departureAirport || !arrivalAirport) {
+      setLocalError("Please fill in all mandatory fields.");
+      return;
+    }
+
+    const totalPax = Object.values(formState.pax).reduce((sum, count) => sum + count, 0);
+
+
+    const payload: AddFlightPayload = {
+      airlineCode: formState.airlineCode,
+      direction: formState.direction,
+      flightType: formState.flightType,
+      date: date,
+      departureTime: departureTime,
+      arrivalTime: arrivalTime,
+      flightNumber: flightNumber,
+      departureAirport: departureAirport,
+      arrivalAirport: arrivalAirport,
+      aircraftReg: formState.aircraftReg,
+      paxCount: totalPax,
+      manualPairing: formState.manualPairing,
+      manualLoadingPlanSelection: formState.manualLoadingPlanSelection,
+      manualMealPlanSelection: formState.manualMealPlanSelection,
+    };
+
+
+
+    await addFlight(payload);
+
+    if (shouldClose) {
+      onClose();
+    } else {
+      setFormState({
+        airlineCode: "WY",
+        direction: "[O/B]",
+        flightType: "J",
+        date: "",
+        departureTime: "",
+        arrivalTime: "",
+        flightNumber: "",
+        aircraftReg: "",
+        pax: { businessStudio: 0, business: 0, economy: 0, crew: 0 },
+        manualPairing: false,
+        manualLoadingPlanSelection: false,
+        manualMealPlanSelection: false,
+        departureAirport: "",
+        arrivalAirport: ""
+      });
+      setLocalError(null);
+    }
+
+
+
+  }, [formState, addFlight, onClose]);
+
 
   return (
     <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center z-50">
@@ -55,25 +153,45 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
       <div className="w-full  text-sm underline max-w-md bg-green-600 text-text-primary text-center py-1.5 rounded-t">
         Create Mode
       </div>
-      <div className="bg-white  shadow-lg w-full max-w-md p-6">
 
+      <div className="bg-white  shadow-lg w-full max-w-md p-6">
+        {/* Error Message Display */}
+        {localError ? (
+          <div className="p-2 mb-6  text-xs font-medium text-red-700 bg-red-100 border border-red-400 rounded">
+            {localError}
+          </div>
+        ) : error && (
+          <div className="p-2  mb-6 text-xs font-medium text-red-700 bg-red-100 border border-red-400 rounded">
+            API Error: {error}
+          </div>
+        )}
         <div className="space-y-5 text-sm">
           {/* Row 1 */}
           <div className="grid grid-cols-3 gap-5">
             <div>
               <label className="block text-text-primary mb-1.5 text-xs font-medium">Airline Code</label>
-              <select className="w-full border border-border-muted rounded px-3 py-2 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400">
+              <select
+                className="w-full border border-border-muted rounded px-3 py-2 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
+                name="airlineCode"
+                value={formState.airlineCode}
+                onChange={handleInputChange}
+              >
                 <option value=""></option>
-                <option value="ADA">WY</option>
-                <option value="ADD">OV</option>
+                <option value="WY">WY</option>
+                <option value="OV">OV</option>
               </select>
             </div>
             <div>
               <label className="block text-text-primary mb-1.5 text-xs font-medium">Direction</label>
-              <select className="w-full border border-border-muted rounded px-3 py-2 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400">
+              <select
+                className="w-full border border-border-muted rounded px-3 py-2 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
+                name="direction"
+                value={formState.direction}
+                onChange={handleInputChange}
+              >
                 <option value=""></option>
-                <option value="inbound">[O/B]</option>
-                <option value="outbound">[I/B]</option>
+                <option value="[O/B]">[O/B]</option>
+                <option value="[I/B]">[I/B]</option>
               </select>
             </div>
             <div>
@@ -85,8 +203,8 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                       type="radio"
                       name="flightType"
                       value={type}
-                      checked={flightType === type}
-                      onChange={(e) => setFlightType(e.target.value)}
+                      checked={formState.flightType === type}
+                      onChange={handleInputChange}
                       className="w-4 h-4 bg-white"
                     />
                     <span className="text-sm text-text-primary">{type}</span>
@@ -98,14 +216,17 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
           {/* Row 2 */}
           <div className="grid grid-cols-3 gap-5">
             {[
-              { label: "Date", type: "date" },
-              { label: "Departure Time", type: "time" },
-              { label: "Arrival Time", type: "time" },
+              { label: "Date", type: "date", name: "date", value: formState.date },
+              { label: "Departure Time", type: "time", name: "departureTime", value: formState.departureTime },
+              { label: "Arrival Time", type: "time", name: "arrivalTime", value: formState.arrivalTime },
             ].map((field) => (
               <div key={field.label}>
                 <label className="block text-text-primary mb-1.5 text-xs font-medium">{field.label}</label>
                 <input
                   type={field.type}
+                  name={field.name}
+                  value={field.value}
+                  onChange={handleInputChange}
                   className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-orange-500"
                 />
               </div>
@@ -118,6 +239,9 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               <label className="block text-text-primary mb-1.5 text-xs font-medium">Flight Number</label>
               <input
                 type="text"
+                name="flightNumber"
+                value={formState.flightNumber}
+                onChange={handleInputChange}
                 className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
               />
             </div>
@@ -126,8 +250,9 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               <input
                 type="text"
                 placeholder="Search..."
-                value={departureAirportSearch}
-                onChange={(e) => setDepartureAirportSearch(e.target.value)}
+                name="departureAirport"
+                value={formState.departureAirport}
+                onChange={handleInputChange}
                 onFocus={() => setShowDepartureOptions(true)}
                 className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
               />
@@ -137,7 +262,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                     <div
                       key={airport}
                       onClick={() => {
-                        setDepartureAirportSearch(airport)
+                        setFormState(prev => ({ ...prev, departureAirport: airport }));
                         setShowDepartureOptions(false)
                       }}
                       className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-primary"
@@ -153,8 +278,9 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               <input
                 type="text"
                 placeholder="Search..."
-                value={arrivalAirportSearch}
-                onChange={(e) => setArrivalAirportSearch(e.target.value)}
+                name="arrivalAirport"
+                value={formState.arrivalAirport}
+                onChange={handleInputChange}
                 onFocus={() => setShowArrivalOptions(true)}
                 className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
               />
@@ -164,7 +290,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                     <div
                       key={airport}
                       onClick={() => {
-                        setArrivalAirportSearch(airport)
+                        setFormState(prev => ({ ...prev, arrivalAirport: airport }));
                         setShowArrivalOptions(false)
                       }}
                       className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-primary"
@@ -181,18 +307,16 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
           <div className="flex items-start gap-8">
             <div className="w-1/3">
               <label className="block text-text-primary mb-1.5 text-xs font-medium">Aircraft Reg</label>
-              <select className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-orange-500">
+              <select
+                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-orange-500"
+                name="aircraftReg"
+                value={formState.aircraftReg}
+                onChange={handleInputChange}
+              >
                 <option value=""></option>
-                <option value="A4O-BAA">A4O-BAA</option>
-                <option value="A4O-BAB">A4O-BAB</option>
-                <option value="A4O-BAC">A4O-BAC</option>
-                <option value="A4O-BAE">A4O-BAE</option>
-                <option value="A4O-BI">A4O-BI</option>
-                <option value="A4O-BK">A4O-BK</option>
-                <option value="A4O-BQ">A4O-BQ</option>
-                <option value="A4O-BT">A4O-BT</option>
-                <option value="A4O-BUBCF">A4O-BUBCF</option>
-                <option value="A4O-BW">A4O-BW</option>
+                {AIRCRAFT_REG_OPTIONS.map((reg) => (
+                  <option key={reg} value={reg}>{reg}</option>
+                ))}
               </select>
             </div>
 
@@ -200,15 +324,19 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
               <label className="block text-text-primary mb-1.5 text-xs font-medium">PAX Count</label>
               <div className="grid grid-cols-4 gap-2">
                 {[
-                  { label: "Business Studio", key: "bs" },
-                  { label: "Business", key: "b" },
-                  { label: "Economy", key: "e" },
-                  { label: "Crew", key: "c" },
+                  { label: "Business Studio", key: "businessStudio" as keyof AddFormState['pax'], value: formState.pax.businessStudio },
+                  { label: "Business", key: "business" as keyof AddFormState['pax'], value: formState.pax.business },
+                  { label: "Economy", key: "economy" as keyof AddFormState['pax'], value: formState.pax.economy },
+                  { label: "Crew", key: "crew" as keyof AddFormState['pax'], value: formState.pax.crew },
                 ].map((type) => (
                   <div key={type.key} className="flex flex-col items-center bg-gray-50 rounded p-2">
                     <input
                       type="number"
+                      // Display empty string if value is 0 for better UX
+                      value={type.value === 0 ? '' : type.value}
+                      onChange={(e) => handlePaxChange(type.key, e.target.value)}
                       className="w-full border border-border-muted rounded py-1 text-sm text-text-primary text-center bg-white focus:outline-none focus:border-orange-500"
+                      min="0"
                     />
                     <label className="mt-1 text-[9px] text-text-primary leading-tight text-center">{type.label}</label>
                   </div>
@@ -217,12 +345,14 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
             </div>
           </div>
 
+
+
           {/* Manual toggles */}
           <div className="space-y-2 pt-2">
             {[
-              { label: "Manual Pairing", checked: manualPairing, onChange: setManualPairing },
-              { label: "Manual Loading Plan Selection", checked: manualLoading, onChange: setManualLoading },
-              { label: "Manual Meal Plan Selection", checked: manualMeal, onChange: setManualMeal },
+              { label: "Manual Pairing", checked: formState.manualPairing, name: 'manualPairing' as keyof AddFormState },
+              { label: "Manual Loading Plan Selection", checked: formState.manualLoadingPlanSelection, name: 'manualLoadingPlanSelection' as keyof AddFormState },
+              { label: "Manual Meal Plan Selection", checked: formState.manualMealPlanSelection, name: 'manualMealPlanSelection' as keyof AddFormState },
             ].map((item) => (
               <label
                 key={item.label}
@@ -234,7 +364,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                     }`}
                   onClick={(e) => {
                     e.preventDefault()
-                    item.onChange(!item.checked)
+                    handleToggleChange(item.name, !item.checked);
                   }}
                 >
                   {item.checked && (
@@ -257,14 +387,26 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
             {["Cancel", "Save", "Save and Add"].map((btn, i) => (
               <button
                 key={i}
-                onClick={btn === "Cancel" ? onClose : onClose}
+                onClick={() => {
+                  if (btn === "Cancel") {
+                    onClose()
+                  }
+                  else if (btn === "Save") {
+                    handleSubmit(true)
+                  }
+                  else if (btn === "Save and Add") {
+                    handleSubmit(false)
+                  }
+                }}
                 className={`px-6 py-1.5 rounded-xl transition-colors text-sm 
                 bg-bg-button-gray text-text-primary hover:bg-bg-button-gray-hover `}
               >
-                {btn}
+                {(btn === "Save" || btn === "Save and Add") && isLoading ? 'Saving...' : btn}
+
               </button>
             ))}
           </div>
+
         </div>
       </div>
     </div>

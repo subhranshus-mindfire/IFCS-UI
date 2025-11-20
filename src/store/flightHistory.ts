@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { flightHistory as rawFlightHistoryData } from '../const/flightData';
 import type { FlightHistoryStoreState } from '../types/Flight';
-
+// import { fetchFlightHistory } from '../services/flight';
+import { AxiosError } from 'axios';
 
 export const useFlightHistoryStore = create<FlightHistoryStoreState>((set) => ({
     rawHistory: [],
@@ -13,12 +14,11 @@ export const useFlightHistoryStore = create<FlightHistoryStoreState>((set) => ({
      * In production, this calls the API service.
      * @param flightNumber The flight number (e.g., "WY395") to fetch history for.
      */
-    fetchFlightHistory: async (flightNumber: string) => {
-        set({ isLoading: true, error: null, rawHistory: [] }); // Start loading
+    fetchFlightHistory: async (flightId: string) => {
+        set({ isLoading: true, error: null, rawHistory: [] });
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 500));
-
+            // const rawEntries = await fetchFlightHistory(flightId)
             const rawEntries = rawFlightHistoryData
 
             if (rawEntries.length > 0) {
@@ -27,15 +27,15 @@ export const useFlightHistoryStore = create<FlightHistoryStoreState>((set) => ({
                 set({
                     rawHistory: [],
                     isLoading: false,
-                    error: `No raw history found for flight ${flightNumber}`
+                    error: `No raw history found for flight ${flightId}`
                 });
             }
 
         } catch (err) {
-            console.error(`Failed to fetch history for ${flightNumber}:`, err);
+            console.error(`Failed to fetch history for ${flightId}:`, err);
             let errorMessage = "Failed to load flight history data from API.";
-            if (err instanceof Error) {
-                errorMessage = err.message;
+            if (err instanceof AxiosError) {
+                errorMessage = err.response?.data.message;
             }
             set({ error: errorMessage, isLoading: false, rawHistory: [] });
         }

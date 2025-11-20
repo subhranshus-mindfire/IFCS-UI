@@ -1,49 +1,17 @@
-// import { create } from "zustand";
-// import type { FlightStoreState } from "../types/Flight";
+import { create } from "zustand";
+import type { FlightStoreState, FlightFilters, FlightList, AddFlightPayload, AddFlightResponse } from "../types/Flight";
+import { flightList as mockFlights } from "../const/flightData";
+import { addFlight, fetchFlightStats } from "../services/flight";
+import { AxiosError } from "axios";
 // import { fetchFlights } from "../services/flight";
 
-// export const useFlightStore = create<FlightStoreState>((set) => ({
-//   flights: [],
-//   isLoading: false,
-//   error: null,
-
-//   fetchFlights: async (filters) => {
-//     set({ isLoading: true, error: null });
-
-//     try {
-//       const fetchedFlights = await fetchFlights(filters);
-//       console.log(fetchedFlights, "fetched")
-//       set({ flights: fetchedFlights, isLoading: false });
-
-//     } catch (err) {
-//       console.error("Failed to fetch flights:", err);
-//       let errorMessage = "Failed to load flight data.";
-
-//        if (err instanceof Error) {
-//         errorMessage = err.message;
-//       }
-
-//       set({ error: errorMessage, isLoading: false });
-//     }
-//   },
-// }));
-
-
-import { create } from "zustand";
-import type { FlightStoreState, FlightFilters, FlightList } from "../types/Flight";
-import { flightList as mockFlights } from "../const/flightData"; // <-- Import mock data
-
-// Helper function to extract date (YYYY-MM-DD) from ISO string
 const extractDate = (isoString: string | null | undefined): string | undefined =>
   isoString ? isoString.substring(0, 10) : undefined;
 
-// Function to check if a flight (or pair member) matches the current filters
 const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolean => {
-  // Check if ANY flight in the pair matches the criteria
   return flightPair.some(flight => {
     let match = true;
 
-    // --- Filter by Date (Scheduled Departure Date) ---
     if (filters.date) {
       const flightDate = extractDate(flight.scheduledDeparture);
       if (flightDate !== filters.date) {
@@ -51,8 +19,6 @@ const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolea
       }
     }
     if (!match) return false;
-
-    // --- Filter by Station (Dep/Arr IATA code) ---
     if (filters.station) {
       const stationLower = filters.station.toLowerCase();
       const depMatch = flight.departureDestination?.toLowerCase().includes(stationLower);
@@ -63,7 +29,6 @@ const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolea
     }
     if (!match) return false;
 
-    // --- Filter by Flight Number ---
     if (filters.flight) {
       const flightLower = filters.flight.toLowerCase();
       if (!flight.flightNumber?.toLowerCase().includes(flightLower)) {
@@ -72,7 +37,6 @@ const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolea
     }
     if (!match) return false;
 
-    // --- Filter by AC Reg ---
     if (filters.acReg) {
       const acRegLower = filters.acReg.toLowerCase();
       if (!flight.aircraft?.registration?.toLowerCase().includes(acRegLower)) {
@@ -81,7 +45,6 @@ const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolea
     }
     if (!match) return false;
 
-    // --- Filter by AC Type ---
     if (filters.acType) {
       const acTypeLower = filters.acType.toLowerCase();
       if (!flight.aircraft?.type?.toLowerCase().includes(acTypeLower)) {
@@ -90,7 +53,6 @@ const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolea
     }
     if (!match) return false;
 
-    // --- Filter by Route ---
     if (filters.route) {
       const routeLower = filters.route.toLowerCase();
       if (!flight.pairRoute?.toLowerCase().includes(routeLower)) {
@@ -99,7 +61,6 @@ const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolea
     }
     if (!match) return false;
 
-    // --- Filter by Status ---
     if (filters.status) {
       const statusLower = filters.status.toLowerCase();
       if (!flight.status?.toLowerCase().includes(statusLower)) {
@@ -108,17 +69,12 @@ const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolea
     }
     if (!match) return false;
 
-    // --- Filter by Client (UI Filter) ---
     // if (filters.client) {
     //   const clientLower = filters.client.toLowerCase();
     //   if (!flight.ifcsClient?.toLowerCase().includes(clientLower)) {
     //     match = false;
     //   }
     // }
-    // No return needed if client is the last filter; 'match' handles it.
-
-
-    // If the inner flight object matches all current filters, return true for the pair.
     return match;
   });
 };
@@ -126,6 +82,11 @@ const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolea
 
 export const useFlightStore = create<FlightStoreState>((set) => ({
   flights: [],
+  flightStats: {
+    total: 0,
+    completed: 0,
+    waiting: 0
+  },
   isLoading: false,
   error: null,
 
@@ -138,15 +99,8 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      // Attempt to fetch from API (using placeholder function now)
-      // const fetchedFlights = await fetchApiFlights(filters);
-      // set({ flights: fetchedFlights, isLoading: false });
-
-      // For now, simulating API success with mock data
-      // We use a small delay to simulate network latency
       await new Promise(resolve => setTimeout(resolve, 500));
-
-      // --- Apply Filtering Logic to Mock Data ---
+      // const filteredFlights = await fetchFlights(filters);
       let filteredFlights = mockFlights;
 
       if (Object.keys(filters).length > 0) {
@@ -157,7 +111,6 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
       set({ flights: filteredFlights, isLoading: false });
 
     } catch (err) {
-      // If API fails, you would still use mock data but report the error.
       console.error("Failed to fetch flights:", err);
       let errorMessage = "Failed to load flight data.";
 
@@ -165,8 +118,58 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
         errorMessage = err.message;
       }
 
-      // Using mock data as fallback on API error (optional, but useful for dev)
       set({ flights: mockFlights, error: errorMessage, isLoading: false });
     }
   },
+
+  fetchFlightStats: async (filters: FlightFilters = {
+    page: 1,
+    limit: 50,
+    sortBy: 'scheduledDeparture',
+    order: 'desc'
+  }) => {
+    set({ isLoading: true, error: null });
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const filteredFlightsStats = await fetchFlightStats(filters);
+
+      set({ flightStats: filteredFlightsStats, isLoading: false });
+
+    } catch (err) {
+      console.error("Failed to fetch flights:", err);
+      let errorMessage = "Failed to load flight data.";
+
+      if (err instanceof AxiosError) {
+        errorMessage = err.response?.data.message;
+      }
+
+      set({
+        flightStats: {
+          total: 0,
+          completed: 0,
+          waiting: 0
+        }, error: errorMessage, isLoading: false
+      });
+    }
+  },
+
+  addFlight: async (payload: AddFlightPayload): Promise<AddFlightResponse> => {
+    set({ isLoading: true, error: null });
+    try {
+      const newFlightData = await addFlight(payload);
+      set({ isLoading: false });
+      return newFlightData;
+
+    } catch (err) {
+      console.error("Failed to add flight:", err);
+      let errorMessage = "Failed to add flight. Please check input values.";
+      if (err instanceof AxiosError) {
+        errorMessage = err.response?.data.message;
+      }
+
+      set({ error: errorMessage, isLoading: false });
+      throw err;
+    }
+  }
 }));

@@ -21,6 +21,7 @@ const FlightList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [selectedFlightNumber, setSelectedFlightNumber] = useState<string>("");
+  const [selectedFlightId, setSelectedFlightId] = useState<string>("");
   const currentDate = new Date();
   const day = String(currentDate.getDate()).padStart(2, '0');
   const month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -33,16 +34,19 @@ const FlightList: React.FC = () => {
     order: 'desc',
     date: dateString
   });
-  const { flights, isLoading, error, fetchFlights } = useFlightStore();
+  const { flights, flightStats, fetchFlightStats, isLoading, error, fetchFlights } = useFlightStore();
   const navigate = useNavigate();
   const handleAddFlight = () => setShowAddModal(true);
-  const handleShowHistory = (flightNumber: string) => {
+  const handleShowHistory = (flightId: string, flightNumber: string) => {
+    setSelectedFlightId(flightId)
     setSelectedFlightNumber(flightNumber);
     setShowHistoryModal(true);
   };
   useEffect(() => {
     fetchFlights(Filters);
-  }, [fetchFlights, Filters]);
+    fetchFlightStats(Filters)
+  }, [fetchFlights, fetchFlightStats, Filters]);
+  console.log(flightStats, "flight")
   const handleFilterChange = (key: keyof FlightFilters, value: string) => {
     const newFilters = {
       ...Filters,
@@ -54,6 +58,10 @@ const FlightList: React.FC = () => {
     <div className="w-full h-screen flex flex-col bg-bg-secondary font-arial">
       <Navbar onMenuClick={() => { }} />
       <FlightHeader
+        totalFlights={flightStats.total}
+        completeFlights={flightStats.completed}
+        inProgressFlights={0}
+        waitingFlights={flightStats.waiting}
         onBack={() => navigate("/dashboard")}
         onAddFlight={handleAddFlight}
         onFilterChange={handleFilterChange}
@@ -65,6 +73,8 @@ const FlightList: React.FC = () => {
       )}
       {showHistoryModal && (
         <FlightHistoryModal
+
+          flightId={selectedFlightId}
           flightNumber={selectedFlightNumber}
           onClose={() => setShowHistoryModal(false)}
         />
@@ -180,7 +190,7 @@ const FlightList: React.FC = () => {
                     <FlightRow
                       key={`${idx}-${subIdx}`}
                       flight={flight}
-                      onShowHistory={handleShowHistory}
+                      onShowHistory={() => { handleShowHistory(flight.id, flight.flightNumber) }}
                       hideRoute={subIdx === 1}
                       isFirstInPair={subIdx === 0}
                       isLastInPair={subIdx === pair.length - 1}

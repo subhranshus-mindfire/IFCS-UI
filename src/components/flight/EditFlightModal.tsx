@@ -1,46 +1,25 @@
 import type { JSX } from "react";
 import Button from "../Button";
 import { Field, FieldLabel, FieldContent } from "../Field";
-import type { FlightLegData } from "./FlightLegsDisplay";
-
-interface LegData {
-  flightNumber: string;
-  date: string;
-  depTime: string;
-  arrTime: string;
-  acReg: string;
-  businessStudio: string;
-  business: string;
-  economy: string;
-  crew: string;
-}
+import type { FlightData } from "../../types/Flight";
+import { formatDateToDDMonYYYY, formatLocalTimeFromISO } from "../../lib/utils";
 
 interface EditFlightModalProps {
   isEditFlightModalOpen: boolean;
   selectedLegForEdit: number | null;
   setIsEditFlightModalOpen: (open: boolean) => void;
   setSelectedLegForEdit: (value: number | null) => void;
-  legs: FlightLegData[];
+  legData: FlightData;
 }
 
 export const EditFlightModal = ({
   isEditFlightModalOpen,
-  selectedLegForEdit,
   setIsEditFlightModalOpen,
-  legs,
+  legData,
 }: EditFlightModalProps): JSX.Element | null => {
   if (!isEditFlightModalOpen) return null;
 
-  const legData: LegData | null =
-    selectedLegForEdit !== null && selectedLegForEdit >= 0
-      ? {
-        ...legs[selectedLegForEdit],
-        businessStudio: String(legs[selectedLegForEdit].businessStudio),
-        business: String(legs[selectedLegForEdit].business),
-        economy: String(legs[selectedLegForEdit].economy),
-        crew: String(legs[selectedLegForEdit].crew),
-      }
-      : null;
+
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -118,7 +97,7 @@ export const EditFlightModal = ({
                 <div className="relative">
                   <input
                     type="text"
-                    defaultValue={legData?.date || "Oct 22"}
+                    defaultValue={formatDateToDDMonYYYY(legData.estimatedDeparture)}
                     className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary">
@@ -134,7 +113,7 @@ export const EditFlightModal = ({
               <FieldContent>
                 <input
                   type="text"
-                  defaultValue={legData?.depTime || "21:50"}
+                  defaultValue={formatLocalTimeFromISO(legData.estimatedDeparture)}
                   className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                 />
               </FieldContent>
@@ -146,7 +125,7 @@ export const EditFlightModal = ({
               <FieldContent>
                 <input
                   type="text"
-                  defaultValue={legData?.arrTime || "0:10"}
+                  defaultValue={formatLocalTimeFromISO(legData.estimatedArrival)}
                   className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                 />
               </FieldContent>
@@ -162,7 +141,7 @@ export const EditFlightModal = ({
               <FieldContent>
                 <input
                   type="text"
-                  defaultValue={legData?.flightNumber.substring(2) || "673"}
+                  defaultValue={legData?.flightNumber.substring(2)}
                   className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                 />
               </FieldContent>
@@ -174,7 +153,7 @@ export const EditFlightModal = ({
               <FieldContent>
                 <input
                   type="text"
-                  defaultValue="MCT"
+                  defaultValue={legData.departureDestination}
                   className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                 />
               </FieldContent>
@@ -186,7 +165,7 @@ export const EditFlightModal = ({
               <FieldContent>
                 <input
                   type="text"
-                  defaultValue="JED"
+                  defaultValue={legData.arrivalDestination}
                   className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                 />
               </FieldContent>
@@ -201,20 +180,20 @@ export const EditFlightModal = ({
               </FieldLabel>
               <FieldContent>
                 <select className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent">
-                  <option>{legData?.acReg || "A4OMP"}</option>
+                  <option>{legData?.aircraft?.registration}</option>
                 </select>
               </FieldContent>
             </Field>
-            <Field>
+            <Field className="col-span-2">
               <FieldLabel className="text-sm text-text-tertiary">
                 PAX Count
               </FieldLabel>
               <FieldContent>
-                <div className="grid grid-cols-4 gap-1">
+                <div className="w-75 grid grid-cols-4 gap-1">
                   <div className="flex flex-col">
                     <input
                       type="text"
-                      defaultValue={legData?.businessStudio || "2"}
+                      defaultValue={legData?.passengers?.businessStudioCount || "2"}
                       className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                     />
                     <span className="text-[0.6rem] text-text-tertiary text-center mt-1">
@@ -224,7 +203,7 @@ export const EditFlightModal = ({
                   <div className="flex flex-col">
                     <input
                       type="text"
-                      defaultValue={legData?.business || "153"}
+                      defaultValue={legData?.passengers?.businessCount || "153"}
                       className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                     />
                     <span className="text-[0.6rem] text-text-tertiary text-center mt-1">
@@ -234,7 +213,7 @@ export const EditFlightModal = ({
                   <div className="flex flex-col">
                     <input
                       type="text"
-                      defaultValue={legData?.economy || "0"}
+                      defaultValue={legData?.passengers?.economyCount || "0"}
                       className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                     />
                     <span className="text-[0.6rem] text-text-tertiary text-center mt-1">
@@ -244,7 +223,7 @@ export const EditFlightModal = ({
                   <div className="flex flex-col">
                     <input
                       type="text"
-                      defaultValue={legData?.crew || "0"}
+                      defaultValue={legData?.passengers?.crewCount || "0"}
                       className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                     />
                     <span className="text-[0.6rem] text-text-tertiary text-center mt-1">

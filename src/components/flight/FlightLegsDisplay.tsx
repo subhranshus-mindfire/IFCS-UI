@@ -10,6 +10,8 @@ import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown";
 import { CogIcon, NoteBookIcon, WarningIcon, ForkKnifeIcon, DatabaseIcon, AirplaneIcon } from "../../assets/icons";
 import { EditFlightModal } from "./EditFlightModal";
+import type { FlightData } from "../../types/Flight";
+import { formatDateToDDMonYYYY, formatLocalTimeFromISO } from "../../lib/utils";
 
 export interface FlightLegData {
   route: string;
@@ -39,7 +41,7 @@ export interface FlightLegData {
 }
 
 interface FlightLegsDisplayProps {
-  legs: FlightLegData[];
+  legs: FlightData[];
 }
 
 type DropdownType =
@@ -72,11 +74,10 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      // Check if click is on a cog icon or inside a dropdown
       const isClickOnCog = target.closest(".dropdown-trigger");
       const isClickInDropdown = target.closest(".dropdown-menu");
 
@@ -161,7 +162,6 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
     ];
 
 
-
   return (
     <div className="space-y-4 w-full font-rubik">
       <div className="flex justify-between items-center px-2">
@@ -170,7 +170,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
             <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
           </div>
         ) : (
-          <h2 className="text-xl md:text-2xl text-gray-700">Flights (2 Legs)</h2>
+          <h2 className="text-xl md:text-2xl text-gray-700">Flights ({legs.length})</h2>
         )}
         {!isLoading && (
           <div className="relative dropdown-trigger">
@@ -250,7 +250,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Route
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600">
-                    {leg.route}
+                    {leg.pairRoute}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -266,7 +266,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Type
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600">
-                    {leg.type}
+                    {leg.flightType}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -274,7 +274,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Date
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600 font-medium">
-                    {leg.date}
+                    {formatDateToDDMonYYYY(leg.estimatedDeparture)}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -282,7 +282,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     DEP Time
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600 font-medium">
-                    {leg.depTime}
+                    {formatLocalTimeFromISO(leg.estimatedDeparture)}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -290,7 +290,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     ARR Time
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600">
-                    {leg.arrTime}
+                    {formatLocalTimeFromISO(leg.estimatedArrival)}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -298,7 +298,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     AC Type
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600">
-                    {leg.acType}
+                    {leg.aircraft?.type}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -306,7 +306,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     AC Reg
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600">
-                    {leg.acReg}
+                    {leg.aircraft?.registration}
                   </div>
                 </div>
                 <div className="flex flex-col it">
@@ -322,7 +322,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Business
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600">
-                    {leg.business}
+                    {leg.passengers?.businessCount}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -330,7 +330,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Economy
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600">
-                    {leg.economy}
+                    {leg.passengers?.economyCount}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -338,7 +338,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Crew
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600">
-                    {leg.crew}
+                    {leg.passengers?.crewCount}
                   </div>
                 </div>
                 {/* <div className="flex flex-col">
@@ -426,7 +426,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   </div>
                 </div>
                 <p className="text-xs sm:text-sm text-gray-800 font-medium wrap-break-words">
-                  {leg.loadingPlan}
+                  {leg.loadingPlan?.name || "N/A"}
                 </p>
               </div>
 
@@ -466,7 +466,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   </div>
                 </div>
                 <p className="text-xs sm:text-sm text-gray-600 wrap-break-words font-semibold ">
-                  {leg.mealPlan}
+                  {leg.mealPlan?.name}
                 </p>
               </div>
 
@@ -488,7 +488,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 </div>
-                {leg.crewFlightReports.map((report: string, idx: number) => (
+                {Array(2).map((report: string, idx: number) => (
                   <div
                     key={idx}
                     className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
@@ -521,7 +521,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                       )}
                   </div>
                 </div>
-                {leg.alerts.map((alert: string, idx: number) => (
+                {Array(2).map((alert: string, idx: number) => (
                   <div
                     key={idx}
                     className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-semibold"
@@ -553,13 +553,15 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                   <div className="flex items-center gap-2 text-gray-600 font-semibold">
                     <span><img src={ForkKnifeIcon} alt="" className="h-4 w-4" /></span>
                     <span className="wrap-break-words">
-                      Meals - {leg.cutOffTimes.meals}
+                      Meals -
+                      {/* {leg.cutOffTimes.meals} */}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600 font-semibold">
                     <span><img src={DatabaseIcon} alt="" className="h-4 w-4" /></span>
                     <span className="wrap-break-words">
-                      Commissary - {leg.cutOffTimes.commissary}
+                      Commissary -
+                      {/* {leg.cutOffTimes.commissary} */}
                     </span>
                   </div>
                 </div>
@@ -569,7 +571,15 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
         )))}
 
       {/* Edit Flight Modal */}
-      <EditFlightModal isEditFlightModalOpen={isEditFlightModalOpen} selectedLegForEdit={selectedLegForEdit} setIsEditFlightModalOpen={setIsEditFlightModalOpen} setSelectedLegForEdit={setSelectedLegForEdit} legs={legs} />
+      {selectedLegForEdit !== null && (
+        <EditFlightModal
+          isEditFlightModalOpen={isEditFlightModalOpen}
+          selectedLegForEdit={selectedLegForEdit}
+          setIsEditFlightModalOpen={setIsEditFlightModalOpen}
+          setSelectedLegForEdit={setSelectedLegForEdit}
+          legData={legs[selectedLegForEdit]}
+        />
+      )}
     </div>
   );
 };

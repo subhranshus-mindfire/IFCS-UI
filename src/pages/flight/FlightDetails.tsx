@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { flights } from "../../const/flightData";
 import FlightPreparations from "../../components/flight/FlightPreparations";
 import FlightFoodOrder from "../../components/flight/FlightFoodOrder";
 import FlightGalleys from "../../components/flight/FlightGalleys";
@@ -11,6 +10,8 @@ import FlightLegsDisplay from "../../components/flight/FlightLegsDisplay";
 import { Breadcrumb } from "../../components/BreadCrumb";
 import { useTranslation } from "react-i18next";
 import Navbar from "../../components/Navbar";
+import { useFlightStore } from "../../store/useFlightStore";
+import { formatDateToDDMonYYYY } from "../../lib/utils";
 
 const tabKeys = [
   "Flight Info",
@@ -43,9 +44,16 @@ function FlightDetails() {
     localStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
 
-  const flight = flights.flat().find((f) => f.flightNumber === flightNumber);
+  const { flightData, fetchFlight } = useFlightStore();
 
-  if (!flight) {
+
+  useEffect(() => {
+    if (flightNumber) fetchFlight(flightNumber);
+  }, [flightNumber, fetchFlight]);
+
+
+
+  if (!flightData) {
     return (
       <div className="p-6">
         <h1 className="text-xl font-semibold text-red-600">
@@ -81,7 +89,7 @@ function FlightDetails() {
                   Flight:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flight.flightNumber}
+                  {flightData[0].flightNumber}
                 </span>
               </div>
               <div>
@@ -89,7 +97,7 @@ function FlightDetails() {
                   Route:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flight.route}
+                  {flightData[0].pairRoute}
                 </span>
               </div>
               <div>
@@ -97,7 +105,7 @@ function FlightDetails() {
                   Complete Date:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flight.date}
+                  {formatDateToDDMonYYYY(flightData[0].estimatedDeparture)}
                 </span>
               </div>
               <div>
@@ -105,7 +113,7 @@ function FlightDetails() {
                   Aircraft:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flight.acType}
+                  {flightData[0].aircraft?.type}
                 </span>
               </div>
               <div>
@@ -113,7 +121,7 @@ function FlightDetails() {
                   AC Reg.:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flight.acReg}
+                  {flightData[0].aircraft?.registration}
                 </span>
               </div>
               <div>
@@ -121,7 +129,7 @@ function FlightDetails() {
                   Destination:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flight.arrStation}
+                  {flightData[0].arrivalDestination || "N/A"}
                 </span>
               </div>
               <div>
@@ -129,7 +137,7 @@ function FlightDetails() {
                   Loading Plan:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flight.plan}
+                  {flightData[0].loadingPlan?.name || "N/A"}
                 </span>
               </div>
             </>}
@@ -215,62 +223,7 @@ function FlightDetails() {
           {/* Use the tab keys for conditional rendering */}
           {activeTab === "Flight Info" && (
             <FlightLegsDisplay
-              legs={[
-                {
-                  route: `${flight.depStation}-${flight.arrStation}`,
-                  flightNumber: flight.flightNumber,
-                  type: flight.type,
-                  date: flight.date,
-                  depTime: flight.departure,
-                  arrTime: flight.arrival,
-                  acType: flight.acType,
-                  acReg: flight.acReg,
-                  direction: "[O/B]",
-                  businessStudio: 0,
-                  business: parseInt(flight.pax.business.split("/")[0]) || 4,
-                  economy: parseInt(flight.pax.economy.split("/")[0]) || 118,
-                  crew: 0,
-                  child: 0,
-                  crewCount: 0,
-                  status: flight.status,
-                  loadingPlan: flight.plan!,
-                  mealPlan: "No Meal Plan",
-                  crewFlightReports: ["NA"],
-                  alerts: ["NA", "NA"],
-                  cutOffTimes: {
-                    meals: "NA",
-                    commissary: "NA",
-                  },
-                },
-                {
-                  route: `${flight.arrStation}-${flight.depStation}`,
-                  flightNumber: flight.flightNumber.replace(/\d+/, (match) =>
-                    (parseInt(match) + 1).toString()
-                  ),
-                  type: flight.type,
-                  date: flight.date,
-                  depTime: "01:25",
-                  arrTime: "05:40",
-                  acType: flight.acType,
-                  acReg: flight.acReg,
-                  direction: "[O/B]",
-                  businessStudio: 0,
-                  business: 7,
-                  economy: 108,
-                  crew: 0,
-                  child: 0,
-                  crewCount: 0,
-                  status: flight.status,
-                  loadingPlan: "",
-                  mealPlan: "No Meal Plan",
-                  crewFlightReports: ["NA"],
-                  alerts: ["NA", "NA"],
-                  cutOffTimes: {
-                    meals: "NA",
-                    commissary: "NA",
-                  },
-                },
-              ]}
+              legs={flightData.map((flight) => flight)}
             />
           )}
           {activeTab !== "Flight Info" && (

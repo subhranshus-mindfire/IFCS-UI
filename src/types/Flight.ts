@@ -313,3 +313,21 @@ export interface PDFConfig {
   scalePercentage: string;
 }
 
+
+//****************************PREPARATION****************************************/
+
+export interface PreparationItem {
+  stowage: string;
+  carrier: string;
+  equipment: string;
+  preparedBy: string;
+}
+
+export interface PromptModalState {
+  isOpen: boolean;
+  rowIndex: number | null;
+  actionIndex: number | null;
+  actionName: string;
+  isBlocked: boolean;
+  isCompleted: boolean;
+}

@@ -9,7 +9,6 @@ import { generateHistoryDisplay } from "../../utils/flightHistoryUtils";
 import { useFlightHistoryStore } from "../../store/flightHistory";
 import type { HistoryEntryDisplay } from "../../types/Flight";
 
-// Helper to format ISO string to just the Date part (as seen in screenshot)
 const formatDate = (isoString: string | undefined): string | null => {
   if (!isoString) return null;
   try {

@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
-import { samplePreparations } from "../../const/samplePreparations";
 import DynamicLoadingModal from "./AddDynamicLoadingModal";
 import { FlightPreparationDetailsModal } from "./FlightPreparationDetailsModal";
 import RedirectBtn from "../common/RedirectBtn";
@@ -17,20 +16,14 @@ import {
   PrepQRIcon
 } from "../../assets/icons";
 import { PromptModal } from "./PromptModal";
+import { usePreparationStore } from "../../store/preparation";
+import type { PromptModalState } from "../../types/Flight";
 
-// Define types for completed actions
 type CompletedActionsState = {
   [key: string]: number[];
 };
 
-interface PromptModalState {
-  isOpen: boolean;
-  rowIndex: number | null;
-  actionIndex: number | null;
-  actionName: string;
-  isBlocked: boolean;
-  isCompleted: boolean;
-}
+
 
 function FlightPreparations() {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -39,9 +32,6 @@ function FlightPreparations() {
 
   const [isFlightPrepModalOpen, setisFlightPrepModalOpen] = useState<boolean>(false);
   const [isFlightPrepaDetailsModal, setIsFlightPrepDetailsModal] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  // Track completed actions for each row
   const [completedActions, setCompletedActions] = useState<CompletedActionsState>({});
 
   // Modal state
@@ -53,6 +43,12 @@ function FlightPreparations() {
     isBlocked: false,
     isCompleted: false
   });
+  const {
+    preparations,
+    isLoading,
+    fetchData,
+    error
+  } = usePreparationStore();
 
   const actionNames: string[] = [
     "Scan Action",
@@ -65,11 +61,8 @@ function FlightPreparations() {
 
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    fetchData();
+  }, [fetchData]);
 
   const handleOpenFlightPrepModal = () => setisFlightPrepModalOpen(true);
   const handleCloseFlightPrepModal = () => setisFlightPrepModalOpen(false);
@@ -170,7 +163,7 @@ function FlightPreparations() {
     return !completedForRow.includes(actionIndex) && !completedForRow.includes(actionIndex - 1);
   };
 
-  const filteredPreparations = samplePreparations.filter((p) =>
+  const filteredPreparations = preparations.filter((p) =>
     p.preparedBy.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -220,6 +213,7 @@ function FlightPreparations() {
         </h2>
 
         <div className="flex flex-row items-center gap-6 text-sm">
+          {error && <span className="text-red-500 text-xs">{error}</span>}
           <RedirectBtn
             icon={AddIcon}
             label={"Add New"}

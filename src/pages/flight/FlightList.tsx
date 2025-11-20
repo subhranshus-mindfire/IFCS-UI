@@ -191,7 +191,7 @@ const FlightList: React.FC = () => {
                       key={`${idx}-${subIdx}`}
                       flight={flight}
                       onShowHistory={() => { handleShowHistory(flight.id, flight.flightNumber) }}
-                      hideRoute={subIdx === 1}
+                      hideRoute={subIdx > 0}
                       isFirstInPair={subIdx === 0}
                       isLastInPair={subIdx === pair.length - 1}
                     />

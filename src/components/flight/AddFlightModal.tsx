@@ -2,7 +2,12 @@ import type React from "react"
 import { useState, useRef, useEffect, useCallback } from "react"
 import { useFlightStore } from "../../store/flight";
 import type { AddFlightPayload, AddFormState } from "../../types/Flight";
-
+import {
+  Field,
+  FieldLabel,
+  FieldContent
+} from "../Field";
+import Button from "../Button";
 
 const AIRPORT_OPTIONS = ["ADA", "ADD", "ADL", "AKL", "ALG", "AMM", "AMS", "ARN", "ASW", "ATH"]
 const AIRCRAFT_REG_OPTIONS = [
@@ -89,15 +94,24 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 
   const handleSubmit = useCallback(async (shouldClose: boolean) => {
     setLocalError(null);
-    const { date, departureTime, arrivalTime, flightNumber, departureAirport, arrivalAirport } = formState;
+    const { date, departureTime, arrivalTime, flightNumber, departureAirport, arrivalAirport, aircraftReg } = formState;
 
-    if (!flightNumber || !date || !departureTime || !arrivalTime || !departureAirport || !arrivalAirport) {
+    const mandatoryFields: (keyof AddFormState)[] = [
+      'date', 'departureTime', 'arrivalTime',
+      'flightNumber', 'departureAirport', 'arrivalAirport',
+      'airlineCode', 'aircraftReg', 'direction'
+    ];
+
+    const missingField = mandatoryFields.some(key => {
+      const value = formState[key];
+      return typeof value === 'string' && value.trim() === '';
+    });
+
+    if (missingField) {
       setLocalError("Please fill in all mandatory fields.");
       return;
     }
-
     const totalPax = Object.values(formState.pax).reduce((sum, count) => sum + count, 0);
-
 
     const payload: AddFlightPayload = {
       airlineCode: formState.airlineCode,
@@ -109,13 +123,12 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
       flightNumber: flightNumber,
       departureAirport: departureAirport,
       arrivalAirport: arrivalAirport,
-      aircraftReg: formState.aircraftReg,
+      aircraftReg: aircraftReg,
       paxCount: totalPax,
       manualPairing: formState.manualPairing,
       manualLoadingPlanSelection: formState.manualLoadingPlanSelection,
       manualMealPlanSelection: formState.manualMealPlanSelection,
     };
-
 
 
     await addFlight(payload);
@@ -142,223 +155,243 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
       setLocalError(null);
     }
 
-
-
   }, [formState, addFlight, onClose]);
 
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center z-50">
-      {/* Modal */}
-      <div className="w-full  text-sm underline max-w-md bg-green-600 text-text-primary text-center py-1.5 rounded-t">
-        Create Mode
+    <div className="fixed inset-0 font-rubik bg-black/50 flex flex-col items-center justify-center z-50">
+      {/* Modal Header */}
+      <div className="w-full max-w-xl bg-green-600 text-white text-center py-2 rounded-t-lg">
+        <h2 className="text-sm font-semibold">Create Mode</h2>
       </div>
 
-      <div className="bg-white  shadow-lg w-full max-w-md p-6">
+      <div className="bg-white shadow-lg w-full max-w-xl p-6 rounded-b-lg">
+
         {/* Error Message Display */}
-        {localError ? (
-          <div className="p-2 mb-6  text-xs font-medium text-red-700 bg-red-100 border border-red-400 rounded">
-            {localError}
-          </div>
-        ) : error && (
-          <div className="p-2  mb-6 text-xs font-medium text-red-700 bg-red-100 border border-red-400 rounded">
-            API Error: {error}
+        {(localError || error) && (
+          <div className="p-2 mb-4 text-[13px] font-medium text-red bg-red-100 border border-red-400 rounded">
+            {localError || `API Error: ${error}`}
           </div>
         )}
-        <div className="space-y-5 text-sm">
-          {/* Row 1 */}
-          <div className="grid grid-cols-3 gap-5">
-            <div>
-              <label className="block text-text-primary mb-1.5 text-xs font-medium">Airline Code</label>
-              <select
-                className="w-full border border-border-muted rounded px-3 py-2 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
-                name="airlineCode"
-                value={formState.airlineCode}
-                onChange={handleInputChange}
-              >
-                <option value=""></option>
-                <option value="WY">WY</option>
-                <option value="OV">OV</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-text-primary mb-1.5 text-xs font-medium">Direction</label>
-              <select
-                className="w-full border border-border-muted rounded px-3 py-2 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
-                name="direction"
-                value={formState.direction}
-                onChange={handleInputChange}
-              >
-                <option value=""></option>
-                <option value="[O/B]">[O/B]</option>
-                <option value="[I/B]">[I/B]</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-text-primary mb-1.5 text-xs font-medium">Flight Type</label>
-              <div className="flex gap-3 pt-1">
-                {["J", "P"].map((type) => (
-                  <label key={type} className="flex items-center gap-1.5 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="flightType"
-                      value={type}
-                      checked={formState.flightType === type}
-                      onChange={handleInputChange}
-                      className="w-4 h-4 bg-white"
-                    />
-                    <span className="text-sm text-text-primary">{type}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+
+        <div className="space-y-4">
+
+          {/* Row 1: Airline Code, Direction, Flight Type */}
+          <div className="grid grid-cols-3 gap-4">
+            <Field>
+              <FieldLabel className="text-sm text-text-secondary ">Airline Code</FieldLabel>
+              <FieldContent>
+                <select
+                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  name="airlineCode"
+                  value={formState.airlineCode}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  <option value="WY">WY</option>
+                  <option value="OV">OV</option>
+                </select>
+              </FieldContent>
+            </Field>
+            <Field>
+              <FieldLabel className="text-sm text-text-secondary ">Direction</FieldLabel>
+              <FieldContent>
+                <select
+                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  name="direction"
+                  value={formState.direction}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  <option value="[O/B]">[O/B]</option>
+                  <option value="[I/B]">[I/B]</option>
+                </select>
+              </FieldContent>
+            </Field>
+            <Field>
+              <FieldLabel className="text-sm text-text-secondary ">Flight Type</FieldLabel>
+              <FieldContent>
+                <div className="flex items-center gap-4 pt-2">
+                  {["J", "P"].map((type) => (
+                    <label key={type} className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="flightType"
+                        value={type}
+                        checked={formState.flightType === type}
+                        onChange={handleInputChange}
+                        className="w-4 h-4 text-green-600 focus:ring-green-600"
+                      />
+                      <span className="text-text-secondary">{type}</span>
+                    </label>
+                  ))}
+                </div>
+              </FieldContent>
+            </Field>
           </div>
-          {/* Row 2 */}
-          <div className="grid grid-cols-3 gap-5">
+
+          {/* Row 2: Date, Departure Time, Arrival Time */}
+          <div className="grid grid-cols-3 gap-4">
             {[
               { label: "Date", type: "date", name: "date", value: formState.date },
               { label: "Departure Time", type: "time", name: "departureTime", value: formState.departureTime },
               { label: "Arrival Time", type: "time", name: "arrivalTime", value: formState.arrivalTime },
             ].map((field) => (
-              <div key={field.label}>
-                <label className="block text-text-primary mb-1.5 text-xs font-medium">{field.label}</label>
-                <input
-                  type={field.type}
-                  name={field.name}
-                  value={field.value}
-                  onChange={handleInputChange}
-                  className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-orange-500"
-                />
-              </div>
+              <Field key={field.label}>
+                <FieldLabel className="text-sm text-text-secondary ">{field.label}</FieldLabel>
+                <FieldContent>
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={field.value}
+                    onChange={handleInputChange}
+                    // Increased padding for consistent height
+                    className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  />
+                </FieldContent>
+              </Field>
             ))}
           </div>
 
-          {/* Row 3 - Departure Airport and Arrival Airport converted to searchable select */}
-          <div className="grid grid-cols-3 gap-5">
-            <div>
-              <label className="block text-text-primary mb-1.5 text-xs font-medium">Flight Number</label>
-              <input
-                type="text"
-                name="flightNumber"
-                value={formState.flightNumber}
-                onChange={handleInputChange}
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
-              />
-            </div>
-            <div className="relative" ref={departureRef}>
-              <label className="block text-text-primary mb-1.5 text-xs font-medium">Departure Airport</label>
-              <input
-                type="text"
-                placeholder="Search..."
-                name="departureAirport"
-                value={formState.departureAirport}
-                onChange={handleInputChange}
-                onFocus={() => setShowDepartureOptions(true)}
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
-              />
-              {showDepartureOptions && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-                  {filteredDepartureAirports.map((airport) => (
-                    <div
-                      key={airport}
-                      onClick={() => {
-                        setFormState(prev => ({ ...prev, departureAirport: airport }));
-                        setShowDepartureOptions(false)
-                      }}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-primary"
-                    >
-                      {airport}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="relative" ref={arrivalRef}>
-              <label className="block text-text-primary mb-1.5 text-xs font-medium">Arrival Airport</label>
-              <input
-                type="text"
-                placeholder="Search..."
-                name="arrivalAirport"
-                value={formState.arrivalAirport}
-                onChange={handleInputChange}
-                onFocus={() => setShowArrivalOptions(true)}
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-blue-400"
-              />
-              {showArrivalOptions && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-                  {filteredArrivalAirports.map((airport) => (
-                    <div
-                      key={airport}
-                      onClick={() => {
-                        setFormState(prev => ({ ...prev, arrivalAirport: airport }));
-                        setShowArrivalOptions(false)
-                      }}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-primary"
-                    >
-                      {airport}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Row 3: Flight Number, Departure Airport, Arrival Airport */}
+          <div className="grid grid-cols-3 gap-4">
+            <Field>
+              <FieldLabel className="text-sm text-text-secondary ">Flight Number</FieldLabel>
+              <FieldContent>
+                <input
+                  type="text"
+                  name="flightNumber"
+                  value={formState.flightNumber}
+                  onChange={handleInputChange}
+                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                />
+              </FieldContent>
+            </Field>
 
-          {/* Row 4 */}
-          <div className="flex items-start gap-8">
-            <div className="w-1/3">
-              <label className="block text-text-primary mb-1.5 text-xs font-medium">Aircraft Reg</label>
-              <select
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-text-primary bg-white focus:outline-none focus:border-orange-500"
-                name="aircraftReg"
-                value={formState.aircraftReg}
-                onChange={handleInputChange}
-              >
-                <option value=""></option>
-                {AIRCRAFT_REG_OPTIONS.map((reg) => (
-                  <option key={reg} value={reg}>{reg}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex-1">
-              <label className="block text-text-primary mb-1.5 text-xs font-medium">PAX Count</label>
-              <div className="grid grid-cols-4 gap-2">
-                {[
-                  { label: "Business Studio", key: "businessStudio" as keyof AddFormState['pax'], value: formState.pax.businessStudio },
-                  { label: "Business", key: "business" as keyof AddFormState['pax'], value: formState.pax.business },
-                  { label: "Economy", key: "economy" as keyof AddFormState['pax'], value: formState.pax.economy },
-                  { label: "Crew", key: "crew" as keyof AddFormState['pax'], value: formState.pax.crew },
-                ].map((type) => (
-                  <div key={type.key} className="flex flex-col items-center bg-gray-50 rounded p-2">
-                    <input
-                      type="number"
-                      // Display empty string if value is 0 for better UX
-                      value={type.value === 0 ? '' : type.value}
-                      onChange={(e) => handlePaxChange(type.key, e.target.value)}
-                      className="w-full border border-border-muted rounded py-1 text-sm text-text-primary text-center bg-white focus:outline-none focus:border-orange-500"
-                      min="0"
-                    />
-                    <label className="mt-1 text-[9px] text-text-primary leading-tight text-center">{type.label}</label>
+            {/* Departure Airport (Searchable Select) */}
+            <Field>
+              <FieldLabel className="text-sm text-text-secondary ">Departure Airport</FieldLabel>
+              <FieldContent className="relative" ref={departureRef}>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  name="departureAirport"
+                  value={formState.departureAirport}
+                  onChange={handleInputChange}
+                  onFocus={() => setShowDepartureOptions(true)}
+                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                />
+                {showDepartureOptions && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
+                    {filteredDepartureAirports.map((airport) => (
+                      <div
+                        key={airport}
+                        onClick={() => {
+                          setFormState(prev => ({ ...prev, departureAirport: airport }));
+                          setShowDepartureOptions(false)
+                        }}
+                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-secondary"
+                      >
+                        {airport}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                )}
+              </FieldContent>
+            </Field>
+
+            {/* Arrival Airport (Searchable Select) */}
+            <Field>
+              <FieldLabel className="text-sm text-text-secondary ">Arrival Airport</FieldLabel>
+              <FieldContent className="relative" ref={arrivalRef}>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  name="arrivalAirport"
+                  value={formState.arrivalAirport}
+                  onChange={handleInputChange}
+                  onFocus={() => setShowArrivalOptions(true)}
+                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                />
+                {showArrivalOptions && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
+                    {filteredArrivalAirports.map((airport) => (
+                      <div
+                        key={airport}
+                        onClick={() => {
+                          setFormState(prev => ({ ...prev, arrivalAirport: airport }));
+                          setShowArrivalOptions(false)
+                        }}
+                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-secondary"
+                      >
+                        {airport}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </FieldContent>
+            </Field>
           </div>
 
+          {/* Row 4: Aircraft Reg and PAX Count */}
+          <div className="grid grid-cols-3 gap-4">
+            <Field className="col-span-1">
+              <FieldLabel className="text-sm text-text-secondary ">Aircraft Reg</FieldLabel>
+              <FieldContent>
+                <select
+                  className="w-full border border-border-muted rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  name="aircraftReg"
+                  value={formState.aircraftReg}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  {AIRCRAFT_REG_OPTIONS.map((reg) => (
+                    <option key={reg} value={reg}>{reg}</option>
+                  ))}
+                </select>
+              </FieldContent>
+            </Field>
 
+            <Field className="col-span-2">
+              <FieldLabel className="text-sm text-text-secondary ">PAX Count</FieldLabel>
+              <FieldContent>
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    { label: "Business Studio", key: "businessStudio" as keyof AddFormState['pax'] },
+                    { label: "Business", key: "business" as keyof AddFormState['pax'] },
+                    { label: "Economy", key: "economy" as keyof AddFormState['pax'] },
+                    { label: "Crew", key: "crew" as keyof AddFormState['pax'] },
+                  ].map((type) => (
+                    <div key={type.key} className="flex flex-col items-center">
+                      <input
+                        type="number"
+                        name={`pax.${type.key}`}
+                        value={formState.pax[type.key] === 0 ? '' : formState.pax[type.key]}
+                        onChange={(e) => handlePaxChange(type.key, e.target.value)}
+                        className="w-full border border-border-muted rounded px-3 py-2 text-center text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                        min="0"
+                      />
+                      <span className="text-[0.65rem] text-text-secondary text-center mt-1">
+                        {type.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </FieldContent>
+            </Field>
+          </div>
 
-          {/* Manual toggles */}
-          <div className="space-y-2 pt-2">
+          {/* Row 5: Manual toggles (Retaining original toggle style) */}
+          <div className="space-y-3 pt-2">
             {[
               { label: "Manual Pairing", checked: formState.manualPairing, name: 'manualPairing' as keyof AddFormState },
               { label: "Manual Loading Plan Selection", checked: formState.manualLoadingPlanSelection, name: 'manualLoadingPlanSelection' as keyof AddFormState },
               { label: "Manual Meal Plan Selection", checked: formState.manualMealPlanSelection, name: 'manualMealPlanSelection' as keyof AddFormState },
             ].map((item) => (
-              <label
+              <div
                 key={item.label}
-                className="flex items-center justify-between gap-2 cursor-pointer text-sm text-text-primary"
-              >
-                <span>{item.label}</span>
+                className="flex items-center justify-between" >
+                <label className="text-text-secondary">{item.label}</label>
                 <div
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked ? "border-green-500" : "border-border-muted"
                     }`}
@@ -378,35 +411,35 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                     </svg>
                   )}
                 </div>
-              </label>
+              </div>
             ))}
           </div>
 
-          {/* Buttons */}
-          <div className="flex justify-center gap-3 pt-4">
-            {["Cancel", "Save", "Save and Add"].map((btn, i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  if (btn === "Cancel") {
-                    onClose()
-                  }
-                  else if (btn === "Save") {
-                    handleSubmit(true)
-                  }
-                  else if (btn === "Save and Add") {
-                    handleSubmit(false)
-                  }
-                }}
-                className={`px-6 py-1.5 rounded-xl transition-colors text-sm 
-                bg-bg-button-gray text-text-primary hover:bg-bg-button-gray-hover `}
-              >
-                {(btn === "Save" || btn === "Save and Add") && isLoading ? 'Saving...' : btn}
-
-              </button>
-            ))}
+          {/* Footer Buttons */}
+          <div className="flex justify-end gap-3 pt-4 border-t border-border-muted">
+            <Button
+              onClick={onClose}
+              className="px-6 py-2 bg-bg-button-gray text-text-secondary rounded hover:bg-gray-200 transition-colors"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleSubmit(true)} // Save and Close
+              className={`px-6 py-2 text-white rounded transition-opacity 
+                ${isLoading ? 'bg-bg-button-gray cursor-not-allowed' : 'bg-bg-button hover:bg-bg-button-hover'} `}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Saving...' : 'Save'}
+            </Button>
+            <Button
+              onClick={() => handleSubmit(false)} // Save and Add Next
+              className={`px-6 py-2 text-white rounded transition-opacity 
+                ${isLoading ? 'bg-bg-button-gray cursor-not-allowed' : 'bg-bg-button hover:bg-bg-button-hover'} `}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Saving...' : 'Save and Add'}
+            </Button>
           </div>
-
         </div>
       </div>
     </div>

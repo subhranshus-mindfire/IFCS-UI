@@ -109,14 +109,16 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
               />
 
               <select
+                value={currentFilters.client || ""}
+                onChange={(e) => onFilterChange("client", e.target.value)}
                 className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded focus:outline-none  focus:border-bg-button w-28 appearance-none"
                 style={{
                   backgroundImage: "none",
                 }}
               >
-                <option value="Oman">Oman Air</option>
-                <option value="Dubai">Salam Air</option>
-                <option value="Abu Dhabi">All</option>
+                <option value="Oman Air">Oman Air</option>
+                <option value="Salam Air">Salam Air</option>
+                <option value="">All</option>
               </select>
             </div>
             {/* Stats */}

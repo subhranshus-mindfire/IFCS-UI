@@ -11,7 +11,7 @@ import {
   ReceiptIcon,
   SeatIcon,
   SignatureIcon,
-  WarningIcon,
+  WarningColouredIcon,
   CogIcon,
   DetailIcon,
   EditIcon,
@@ -54,10 +54,42 @@ const formatDate = (isoString: string | null | undefined): string | null => {
   }
 };
 
+
 const getPaxCount = (count: number | null | undefined): string => {
   return count !== null && count !== undefined ? String(count) : "0";
 }
 
+/**
+ * Dynamically extracts cabin counts from the paxCounts object, excluding null/zero counts.
+ */
+const getDynamicCabinCounts = (paxCounts: FlightList['paxCounts']) => {
+  return Object.entries(paxCounts)
+    // Filter out 'totalCount' and entries where the count is zero, null, or undefined
+    .filter(([key, count]) =>
+      key !== 'totalCount' &&
+      count !== null &&
+      count !== undefined &&
+      count > 0
+    )
+    // Map the result to an array of objects with the label and value
+    .map(([key, count]) => ({
+      label: getCabinLabel(key),
+      count: count,
+      key: key // Keep the key for React 'key' attribute
+    }));
+};
+
+/**
+ * GENERIC UTILITY: Converts a camelCase/PascalCase key to a readable label.
+ * E.g., 'businessStudioCount' -> 'Business Studio'
+ */
+const getCabinLabel = (key: string): string => {
+  let label = key.replace(/Count|Total/g, '');
+
+  label = label.replace(/([A-Z])/g, ' $1').trim();
+
+  return label.charAt(0).toUpperCase() + label.slice(1);
+};
 
 export const FlightRow: React.FC<FlightRowProps> = ({
   flight,
@@ -138,6 +170,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
     return "text-text-primary";
   };
 
+  const visibleCabinCounts = getDynamicCabinCounts(flight.paxCounts);
   // Get current departure/arrival status and time
   const depStatus = getDepartureType(flight);
   const arrStatus = getArrivalType(flight);
@@ -198,7 +231,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex flex-col gap-2 text-sm text-text-secondary">
-        <h3 className="font-bold text-lg text-text-primary">Passenger Count</h3>
+        <h3 className="font-bold text-sm 3xl:text-lg text-text-primary">Passenger Count</h3>
         <div className="flex justify-between mt-2">
           <span>Business Studio</span>
           <span className="font-medium text-text-primary">
@@ -247,16 +280,16 @@ export const FlightRow: React.FC<FlightRowProps> = ({
             className="h-7 w-7 mx-auto"
           />
         </td>
-        <td className="text-left font-sm py-2 px-0 text-text-secondary">
+        <td className="text-left  font-sm py-2 px-0 text-text-secondary">
           {!hideRoute && fullRoute}
         </td>
-        <td className="text-left text-lg font-bold text-text-primary py-2 px-3">
+        <td className="text-left text-sm 3xl:text-lg font-bold text-text-primary py-2 px-3">
           {flight.flightNumber}{flight.flightNumberSuffix}
         </td>
-        <td className="text-left font-semibold text-lg py-2 px-3 text-text-primary">
+        <td className="text-left font-semibold text-sm 3xl:text-lg py-2 px-3 text-text-primary">
           {flight.flightTypeIataCode || flight.flightType}
         </td>
-        <td className="text-left font-semibold text-lg py-2 px-3 text-text-secondary">
+        <td className="text-left font-semibold text-sm 3xl:text-lg py-2 px-3 text-text-secondary">
           {formatDate(flight.scheduledDepartureUtc || flight.scheduledDepartureUtc)}
         </td>
 
@@ -272,7 +305,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           >
             {depStatus.type}
           </div>
-          <div className="font-bold text-lg text-text-primary">
+          <div className="font-bold text-sm 3xl:text-lg text-text-primary">
             {depStatus.time}
           </div>
           <div className="text-bg-button font-semibold text-sm">
@@ -291,7 +324,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           >
             {arrStatus.type}
           </div>
-          <div className="font-bold text-lg text-text-primary">
+          <div className="font-bold text-sm 3xl:text-lg text-text-primary">
             {arrStatus.time}
           </div>
           <div className="text-bg-button font-semibold text-sm">
@@ -350,9 +383,31 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           onClick={() => handlePopover("paxCabins")}
           className="py-2 px-3 text-sm text-text-secondary relative cursor-pointer"
         >
-          <div className="grid grid-cols-2 text-left ">
-            {/* Top-Left: Business Studio */}
-            <div className="py-1 px-1 ">
+          {visibleCabinCounts.length > 0 ? (
+            <div className="flex flex-col gap-0.5 text-left">
+              {visibleCabinCounts.map(({ key, label, count }) => (
+                <div key={key} className="flex justify-between text-xs sm:text-sm">
+                  <span className="text-text-secondary w-4/5 truncate">{label}</span>
+                  <span className="font-medium text-text-primary text-right w-1/5">
+                    {getPaxCount(count)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-xs text-text-tertiary pt-2">N/A</div>
+          )}
+          {activePopover === "paxCabins" && <PaxPopover />}
+          <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
+        </td>
+        {/* <td
+          ref={paxCabinsTriggerRef}
+          onClick={() => handlePopover("paxCabins")}
+          className="py-2 px-3 text-sm text-text-secondary relative cursor-pointer"
+        >
+          <div className="grid grid-cols-2 text-left "> */}
+        {/* Top-Left: Business Studio */}
+        {/* <div className="py-1 px-1 ">
               <span className="text-left text-text-secondary">
                 Business Studio
               </span>
@@ -360,25 +415,25 @@ export const FlightRow: React.FC<FlightRowProps> = ({
                 {" "}
                 {getPaxCount(flight.paxCounts.businessStudioCount)}
               </span>
-            </div>
-            {/* Top-Right: Economy */}
-            <div className="py-1 px-1 d">
+            </div> */}
+        {/* Top-Right: Economy */}
+        {/* <div className="py-1 px-1 d">
               <span className="text-left text-text-secondary">Economy</span>
               <span className="text-left font-medium text-text-primary">
                 {" "}
                 {getPaxCount(flight.paxCounts.economyCount)}
               </span>
-            </div>
-            {/* Bottom-Left: Business (Previously First/Business) */}
-            <div className="py-1 px-1 ">
+            </div> */}
+        {/* Bottom-Left: Business (Previously First/Business) */}
+        {/* <div className="py-1 px-1 ">
               <span className="text-left text-text-secondary">Business</span>
               <span className="text-left font-medium text-text-primary">
                 {" "}
                 {getPaxCount(flight.paxCounts.businessCount)}
               </span>
-            </div>
-            {/* Bottom-Right: Crew (Previously Premium/Crew) */}
-            <div className="py-1 px-1">
+            </div> */}
+        {/* Bottom-Right: Crew (Previously Premium/Crew) */}
+        {/* <div className="py-1 px-1">
               <span className="text-left text-text-secondary">Crew</span>
               <span className="text-left font-medium text-text-primary">
                 {" "}
@@ -389,12 +444,12 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           {activePopover === "paxCabins" && <PaxPopover />}
           <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
 
-        </td>
+        </td> */}
 
         {/* --- Actions Cell (Unchanged) --- */}
         <td className="py-2 px-3 text-base">
-          <div className="flex items-center justify-end  3xl:justify-between  pe-2 box-border gap-2 xl:gap-3  text-text-tertiary">
-            <img src={WarningIcon} className="h-4.5 w-4.5   3xl:h-6 3xl:w-6 cursor-pointer" alt="Warning" />
+          <div className="flex items-center justify-between  pe-2 box-border gap-2  3xl:gap-3  text-text-tertiary">
+            <img src={WarningColouredIcon} className="h-4.5 w-4.5   3xl:h-6 3xl:w-6 cursor-pointer" alt="Warning" />
             <Tooltip text="Meals">
               <img
                 src={ForkKnifeIcon}

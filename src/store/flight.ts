@@ -5,16 +5,46 @@ import { addFlight, fetchFlightStats } from "../services/flight";
 import { AxiosError } from "axios";
 // import { fetchFlights } from "../services/flight";
 
+const calculateDefaultDate = () => {
+  const currentDate = new Date();
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const year = currentDate.getFullYear();
+  return `${year}-${month}-${day}`;
+};
+
+// Define the initial default filters
+const INITIAL_FILTERS: FlightFilters = {
+  page: 1,
+  limit: 50,
+  sortBy: 'scheduledDeparture',
+  order: 'desc',
+  date: calculateDefaultDate(),
+  client: "Oman Air"
+};
+
 const extractDate = (isoString: string | null | undefined): string | undefined =>
   isoString ? isoString.substring(0, 10) : undefined;
 
 const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolean => {
+  console.log(filters, "filters")
   return flightPair.some(flight => {
     let match = true;
 
     if (filters.date) {
       const flightDate = extractDate(flight.scheduledDeparture);
       if (flightDate !== filters.date) {
+        match = false;
+      }
+    }
+    if (!match) return false;
+    if (filters.client && filters.client !== 'All') {
+      const filterClientLower = filters.client.toLowerCase();
+
+      // Ensure the flight's client data exists
+      const flightClient = flight.ifcsClient; // Assuming this property is correctly defined in FlightList/Flight interface
+
+      if (!flightClient || flightClient.toLowerCase() !== filterClientLower) {
         match = false;
       }
     }
@@ -89,6 +119,10 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
   },
   isLoading: false,
   error: null,
+  filters: INITIAL_FILTERS,
+  setFilters: (newFilters: FlightFilters) => {
+    set({ filters: newFilters });
+  },
 
   fetchFlights: async (filters: FlightFilters = {
     page: 1,
@@ -100,7 +134,6 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
 
     try {
       await new Promise(resolve => setTimeout(resolve, 500));
-      // const filteredFlights = await fetchFlights(filters);
       let filteredFlights = mockFlights;
 
       if (Object.keys(filters).length > 0) {
@@ -126,7 +159,8 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
     page: 1,
     limit: 50,
     sortBy: 'scheduledDeparture',
-    order: 'desc'
+    order: 'desc',
+    client: 'Oman Air'
   }) => {
     set({ isLoading: true, error: null });
 

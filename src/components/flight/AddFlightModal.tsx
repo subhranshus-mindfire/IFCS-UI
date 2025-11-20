@@ -431,14 +431,14 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
             >
               {isLoading ? 'Saving...' : 'Save'}
             </Button>
-            <Button
+            {/* <Button
               onClick={() => handleSubmit(false)} // Save and Add Next
               className={`px-6 py-2 text-white rounded transition-opacity 
                 ${isLoading ? 'bg-bg-button-gray cursor-not-allowed' : 'bg-bg-button hover:bg-bg-button-hover'} `}
               disabled={isLoading}
             >
               {isLoading ? 'Saving...' : 'Save and Add'}
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

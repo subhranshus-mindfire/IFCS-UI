@@ -140,7 +140,8 @@ export interface FlightFilters {
   route?: string;
   isCancelled?: string;
   status?: string;
-  search?: string
+  search?: string;
+  client?: string
 }
 export interface AddFlightPayload {
   airlineCode: string;
@@ -227,11 +228,13 @@ export interface AddFormState {
 export interface FlightStoreState {
   flights: FlightList[][];
   flightStats: FlightStats;
+  filters: FlightFilters,
   isLoading: boolean;
   error: string | null;
   fetchFlights: (filters?: FlightFilters) => Promise<void>;
   fetchFlightStats: (filters?: FlightFilters) => Promise<void>;
   addFlight: (payload: AddFlightPayload) => Promise<AddFlightResponse>;
+  setFilters: (newFilters: FlightFilters) => void;
 }
 export interface FlightRowProps {
   flight: FlightList;

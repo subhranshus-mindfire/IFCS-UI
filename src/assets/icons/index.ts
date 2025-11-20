@@ -55,6 +55,7 @@ import AirPlaneTakeOffThin from "./airplane-takeoff-thin.svg"
 import CheckCircleIconThin from "./check-circle-thin.svg";
 import ClockClockWise from "./clock-clockwise-thin.svg";
 import PlayCircleThin from "./play-circle-thin.svg";
+import WarningColouredIcon from "./statusicons/warning-color.svg"
 
 //--- Flight List Action Icons ---
 import DetailIcon from "./flightlistActionIcons/detail.svg";
@@ -137,6 +138,7 @@ export {
   StillTruckIcon,
   ThermometerSimpleIcon,
   WarningIcon,
+  WarningColouredIcon,
   ThermometerIcon,
   TruckIcon,
 

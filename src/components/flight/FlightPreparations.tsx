@@ -52,9 +52,6 @@ function FlightPreparations({ flightId }: { flightId: string }) {
     error
   } = usePreparationStore();
 
-
-  console.log(selectedQRCodeUrl)
-
   const actionNames: string[] = [
     "Scan Action",
     "Preparation Action",

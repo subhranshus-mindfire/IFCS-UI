@@ -1,24 +1,68 @@
 import type React from "react"
-
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
+import { useFlightStore } from "../../store/flight";
+import type { AddFlightPayload, AddFormState } from "../../types/Flight";
+import {
+  Field,
+  FieldLabel,
+  FieldContent
+} from "../Field";
+import { CalendarIcon } from "../../assets/icons";
+import Button from "../Button";
 
 const AIRPORT_OPTIONS = ["ADA", "ADD", "ADL", "AKL", "ALG", "AMM", "AMS", "ARN", "ASW", "ATH"]
+const AIRCRAFT_REG_OPTIONS = [
+  "A4O-BAA", "A4O-BAB", "A4O-BAC", "A4O-BAE", "A4O-BI",
+  "A4O-BK", "A4O-BQ", "A4O-BT", "A4O-BUBCF", "A4O-BW"
+];
+
 
 export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [flightType, setFlightType] = useState("J")
-  const [manualPairing, setManualPairing] = useState(false)
-  const [manualLoading, setManualLoading] = useState(false)
-  const [manualMeal, setManualMeal] = useState(false)
-  const [departureAirportSearch, setDepartureAirportSearch] = useState("")
-  const [arrivalAirportSearch, setArrivalAirportSearch] = useState("")
-  const [showDepartureOptions, setShowDepartureOptions] = useState(false)
-  const [showArrivalOptions, setShowArrivalOptions] = useState(false)
+  const [formState, setFormState] = useState<AddFormState>({
+    airlineCode: "",
+    direction: "",
+    flightType: "J",
+    date: "",
+    departureTime: "",
+    arrivalTime: "",
+    flightNumber: "",
+    aircraftReg: "",
+    pax: { businessStudio: 0, business: 0, economy: 0, crew: 0 },
+    manualPairing: false,
+    manualLoadingPlanSelection: false,
+    manualMealPlanSelection: false,
+    departureAirport: "",
+    arrivalAirport: ""
+  });
 
-  // refs for dropdown containers
+  const [showDepartureOptions, setShowDepartureOptions] = useState(false);
+  const [showArrivalOptions, setShowArrivalOptions] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  const { addFlight, isLoading, error } = useFlightStore();
+
   const departureRef = useRef<HTMLDivElement | null>(null)
   const arrivalRef = useRef<HTMLDivElement | null>(null)
 
-  // close dropdowns when clicking/tapping outside
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({ ...prev, [name]: value }));
+  };
+  const handlePaxChange = (key: keyof AddFormState['pax'], value: string) => {
+    const num = parseInt(value, 10);
+
+    const numericValue = (!isNaN(num) && num >= 0) ? num : 0;
+
+    setFormState(prev => ({
+      ...prev,
+      pax: { ...prev.pax, [key]: numericValue }
+    }));
+  };
+
+  const handleToggleChange = (name: keyof AddFormState, checked: boolean) => {
+    setFormState(prev => ({ ...prev, [name]: checked }));
+  };
+
   useEffect(() => {
     function handleOutside(event: Event) {
       const target = event.target as Node | null
@@ -42,199 +86,344 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
   }, [])
 
   const filteredDepartureAirports = AIRPORT_OPTIONS.filter((airport) =>
-    airport.toUpperCase().includes(departureAirportSearch.toUpperCase()),
+    airport.toUpperCase().includes(formState.departureAirport.toUpperCase()),
   )
 
   const filteredArrivalAirports = AIRPORT_OPTIONS.filter((airport) =>
-    airport.toUpperCase().includes(arrivalAirportSearch.toUpperCase()),
+    airport.toUpperCase().includes(formState.arrivalAirport.toUpperCase()),
   )
 
+  const handleSubmit = useCallback(async (shouldClose: boolean) => {
+    setLocalError(null);
+    const { date, departureTime, arrivalTime, flightNumber, departureAirport, arrivalAirport, aircraftReg } = formState;
+
+    const mandatoryFields: (keyof AddFormState)[] = [
+      'date', 'departureTime', 'arrivalTime',
+      'flightNumber', 'departureAirport', 'arrivalAirport',
+      'airlineCode', 'aircraftReg', 'direction'
+    ];
+
+    const missingField = mandatoryFields.some(key => {
+      const value = formState[key];
+      return typeof value === 'string' && value.trim() === '';
+    });
+
+    if (missingField) {
+      setLocalError("Please fill in all mandatory fields.");
+      return;
+    }
+    const totalPax = Object.values(formState.pax).reduce((sum, count) => sum + count, 0);
+
+    const payload: AddFlightPayload = {
+      airlineCode: formState.airlineCode,
+      direction: formState.direction,
+      flightType: formState.flightType,
+      date: date,
+      departureTime: departureTime,
+      arrivalTime: arrivalTime,
+      flightNumber: flightNumber,
+      departureAirport: departureAirport,
+      arrivalAirport: arrivalAirport,
+      aircraftReg: aircraftReg,
+      paxCount: totalPax,
+      manualPairing: formState.manualPairing,
+      manualLoadingPlanSelection: formState.manualLoadingPlanSelection,
+      manualMealPlanSelection: formState.manualMealPlanSelection,
+    };
+
+
+    await addFlight(payload);
+
+    if (shouldClose) {
+      onClose();
+    } else {
+      setFormState({
+        airlineCode: "WY",
+        direction: "[O/B]",
+        flightType: "J",
+        date: "",
+        departureTime: "",
+        arrivalTime: "",
+        flightNumber: "",
+        aircraftReg: "",
+        pax: { businessStudio: 0, business: 0, economy: 0, crew: 0 },
+        manualPairing: false,
+        manualLoadingPlanSelection: false,
+        manualMealPlanSelection: false,
+        departureAirport: "",
+        arrivalAirport: ""
+      });
+      setLocalError(null);
+    }
+
+  }, [formState, addFlight, onClose]);
+
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center z-50">
-      {/* Modal */}
-      <div className="w-full  text-sm underline max-w-md bg-green-600 text-gray-800 text-center py-1.5 rounded-t">
-        Create Mode
+    <div className="fixed inset-0 font-rubik bg-black/50 flex flex-col items-center justify-center z-50">
+      {/* Modal Header */}
+      <div className="w-full max-w-xl bg-green-600 text-white text-center py-2 rounded-t-lg">
+        <h2 className="text-sm font-semibold">Create Mode</h2>
       </div>
-      <div className="bg-white  shadow-lg w-full max-w-md p-6">
 
-        <div className="space-y-5 text-sm">
-          {/* Row 1 */}
-          <div className="grid grid-cols-3 gap-5">
-            <div>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Airline Code</label>
-              <select className="w-full border border-border-muted rounded px-3 py-2 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400">
-                <option value=""></option>
-                <option value="ADA">WY</option>
-                <option value="ADD">OV</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Direction</label>
-              <select className="w-full border border-border-muted rounded px-3 py-2 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400">
-                <option value=""></option>
-                <option value="inbound">[O/B]</option>
-                <option value="outbound">[I/B]</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Flight Type</label>
-              <div className="flex gap-3 pt-1">
-                {["J", "P"].map((type) => (
-                  <label key={type} className="flex items-center gap-1.5 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="flightType"
-                      value={type}
-                      checked={flightType === type}
-                      onChange={(e) => setFlightType(e.target.value)}
-                      className="w-4 h-4 bg-white"
-                    />
-                    <span className="text-sm text-gray-800">{type}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+      <div className="bg-white shadow-lg w-full max-w-xl p-6 rounded-b-lg">
+
+        {/* Error Message Display */}
+        {(localError || error) && (
+          <div className="p-2 mb-4 text-[13px] font-medium text-red bg-red-100 border border-red-400 rounded">
+            {localError || `API Error: ${error}`}
           </div>
-          {/* Row 2 */}
-          <div className="grid grid-cols-3 gap-5">
-            {[
-              { label: "Date", type: "date" },
-              { label: "Departure Time", type: "time" },
-              { label: "Arrival Time", type: "time" },
-            ].map((field) => (
-              <div key={field.label}>
-                <label className="block text-gray-700 mb-1.5 text-xs font-medium">{field.label}</label>
+        )}
+
+        <div className="space-y-4">
+
+          {/* Row 1: Airline Code, Direction, Flight Type */}
+          <div className="grid grid-cols-3 gap-4">
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Airline Code</FieldLabel>
+              <FieldContent>
+                <select
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  name="airlineCode"
+                  value={formState.airlineCode}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  <option value="WY">WY</option>
+                  <option value="OV">OV</option>
+                </select>
+              </FieldContent>
+            </Field>
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Direction</FieldLabel>
+              <FieldContent>
+                <select
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  name="direction"
+                  value={formState.direction}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  <option value="[O/B]">[O/B]</option>
+                  <option value="[I/B]">[I/B]</option>
+                </select>
+              </FieldContent>
+            </Field>
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Flight Type</FieldLabel>
+              <FieldContent>
+                <div className="flex items-center gap-4 pt-2">
+                  {["J", "P"].map((type) => (
+                    <label key={type} className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="flightType"
+                        value={type}
+                        checked={formState.flightType === type}
+                        onChange={handleInputChange}
+                        className="w-4 h-4 text-green-600 focus:ring-green-600"
+                      />
+                      <span className="text-text-secondary">{type}</span>
+                    </label>
+                  ))}
+                </div>
+              </FieldContent>
+            </Field>
+          </div>
+
+          {/* Row 2: Date, Departure Time, Arrival Time (Customized Date) */}
+          <div className="grid grid-cols-3 gap-4">
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Date</FieldLabel>
+              <FieldContent >
+                <label className="relative cursor-pointer">
+                  <input
+                    type="date"
+                    name="date"
+                    value={formState.date}
+                    onChange={handleInputChange}
+                    className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none focus:border-bg-button appearance-none pr-8 hide-date-icon cursor-pointer"
+                  />
+                  <img
+                    src={CalendarIcon}
+                    className="absolute right-6 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
+                  />
+                </label>
+              </FieldContent>
+            </Field>
+
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Departure Time</FieldLabel>
+              <FieldContent>
                 <input
-                  type={field.type}
-                  className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-orange-500"
+                  type="time"
+                  name="departureTime"
+                  value={formState.departureTime}
+                  onChange={handleInputChange}
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none focus:border-bg-button"
                 />
-              </div>
-            ))}
+              </FieldContent>
+            </Field>
+
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Arrival Time</FieldLabel>
+              <FieldContent>
+                <input
+                  type="time"
+                  name="arrivalTime"
+                  value={formState.arrivalTime}
+                  onChange={handleInputChange}
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none focus:border-bg-button"
+                />
+              </FieldContent>
+            </Field>
           </div>
 
-          {/* Row 3 - Departure Airport and Arrival Airport converted to searchable select */}
-          <div className="grid grid-cols-3 gap-5">
-            <div>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Flight Number</label>
-              <input
-                type="text"
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400"
-              />
-            </div>
-            <div className="relative" ref={departureRef}>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Departure Airport</label>
-              <input
-                type="text"
-                placeholder="Search..."
-                value={departureAirportSearch}
-                onChange={(e) => setDepartureAirportSearch(e.target.value)}
-                onFocus={() => setShowDepartureOptions(true)}
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400"
-              />
-              {showDepartureOptions && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-                  {filteredDepartureAirports.map((airport) => (
-                    <div
-                      key={airport}
-                      onClick={() => {
-                        setDepartureAirportSearch(airport)
-                        setShowDepartureOptions(false)
-                      }}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-800"
-                    >
-                      {airport}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="relative" ref={arrivalRef}>
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Arrival Airport</label>
-              <input
-                type="text"
-                placeholder="Search..."
-                value={arrivalAirportSearch}
-                onChange={(e) => setArrivalAirportSearch(e.target.value)}
-                onFocus={() => setShowArrivalOptions(true)}
-                className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-blue-400"
-              />
-              {showArrivalOptions && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-muted rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-                  {filteredArrivalAirports.map((airport) => (
-                    <div
-                      key={airport}
-                      onClick={() => {
-                        setArrivalAirportSearch(airport)
-                        setShowArrivalOptions(false)
-                      }}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-800"
-                    >
-                      {airport}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Row 3: Flight Number, Departure Airport, Arrival Airport */}
+          <div className="grid grid-cols-3 gap-4">
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Flight Number</FieldLabel>
+              <FieldContent>
+                <input
+                  type="text"
+                  name="flightNumber"
+                  value={formState.flightNumber}
+                  onChange={handleInputChange}
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                />
+              </FieldContent>
+            </Field>
 
-          {/* Row 4 */}
-          <div className="flex items-start gap-8">
-            <div className="w-1/3">
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">Aircraft Reg</label>
-              <select className="w-full border border-border-muted rounded px-2.5 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:border-orange-500">
-                <option value=""></option>
-                <option value="A4O-BAA">A4O-BAA</option>
-                <option value="A4O-BAB">A4O-BAB</option>
-                <option value="A4O-BAC">A4O-BAC</option>
-                <option value="A4O-BAE">A4O-BAE</option>
-                <option value="A4O-BI">A4O-BI</option>
-                <option value="A4O-BK">A4O-BK</option>
-                <option value="A4O-BQ">A4O-BQ</option>
-                <option value="A4O-BT">A4O-BT</option>
-                <option value="A4O-BUBCF">A4O-BUBCF</option>
-                <option value="A4O-BW">A4O-BW</option>
-              </select>
-            </div>
-
-            <div className="flex-1">
-              <label className="block text-gray-700 mb-1.5 text-xs font-medium">PAX Count</label>
-              <div className="grid grid-cols-4 gap-2">
-                {[
-                  { label: "Business Studio", key: "bs" },
-                  { label: "Business", key: "b" },
-                  { label: "Economy", key: "e" },
-                  { label: "Crew", key: "c" },
-                ].map((type) => (
-                  <div key={type.key} className="flex flex-col items-center bg-gray-50 rounded p-2">
-                    <input
-                      type="number"
-                      className="w-full border border-border-muted rounded py-1 text-sm text-gray-800 text-center bg-white focus:outline-none focus:border-orange-500"
-                    />
-                    <label className="mt-1 text-[9px] text-gray-700 leading-tight text-center">{type.label}</label>
+            {/* Departure Airport (Searchable Select) */}
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Departure Airport</FieldLabel>
+              <FieldContent className="relative" ref={departureRef}>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  name="departureAirport"
+                  value={formState.departureAirport}
+                  onChange={handleInputChange}
+                  onFocus={() => setShowDepartureOptions(true)}
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                />
+                {showDepartureOptions && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
+                    {filteredDepartureAirports.map((airport) => (
+                      <div
+                        key={airport}
+                        onClick={() => {
+                          setFormState(prev => ({ ...prev, departureAirport: airport }));
+                          setShowDepartureOptions(false)
+                        }}
+                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-secondary"
+                      >
+                        {airport}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                )}
+              </FieldContent>
+            </Field>
+
+            {/* Arrival Airport (Searchable Select) */}
+            <Field>
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Arrival Airport</FieldLabel>
+              <FieldContent className="relative" ref={arrivalRef}>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  name="arrivalAirport"
+                  value={formState.arrivalAirport}
+                  onChange={handleInputChange}
+                  onFocus={() => setShowArrivalOptions(true)}
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                />
+                {showArrivalOptions && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
+                    {filteredArrivalAirports.map((airport) => (
+                      <div
+                        key={airport}
+                        onClick={() => {
+                          setFormState(prev => ({ ...prev, arrivalAirport: airport }));
+                          setShowArrivalOptions(false)
+                        }}
+                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-secondary"
+                      >
+                        {airport}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </FieldContent>
+            </Field>
           </div>
 
-          {/* Manual toggles */}
-          <div className="space-y-2 pt-2">
+          {/* Row 4: Aircraft Reg and PAX Count */}
+          <div className="grid grid-cols-3 gap-4">
+            <Field className="col-span-1">
+              <FieldLabel require={true} className="text-sm text-text-secondary ">Aircraft Reg</FieldLabel>
+              <FieldContent>
+                <select
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                  name="aircraftReg"
+                  value={formState.aircraftReg}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  {AIRCRAFT_REG_OPTIONS.map((reg) => (
+                    <option key={reg} value={reg}>{reg}</option>
+                  ))}
+                </select>
+              </FieldContent>
+            </Field>
+
+            <Field className="col-span-2">
+              <FieldLabel className="text-sm text-text-secondary ">PAX Count</FieldLabel>
+              <FieldContent>
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    { label: "Business Studio", key: "businessStudio" as keyof AddFormState['pax'] },
+                    { label: "Business", key: "business" as keyof AddFormState['pax'] },
+                    { label: "Economy", key: "economy" as keyof AddFormState['pax'] },
+                    { label: "Crew", key: "crew" as keyof AddFormState['pax'] },
+                  ].map((type) => (
+                    <div key={type.key} className="flex flex-col items-center">
+                      <input
+                        type="number"
+                        name={`pax.${type.key}`}
+                        value={formState.pax[type.key] === 0 ? '' : formState.pax[type.key]}
+                        onChange={(e) => handlePaxChange(type.key, e.target.value)}
+                        className="w-full border border-border-secondary rounded px-3 py-2 text-center text-text-secondary bg-bg-surface focus:outline-none   focus:border-bg-button  "
+                        min="0"
+                      />
+                      <span className="text-[0.65rem] text-text-secondary text-center mt-1">
+                        {type.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </FieldContent>
+            </Field>
+          </div>
+
+          {/* Row 5: Manual toggles (Retaining original toggle style) */}
+          <div className="space-y-3 pt-2">
             {[
-              { label: "Manual Pairing", checked: manualPairing, onChange: setManualPairing },
-              { label: "Manual Loading Plan Selection", checked: manualLoading, onChange: setManualLoading },
-              { label: "Manual Meal Plan Selection", checked: manualMeal, onChange: setManualMeal },
+              { label: "Manual Pairing", checked: formState.manualPairing, name: 'manualPairing' as keyof AddFormState },
+              { label: "Manual Loading Plan Selection", checked: formState.manualLoadingPlanSelection, name: 'manualLoadingPlanSelection' as keyof AddFormState },
+              { label: "Manual Meal Plan Selection", checked: formState.manualMealPlanSelection, name: 'manualMealPlanSelection' as keyof AddFormState },
             ].map((item) => (
-              <label
+              <div
                 key={item.label}
-                className="flex items-center justify-between gap-2 cursor-pointer text-sm text-gray-800"
-              >
-                <span>{item.label}</span>
+                className="flex items-center justify-between" >
+                <label className="text-text-secondary">{item.label}</label>
                 <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked ? "border-green-500" : "border-border-muted"
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked ? "border-green-500" : "border-border-secondary"
                     }`}
                   onClick={(e) => {
                     e.preventDefault()
-                    item.onChange(!item.checked)
+                    handleToggleChange(item.name, !item.checked);
                   }}
                 >
                   {item.checked && (
@@ -248,22 +437,34 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                     </svg>
                   )}
                 </div>
-              </label>
+              </div>
             ))}
           </div>
 
-          {/* Buttons */}
-          <div className="flex justify-center gap-3 pt-4">
-            {["Cancel", "Save", "Save and Add"].map((btn, i) => (
-              <button
-                key={i}
-                onClick={btn === "Cancel" ? onClose : onClose}
-                className={`px-6 py-1.5 rounded-xl transition-colors text-sm 
-                bg-gray-200 text-gray-700 hover:bg-gray-300  `}
-              >
-                {btn}
-              </button>
-            ))}
+          {/* Footer Buttons */}
+          <div className="flex justify-end gap-3 pt-4 border-t border-border-secondary">
+            <Button
+              onClick={onClose}
+              className="px-6 py-2 bg-bg-button-gray text-text-secondary rounded hover:bg-gray-200 transition-colors"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleSubmit(true)} // Save and Close
+              className={`px-6 py-2 text-white rounded transition-opacity 
+                ${isLoading ? 'bg-bg-button-gray cursor-not-allowed' : 'bg-bg-button hover:bg-bg-button-hover'} `}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Saving...' : 'Save'}
+            </Button>
+            <Button
+              onClick={() => handleSubmit(false)} // Save and Add Next
+              className={`px-6 py-2 text-white rounded transition-opacity 
+                ${isLoading ? 'bg-bg-button-gray cursor-not-allowed' : 'bg-bg-button hover:bg-bg-button-hover'} `}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Saving...' : 'Save and Add'}
+            </Button>
           </div>
         </div>
       </div>

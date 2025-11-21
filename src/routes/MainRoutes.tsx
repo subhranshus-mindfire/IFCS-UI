@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from 'react';
 import Loader from "../components/common/Loader";
+const MealCountPDF = lazy(() => import("../pages/flight/MealCountPdf"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Dashboard = lazy(() => import("../pages/main-pages/Dashboard"));
 const Layout = lazy(() => import("../components/Layout"));
@@ -42,7 +43,7 @@ function MainRoutes() {
           path="/compliance/compliance-tracking/:cityName/:flightNo/:date"
           element={<ComplianceTrackingDetails />}
         />
-
+        <Route path="/meal-count-pdf/:flightNumber" element={<MealCountPDF />} />
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
     </Suspense>

@@ -3,11 +3,13 @@ import { Breadcrumb } from "../BreadCrumb";
 import type { FlightFilters } from "../../types/Flight";
 import {
   AirPlaneTakeOffThin,
+  CalendarIcon,
   CheckCircleIconThin,
   ClockClockWise,
   PlayCircleThin,
   PlusCircle,
 } from "../../assets/icons";
+
 
 interface FlightHeaderProps {
   totalFlights?: number;
@@ -21,24 +23,25 @@ interface FlightHeaderProps {
 }
 
 const FlightHeader: React.FC<FlightHeaderProps> = ({
-  totalFlights = 110,
-  completeFlights = 48,
+  totalFlights = 0,
+  completeFlights = 0,
   inProgressFlights = 0,
-  waitingFlights = 62,
+  waitingFlights = 0,
   onAddFlight,
   onFilterChange,
   currentFilters,
 }) => {
+
   return (
     <div className="flex flex-col w-full">
       <div className="bg-bg-surface px-4 py-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
         <div className="flex flex-col gap-3 flex-1">
           {/* Breadcrumb and Add Flight Button */}
           <div className="flex items-center justify-between">
-            <Breadcrumb currentScreen={"Flights"} handleDetailsNav={() => {}} />
+            <Breadcrumb currentScreen={"Flights"} handleDetailsNav={() => { }} />
             <button
               onClick={onAddFlight}
-              className="flex h-8 w-34  items-center  justify-center bg-bg-secondary hover:bg-bg-tertiary gap-2 px-3 py-4.5 border border-border-muted rounded-xl text-sm font-normal text-gray-700  transition-colors"
+              className="flex h-8 w-34  items-center  justify-center bg-bg-button-gray hover:bg-bg-button-gray-hover gap-2 px-3 py-4.5 border border-border-muted rounded-xl text-sm font-normal text-gray-700  transition-colors"
             >
               <img src={PlusCircle} className=" h-5 w-5" />
 
@@ -64,15 +67,18 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                 <option value="KUL">KUL</option>
                 <option value="CAI">CAI</option>
               </select>
-
-              <div className="relative w-36">
+              <label className="relative w-36 cursor-pointer">
                 <input
                   type="date"
                   value={currentFilters.date || ""}
                   onChange={(e) => onFilterChange("date", e.target.value)}
-                  className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-full focus:outline-none  focus:border-bg-button"
+                  className="px-2 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-full focus:outline-none focus:border-bg-button appearance-none hide-date-icon pr-8 cursor-pointer"
                 />
-              </div>
+                <img
+                  src={CalendarIcon}
+                  className="absolute right-6.5 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
+                />
+              </label>
 
               <input
                 type="text"
@@ -114,9 +120,9 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                   backgroundImage: "none",
                 }}
               >
-                <option value="Oman">Oman Air</option>
-                <option value="Dubai">Salam Air</option>
-                <option value="Abu Dhabi">All</option>
+                <option value="Oman Air">Oman Air</option>
+                <option value="Salam Air">Salam Air</option>
+                <option value="">All</option>
               </select>
             </div>
             {/* Stats */}

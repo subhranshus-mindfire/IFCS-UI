@@ -21,28 +21,23 @@ const FlightList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [selectedFlightNumber, setSelectedFlightNumber] = useState<string>("");
-  const currentDate = new Date();
-  const day = String(currentDate.getDate()).padStart(2, '0');
-  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-  const year = currentDate.getFullYear();
-  const dateString = `${year}-${month}-${day}`;
-  const [Filters, setFilters] = useState<FlightFilters>({
-    date: dateString,
-    client: "Oman"
-  });
-  const { flights, isLoading, error, fetchFlights } = useFlightStore();
+  const [selectedFlightId, setSelectedFlightId] = useState<string>("");
+
+  const { flights, filters, setFilters, flightStats, fetchFlightStats, isLoading, error, fetchFlights } = useFlightStore();
   const navigate = useNavigate();
   const handleAddFlight = () => setShowAddModal(true);
-  const handleShowHistory = (flightNumber: string) => {
+  const handleShowHistory = (flightId: string, flightNumber: string) => {
+    setSelectedFlightId(flightId)
     setSelectedFlightNumber(flightNumber);
     setShowHistoryModal(true);
   };
   useEffect(() => {
-    fetchFlights(Filters);
-  }, [fetchFlights, Filters]);
+    fetchFlights(filters);
+    fetchFlightStats(filters)
+  }, [fetchFlights, fetchFlightStats, filters]);
   const handleFilterChange = (key: keyof FlightFilters, value: string) => {
     const newFilters = {
-      ...Filters,
+      ...filters,
       [key]: value
     };
     setFilters(newFilters);
@@ -51,10 +46,14 @@ const FlightList: React.FC = () => {
     <div className="w-full h-screen flex flex-col bg-bg-secondary font-arial">
       <Navbar onMenuClick={() => { }} />
       <FlightHeader
+        totalFlights={flightStats.total}
+        completeFlights={flightStats.completed}
+        inProgressFlights={0}
+        waitingFlights={flightStats.waiting}
         onBack={() => navigate("/dashboard")}
         onAddFlight={handleAddFlight}
         onFilterChange={handleFilterChange}
-        currentFilters={Filters}
+        currentFilters={filters}
       />
 
       {showAddModal && (
@@ -62,6 +61,8 @@ const FlightList: React.FC = () => {
       )}
       {showHistoryModal && (
         <FlightHistoryModal
+
+          flightId={selectedFlightId}
           flightNumber={selectedFlightNumber}
           onClose={() => setShowHistoryModal(false)}
         />
@@ -136,7 +137,7 @@ const FlightList: React.FC = () => {
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
               </th>
               <th className="py-2 px-3 text-[13px] font-light relative">
-                Loading plan / Meal plan
+                Loading Plan / Meal Plan
                 <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
               </th>
               <th className="py-2 px-3 text-center text-[13px] font-light">
@@ -171,21 +172,21 @@ const FlightList: React.FC = () => {
 
                 <React.Fragment key={idx}>
                   {idx === 0 && (<tr>
-                    <td colSpan={13} className="h-7 bg-bg-quaternary"></td>
+                    <td colSpan={13} className="h-4 bg-bg-quaternary"></td>
                   </tr>)}
                   {pair.map((flight, subIdx) => (
                     <FlightRow
                       key={`${idx}-${subIdx}`}
                       flight={flight}
-                      onShowHistory={handleShowHistory}
-                      hideRoute={subIdx === 1}
+                      onShowHistory={() => { handleShowHistory(flight.id, flight.flightNumber) }}
+                      hideRoute={subIdx > 0}
                       isFirstInPair={subIdx === 0}
                       isLastInPair={subIdx === pair.length - 1}
                     />
                   ))}
                   {idx < flights.length - 1 && (
                     <tr>
-                      <td colSpan={13} className="h-7 bg-bg-quaternary"></td>
+                      <td colSpan={13} className="h-4 bg-bg-quaternary"></td>
                     </tr>
                   )}
                 </React.Fragment>

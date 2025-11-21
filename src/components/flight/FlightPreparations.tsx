@@ -29,7 +29,7 @@ type CompletedActionsState = {
 function FlightPreparations({ flightId }: { flightId: string }) {
   const tableRef = useRef<HTMLDivElement>(null);
   const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState<boolean>(false);
-  const [selectedQRCodeUrl, setSelectedQRCodeUrl] = useState<string>("");
+  // const [selectedQRCodeUrl, setSelectedQRCodeUrl] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showFilter, setshowFilter] = useState<boolean>(false);
   const [isSignaturModalOpen, setSignatureModalOpen] = useState<boolean>(false);
@@ -51,9 +51,6 @@ function FlightPreparations({ flightId }: { flightId: string }) {
     fetchData,
     error
   } = usePreparationStore();
-
-
-  console.log(selectedQRCodeUrl)
 
   const actionNames: string[] = [
     "Scan Action",
@@ -93,7 +90,7 @@ function FlightPreparations({ flightId }: { flightId: string }) {
     if (stepIndex === 0 && actionLabel === "Scan Action") {
       const prep = filteredPreparations[rowIndex];
       if (prep && prep.qrCodeUrl) {
-        setSelectedQRCodeUrl(prep.qrCodeUrl);
+        // setSelectedQRCodeUrl(prep.qrCodeUrl);
         setIsQRCodeModalOpen(true);
       }
       return;

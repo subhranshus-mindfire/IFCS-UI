@@ -1630,7 +1630,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                 className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                 disabled={isLoading || isSubmitting}
               >
-                Add Another Flight
+                Save & Add
               </Button>
               <Button
                 onClick={handleSubmitAll}
@@ -1638,7 +1638,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   }`}
                 disabled={isLoading || isSubmitting}
               >
-                {isSubmitting ? `Saving ${flightForms.length} Flight${flightForms.length > 1 ? 's' : ''}...` : `Save All (${flightForms.length})`}
+                {isSubmitting ? `Saving...` : `Save`}
               </Button>
             </div>
           </div>

@@ -122,25 +122,25 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
         {/* Footer */}
         <div className="flex justify-end gap-3 px-6 py-4 border-t border-border-muted">
           <Button
-            onClick={clearCanvas}
-            className="px-6 py-2 bg-bg-secondary text-text-primary rounded-2xl hover:bg-gray-300 transition-colors"
-          >
-            Clear
-          </Button>
-          <Button
             onClick={onClose}
             className="px-6 py-2 bg-bg-secondary text-text-primary rounded-2xl hover:bg-gray-300 transition-colors"
           >
             Cancel
           </Button>
           <Button
+            onClick={clearCanvas}
+            className="px-6 py-2 bg-bg-secondary text-text-primary rounded-2xl hover:bg-gray-300 transition-colors"
+          >
+            Clear
+          </Button>
+
+          <Button
             onClick={saveSignature}
             disabled={!hasSignature}
-            className={`px-6 py-2 rounded-2xl transition-colors ${
-              hasSignature
+            className={`px-6 py-2 rounded-2xl transition-colors ${hasSignature
                 ? "bg-bg-button text-white hover:opacity-90"
                 : "bg-gray-300 text-text-tertiary cursor-not-allowed"
-            }`}
+              }`}
           >
             Save
           </Button>

@@ -157,15 +157,15 @@ function FlightDetails() {
                   className="relative flex-1 flex items-center justify-center"
                 >
                   <button
-                    onClick={() => tab !== "Invoice" && setActiveTab(tab)}
+                    onClick={() => (tab !== "Invoice") && setActiveTab(tab)}
                     className={`relative w-full h-full px-2 py-3 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden
                   ${activeTab === tab
                         ? "text-bg-button"
-                        : tab === "Invoice"
+                        : tab === "Invoice" || tab === "Invoice" || tab === "Labels/Reports" || tab === "Deliveries" || tab === "Galleys" 
                           ? "text-gray-400 cursor-not-allowed"
                           : "text-text-secondary hover:text-bg-button/80"
                       }`}
-                    disabled={tab === "Invoice"}
+                    disabled={tab === "Invoice" || tab === "Galleys" || tab === "Deliveries" || tab === "Labels/Reports"}
                   >
                     <span
                       className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-medium
@@ -232,7 +232,7 @@ function FlightDetails() {
           {activeTab !== "Flight Info" && (
             <div className="flex items-center justify-center w-full h-full">
               <div className="w-full">
-                {activeTab === "Preparations" && <FlightPreparations flightId={flightData[0].id} />}
+                {activeTab === "Preparations" && <FlightPreparations />}
                 {activeTab === "Food Orders" && <FlightFoodOrder />}
                 {activeTab === "Galleys" && <FlightGalleys />}
                 {activeTab === "Content Locn" && <FlightContLoc />}

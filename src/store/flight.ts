@@ -113,7 +113,7 @@ const INITIAL_FILTERS: FlightFilters = {
 // };
 
 
-export const useFlightStore = create<FlightStoreState>((set) => ({
+export const useFlightStore = create<FlightStoreState>((set, get) => ({
   flights: [],
   flightStats: {
     total: 0,
@@ -197,7 +197,11 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const newFlightData = await addFlight(payload);
-      set({ isLoading: false });
+      const currentFilters = get().filters;
+      await get().fetchFlights(currentFilters);
+      await get().fetchFlightStats(currentFilters);
+      // set({ isLoading: false });
+
       return newFlightData;
 
     } catch (err) {
@@ -215,7 +219,10 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const newFlightData = await addBulkFlight(payload);
-      set({ isLoading: false });
+      const currentFilters = get().filters;
+      await get().fetchFlights(currentFilters);
+      await get().fetchFlightStats(currentFilters);
+      // set({ isLoading: false });
       return newFlightData;
 
     } catch (err) {

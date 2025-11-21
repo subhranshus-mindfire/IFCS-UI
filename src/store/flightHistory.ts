@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { flightHistory as rawFlightHistoryData } from '../const/flightData';
+// import { flightHistory as rawFlightHistoryData } from '../const/flightData';
 import type { FlightHistoryStoreState } from '../types/Flight';
-// import { fetchFlightHistory } from '../services/flight';
+import { fetchFlightHistory } from '../services/flight';
 import { AxiosError } from 'axios';
 
 export const useFlightHistoryStore = create<FlightHistoryStoreState>((set) => ({
@@ -18,8 +18,8 @@ export const useFlightHistoryStore = create<FlightHistoryStoreState>((set) => ({
         set({ isLoading: true, error: null, rawHistory: [] });
 
         try {
-            // const rawEntries = await fetchFlightHistory(flightId)
-            const rawEntries = rawFlightHistoryData
+            const rawEntries = await fetchFlightHistory(flightId)
+            // const rawEntries = rawFlightHistoryData
 
             if (rawEntries.length > 0) {
                 set({ rawHistory: rawEntries, isLoading: false });
@@ -27,7 +27,7 @@ export const useFlightHistoryStore = create<FlightHistoryStoreState>((set) => ({
                 set({
                     rawHistory: [],
                     isLoading: false,
-                    error: `No raw history found for flight ${flightId}`
+                    error: `No history found`
                 });
             }
 

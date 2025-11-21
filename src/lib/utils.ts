@@ -98,24 +98,32 @@ export const formatDate = (isoString: string | null | undefined): string | null 
 export const getPaxCount = (count: number | null | undefined): string => {
   return count !== null && count !== undefined ? String(count) : "0";
 }
-
+const IGNORED_PAX_KEYS = ['totalCount', 'id', 'fmId'];
 /**
- * Dynamically extracts cabin counts from the paxCounts object, excluding null/zero counts.
+ * Dynamically extracts cabin counts from the paxCounts object, excluding 
+ * metadata (id, fmId) and null/zero counts.
  */
-export const getDynamicCabinCounts = (paxCounts: FlightList['paxCounts']) => {
-  return Object.entries(paxCounts)
-    .filter(([key, count]) =>
-      key !== 'totalCount' &&
-      count !== null &&
-      count !== undefined
-    )
-    .map(([key, count]) => ({
-      label: getCabinLabel(key),
-      count: count,
-      key: key
-    }));
-};
+export const getDynamicCabinCounts = (paxCounts: FlightList['passengers']) => {
+  console.log(paxCounts, "pax")
+  if (paxCounts) {
+    return Object.entries(paxCounts)
+      .filter(([key, count]) => {
+        // 1. Ignore metadata keys: id, fmId, and totalCount
+        if (IGNORED_PAX_KEYS.includes(key)) {
+          return false;
+        }
 
+        // 2. Ignore null, undefined, or zero counts
+        return count !== null && count !== undefined && count > 0;
+      })
+      .map(([key, count]) => ({
+        // Cast 'count' to number since it passed the checks
+        label: getCabinLabel(key),
+        count: count as number,
+        key: key
+      }));
+  }
+};
 /**
  * GENERIC UTILITY: Converts a camelCase/PascalCase key to a readable label.
  * E.g., 'businessStudioCount' -> 'Business Studio'
@@ -126,4 +134,19 @@ export const getCabinLabel = (key: string): string => {
   label = label.replace(/([A-Z])/g, ' $1').trim();
 
   return label.charAt(0).toUpperCase() + label.slice(1);
+};
+
+
+export const getTodayString = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+export const formatDateToMMDDYY = (dateString: string) => {
+  if (!dateString) return '';
+  const [year, month, day] = dateString.split('-');
+  return `${month}/${day}/${year.slice(-2)}`;
 };

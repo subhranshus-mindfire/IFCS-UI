@@ -72,11 +72,11 @@ const FlightHeader: React.FC<FlightHeaderProps> = ({
                   type="date"
                   value={currentFilters.date || ""}
                   onChange={(e) => onFilterChange("date", e.target.value)}
-                  className="px-2 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-full focus:outline-none focus:border-bg-button appearance-none hide-date-icon pr-8 cursor-pointer"
+                  className="px-3 py-2 border border-gray-300 bg-white text-gray-700 text-sm rounded w-full focus:outline-none hide-date-icon focus:border-bg-button appearance-none   cursor-pointer"
                 />
                 <img
                   src={CalendarIcon}
-                  className="absolute right-6.5 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
+                  className="absolute right-3.5 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
                 />
               </label>
 

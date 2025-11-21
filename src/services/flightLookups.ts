@@ -6,7 +6,7 @@ export const getAirlines = async () => {
 };
 
 export const getAirports = async () => {
-  const res = await axiosInstance.get("/airports");
+  const res = await axiosInstance.get("/destinations");
   return res.data?.data || [];
 };
 

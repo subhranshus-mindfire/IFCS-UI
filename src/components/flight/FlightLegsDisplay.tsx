@@ -200,7 +200,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
           >
             {/* Flight Header Row */}
             <div className="flex justify-between px-2 sm:px-4 py-3">
-              <div className="flex gap-4 xl:gap-9 items-center text-xs xl:text-base overflow-x-auto">
+              <div className="flex gap-4 xl:gap-6 items-center text-xs xl:text-base overflow-x-auto">
                 <div className="flex flex-col">
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Route

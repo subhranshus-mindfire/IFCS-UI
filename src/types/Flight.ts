@@ -1,3 +1,5 @@
+import type { Label } from "../components/Label";
+
 export interface Flight {
   airlineCode: string;
   route: string;
@@ -25,22 +27,229 @@ export interface Flight {
   arrivalType: "actual" | "estimated" | "scheduled";
   client: string;
 }
+export interface PaxCounts {
+  totalCount: number | null;
+  businessStudioCount: number | null;
+  businessCount: number | null;
+  economyCount: number | null;
+  crewCount: number | null;
+}
+
+export interface Aircraft {
+  id: string;
+  type: string;
+  registration: string;
+  aircraftGroup: string | null;
+  designator: string;
+}
+
+export interface Airline {
+  id: string;
+  fmId: string | null;
+  code: string;
+  name: string;
+  logo: string | null;
+  designator: string;
+}
+
+export interface LoadingPlan {
+  id: string;
+  fmId: string | null;
+  value: string;
+  name: string;
+  isSetupRecord: boolean;
+}
+
+export interface MealPlan {
+  id: string;
+  fmId: string | null;
+  name: string;
+}
+
+export interface FlightList {
+  id: string;
+  fmId: string | null;
+  isCancelled: boolean;
+  isPrepared: boolean;
+  parentId: string | null;
+  flightNumber: string;
+  flightNumberSuffix: string | null;
+  direction: string;
+  departureDestination: string;
+  departureGate: string | null;
+
+  scheduledDeparture: string;
+  estimatedDeparture: string | null;
+  actualDeparture: string | null;
+  scheduledArrival: string;
+  estimatedArrival: string | null;
+  actualArrival: string | null;
+
+  arrivalDestination: string; // IATA code
+  arrivalGate: string | null;
+  flightType: string;
+  flightTypeIataCode: string | null;
+  status: string;
+  pairPosition: number | null;
+  pairRoute: string;
+  pairType: string | null;
+  cutoffTime: string | null;
+  isAutoPairDisabled: boolean;
+  isAutoSyncDisabled: boolean;
+  isLoadingPlanRulesDisabled: boolean;
+  isMealPlanRulesDisabled: boolean;
+  isPricingRulesDisabled: boolean;
+  rulesProperties: Record<string, unknown> | null;
+  syncKeyWithoutDestination: string | null;
+  syncKeyWithDestination: string | null;
+  ifcsClient: string | null;
+  createdAt: string;
+  updatedAt: string;
+  updatedBy: string | null;
+
+  scheduledDepartureUtc?: string;
+  estimatedDepartureUtc?: string | null;
+  actualDepartureUtc?: string | null;
+  scheduledArrivalUtc?: string;
+  estimatedArrivalUtc?: string | null;
+  actualArrivalUtc?: string | null;
+
+
+  aircraft: Aircraft;
+  airline: Airline;
+  loadingPlan?: LoadingPlan | null;
+  mealPlan?: MealPlan | null;
+  paxCounts: PaxCounts;
+}
+
+
+export interface FlightStats {
+  total: number;
+  completed: number;
+  waiting: number;
+}
+
+export interface FieldLabelProps extends React.ComponentProps<typeof Label> {
+  require?: boolean;
+}
 
 export interface FlightFilters {
+  page: number;
+  limit: number;
+  sortBy: string;
+  order: 'asc' | 'desc';
   station?: string;
   date?: string;
   flight?: string;
   acReg?: string;
   acType?: string;
   route?: string;
-  client?: string;
+  isCancelled?: string;
+  status?: string;
+  search?: string;
+  client?: string
 }
+export interface AddFlightPayload {
+  airlineCode: string;
+  direction: string;
+  flightType: string;
+  date: string;
+  departureTime: string;
+  arrivalTime: string;
+  flightNumber: string;
+  departureAirport: string;
+  arrivalAirport: string;
+  aircraftReg: string;
+  paxCount: number;
+  manualPairing: boolean;
+  manualLoadingPlanSelection: boolean;
+  manualMealPlanSelection: boolean;
+}
+export interface AddFlightResponse {
+  id: string;
+  fmId: string | null;
+  isCancelled: boolean;
+  isPrepared: boolean;
+  loadingPlanId: string | null;
+  menuId: string | null;
+  parentId: string | null;
+  aircraftConfigId: string | null;
+  aircraftId: string;
+  airlineId: string;
+  flightNumber: string;
+  flightNumberSuffix: string | null;
+  direction: string;
+  departureDestination: string;
+  departureGate: string | null;
+  scheduledDeparture: string;
+  estimatedDeparture: string | null;
+  actualDeparture: string | null;
+  arrivalDestination: string;
+  arrivalGate: string | null;
+  scheduledArrival: string;
+  estimatedArrival: string | null;
+  actualArrival: string | null;
+  flightType: string;
+  flightTypeIataCode: string | null;
+  status: string;
+  pairPosition: string | null;
+  pairRoute: string | null;
+  pairType: string | null;
+  cutoffTime: string | null;
+  isAutoPairDisabled: boolean;
+  isAutoSyncDisabled: boolean;
+  isLoadingPlanRulesDisabled: boolean;
+  isMealPlanRulesDisabled: boolean;
+  isPricingRulesDisabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AddFormState {
+  airlineCode: string;
+  direction: string;
+  flightType: string;
+  date: string;
+  departureTime: string;
+  arrivalTime: string;
+  flightNumber: string;
+  aircraftReg: string;
+
+  pax: {
+    businessStudio: number;
+    business: number;
+    economy: number;
+    crew: number;
+  };
+
+  manualPairing: boolean;
+  manualLoadingPlanSelection: boolean;
+  manualMealPlanSelection: boolean;
+
+  departureAirport: string;
+  arrivalAirport: string;
+}
+
+
 export interface FlightStoreState {
-  flights: Flight[][];
+  flights: FlightList[][];
+  flightStats: FlightStats;
+  filters: FlightFilters,
   isLoading: boolean;
   error: string | null;
   fetchFlights: (filters?: FlightFilters) => Promise<void>;
+  fetchFlightStats: (filters?: FlightFilters) => Promise<void>;
+  addFlight: (payload: AddFlightPayload) => Promise<AddFlightResponse>;
+  setFilters: (newFilters: FlightFilters) => void;
 }
+export interface FlightRowProps {
+  flight: FlightList;
+  onShowHistory: (flightNumber: string) => void;
+  hideRoute?: boolean;
+  isFirstInPair?: boolean;
+  isLastInPair?: boolean;
+}
+
 
 export interface ChangeRecord {
   field: string;
@@ -48,12 +257,245 @@ export interface ChangeRecord {
   now: string;
 }
 
-export interface HistoryEntry {
-  timestamp: string;
-  label: string;
-  changes: ChangeRecord[];
+export interface HistoryChange {
+  field: string;
+  previously: string;
+  now: string;
 }
 
-export interface FlightHistory {
-  [flightId: string]: HistoryEntry[];
+export interface HistoryEntryDisplay {
+  timestamp: string;
+  label: string;
+  changes: HistoryChange[];
+}
+
+export interface FlightHistoryEntry {
+  id: string;
+  fmId: string;
+  flightId: string;
+  flightNumber: string;
+  airlineDesignator: string;
+  flightUpdateFileId: string | null;
+  flightNumberSuffix: string | null;
+  flightRouteNumber: string | null;
+  syncKeyWithoutDestination: string | null;
+  syncKeyWithDestination: string | null;
+  sourceData: string | null;
+  status: string | null;
+  estimatedDeparture: string | null;
+  actualDeparture: string | null;
+  estimatedArrival: string | null;
+  actualArrival: string | null;
+  departureDestination: string | null;
+  arrivalDestination: string | null;
+  dataSource: string | null;
+  flightTypeIataCode: string;
+  sourceFileName: string;
+  updateIndexWithinFile: number;
+  updateTimestamp: string;
+  scheduledDeparture: string;
+  scheduledArrival: string;
+  createdAt: string;
+  updatedAt: string;
+
+}
+
+export interface FlightHistoryStoreState {
+  rawHistory: FlightHistoryEntry[];
+  isLoading: boolean;
+  error: string | null;
+  fetchFlightHistory: (flightNumber: string) => Promise<void>;
+}
+
+//****************************MEAL COUNT MODAL****************************************/
+export interface PDFConfigModalProps {
+  flightNumber: string;
+  onClose: () => void;
+  onView: (config: PDFConfig) => void;
+}
+
+export interface PDFConfig {
+  numberPagesFrom: string;
+  recordRange: string;
+  paperSize: string;
+  orientation: "portrait" | "landscape";
+  scalePercentage: string;
+}
+
+
+//****************************PREPARATION****************************************/
+
+export interface PreparationItem {
+  position: string;
+  nameDisplay: string;
+  equipment: string;
+  preparedBy: string;
+
+  id: string;
+  flightId: string;
+  storageId: string;
+  code: string;
+  name: string;
+  priority: number;
+  date: string;
+
+  isContentPrepared: boolean;
+  isDynamicLoadingIncomplete: boolean;
+  assemblyProcessFlag: string;
+  loadedTruckFlag: string;
+
+  isTrackConsumption: boolean;
+  weight: number;
+  availableWeight: number;
+  quantity: number;
+  sealTagNumber: string;
+
+  qrCodeUrl: string;
+  dynamicLoadingQrCodeUrl: string;
+  labelUrl: string;
+  report: string;
+
+  createdAt: string;
+  updatedAt: string;
+
+  packingStandardId: string;
+  parentStorageId: string;
+  galleyConfigurationId: string;
+  galleyCode: string;
+  galleyPosition: string;
+  positionRap: string;
+  rotationCode: string;
+  direction: string;
+  qrCode: string;
+  dynamicLoadingQrCode: string;
+}
+
+export interface PromptModalState {
+  isOpen: boolean;
+  rowIndex: number | null;
+  actionIndex: number | null;
+  actionName: string;
+  isBlocked: boolean;
+  isCompleted: boolean;
+}
+
+
+// New One
+
+export interface FlightData {
+  id: string;
+  fmId: string;
+  isCancelled: boolean;
+  isPrepared: boolean;
+
+  loadingPlanId: string | null;
+  menuId: string | null;
+  parentId: string;
+
+  aircraftConfigId: string;
+  aircraftId: string;
+  airlineId: string;
+
+  flightNumber: string;
+  flightNumberSuffix: string | null;
+  direction: string;
+
+  departureDestination: string;
+  departureGate: string;
+
+  scheduledDeparture: string;
+  estimatedDeparture: string | null;
+  actualDeparture: string | null;
+
+  arrivalDestination: string;
+  arrivalGate: string;
+
+  scheduledArrival: string;
+  estimatedArrival: string | null;
+  actualArrival: string | null;
+
+  flightType: string;
+  flightTypeIataCode: string;
+
+  status: string;
+
+  pairPosition: number;
+  pairRoute: string;
+  pairType: string;
+
+  cutoffTime: string;
+
+  isAutoPairDisabled: boolean;
+  isAutoSyncDisabled: boolean;
+  isLoadingPlanRulesDisabled: boolean;
+  isMealPlanRulesDisabled: boolean;
+  isPricingRulesDisabled: boolean;
+
+  rulesProperties: unknown;
+
+  syncKeyWithoutDestination: string;
+  syncKeyWithDestination: string;
+
+  ifcsClient: string;
+
+  createdAt: string;
+  updatedAt: string;
+  updatedBy: string | null;
+
+  scheduledDepartureUtc: string;
+  estimatedDepartureUtc: string | null;
+  actualDepartureUtc: string | null;
+
+  scheduledArrivalUtc: string;
+  estimatedArrivalUtc: string | null;
+  actualArrivalUtc: string | null;
+
+  aircraft: {
+    id: string;
+    type: string;
+    registration: string;
+    aircraftGroup: string | null;
+    designator: string;
+  };
+
+  aircraftConfig: {
+    id: string;
+    fmId: string | null;
+    lopa: string;
+    name: string;
+  };
+
+  airline: {
+    id: string;
+    fmId: string | null;
+    code: string;
+    name: string;
+    logo: string | null;
+    designator: string;
+  };
+
+  loadingPlan: {
+    id: string;
+    fmId?: string | null;
+    name: string;
+    value?: string;
+  } | null;
+
+  mealPlan: {
+    id: string;
+    fmId?: string | null;
+    name: string;
+  } | null;
+
+  passengers: {
+    id: string;
+    fmId: string;
+    totalCount: number;
+    businessStudioCount: number;
+    businessCount: number;
+    economyCount: number;
+    crewCount: number;
+  };
+
+  selectedFlight: boolean;
 }

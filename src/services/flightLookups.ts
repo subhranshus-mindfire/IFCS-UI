@@ -1,16 +1,16 @@
 import axiosInstance from "../config/axiosInstance";
 
 export const getAirlines = async () => {
-  const res = await axiosInstance.get("/api/v1/airlines");
+  const res = await axiosInstance.get("/airlines");
   return res.data?.data || [];
 };
 
 export const getAirports = async () => {
-  const res = await axiosInstance.get("/api/v1/airports");
+  const res = await axiosInstance.get("/airports");
   return res.data?.data || [];
 };
 
 export const getAircrafts = async () => {
-  const res = await axiosInstance.get("/api/v1/aircrafts");
+  const res = await axiosInstance.get("/aircrafts");
   return res.data?.data || [];
 };

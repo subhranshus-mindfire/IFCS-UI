@@ -229,18 +229,34 @@ export interface AddFormState {
   departureAirport: string;
   arrivalAirport: string;
 }
-
+/**
+ * Interface for a single flight option value (e.g., Airport IATA code, Aircraft Registration).
+ * Since the dummy data uses string arrays, we'll keep the option as a simple string type.
+ */
+export type FlightOption = string;
+/**
+ * Expected structure for the response when fetching all dropdown options.
+ */
+export interface FlightOptions {
+  airlineCodes: FlightOption[];
+  airports: FlightOption[];
+  aircraftRegs: FlightOption[];
+}
 
 export interface FlightStoreState {
   flights: FlightList[][];
   flightStats: FlightStats;
   filters: FlightFilters,
+  airlineCodeOptions: FlightOption[];
+  airportOptions: FlightOption[];
+  aircraftRegOptions: FlightOption[];
   isLoading: boolean;
   error: string | null;
   fetchFlights: (filters?: FlightFilters) => Promise<void>;
   fetchFlightStats: (filters?: FlightFilters) => Promise<void>;
   addFlight: (payload: AddFlightPayload) => Promise<AddFlightResponse>;
   setFilters: (newFilters: FlightFilters) => void;
+  fetchFlightOptions: () => Promise<void>;
 }
 export interface FlightRowProps {
   flight: FlightList;
@@ -380,7 +396,13 @@ export interface PromptModalState {
 }
 
 
-// New One
+export interface PreparationStoreState {
+  preparations: PreparationItem[];
+  isLoading: boolean;
+  error: string | null;
+  fetchData: (flightId: string) => Promise<void>;
+}
+
 
 export interface FlightData {
   id: string;
@@ -499,3 +521,5 @@ export interface FlightData {
 
   selectedFlight: boolean;
 }
+
+

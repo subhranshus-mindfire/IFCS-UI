@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { FlightStoreState, FlightFilters, FlightList, AddFlightPayload, AddFlightResponse } from "../types/Flight";
 import { flightList as mockFlights } from "../const/flightData";
-import { addFlight, fetchFlightStats } from "../services/flight";
+import { addFlight, fetchFlightOptions, fetchFlightStats } from "../services/flight";
 import { AxiosError } from "axios";
 // import { fetchFlights } from "../services/flight";
 
@@ -116,6 +116,9 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
     completed: 0,
     waiting: 0
   },
+  airlineCodeOptions: [],
+  airportOptions: [],
+  aircraftRegOptions: [],
   isLoading: false,
   error: null,
   filters: INITIAL_FILTERS,
@@ -204,5 +207,24 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
       set({ error: errorMessage, isLoading: false });
       throw err;
     }
-  }
+  },
+  fetchFlightOptions: async () => {
+    // Only set loading for options fetching if no other critical operation is running
+    // set({ isLoading: true, error: null }); 
+    try {
+      const options = await fetchFlightOptions();
+
+      set({
+        airlineCodeOptions: options.airlineCodes,
+        airportOptions: options.airports,
+        aircraftRegOptions: options.aircraftRegs,
+        // isLoading: false // Remove if you don't use this specific isLoading
+      });
+
+    } catch (err) {
+      console.error("Failed to fetch flight options:", err);
+      // Only set error if this is a critical fetch, otherwise log and use default empty array
+      // set({ error: "Failed to load flight options.", isLoading: false });
+    }
+  },
 }));

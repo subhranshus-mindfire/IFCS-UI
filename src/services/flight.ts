@@ -1,7 +1,23 @@
 import axiosInstance from "../config/axiosInstance";
 import { FLIGHTS_ENDPOINT } from "../const/apiEndPoints";
 import type { AddFlightPayload, AddFlightResponse, FlightFilters, FlightHistoryEntry, FlightList, FlightStats } from "../types/Flight";
+export type FlightOptions = {
+    airlineCodes: string[];
+    airports: string[];
+    aircraftRegs: string[];
+}
 
+const DUMMY_AIRPORT_OPTIONS = [
+    "ADA", "ADD", "ADL", "AKL", "ALG", "AMM", "AMS", "ARN", "ASW", "ATH",
+    "JFK", "LAX", "LHR", "DXB", "SIN", "CDG", "NRT"
+]
+
+const DUMMY_AIRCRAFT_REG_OPTIONS = [
+    "A4O-BAA", "A4O-BAB", "A4O-BAC", "A4O-BAE", "A4O-BI",
+    "A4O-BK", "A4O-BQ", "A4O-BT", "A4O-BUBCF", "A4O-BW",
+    "A9C-GF", "A9C-HJ", "B-LBC", "B-HLO", "VP-BLB"
+];
+const DUMMY_AIRLINE_CODE_OPTIONS = ["WY", "OV", "QR", "EK", "BA", "SQ", "JL", "AF"];
 export async function fetchFlights(
     filters: FlightFilters = {
         page: 1,
@@ -74,4 +90,21 @@ export async function addFlight(
 ): Promise<AddFlightResponse> {
     const response = await axiosInstance.post(FLIGHTS_ENDPOINT.flightList, payload);
     return response.data.data;
+}
+
+/**
+ * Fetches flight options (Airline Codes, Airports, Aircraft Registrations).
+ * Uses dummy data for now, simulating an API call.
+ */
+export async function fetchFlightOptions(): Promise<FlightOptions> {
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    const dummyResponse: FlightOptions = {
+        airlineCodes: DUMMY_AIRLINE_CODE_OPTIONS,
+        airports: DUMMY_AIRPORT_OPTIONS,
+        aircraftRegs: DUMMY_AIRCRAFT_REG_OPTIONS,
+    };
+
+    return dummyResponse;
+
 }

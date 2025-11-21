@@ -10,13 +10,6 @@ import {
 import { CalendarIcon } from "../../assets/icons";
 import Button from "../Button";
 
-const AIRPORT_OPTIONS = ["ADA", "ADD", "ADL", "AKL", "ALG", "AMM", "AMS", "ARN", "ASW", "ATH"]
-const AIRCRAFT_REG_OPTIONS = [
-  "A4O-BAA", "A4O-BAB", "A4O-BAC", "A4O-BAE", "A4O-BI",
-  "A4O-BK", "A4O-BQ", "A4O-BT", "A4O-BUBCF", "A4O-BW"
-];
-
-
 export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [formState, setFormState] = useState<AddFormState>({
     airlineCode: "",
@@ -39,10 +32,17 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
   const [showArrivalOptions, setShowArrivalOptions] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const { addFlight, isLoading, error } = useFlightStore();
+  const { addFlight, isLoading, error, fetchFlightOptions,
+    airlineCodeOptions,
+    airportOptions,
+    aircraftRegOptions } = useFlightStore();
+  useEffect(() => {
+    fetchFlightOptions();
+  }, [fetchFlightOptions]);
 
   const departureRef = useRef<HTMLDivElement | null>(null)
   const arrivalRef = useRef<HTMLDivElement | null>(null)
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -85,13 +85,6 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
     }
   }, [])
 
-  const filteredDepartureAirports = AIRPORT_OPTIONS.filter((airport) =>
-    airport.toUpperCase().includes(formState.departureAirport.toUpperCase()),
-  )
-
-  const filteredArrivalAirports = AIRPORT_OPTIONS.filter((airport) =>
-    airport.toUpperCase().includes(formState.arrivalAirport.toUpperCase()),
-  )
 
   const handleSubmit = useCallback(async (shouldClose: boolean) => {
     setLocalError(null);
@@ -189,8 +182,11 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   onChange={handleInputChange}
                 >
                   <option value=""></option>
-                  <option value="WY">WY</option>
-                  <option value="OV">OV</option>
+                  {/* <option value="WY">WY</option>
+                  <option value="OV">OV</option> */}
+                  {airlineCodeOptions.map((code: string) => (
+                    <option key={code} value={code}>{code}</option>
+                  ))}
                 </select>
               </FieldContent>
             </Field>
@@ -309,7 +305,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                 />
                 {showDepartureOptions && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-                    {filteredDepartureAirports.map((airport) => (
+                    {airportOptions.map((airport: string) => (
                       <div
                         key={airport}
                         onClick={() => {
@@ -341,7 +337,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                 />
                 {showArrivalOptions && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-                    {filteredArrivalAirports.map((airport) => (
+                    {airportOptions.map((airport: string) => (
                       <div
                         key={airport}
                         onClick={() => {
@@ -371,7 +367,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   onChange={handleInputChange}
                 >
                   <option value=""></option>
-                  {AIRCRAFT_REG_OPTIONS.map((reg) => (
+                  {aircraftRegOptions.map((reg: string) => (
                     <option key={reg} value={reg}>{reg}</option>
                   ))}
                 </select>

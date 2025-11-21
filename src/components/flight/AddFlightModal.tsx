@@ -1638,7 +1638,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   }`}
                 disabled={isLoading || isSubmitting}
               >
-                {isSubmitting ? `Saving...` : `Save)`}
+                {isSubmitting ? `Saving...` : `Save`}
               </Button>
             </div>
           </div>

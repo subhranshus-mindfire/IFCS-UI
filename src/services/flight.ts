@@ -47,7 +47,7 @@ export async function fetchFlightStats(
         order: filters.order || "desc",
     };
     if (filters.date) params.date = filters.date;
-    if (filters.client) params.client = filters.client;
+    if (filters.client) params.ifcsClient = filters.client;
     if (filters.search) params.search = filters.search;
     if (filters.station) params.station = filters.station;
     if (filters.flight) params.flightNumber = filters.flight;

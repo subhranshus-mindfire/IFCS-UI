@@ -137,7 +137,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               {formatTimeInHHMM(flight.scheduledDeparture || flight.scheduledDepartureUtc)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTimeInHHMM(flight.estimatedDeparture || flight.estimatedDepartureUtc)}
+              {formatTimeInHHMM(flight.scheduledDepartureUtc || flight.scheduledDepartureUtcUtc)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
               {formatTimeInHHMM(flight.actualDeparture || flight.actualDepartureUtc)}
@@ -150,7 +150,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               {formatTimeInHHMM(flight.scheduledArrivalUtc || flight.scheduledArrival)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTimeInHHMM(flight.estimatedArrivalUtc)}
+              {formatTimeInHHMM(flight.scheduledArrivalUtcUtc)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
               {formatTimeInHHMM(flight.actualArrivalUtc)}

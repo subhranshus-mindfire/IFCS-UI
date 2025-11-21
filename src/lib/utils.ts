@@ -62,13 +62,13 @@ export function formatLocalTimeFromISO(isoString: string | undefined | null): st
 
 export const getDepartureType = (flight: FlightList): { time: string | null; type: string } => {
   if (flight.actualDepartureUtc) return { time: formatTimeInHHMM(flight.actualDepartureUtc), type: "Actual" };
-  if (flight.estimatedDepartureUtc) return { time: formatTimeInHHMM(flight.estimatedDepartureUtc), type: "Estimated" };
+  if (flight.scheduledDepartureUtcUtc) return { time: formatTimeInHHMM(flight.scheduledDepartureUtcUtc), type: "Estimated" };
   return { time: formatTimeInHHMM(flight.scheduledDeparture), type: "Scheduled" };
 };
 
 export const getArrivalType = (flight: FlightList): { time: string | null; type: string } => {
   if (flight.actualArrivalUtc) return { time: formatTimeInHHMM(flight.actualArrivalUtc), type: "Actual" };
-  if (flight.estimatedArrivalUtc) return { time: formatTimeInHHMM(flight.estimatedArrivalUtc), type: "Estimated" };
+  if (flight.scheduledArrivalUtcUtc) return { time: formatTimeInHHMM(flight.scheduledArrivalUtcUtc), type: "Estimated" };
   return { time: formatTimeInHHMM(flight.scheduledArrival), type: "Scheduled" };
 };
 

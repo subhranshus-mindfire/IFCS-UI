@@ -123,7 +123,7 @@ export const EditFlightModal = ({
                 <div className="relative">
                   <input
                     type="text"
-                    defaultValue={formatDateToDDMonYYYY(legData.estimatedDeparture)}
+                    defaultValue={formatDateToDDMonYYYY(legData.scheduledDepartureUtc)}
                     className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary">
@@ -139,7 +139,7 @@ export const EditFlightModal = ({
               <FieldContent>
                 <input
                   type="text"
-                  defaultValue={formatLocalTimeFromISO(legData.estimatedDeparture)}
+                  defaultValue={formatLocalTimeFromISO(legData.scheduledDepartureUtc)}
                   className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                 />
               </FieldContent>
@@ -151,7 +151,7 @@ export const EditFlightModal = ({
               <FieldContent>
                 <input
                   type="text"
-                  defaultValue={formatLocalTimeFromISO(legData.estimatedArrival)}
+                  defaultValue={formatLocalTimeFromISO(legData.scheduledArrivalUtc)}
                   className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                 />
               </FieldContent>

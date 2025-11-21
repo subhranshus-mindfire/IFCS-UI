@@ -88,10 +88,10 @@ export interface FlightList {
   departureGate: string | null;
 
   scheduledDeparture: string;
-  estimatedDeparture: string | null;
+  scheduledDepartureUtc: string | null;
   actualDeparture: string | null;
   scheduledArrival: string;
-  estimatedArrival: string | null;
+  scheduledArrivalUtc: string | null;
   actualArrival: string | null;
 
   arrivalDestination: string; // IATA code
@@ -117,10 +117,10 @@ export interface FlightList {
   updatedBy: string | null;
 
   scheduledDepartureUtc?: string;
-  estimatedDepartureUtc?: string | null;
+  scheduledDepartureUtcUtc?: string | null;
   actualDepartureUtc?: string | null;
   scheduledArrivalUtc?: string;
-  estimatedArrivalUtc?: string | null;
+  scheduledArrivalUtcUtc?: string | null;
   actualArrivalUtc?: string | null;
 
 
@@ -195,12 +195,12 @@ export interface AddFlightResponse {
   departureDestination: string;
   departureGate: string | null;
   scheduledDeparture: string;
-  estimatedDeparture: string | null;
+  scheduledDepartureUtc: string | null;
   actualDeparture: string | null;
   arrivalDestination: string;
   arrivalGate: string | null;
   scheduledArrival: string;
-  estimatedArrival: string | null;
+  scheduledArrivalUtc: string | null;
   actualArrival: string | null;
   flightType: string;
   flightTypeIataCode: string | null;
@@ -332,9 +332,9 @@ export interface FlightHistoryEntry {
   syncKeyWithDestination: string | null;
   sourceData: string | null;
   status: string | null;
-  estimatedDeparture: string | null;
+  scheduledDepartureUtc: string | null;
   actualDeparture: string | null;
-  estimatedArrival: string | null;
+  scheduledArrivalUtc: string | null;
   actualArrival: string | null;
   departureDestination: string | null;
   arrivalDestination: string | null;
@@ -460,14 +460,14 @@ export interface FlightData {
   departureGate: string;
 
   scheduledDeparture: string;
-  estimatedDeparture: string | null;
+  scheduledDepartureUtc: string | null;
   actualDeparture: string | null;
 
   arrivalDestination: string;
   arrivalGate: string;
 
   scheduledArrival: string;
-  estimatedArrival: string | null;
+  scheduledArrivalUtc: string | null;
   actualArrival: string | null;
 
   flightType: string;
@@ -499,11 +499,11 @@ export interface FlightData {
   updatedBy: string | null;
 
   scheduledDepartureUtc: string;
-  estimatedDepartureUtc: string | null;
+  scheduledDepartureUtcUtc: string | null;
   actualDepartureUtc: string | null;
 
   scheduledArrivalUtc: string;
-  estimatedArrivalUtc: string | null;
+  scheduledArrivalUtcUtc: string | null;
   actualArrivalUtc: string | null;
 
   aircraft: {
@@ -563,7 +563,7 @@ export interface FoodOrderItem {
   fmId: string;
   flightId: string;
   mealId: string;
-  mealName: string;        
+  mealName: string;
   orderCount1: number;
   orderCount2: number;
   isDynamicLoadingIncomplete: boolean;

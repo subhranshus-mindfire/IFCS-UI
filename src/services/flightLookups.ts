@@ -1,4 +1,4 @@
-import axiosInstance from "../api/axiosInstance";
+import axiosInstance from "../config/axiosInstance";
 
 export const getAirlines = async () => {
   const res = await axiosInstance.get("/api/v1/airlines");

@@ -5,7 +5,7 @@ import type {
   AddFlightPayload, AddFlightResponse
 } from "../types/Flight";
 // import { flightList as mockFlights } from "../const/flightData";
-import { addFlight, fetchFlightOptions, fetchFlights, fetchFlightStats } from "../services/flight";
+import { addBulkFlight, addFlight, fetchFlightOptions, fetchFlights, fetchFlightStats } from "../services/flight";
 import { AxiosError } from "axios";
 // import { fetchFlights } from "../services/flight";
 
@@ -197,6 +197,24 @@ export const useFlightStore = create<FlightStoreState>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const newFlightData = await addFlight(payload);
+      set({ isLoading: false });
+      return newFlightData;
+
+    } catch (err) {
+      console.error("Failed to add flight:", err);
+      let errorMessage = "Failed to add flight. Please check input values.";
+      if (err instanceof AxiosError) {
+        errorMessage = err.response?.data.message || err.response?.statusText;
+      }
+
+      set({ error: errorMessage, isLoading: false });
+      throw err;
+    }
+  },
+  addBulkFlight: async (payload: AddFlightPayload[]): Promise<AddFlightResponse[]> => {
+    set({ isLoading: true, error: null });
+    try {
+      const newFlightData = await addBulkFlight(payload);
       set({ isLoading: false });
       return newFlightData;
 

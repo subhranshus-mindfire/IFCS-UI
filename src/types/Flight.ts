@@ -27,16 +27,23 @@ export interface Flight {
   arrivalType: "actual" | "estimated" | "scheduled";
   client: string;
 }
+// export interface PaxCounts {
+//   id: string;
+//   fmId: string;
+//   totalCount: number | null;
+//   businessStudioCount: number | null;
+//   businessCount: number | null;
+//   economyCount: number | null;
+//   crewCount: number | null;
+// }
+
 export interface PaxCounts {
-  id: string;
-  fmId: string;
   totalCount: number | null;
   businessStudioCount: number | null;
   businessCount: number | null;
   economyCount: number | null;
   crewCount: number | null;
 }
-
 export interface Aircraft {
   id: string;
   type: string;
@@ -231,32 +238,52 @@ export interface AddFormState {
   departureAirport: string;
   arrivalAirport: string;
 }
-/**
- * Interface for a single flight option value (e.g., Airport IATA code, Aircraft Registration).
- * Since the dummy data uses string arrays, we'll keep the option as a simple string type.
- */
-export type FlightOption = string;
-/**
- * Expected structure for the response when fetching all dropdown options.
- */
-export interface FlightOptions {
-  airlineCodes: FlightOption[];
-  airports: FlightOption[];
-  aircraftRegs: FlightOption[];
+export interface AirlineOption {
+  id: string;
+  code: string;
+  name: string;
+  logo: string | null;
 }
+
+export interface AirportOption {
+  id: string;
+  code: string;
+  city: string;
+  country: string;
+  name: string;
+  timezone: string;
+}
+
+export interface AircraftOption {
+  id: string;
+  fmId: string | null;
+  aircraftConfigId: string | null;
+  type: string;
+  registration: string;
+  aircraftGroup: string | null;
+  designator: string;
+}
+
+export interface FlightOptions {
+  airlineCodes: AirlineOption[];
+  airports: AirportOption[];
+  aircraftRegs: AircraftOption[];
+}
+
 
 export interface FlightStoreState {
   flights: FlightList[][];
   flightStats: FlightStats;
   filters: FlightFilters,
-  airlineCodeOptions: FlightOption[];
-  airportOptions: FlightOption[];
-  aircraftRegOptions: FlightOption[];
+  airlineCodeOptions: AirlineOption[];
+  airportOptions: AirportOption[];
+  aircraftRegOptions: AircraftOption[];
   isLoading: boolean;
   error: string | null;
   fetchFlights: (filters?: FlightFilters) => Promise<void>;
   fetchFlightStats: (filters?: FlightFilters) => Promise<void>;
   addFlight: (payload: AddFlightPayload) => Promise<AddFlightResponse>;
+  addBulkFlight: (payload: AddFlightPayload[]) => Promise<AddFlightResponse[]>
   setFilters: (newFilters: FlightFilters) => void;
   fetchFlightOptions: () => Promise<void>;
 }

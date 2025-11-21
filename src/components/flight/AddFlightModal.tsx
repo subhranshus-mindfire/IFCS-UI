@@ -1,7 +1,7 @@
 import type React from "react"
 import { useState, useRef, useEffect, useCallback } from "react"
 import { useFlightStore } from "../../store/flight";
-import type { AddFlightPayload, AddFormState } from "../../types/Flight";
+import type { AddFlightPayload, AddFormState, Aircraft, AirlineOption, AirportOption } from "../../types/Flight";
 import {
   Field,
   FieldLabel,
@@ -192,8 +192,8 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   onChange={handleInputChange}
                 >
                   <option value=""></option>
-                  {airlineCodeOptions.map((code: string) => (
-                    <option key={code} value={code}>{code}</option>
+                  {airlineCodeOptions.map((code: AirlineOption) => (
+                    <option key={code.code} value={code.code}>{code.code}</option>
                   ))}
                 </select>
               </FieldContent>
@@ -314,16 +314,16 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                 />
                 {showDepartureOptions && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-                    {airportOptions.map((airport: string) => (
+                    {airportOptions.map((airport: AirportOption) => (
                       <div
-                        key={airport}
+                        key={airport.code}
                         onClick={() => {
-                          setFormState(prev => ({ ...prev, departureAirport: airport }));
+                          setFormState(prev => ({ ...prev, departureAirport: airport.code }));
                           setShowDepartureOptions(false)
                         }}
                         className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-secondary"
                       >
-                        {airport}
+                        {airport.code}
                       </div>
                     ))}
                   </div>
@@ -346,16 +346,16 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                 />
                 {showArrivalOptions && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-                    {airportOptions.map((airport: string) => (
+                    {airportOptions.map((airport: AirportOption) => (
                       <div
-                        key={airport}
+                        key={airport.code}
                         onClick={() => {
-                          setFormState(prev => ({ ...prev, arrivalAirport: airport }));
+                          setFormState(prev => ({ ...prev, arrivalAirport: airport.code }));
                           setShowArrivalOptions(false)
                         }}
                         className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-secondary"
                       >
-                        {airport}
+                        {airport.code}
                       </div>
                     ))}
                   </div>
@@ -376,8 +376,8 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
                   onChange={handleInputChange}
                 >
                   <option value=""></option>
-                  {aircraftRegOptions.map((reg: string) => (
-                    <option key={reg} value={reg}>{reg}</option>
+                  {aircraftRegOptions.map((reg: Aircraft) => (
+                    <option key={reg.registration} value={reg.registration}>{reg.registration}</option>
                   ))}
                 </select>
               </FieldContent>
@@ -480,7 +480,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 // import type React from "react"
 // import { useState, useRef, useEffect, useCallback } from "react"
 // import { useFlightStore } from "../../store/flight";
-// import type { AddFlightPayload, AddFormState } from "../../types/Flight";
+// import type { AddFlightPayload, AddFormState, AircraftOption, AirlineOption, AirportOption } from "../../types/Flight";
 // import {
 //   Field,
 //   FieldLabel,
@@ -521,7 +521,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 //   const [localError, setLocalError] = useState<string | null>(null);
 //   const [isSubmitting, setIsSubmitting] = useState(false);
 
-//   const { addFlight, isLoading, error, fetchFlightOptions,
+//   const { addFlight, addBulkFlight, isLoading, error, fetchFlightOptions,
 //     airlineCodeOptions,
 //     airportOptions,
 //     aircraftRegOptions } = useFlightStore();
@@ -678,10 +678,10 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 //       });
 
 //       // Submit all flights
-//       const promises = payloads.map(payload => addFlight(payload));
-//       await Promise.all(promises);
-
-//       // Close modal on success
+//       // const promises = payloads.map(payload => addFlight(payload));
+//       // await Promise.all(promises);
+//       const response = await addBulkFlight(payloads);
+//       console.log(response)
 //       onClose();
 //     } catch (err) {
 //       console.error("Failed to submit flights:", err);
@@ -689,7 +689,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 //     } finally {
 //       setIsSubmitting(false);
 //     }
-//   }, [flightForms, addFlight, onClose]);
+//   }, [flightForms, addFlight, addBulkFlight, validateCurrentForm, onClose]);
 
 //   const goToStep = (index: number) => {
 //     if (index < 0 || index >= flightForms.length) return;
@@ -745,8 +745,8 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 //                   onChange={handleInputChange}
 //                 >
 //                   <option value=""></option>
-//                   {airlineCodeOptions.map((code: string) => (
-//                     <option key={code} value={code}>{code}</option>
+//                   {airlineCodeOptions.map((code: AirlineOption) => (
+//                     <option key={code.code} value={code.code}>{code.code}</option>
 //                   ))}
 //                 </select>
 //               </FieldContent>
@@ -866,20 +866,20 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 //                 />
 //                 {showDepartureOptions && (
 //                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-//                     {airportOptions.map((airport: string) => (
+//                     {airportOptions.map((airport: AirportOption) => (
 //                       <div
-//                         key={airport}
+//                         key={airport.code}
 //                         onClick={() => {
 //                           setFlightForms(prev => {
 //                             const updated = [...prev];
-//                             updated[currentStep] = { ...updated[currentStep], departureAirport: airport };
+//                             updated[currentStep] = { ...updated[currentStep], departureAirport: airport.code };
 //                             return updated;
 //                           });
 //                           setShowDepartureOptions(false);
 //                         }}
 //                         className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-secondary"
 //                       >
-//                         {airport}
+//                         {airport.code}
 //                       </div>
 //                     ))}
 //                   </div>
@@ -901,20 +901,20 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 //                 />
 //                 {showArrivalOptions && (
 //                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border-secondary rounded shadow-lg z-10 max-h-40 overflow-y-auto">
-//                     {airportOptions.map((airport: string) => (
+//                     {airportOptions.map((airport: AirportOption) => (
 //                       <div
-//                         key={airport}
+//                         key={airport.code}
 //                         onClick={() => {
 //                           setFlightForms(prev => {
 //                             const updated = [...prev];
-//                             updated[currentStep] = { ...updated[currentStep], arrivalAirport: airport };
+//                             updated[currentStep] = { ...updated[currentStep], arrivalAirport: airport.code };
 //                             return updated;
 //                           });
 //                           setShowArrivalOptions(false);
 //                         }}
 //                         className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-text-secondary"
 //                       >
-//                         {airport}
+//                         {airport.code}
 //                       </div>
 //                     ))}
 //                   </div>
@@ -935,8 +935,8 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 //                   onChange={handleInputChange}
 //                 >
 //                   <option value=""></option>
-//                   {aircraftRegOptions.map((reg: string) => (
-//                     <option key={reg} value={reg}>{reg}</option>
+//                   {aircraftRegOptions.map((reg: AircraftOption) => (
+//                     <option key={reg.registration} value={reg.registration}>{reg.registration}</option>
 //                   ))}
 //                 </select>
 //               </FieldContent>
@@ -1007,7 +1007,7 @@ export const AddFlightModal: React.FC<{ onClose: () => void }> = ({ onClose }) =
 //           </div>
 
 //           {/* Footer Buttons */}
-//           <div className="flex justify-between items-center pt-4 px-4 border-t border-border-secondary">
+//           <div className={`flex ${flightForms.length > 1 ? "justify-between" : "justify-end"} items-center pt-4 gap-3 px-4 border-t border-border-secondary`}>
 //             {/* Left side - Remove Flight button */}
 
 

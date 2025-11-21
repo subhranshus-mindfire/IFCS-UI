@@ -116,10 +116,10 @@ export interface FlightList {
   updatedAt: string;
   updatedBy: string | null;
 
-  scheduledDepartureUtc?: string;
+  // scheduledDepartureUtc?: string;
   scheduledDepartureUtcUtc?: string | null;
   actualDepartureUtc?: string | null;
-  scheduledArrivalUtc?: string;
+  // scheduledArrivalUtc?: string;
   scheduledArrivalUtcUtc?: string | null;
   actualArrivalUtc?: string | null;
 
@@ -498,11 +498,11 @@ export interface FlightData {
   updatedAt: string;
   updatedBy: string | null;
 
-  scheduledDepartureUtc: string;
+  // scheduledDepartureUtc: string;
   scheduledDepartureUtcUtc: string | null;
   actualDepartureUtc: string | null;
 
-  scheduledArrivalUtc: string;
+  // scheduledArrivalUtc: string;
   scheduledArrivalUtcUtc: string | null;
   actualArrivalUtc: string | null;
 

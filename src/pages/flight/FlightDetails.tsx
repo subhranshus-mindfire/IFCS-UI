@@ -108,7 +108,7 @@ function FlightDetails() {
                   Complete Date:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {formatDateToDDMonYYYY(selectedFlight.estimatedDeparture)}
+                  {formatDateToDDMonYYYY(selectedFlight.scheduledDepartureUtc)}
                 </span>
               </div>
               <div>
@@ -161,7 +161,7 @@ function FlightDetails() {
                     className={`relative w-full h-full px-2 py-3 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden
                   ${activeTab === tab
                         ? "text-bg-button"
-                        : tab === "Invoice" || tab === "Invoice" || tab === "Labels/Reports" || tab === "Deliveries" || tab === "Galleys" 
+                        : tab === "Invoice" || tab === "Invoice" || tab === "Labels/Reports" || tab === "Deliveries" || tab === "Galleys"
                           ? "text-gray-400 cursor-not-allowed"
                           : "text-text-secondary hover:text-bg-button/80"
                       }`}

@@ -230,7 +230,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     Date
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600 font-medium">
-                    {formatDateToDDMonYYYY(leg.estimatedDeparture)}
+                    {formatDateToDDMonYYYY(leg.scheduledDepartureUtc)}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -238,7 +238,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     DEP Time
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600 font-medium">
-                    {formatLocalTimeFromISO(leg.estimatedDeparture)}
+                    {formatLocalTimeFromISO(leg.scheduledDepartureUtc)}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -246,7 +246,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                     ARR Time
                   </span>
                   <div className="text-sm xl:text-xl text-gray-600">
-                    {formatLocalTimeFromISO(leg.estimatedArrival)}
+                    {formatLocalTimeFromISO(leg.scheduledArrivalUtc)}
                   </div>
                 </div>
                 <div className="flex flex-col">

@@ -28,6 +28,8 @@ export interface Flight {
   client: string;
 }
 export interface PaxCounts {
+  id: string;
+  fmId: string;
   totalCount: number | null;
   businessStudioCount: number | null;
   businessCount: number | null;
@@ -119,7 +121,7 @@ export interface FlightList {
   airline: Airline;
   loadingPlan?: LoadingPlan | null;
   mealPlan?: MealPlan | null;
-  paxCounts: PaxCounts;
+  passengers: PaxCounts;
 }
 
 

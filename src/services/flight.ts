@@ -33,7 +33,7 @@ export async function fetchFlights(
         order: filters.order || "desc",
     };
     if (filters.date) params.date = filters.date;
-    if (filters.client) params.client = filters.client;
+    if (filters.client) params.ifcsClient = filters.client;
     if (filters.search) params.search = filters.search;
     if (filters.station) params.station = filters.station;
     if (filters.flight) params.flightNumber = filters.flight;
@@ -92,19 +92,75 @@ export async function addFlight(
     return response.data.data;
 }
 
+
 /**
- * Fetches flight options (Airline Codes, Airports, Aircraft Registrations).
- * Uses dummy data for now, simulating an API call.
+ * Simulates fetching Airline Codes from an independent API endpoint.
+ * NOTE: I've added an artificial failure condition here to demonstrate Promise.allSettled.
+ */
+async function fetchAirlineCodes(): Promise<string[]> {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    // Example of a simulated failure:
+    // throw new Error("Airline API is down."); 
+    return DUMMY_AIRLINE_CODE_OPTIONS;
+}
+
+/**
+ * Simulates fetching Airport Options from an independent API endpoint.
+ */
+async function fetchAirportOptions(): Promise<string[]> {
+    await new Promise(resolve => setTimeout(resolve, 200));
+    return DUMMY_AIRPORT_OPTIONS;
+}
+
+/**
+ * Simulates fetching Aircraft Registrations from an independent API endpoint.
+ */
+async function fetchAircraftRegOptions(): Promise<string[]> {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return DUMMY_AIRCRAFT_REG_OPTIONS;
+}
+
+/**
+ * Fetches all flight options concurrently using Promise.allSettled().
+ * If one API call fails, the others will still return their data.
  */
 export async function fetchFlightOptions(): Promise<FlightOptions> {
-    await new Promise(resolve => setTimeout(resolve, 300));
+    const promises = [
+        fetchAirlineCodes(),
+        fetchAirportOptions(),
+        fetchAircraftRegOptions(),
+    ];
 
-    const dummyResponse: FlightOptions = {
-        airlineCodes: DUMMY_AIRLINE_CODE_OPTIONS,
-        airports: DUMMY_AIRPORT_OPTIONS,
-        aircraftRegs: DUMMY_AIRCRAFT_REG_OPTIONS,
+    const results = await Promise.allSettled(promises);
+
+    // Initialize default return structure
+    const options: FlightOptions = {
+        airlineCodes: [],
+        airports: [],
+        aircraftRegs: [],
     };
 
-    return dummyResponse;
+    const airlineResult = results[0];
+    if (airlineResult.status === 'fulfilled') {
+        options.airlineCodes = airlineResult.value;
+    } else {
+        console.error("Failed to load Airline Codes:", airlineResult.reason);
+    }
 
+    const airportResult = results[1];
+    if (airportResult.status === 'fulfilled') {
+        options.airports = airportResult.value;
+    } else {
+        console.error("Failed to load Airport Options:", airportResult.reason);
+    }
+
+    // Aircraft Registrations (Index 2)
+    const aircraftResult = results[2];
+    if (aircraftResult.status === 'fulfilled') {
+        options.aircraftRegs = aircraftResult.value;
+    } else {
+        console.error("Failed to load Aircraft Registrations:", aircraftResult.reason);
+    }
+
+    return options;
 }

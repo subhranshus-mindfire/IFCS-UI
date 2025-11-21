@@ -8,7 +8,7 @@ import FlightDeliveries from "../../components/flight/delivery/FlightDeliveries"
 import FlightLabels from "../../components/flight/FlightLabels";
 import FlightLegsDisplay from "../../components/flight/FlightLegsDisplay";
 import { Breadcrumb } from "../../components/BreadCrumb";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import Navbar from "../../components/Navbar";
 import { useFlightStore } from "../../store/useFlightStore";
 import { formatDateToDDMonYYYY } from "../../lib/utils";
@@ -26,7 +26,8 @@ const tabKeys = [
 
 function FlightDetails() {
   const { flightNumber } = useParams<{ flightNumber: string }>();
-  const { t } = useTranslation();
+  // For Now Its Disabled
+  // const { t } = useTranslation();
 
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem("activeTab") || tabKeys[0];
@@ -51,17 +52,19 @@ function FlightDetails() {
     if (flightNumber) fetchFlight(flightNumber);
   }, [flightNumber, fetchFlight]);
 
-
+  const selectedFlight = flightData?.find(f => f.selectedFlight === true) || null;
 
   if (!flightData) {
     return (
       <div className="p-6">
-        <h1 className="text-xl font-semibold text-red-600">
+        {/* <h1 className="text-xl font-semibold text-red-600">
           {t("flightDetails.notFound")}
-        </h1>
+        </h1> */}
       </div>
     );
   }
+
+
 
   return (
     <>
@@ -83,13 +86,13 @@ function FlightDetails() {
               </div>
             </div>
           ))) :
-            <>
+            selectedFlight ? <>
               <div>
                 <span className="text-text-tertiary text-sm font-normal">
                   Flight:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flightData[0].flightNumber}
+                  {selectedFlight.flightNumber}
                 </span>
               </div>
               <div>
@@ -97,7 +100,7 @@ function FlightDetails() {
                   Route:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flightData[0].pairRoute}
+                  {selectedFlight.pairRoute}
                 </span>
               </div>
               <div>
@@ -105,7 +108,7 @@ function FlightDetails() {
                   Complete Date:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {formatDateToDDMonYYYY(flightData[0].estimatedDeparture)}
+                  {formatDateToDDMonYYYY(selectedFlight.estimatedDeparture)}
                 </span>
               </div>
               <div>
@@ -113,7 +116,7 @@ function FlightDetails() {
                   Aircraft:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flightData[0].aircraft?.type}
+                  {selectedFlight.aircraft?.type}
                 </span>
               </div>
               <div>
@@ -121,7 +124,7 @@ function FlightDetails() {
                   AC Reg.:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flightData[0].aircraft?.registration}
+                  {selectedFlight.aircraft?.registration}
                 </span>
               </div>
               <div>
@@ -129,7 +132,7 @@ function FlightDetails() {
                   Destination:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flightData[0].arrivalDestination || "N/A"}
+                  {selectedFlight.arrivalDestination || "N/A"}
                 </span>
               </div>
               <div>
@@ -137,10 +140,10 @@ function FlightDetails() {
                   Loading Plan:{" "}
                 </span>
                 <span className="font-medium text-base text-text-secondary">
-                  {flightData[0].loadingPlan?.name || "N/A"}
+                  {selectedFlight.loadingPlan?.name || "N/A"}
                 </span>
               </div>
-            </>}
+            </> : null}
         </div>
 
         <div className="overflow-x-auto overflow-y-hidden my-6">

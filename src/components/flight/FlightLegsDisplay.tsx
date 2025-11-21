@@ -1,9 +1,5 @@
 import {
   faPencilAlt,
-  faShoppingCart,
-  faUsers,
-  faChartLine,
-  faPlaneCircleCheck,
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
@@ -12,33 +8,7 @@ import { CogIcon, NoteBookIcon, WarningIcon, ForkKnifeIcon, DatabaseIcon, Airpla
 import { EditFlightModal } from "./EditFlightModal";
 import type { FlightData } from "../../types/Flight";
 import { formatDateToDDMonYYYY, formatLocalTimeFromISO } from "../../lib/utils";
-
-export interface FlightLegData {
-  route: string;
-  flightNumber: string;
-  type: string;
-  date: string;
-  depTime: string;
-  arrTime: string;
-  acType: string;
-  acReg: string;
-  direction: string;
-  businessStudio: number;
-  business: number;
-  economy: number;
-  crew: number;
-  child: number;
-  crewCount: number;
-  status: string;
-  loadingPlan: string;
-  mealPlan: string;
-  crewFlightReports: string[];
-  alerts: string[];
-  cutOffTimes: {
-    meals: string;
-    commissary: string;
-  };
-}
+import { useLoadingPlanStore } from "../../store/useLoadingPlanStore";
 
 interface FlightLegsDisplayProps {
   legs: FlightData[];
@@ -54,6 +24,8 @@ type DropdownType =
   | "editPlan";
 
 const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
+
+  const { loadingPlans, fetchLoadingPlans } = useLoadingPlanStore();
   const [hoveredLeg, setHoveredLeg] = useState<number | null>(null);
   const [openDropdown, setOpenDropdown] = useState<{
     legIndex: number;
@@ -73,6 +45,10 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    fetchLoadingPlans();
   }, []);
 
   useEffect(() => {
@@ -110,27 +86,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
         setIsEditFlightModalOpen(true);
         setOpenDropdown(null);
       },
-    },
-    {
-      icon: faShoppingCart,
-      label: "Safety Cart",
-      onClick: () => console.log("Safety Cart clicked for leg", legIndex),
-    },
-    {
-      icon: faUsers,
-      label: "Dead Heads",
-      onClick: () => console.log("Dead Heads clicked for leg", legIndex),
-    },
-    {
-      icon: faChartLine,
-      label: "Dynamic Provision",
-      onClick: () => console.log("Dynamic Provision clicked for leg", legIndex),
-    },
-    {
-      icon: faPlaneCircleCheck,
-      label: "Prepare Flight",
-      onClick: () => console.log("Prepare Flight clicked for leg", legIndex),
-    },
+    }
   ];
 
   const getViewAllAction = (type: string, legIndex: number) => [
@@ -173,7 +129,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
           <h2 className="text-xl md:text-2xl text-gray-700">Flights ({legs.length})</h2>
         )}
         {!isLoading && (
-          <div className="relative dropdown-trigger">
+          <div className="relative dropdown-trigger invisible ">
             <img src={CogIcon} className="h-6 w-6 cursor-pointer" onClick={() => toggleDropdown(-1, "main")} />
             {openDropdown?.legIndex === -1 && openDropdown?.type === "main" && (
               <Dropdown actions={getMainActions(-1)} />
@@ -244,7 +200,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
           >
             {/* Flight Header Row */}
             <div className="flex justify-between px-2 sm:px-4 py-3">
-              <div className="flex gap-4 xl:gap-9 items-center text-xs xl:text-base overflow-x-auto">
+              <div className="flex gap-4 xl:gap-6 2xl:gap-8 items-center text-xs xl:text-base overflow-x-auto">
                 <div className="flex flex-col">
                   <span className="text-[10px] xl:text-xs text-gray-500">
                     Route
@@ -415,11 +371,14 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
                           </div>
                           <select
                             className="w-full px-4 py-2 text-sm text-gray-700 border-0 focus:outline-none focus:ring-2 focus:ring-red-800 rounded"
-                            defaultValue="Saudi Arabia HM"
+                            defaultValue=""
                           >
-                            <option>Saudi Arabia HM</option>
-                            <option>Standard Loading Plan</option>
-                            <option>Express Loading Plan</option>
+                            <option value="" disabled>Select Loading Plan</option>
+                            {loadingPlans.map(plan => (
+                              <option key={plan.id} value={plan.id}>
+                                {plan.name}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       )}

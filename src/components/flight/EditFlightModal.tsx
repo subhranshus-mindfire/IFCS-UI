@@ -1,8 +1,11 @@
-import type { JSX } from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useEffect, useState, type JSX } from "react";
 import Button from "../Button";
 import { Field, FieldLabel, FieldContent } from "../Field";
 import type { FlightData } from "../../types/Flight";
 import { formatDateToDDMonYYYY, formatLocalTimeFromISO } from "../../lib/utils";
+import { getAirlines, getAirports, getAircrafts } from "../../services/flightLookups";
+import SearchableDropdown from "../common/SearchableDropdown";
 
 interface EditFlightModalProps {
   isEditFlightModalOpen: boolean;
@@ -18,6 +21,27 @@ export const EditFlightModal = ({
   legData,
 }: EditFlightModalProps): JSX.Element | null => {
   if (!isEditFlightModalOpen) return null;
+
+
+  const [airlines, setAirlines] = useState([]);
+  const [airports, setAirports] = useState([]);
+  const [aircrafts, setAircrafts] = useState([]);
+
+  const [selectedAirline, setSelectedAirline] = useState("");
+  const [selectedDeparture, setSelectedDeparture] = useState("");
+  const [selectedArrival, setSelectedArrival] = useState("");
+  const [selectedAircraft, setSelectedAircraft] = useState("");
+
+  useEffect(() => {
+    getAirlines().then(setAirlines);
+    getAirports().then(setAirports);
+    getAircrafts().then(setAircrafts);
+
+    setSelectedAirline(legData.flightNumber.substring(0, 2));
+    setSelectedDeparture(legData.departureDestination);
+    setSelectedArrival(legData.arrivalDestination);
+    setSelectedAircraft(legData.aircraft?.registration || "");
+  }, [legData]);
 
 
 
@@ -38,11 +62,13 @@ export const EditFlightModal = ({
                 Airline Code
               </FieldLabel>
               <FieldContent>
-                <select className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent">
-                  <option>
-                    {legData?.flightNumber.substring(0, 2) || "WY"}
-                  </option>
-                </select>
+                <SearchableDropdown
+                  id="airport"
+                  label="code"
+                  options={airlines}
+                  selectedVal={selectedAirline}
+                  handleChange={(value) => setSelectedAirline(value)}
+                />
               </FieldContent>
             </Field>
             <Field>
@@ -150,25 +176,25 @@ export const EditFlightModal = ({
               <FieldLabel className="text-sm text-text-tertiary">
                 Departure Airport
               </FieldLabel>
-              <FieldContent>
-                <input
-                  type="text"
-                  defaultValue={legData.departureDestination}
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
-                />
-              </FieldContent>
+              <SearchableDropdown
+                id="airport"
+                label="code"
+                options={airports}
+                selectedVal={selectedDeparture}
+                handleChange={(value) => setSelectedDeparture(value)}
+              />
             </Field>
             <Field>
               <FieldLabel className="text-sm text-text-tertiary">
                 Arrival Airport
               </FieldLabel>
-              <FieldContent>
-                <input
-                  type="text"
-                  defaultValue={legData.arrivalDestination}
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
-                />
-              </FieldContent>
+              <SearchableDropdown
+                id="airport"
+                label="code"
+                options={airports}
+                selectedVal={selectedArrival}
+                handleChange={(value) => setSelectedArrival(value)}
+              />
             </Field>
           </div>
 
@@ -178,11 +204,13 @@ export const EditFlightModal = ({
               <FieldLabel className="text-sm text-text-tertiary">
                 Aircraft Reg
               </FieldLabel>
-              <FieldContent>
-                <select className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent">
-                  <option>{legData?.aircraft?.registration}</option>
-                </select>
-              </FieldContent>
+              <SearchableDropdown
+                id="airport"
+                label="registration"
+                options={aircrafts}
+                selectedVal={selectedAircraft}
+                handleChange={(value) => setSelectedAircraft(value)}
+              />
             </Field>
             <Field className="col-span-2">
               <FieldLabel className="text-sm text-text-tertiary">

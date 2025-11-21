@@ -99,8 +99,8 @@ export async function addFlight(
  */
 async function fetchAirlineCodes(): Promise<string[]> {
     await new Promise(resolve => setTimeout(resolve, 100));
-    // Example of a simulated failure:
-    // throw new Error("Airline API is down."); 
+    // // Example of a simulated failure:
+    // // throw new Error("Airline API is down."); 
     return DUMMY_AIRLINE_CODE_OPTIONS;
 }
 

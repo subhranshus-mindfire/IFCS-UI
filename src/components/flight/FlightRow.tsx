@@ -33,6 +33,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
   hideRoute = false,
   isFirstInPair = false,
   isLastInPair = false,
+  fullPairRoute
 }) => {
   const logoUrl = `https://content.airhex.com/content/logos/airlines_${flight.airline.code}_100_100_s.png`;
 
@@ -111,7 +112,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
   const depStatus = getDepartureType(flight);
   const arrStatus = getArrivalType(flight);
 
-  const fullRoute = flight.pairRoute || `${flight.departureDestination}-${flight.arrivalDestination}`;
+  // const fullRoute = flight.pairRoute || `${flight.departureDestination}-${flight.arrivalDestination}`;
 
 
   const TimePopover = () => (
@@ -217,7 +218,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           />
         </td>
         <td className="text-left  font-sm py-2 px-0 text-text-secondary">
-          {!hideRoute && fullRoute}
+          {!hideRoute && fullPairRoute}
         </td>
         <td className="text-left text-sm 3xl:text-lg font-bold text-text-primary py-2 px-3">
           {flight.flightNumber}{flight.flightNumberSuffix}

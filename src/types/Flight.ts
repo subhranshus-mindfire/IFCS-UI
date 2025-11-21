@@ -266,6 +266,7 @@ export interface FlightRowProps {
   hideRoute?: boolean;
   isFirstInPair?: boolean;
   isLastInPair?: boolean;
+  fullPairRoute: string
 }
 
 

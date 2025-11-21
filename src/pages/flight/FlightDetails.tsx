@@ -232,8 +232,8 @@ function FlightDetails() {
           {activeTab !== "Flight Info" && (
             <div className="flex items-center justify-center w-full h-full">
               <div className="w-full">
-                {activeTab === "Preparations" && <FlightPreparations />}
-                {activeTab === "Food Orders" && <FlightFoodOrder />}
+                {activeTab === "Preparations" && <FlightPreparations flightId={flightData[0].id} />}
+                {activeTab === "Food Orders" && <FlightFoodOrder flightNumber={flightData[0].flightNumber} />}
                 {activeTab === "Galleys" && <FlightGalleys />}
                 {activeTab === "Content Locn" && <FlightContLoc />}
                 {activeTab === "Deliveries" && <FlightDeliveries />}

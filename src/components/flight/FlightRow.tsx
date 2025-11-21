@@ -65,7 +65,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
 
   const handleFlightDetails = () => {
     setOpen(false);
-    navigate(`/flight-details/${flight.flightNumber}`);
+    navigate(`/flight-details/${flight.id}`);
   };
 
   const handleHistory = () => {

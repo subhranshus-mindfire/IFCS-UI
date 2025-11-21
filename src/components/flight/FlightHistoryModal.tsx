@@ -8,6 +8,7 @@ import {
 import { generateHistoryDisplay } from "../../utils/flightHistoryUtils";
 import { useFlightHistoryStore } from "../../store/flightHistory";
 import type { HistoryEntryDisplay } from "../../types/Flight";
+import { TimerIcon } from "../../assets/icons";
 
 const formatDate = (isoString: string | undefined): string | null => {
   if (!isoString) return null;
@@ -71,13 +72,38 @@ export const FlightHistoryModal: React.FC<FlightHistoryModalProps> = ({
   if (error || historyEntries.length === 0) {
     return (
       <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-2">
-        <div className="bg-white rounded-lg shadow-md w-full max-w-xl max-h-[80vh] flex flex-col p-4">
-          <div className="flex justify-between items-center border-b pb-2 mb-2">
-            <h2 className="text-base font-semibold text-text-primary">Flight {flightNumber} History</h2>
-            <button onClick={onClose}><FontAwesomeIcon icon={faXmark} size="sm" /></button>
+        <div className="bg-white rounded-lg shadow-md w-full max-w-xl flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+            <h2 className="text-base font-semibold text-text-primary">
+              Flight {flightNumber} History
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-text-secondary hover:text-text-tertiary transition-colors"
+            >
+              <FontAwesomeIcon icon={faXmark} size="sm" />
+            </button>
           </div>
-          <p className="text-center py-4 text-red-500">{error || `No history records found for this flight.`}</p>
-          <div className="flex justify-end pt-2 border-t">
+
+          {/* Empty State Content */}
+          <div className="flex flex-col items-center justify-center py-12 px-6">
+            {/* Icon */}
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+              <img src={TimerIcon} className="h-7 w-7" />
+            </div>
+
+            {/* Message */}
+            <h3 className="text-base font-semibold text-text-primary mb-1">
+              {error ? "Unable to Load History" : "No History Available"}
+            </h3>
+            <p className="text-sm text-text-secondary text-center max-w-sm">
+              {error || "No history records found for this flight. Changes will appear here once the flight is updated."}
+            </p>
+          </div>
+
+          {/* Footer */}
+          <div className="flex justify-end px-4 py-3 border-t border-gray-200">
             <button
               onClick={onClose}
               className="px-4 py-1.5 bg-bg-button-gray hover:bg-bg-button-gray-hover text-text-secondary rounded-md transition-colors font-medium text-sm"
@@ -89,7 +115,6 @@ export const FlightHistoryModal: React.FC<FlightHistoryModalProps> = ({
       </div>
     );
   }
-
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-2">
       <div className="bg-white rounded-lg shadow-md w-full max-w-xl max-h-[80vh] flex flex-col text-sm">

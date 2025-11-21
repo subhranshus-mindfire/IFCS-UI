@@ -2,13 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import type React from "react";
 
-interface DropdownAction {
+export interface DropdownAction {
   icon: React.ReactNode | IconDefinition;
   label: string;
   onClick: () => void;
 }
 
-interface DropdownProps {
+export interface DropdownProps {
   actions: DropdownAction[];
   width?: string;
 }

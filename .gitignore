@@ -1,1 +1,59 @@
-node_modules
+# --------------------------
+# Node
+# --------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --------------------------
+# Build outputs
+# --------------------------
+dist/
+build/
+.out/
+.tmp/
+
+# Vite cache
+.vite/
+
+# --------------------------
+# Environment variables
+# --------------------------
+.env
+.env.*
+!.env.example
+
+# --------------------------
+# Logs
+# --------------------------
+logs/
+*.log
+*.log.*
+debug.log
+
+# --------------------------
+# Editor folders
+# --------------------------
+.vscode/
+.idea/
+*.swp
+
+# --------------------------
+# OS files
+# --------------------------
+.DS_Store
+Thumbs.db
+
+# --------------------------
+# Optional: Testing
+# --------------------------
+coverage/
+.nyc_output/
+
+# --------------------------
+# Optional: Local dev data
+# --------------------------
+tmp/
+local/

@@ -2,13 +2,78 @@ import { useEffect, useState } from "react";
 import { galleryItems } from "../../const/galleyItems";
 import flightSkeletonImage from "../../assets/flight-skeleton.jpeg";
 import { SortIcon } from "../../assets/icons";
+import React from "react";
+
+
+interface GalleyCoordinate {
+  name: string;
+  position: 'Forward Left' | 'Forward Right' | 'Mid Left' | 'Mid Right' | 'Aft Left' | 'Aft Right';
+  x: string;
+  y: string;
+}
+
+
+const mockGalleyCoordinates: GalleyCoordinate[] = [
+  {
+    name: "G1",
+    position: "Forward Right",
+    y: "22.5px",
+    x: "15%",
+  },
+  {
+    name: "G2L",
+    position: "Forward Left",
+    y: "67.5px",
+    x: "15%",
+  },
+  {
+    name: "G2R-1",
+    position: "Forward Right",
+    y: "67.5px",
+    x: "15%",
+  },
+  {
+    name: "G2R-2",
+    position: "Forward Right",
+    y: "112.5px",
+    x: "15%",
+  },
+  {
+    name: "G3-1",
+    position: "Mid Right",
+    y: "222.5px",
+    x: "15%",
+  },
+  {
+    name: "G3-2",
+    position: "Mid Right",
+    y: "267.5px",
+    x: "15%",
+  },
+  {
+    name: "G5",
+    position: "Aft Left",
+    y: "52.5px",
+    x: "15%",
+  },
+  {
+    name: "G6",
+    position: "Aft Right",
+    y: "52.5px",
+    x: "15%",
+  }
+];
+
 
 const FlightContLoc = () => {
   const [selectedItem, setSelectedItem] = useState(galleryItems[0]);
   const [activeContentTab, setActiveContentTab] = useState("static");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedGalley, setSelectedGalley] = useState<string | null>("G1");
+  const [selectedGalleys, setSelectedGalleys] = useState<string[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
+
+  const finalProcessedGalleys: GalleyCoordinate[] = mockGalleyCoordinates;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -21,10 +86,54 @@ const FlightContLoc = () => {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  /**
+   * Generates the dynamic CSS style object from the GalleyCoordinate.
+   * Logic to use 'bottom' for Aft positions.
+   */
+  const getGalleyStyle = (galley: GalleyCoordinate): React.CSSProperties => {
+    const style: React.CSSProperties = {};
+    let transformValue = '';
+
+    const isAft = galley.position.includes('Aft');
+    const isLeft = galley.position.includes('Left');
+
+    if (isAft) {
+      style.bottom = galley.y;
+    } else {
+      style.top = galley.y;
+    }
+
+    if (isLeft) {
+      style.left = galley.x;
+      transformValue = 'translateX(-50%)';
+    } else {
+      style.right = galley.x;
+      transformValue = 'translateX(50%)';
+    }
+
+    style.transform = transformValue.trim();
+
+    return style;
+  };
+
+  /**
+   * Toggles the selection state for a galley name in the array.
+   */
+  const toggleGalleySelection = (galleyName: string) => {
+    setSelectedGalleys(prevSelected => {
+      if (prevSelected.includes(galleyName)) {
+        return prevSelected.filter(name => name !== galleyName);
+      } else {
+        return [...prevSelected, galleyName];
+      }
+    });
+  };
+
   return (
     <div className="bg-bg-surface w-full max-w-full font-rubik">
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+
         {/* Left Section - Items */}
         <div className="lg:col-span-3 bg-bg-secondary flex flex-col rounded-2xl border border-border-muted ">
           <div className="flex justify-between items-center p-4 border-b border-border-muted">
@@ -249,7 +358,7 @@ const FlightContLoc = () => {
                           </td>
                         </tr>
                       ) : (
-                        selectedItem.locations.map((location, index) => (
+                        selectedItem.locations.map((location: { name: string, storage: string, qty: number }, index: number) => (
                           <tr
                             key={index}
                             className="border-b border-border-muted last:border-b-0"
@@ -287,118 +396,45 @@ const FlightContLoc = () => {
             )}
           </div>
 
-          <div className="flex-1 flex items-center justify-center p-6 relative rounded-2xl border border-border-muted">
+          <div className="flex-1 flex items-center justify-center p-6  md:px-0 xl:p-6 relative rounded-2xl border border-border-muted">
             {/* Aircraft Image with Floating Buttons */}
             {isLoading ? (
               <div className="relative w-full h-full flex items-center justify-center">
-                <div className="relative h-[500px] w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
+                <div className="relative h-[550px] w-full rounded bg-gray-200 overflow-hidden animate-pulse duration-75">
                   <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                </div>
-                {/* Shimmer for buttons */}
-                <div className="absolute top-[10%] left-[20%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute top-[5%] right-[5%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute bottom-[20%] left-[20%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute bottom-[15%] right-[5%]">
-                  <div className="relative h-7 w-16 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute bottom-[5%] left-[30%]">
-                  <div className="relative h-7 w-20 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
-                </div>
-                <div className="absolute bottom-[5%] right-[30%]">
-                  <div className="relative h-7 w-20 rounded-md bg-gray-200 overflow-hidden animate-pulse duration-75">
-                    <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
-                  </div>
                 </div>
               </div>
             ) : (
               <div className="relative w-full h-full flex items-center justify-center">
-                <img
-                  src={flightSkeletonImage}
-                  alt="Aircraft Layout"
-                  className="max-h-[500px] w-auto object-contain"
-                />
 
-                {/* G100 Button - Top Left */}
-                <button
-                  className={`absolute top-[10%] left-[20%] px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "G100"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("G100")}
+                {/* Absolute positioning container */}
+                <div
+                  className="galley-layout-absolute w-full px-4 md:px-65 lg:px-0 xl:px-8 max-w-full h-[550px]"
+                  style={{
+                    position: 'relative'
+                  }}
                 >
-                  G100
-                </button>
+                  <img
+                    src={flightSkeletonImage}
+                    alt="Aircraft Layout"
+                    className="absolute inset-0 w-full h-full object-contain"
+                  />
 
-                {/* G200 Button - Top Right */}
-                <button
-                  className={`absolute top-[5%] right-[5%] px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "G200"
-                    ? "bg-bg-primary text-white border-2 border-bg-primary"
-                    : "bg-bg-primary/80 text-white border border-bg-primary"
-                    }`}
-                  onClick={() => setSelectedGalley("G200")}
-                >
-                  G200
-                </button>
-
-                {/* G300 Button - Bottom Left */}
-                <button
-                  className={`absolute bottom-[20%] left-[20%] px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "G300"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("G300")}
-                >
-                  G300
-                </button>
-
-                {/* G400 Button - Bottom Right */}
-                <button
-                  className={`absolute bottom-[15%] right-[5%] px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "G400"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("G400")}
-                >
-                  G400
-                </button>
-
-                {/* BULK Button - Bottom Center Left */}
-                <button
-                  className={`absolute bottom-[5%] left-[30%] px-5 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "Bulk"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("Bulk")}
-                >
-                  Bulk
-                </button>
-
-                {/* BELLY Button - Bottom Center Right */}
-                <button
-                  className={`absolute bottom-[5%] right-[30%] px-5 py-1.5 rounded-md text-xs font-medium transition-colors ${selectedGalley === "Belly"
-                    ? "bg-bg-secondary text-text-primary border-2 border-border-accent"
-                    : "bg-bg-secondary text-text-secondary border border-border-muted"
-                    }`}
-                  onClick={() => setSelectedGalley("Belly")}
-                >
-                  Belly
-                </button>
+                  {finalProcessedGalleys.map((galley: GalleyCoordinate) => (
+                    <button
+                      key={galley.name}
+                      className={`z-10 px-4 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap absolute 
+                              ${selectedGalleys.includes(galley.name)
+                          ? "bg-bg-accent text-text-primary border-2 border-border-accent"
+                          : "bg-bg-secondary text-text-secondary border border-border-muted" // Default, uncolored state
+                        }`}
+                      style={getGalleyStyle(galley)}
+                      onClick={() => toggleGalleySelection(galley.name)}
+                    >
+                      {galley.name}
+                    </button>
+                  ))}
+                </div>
               </div>)}
           </div>
         </div>

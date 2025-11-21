@@ -169,10 +169,14 @@ export interface AddFlightPayload {
   departureAirport: string;
   arrivalAirport: string;
   aircraftReg: string;
-  paxCount: number;
   manualPairing: boolean;
   manualLoadingPlanSelection: boolean;
   manualMealPlanSelection: boolean;
+  businessStudioCount: number;
+  businessCount: number;
+  economyCount: number;
+  crewCount: number;
+  isPrimary?: boolean;
 }
 export interface AddFlightResponse {
   id: string;

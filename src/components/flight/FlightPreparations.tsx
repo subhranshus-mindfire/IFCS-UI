@@ -208,7 +208,7 @@ function FlightPreparations({ flightId }: { flightId: string }) {
   const filteredPreparations = preparations.filter((p) =>
     p.preparedBy.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  // console.log(preparations, "preparation")
   const handlePrint = () => {
     if (tableRef.current) {
       const printContents = tableRef.current.innerHTML;
@@ -344,7 +344,7 @@ function FlightPreparations({ flightId }: { flightId: string }) {
                   </tr>
                 ))
               ) : (
-                filteredPreparations.map((prep, idx) => (
+                filteredPreparations.length > 0 && filteredPreparations.map((prep, idx) => (
                   <tr
                     key={idx}
                     className="bg-bg-surface border-b border-border-muted last:border-b-0 px-10 font-rubik text-text-muted"

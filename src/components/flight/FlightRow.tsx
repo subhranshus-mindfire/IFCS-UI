@@ -307,7 +307,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           <div className="flex flex-col items-center justify-center gap-1">
             <img src={SeatIcon} alt="Seats" />
             <span className="font-bold text-base text-text-primary">
-              {getPaxCount(flight.passengers.totalCount)}
+              {flight.passengers && visibleCabinCounts ? getPaxCount(flight.passengers.totalCount) : 0}
             </span>
           </div>
           {activePopover === "paxTotal" && <PaxPopover />}
@@ -319,20 +319,21 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           onClick={() => handlePopover("paxCabins")}
           className="py-2 px-3 text-sm text-text-secondary relative cursor-pointer"
         >
-          {visibleCabinCounts.length > 0 ? (
-            <div className="flex flex-col gap-0.5 text-left">
-              {visibleCabinCounts.map(({ key, label, count }) => (
-                <div key={key} className="flex justify-between text-xs sm:text-sm">
-                  <span className="text-text-secondary w-4/5 truncate">{label}</span>
-                  <span className="font-medium text-text-primary text-right w-1/5">
-                    {getPaxCount(count)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center text-xs text-text-tertiary pt-2"></div>
-          )}
+          {flight.passengers && visibleCabinCounts &&
+            (visibleCabinCounts.length > 0 ? (
+              <div className="flex flex-col gap-0.5 text-left">
+                {visibleCabinCounts.map(({ key, label, count }) => (
+                  <div key={key} className="flex justify-between text-xs sm:text-sm">
+                    <span className="text-text-secondary w-4/5 truncate">{label}</span>
+                    <span className="font-medium text-text-primary text-right w-1/5">
+                      {getPaxCount(count)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-xs text-text-tertiary pt-2"></div>
+            ))}
           {activePopover === "paxCabins" && <PaxPopover />}
           <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
         </td>

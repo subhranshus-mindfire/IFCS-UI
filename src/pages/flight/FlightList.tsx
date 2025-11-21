@@ -49,25 +49,9 @@ const FlightList: React.FC = () => {
     // Start the route with the departure of the very first flight.
     let fullRoute = pair[0].departureDestination;
 
-    // Iterate through all flights and append their arrival destination to build the chain.
-    // For a chain A-B, B-C, C-A:
-    // Start with A. 
-    // Flight 1 (A-B) adds B. Route = A-B
-    // Flight 2 (B-C) adds C. Route = A-B-C
-    // Flight 3 (C-A) adds A. Route = A-B-C-A
     for (const flight of pair) {
-      // Only append the arrival destination if it's different from the last segment added
-      // (which is the departure destination of the current flight).
-      // The simple method is just appending the arrival, as the segments are already ordered:
       fullRoute += `-${flight.arrivalDestination}`;
     }
-
-    // Clean up potential duplicate destinations if the start and end of the pair overlap,
-    // though the iterative approach above should handle it well for a closed chain.
-    // Example: If pair[0].dep = MCT and pair[0].arr = CDG, pair[1].dep = CDG, pair[1].arr = MCT
-    // Loop 1: fullRoute = MCT-CDG
-    // Loop 2: fullRoute = MCT-CDG-MCT (Correct)
-
     return fullRoute;
   };
   return (

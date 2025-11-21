@@ -40,7 +40,7 @@ export const EditFlightModal = ({
     setSelectedAirline(legData.flightNumber.substring(0, 2));
     setSelectedDeparture(legData.departureDestination);
     setSelectedArrival(legData.arrivalDestination);
-    setSelectedAircraft(legData.aircraft?.id || "");
+    setSelectedAircraft(legData.aircraft?.registration || "");
   }, [legData]);
 
 
@@ -206,7 +206,7 @@ export const EditFlightModal = ({
               </FieldLabel>
               <SearchableDropdown
                 id="airport"
-                label="name"
+                label="registration"
                 options={aircrafts}
                 selectedVal={selectedAircraft}
                 handleChange={(value) => setSelectedAircraft(value)}

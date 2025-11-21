@@ -37,22 +37,17 @@ const getDisplayValue = (value: unknown, isPrevious: boolean): string => {
     if (typeof value === 'string') {
         const valueStr = value;
 
-        // 1. Handle pipes (remove them for comparison and display)
         if (valueStr.startsWith('|') && valueStr.endsWith('|')) {
             return valueStr.substring(1, valueStr.length - 1);
         }
 
-        // 2. Handle ISO date strings (for scheduled/estimated/actual ISO fields)
         if (valueStr.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)) {
             return formatTime(valueStr) || valueStr;
         }
 
-        // 3. Handle specific 'N/A' placeholder strings from initial creation
         if (isPrevious && valueStr.toUpperCase() === 'N/A') return 'N/A';
 
-        // 4. Handle non-ISO timestamps (like 11-02-2025 10:57:33.318 PM)
         if (valueStr.match(/^\d{2}-\d{2}-\d{4}/) && valueStr.includes(':')) {
-            // We return the raw string here, assuming it's correctly formatted for display
             return valueStr;
         }
 

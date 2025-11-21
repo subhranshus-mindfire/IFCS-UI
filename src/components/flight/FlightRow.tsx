@@ -33,6 +33,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
   hideRoute = false,
   isFirstInPair = false,
   isLastInPair = false,
+  fullPairRoute
 }) => {
   const logoUrl = `https://content.airhex.com/content/logos/airlines_${flight.airline.code}_100_100_s.png`;
 
@@ -64,7 +65,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
 
   const handleFlightDetails = () => {
     setOpen(false);
-    navigate(`/flight-details/${flight.flightNumber}`);
+    navigate(`/flight-details/${flight.id}`);
   };
 
   const handleHistory = () => {
@@ -106,12 +107,12 @@ export const FlightRow: React.FC<FlightRowProps> = ({
     return "text-text-primary";
   };
 
-  const visibleCabinCounts = getDynamicCabinCounts(flight.paxCounts);
+  const visibleCabinCounts = getDynamicCabinCounts(flight.passengers);
   // Get current departure/arrival status and time
   const depStatus = getDepartureType(flight);
   const arrStatus = getArrivalType(flight);
 
-  const fullRoute = flight.pairRoute || `${flight.departureDestination}-${flight.arrivalDestination}`;
+  // const fullRoute = flight.pairRoute || `${flight.departureDestination}-${flight.arrivalDestination}`;
 
 
   const TimePopover = () => (
@@ -171,25 +172,25 @@ export const FlightRow: React.FC<FlightRowProps> = ({
         <div className="flex justify-between mt-2">
           <span>Business Studio</span>
           <span className="font-medium text-text-primary">
-            {getPaxCount(flight.paxCounts.businessStudioCount)}
+            {getPaxCount(flight.passengers.businessStudioCount)}
           </span>
         </div>
         <div className="flex justify-between">
           <span>Business</span>
           <span className="font-medium text-text-primary">
-            {getPaxCount(flight.paxCounts.businessCount)}
+            {getPaxCount(flight.passengers.businessCount)}
           </span>
         </div>
         <div className="flex justify-between">
           <span>Economy</span>
           <span className="font-medium text-text-primary">
-            {getPaxCount(flight.paxCounts.economyCount)}
+            {getPaxCount(flight.passengers.economyCount)}
           </span>
         </div>
         <div className="flex justify-between">
           <span>Crew</span>
           <span className="font-medium text-text-primary">
-            {getPaxCount(flight.paxCounts.crewCount)}
+            {getPaxCount(flight.passengers.crewCount)}
           </span>
         </div>
       </div>
@@ -217,7 +218,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           />
         </td>
         <td className="text-left  font-sm py-2 px-0 text-text-secondary">
-          {!hideRoute && fullRoute}
+          {!hideRoute && fullPairRoute}
         </td>
         <td className="text-left text-sm 3xl:text-lg font-bold text-text-primary py-2 px-3">
           {flight.flightNumber}{flight.flightNumberSuffix}
@@ -306,7 +307,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           <div className="flex flex-col items-center justify-center gap-1">
             <img src={SeatIcon} alt="Seats" />
             <span className="font-bold text-base text-text-primary">
-              {getPaxCount(flight.paxCounts.totalCount)}
+              {flight.passengers && visibleCabinCounts ? getPaxCount(flight.passengers.totalCount) : 0}
             </span>
           </div>
           {activePopover === "paxTotal" && <PaxPopover />}
@@ -318,20 +319,21 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           onClick={() => handlePopover("paxCabins")}
           className="py-2 px-3 text-sm text-text-secondary relative cursor-pointer"
         >
-          {visibleCabinCounts.length > 0 ? (
-            <div className="flex flex-col gap-0.5 text-left">
-              {visibleCabinCounts.map(({ key, label, count }) => (
-                <div key={key} className="flex justify-between text-xs sm:text-sm">
-                  <span className="text-text-secondary w-4/5 truncate">{label}</span>
-                  <span className="font-medium text-text-primary text-right w-1/5">
-                    {getPaxCount(count)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center text-xs text-text-tertiary pt-2"></div>
-          )}
+          {flight.passengers && visibleCabinCounts &&
+            (visibleCabinCounts.length > 0 ? (
+              <div className="flex flex-col gap-0.5 text-left">
+                {visibleCabinCounts.map(({ key, label, count }) => (
+                  <div key={key} className="flex justify-between text-xs sm:text-sm">
+                    <span className="text-text-secondary w-4/5 truncate">{label}</span>
+                    <span className="font-medium text-text-primary text-right w-1/5">
+                      {getPaxCount(count)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-xs text-text-tertiary pt-2"></div>
+            ))}
           {activePopover === "paxCabins" && <PaxPopover />}
           <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
         </td>
@@ -348,7 +350,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               </span>
               <span className="text-left font-medium text-text-primary">
                 {" "}
-                {getPaxCount(flight.paxCounts.businessStudioCount)}
+                {getPaxCount(flight.passengers.businessStudioCount)}
               </span>
             </div> */}
         {/* Top-Right: Economy */}
@@ -356,7 +358,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               <span className="text-left text-text-secondary">Economy</span>
               <span className="text-left font-medium text-text-primary">
                 {" "}
-                {getPaxCount(flight.paxCounts.economyCount)}
+                {getPaxCount(flight.passengers.economyCount)}
               </span>
             </div> */}
         {/* Bottom-Left: Business (Previously First/Business) */}
@@ -364,7 +366,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               <span className="text-left text-text-secondary">Business</span>
               <span className="text-left font-medium text-text-primary">
                 {" "}
-                {getPaxCount(flight.paxCounts.businessCount)}
+                {getPaxCount(flight.passengers.businessCount)}
               </span>
             </div> */}
         {/* Bottom-Right: Crew (Previously Premium/Crew) */}
@@ -372,7 +374,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               <span className="text-left text-text-secondary">Crew</span>
               <span className="text-left font-medium text-text-primary">
                 {" "}
-                {getPaxCount(flight.paxCounts.crewCount)}
+                {getPaxCount(flight.passengers.crewCount)}
               </span>
             </div>
           </div>

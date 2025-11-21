@@ -1,24 +1,17 @@
 import { create } from 'zustand';
-import type { PreparationItem } from '../types/Flight';
 import { fetchPreparations } from '../services/preparation';
-
-interface PreparationStoreState {
-    preparations: PreparationItem[];
-    isLoading: boolean;
-    error: string | null;
-    fetchData: () => Promise<void>;
-}
+import type { PreparationStoreState } from '../types/Flight';
 
 export const usePreparationStore = create<PreparationStoreState>((set) => ({
     preparations: [],
     isLoading: false,
     error: null,
 
-    fetchData: async () => {
+    fetchData: async (flightId: string) => {
         set({ isLoading: true, error: null });
 
         try {
-            const data = await fetchPreparations();
+            const data = await fetchPreparations(flightId);
             set({ preparations: data, isLoading: false, error: null });
         } catch (e) {
             console.error("Failed to fetch preparations:", e);

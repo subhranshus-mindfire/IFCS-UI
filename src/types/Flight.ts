@@ -27,6 +27,16 @@ export interface Flight {
   arrivalType: "actual" | "estimated" | "scheduled";
   client: string;
 }
+// export interface PaxCounts {
+//   id: string;
+//   fmId: string;
+//   totalCount: number | null;
+//   businessStudioCount: number | null;
+//   businessCount: number | null;
+//   economyCount: number | null;
+//   crewCount: number | null;
+// }
+
 export interface PaxCounts {
   totalCount: number | null;
   businessStudioCount: number | null;
@@ -34,7 +44,6 @@ export interface PaxCounts {
   economyCount: number | null;
   crewCount: number | null;
 }
-
 export interface Aircraft {
   id: string;
   type: string;
@@ -119,7 +128,7 @@ export interface FlightList {
   airline: Airline;
   loadingPlan?: LoadingPlan | null;
   mealPlan?: MealPlan | null;
-  paxCounts: PaxCounts;
+  passengers: PaxCounts;
 }
 
 
@@ -229,18 +238,54 @@ export interface AddFormState {
   departureAirport: string;
   arrivalAirport: string;
 }
+export interface AirlineOption {
+  id: string;
+  code: string;
+  name: string;
+  logo: string | null;
+}
+
+export interface AirportOption {
+  id: string;
+  code: string;
+  city: string;
+  country: string;
+  name: string;
+  timezone: string;
+}
+
+export interface AircraftOption {
+  id: string;
+  fmId: string | null;
+  aircraftConfigId: string | null;
+  type: string;
+  registration: string;
+  aircraftGroup: string | null;
+  designator: string;
+}
+
+export interface FlightOptions {
+  airlineCodes: AirlineOption[];
+  airports: AirportOption[];
+  aircraftRegs: AircraftOption[];
+}
 
 
 export interface FlightStoreState {
   flights: FlightList[][];
   flightStats: FlightStats;
   filters: FlightFilters,
+  airlineCodeOptions: AirlineOption[];
+  airportOptions: AirportOption[];
+  aircraftRegOptions: AircraftOption[];
   isLoading: boolean;
   error: string | null;
   fetchFlights: (filters?: FlightFilters) => Promise<void>;
   fetchFlightStats: (filters?: FlightFilters) => Promise<void>;
   addFlight: (payload: AddFlightPayload) => Promise<AddFlightResponse>;
+  addBulkFlight: (payload: AddFlightPayload[]) => Promise<AddFlightResponse[]>
   setFilters: (newFilters: FlightFilters) => void;
+  fetchFlightOptions: () => Promise<void>;
 }
 export interface FlightRowProps {
   flight: FlightList;
@@ -248,6 +293,7 @@ export interface FlightRowProps {
   hideRoute?: boolean;
   isFirstInPair?: boolean;
   isLastInPair?: boolean;
+  fullPairRoute: string
 }
 
 
@@ -380,7 +426,13 @@ export interface PromptModalState {
 }
 
 
-// New One
+export interface PreparationStoreState {
+  preparations: PreparationItem[];
+  isLoading: boolean;
+  error: string | null;
+  fetchData: (flightId: string) => Promise<void>;
+}
+
 
 export interface FlightData {
   id: string;
@@ -499,3 +551,5 @@ export interface FlightData {
 
   selectedFlight: boolean;
 }
+
+

@@ -26,7 +26,7 @@ type CompletedActionsState = {
   [key: string]: number[];
 };
 
-function FlightPreparations() {
+function FlightPreparations({ flightId }: { flightId: string }) {
   const tableRef = useRef<HTMLDivElement>(null);
   const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState<boolean>(false);
   const [selectedQRCodeUrl, setSelectedQRCodeUrl] = useState<string>("");
@@ -63,8 +63,8 @@ function FlightPreparations() {
 
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchData(flightId);
+  }, [fetchData, flightId]);
   const handleSaveSignature = () => {
     setSignatureModalOpen(false);
     setIsSealNumberModalOpen(true);
@@ -252,7 +252,7 @@ function FlightPreparations() {
         isOpen={isSignaturModalOpen}
         onClose={() => { setSignatureModalOpen(false) }}
         onSave={handleSaveSignature}
-        title=""
+        title="Sign to Confirm Seal"
       />
       {/* Add Seal Number Modal */}
       <SealNumberModal

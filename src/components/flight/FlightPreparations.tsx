@@ -21,7 +21,7 @@ import type { PromptModalState } from "../../types/Flight";
 import SignatureModal from "./delivery/SignatureModal";
 import SealNumberModal from "./SealNumberModal";
 import QRCodeModal from "./QRCodeModal";
-
+import pdfUrl from "../../assets/label.pdf";
 type CompletedActionsState = {
   [key: string]: number[];
 };
@@ -208,7 +208,7 @@ function FlightPreparations({ flightId }: { flightId: string }) {
   const filteredPreparations = preparations.filter((p) =>
     p.preparedBy.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  // console.log(preparations, "preparation")
   const handlePrint = () => {
     if (tableRef.current) {
       const printContents = tableRef.current.innerHTML;
@@ -265,8 +265,9 @@ function FlightPreparations({ flightId }: { flightId: string }) {
       <QRCodeModal
         isOpen={isQRCodeModalOpen}
         onClose={() => setIsQRCodeModalOpen(false)}
-        qrCodeUrl={selectedQRCodeUrl}
-        title="Scan QR Code"
+        // qrCodeUrl={selectedQRCodeUrl}
+        pdfUrl={pdfUrl}
+
       />
       {/* Header */}
       <div className="font-rubik flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
@@ -344,7 +345,7 @@ function FlightPreparations({ flightId }: { flightId: string }) {
                   </tr>
                 ))
               ) : (
-                filteredPreparations.map((prep, idx) => (
+                filteredPreparations.length > 0 && filteredPreparations.map((prep, idx) => (
                   <tr
                     key={idx}
                     className="bg-bg-surface border-b border-border-muted last:border-b-0 px-10 font-rubik text-text-muted"

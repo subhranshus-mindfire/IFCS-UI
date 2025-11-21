@@ -61,6 +61,18 @@ const mockGalleyCoordinates: GalleyCoordinate[] = [
     position: "Aft Right",
     y: "52.5px",
     x: "15%",
+  },
+  {
+    name: "Bulk",
+    position: "Aft Left",
+    y: "-20px",  // Adjust this value to move it up/down from the bottom
+    x: "40%",   // Adjust this value to move it left/right from the left edge
+  },
+  {
+    name: "Belly",
+    position: "Aft Right",
+    y: "-20px",  // Adjust this value to move it up/down from the bottom
+    x: "39%",   // Adjust this value to move it left/right from the right edge
   }
 ];
 
@@ -135,7 +147,7 @@ const FlightContLoc = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
         {/* Left Section - Items */}
-        <div className="lg:col-span-3 bg-bg-secondary flex flex-col rounded-2xl border border-border-muted ">
+        <div className="lg:col-span-3 bg-bg-tertiary flex flex-col rounded-2xl border border-border-muted ">
           <div className="flex justify-between items-center p-4 border-b border-border-muted">
             {isLoading ? (
               <>
@@ -313,7 +325,7 @@ const FlightContLoc = () => {
             <div className="mt-4">
               <div className="overflow-x-auto overflow-y-auto max-h-[400px] rounded-2xl border border-border-muted">
                 <table className="w-full text-sm">
-                  <thead className="sticky top-0 bg-bg-secondary">
+                  <thead className="sticky top-0 bg-bg-tertiary">
                     <tr className="border-b border-border-muted">
                       <th className="text-left py-3 px-4 text-text-secondary font-semibold">
                         {activeContentTab === "deadhead" ? "Name" : "Name"}

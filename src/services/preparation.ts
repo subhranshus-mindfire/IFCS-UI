@@ -1,4 +1,5 @@
 // import axiosInstance from "../config/axiosInstance";
+// import { FLIGHTS_ENDPOINT } from "../const/apiEndPoints";
 import { samplePreparations } from "../const/samplePreparations";
 import type { PreparationItem } from "../types/Flight";
 
@@ -11,5 +12,7 @@ export async function fetchPreparations(flightId: string): Promise<PreparationIt
     console.log("Fetching preparations for flight ID:", flightId);
     await new Promise(resolve => setTimeout(resolve, 500));
     return samplePreparations;
-    // const response = await axiosInstance.get(`${FLIGHTS_ENDPOINT.flightList}/${flightId}/preparations`)
+    // const response = await axiosInstance.get(`${FLIGHTS_ENDPOINT.flightList}/${flightId}/preparations`);
+    // return response.data
+
 }

@@ -140,7 +140,8 @@ function FlightFoodOrder() {
                 <th className="px-2 py-3 text-center font-medium">
                   Distributed
                 </th>
-                <th className="px-2 py-3 text-center font-medium">Loaded</th>
+                <th className="px-2 py-3 text-center font-medium">Left Over</th>
+                <th className="px-2 py-3 text-center font-medium">Cons %</th>
               </tr>
 
               <tr className="bg-bg-surface font-medium text-text-primary">
@@ -168,6 +169,7 @@ function FlightFoodOrder() {
                     0
                   )}
                 </td>
+                <td className="px-2 py-2 text-center">0%</td>
               </tr>
             </thead>
 
@@ -209,6 +211,7 @@ function FlightFoodOrder() {
                     <td className="px-2 py-2 text-center text-sm">
                       {order.loaded}
                     </td>
+                    <td className="px-2 py-2 text-center text-sm">0%</td>
                   </tr>
                 ))}
 

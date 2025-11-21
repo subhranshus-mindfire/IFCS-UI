@@ -553,3 +553,29 @@ export interface FlightData {
 }
 
 
+
+export interface FoodOrderItem {
+  id: string;
+  fmId: string;
+  flightId: string;
+  mealId: string;
+  mealName: string;        
+  orderCount1: number;
+  orderCount2: number;
+  isDynamicLoadingIncomplete: boolean;
+  seatNumber: string;
+  passengerName: string;
+  cabinClass: string;
+  loadedStatus: string;
+  arrivalDate: string;
+  departureDate: string;
+  arrivalTime: string;
+  departureTime: string;
+  createdAt: string;
+  updatedAt: string;
+  flightNumber: string;
+  departureStation: string;
+  mealCode: string;
+}
+
+

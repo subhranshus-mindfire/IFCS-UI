@@ -304,7 +304,7 @@ const FlightContLoc = () => {
 
                 {/* Equipment Preview */}
                 <div className="min-h-[150px] p-2 px-4 border-t border-border-muted">
-                  <p className="text-xs text-text-tertiary">Equipment Preview</p>
+                  <p className="text-xs text-text-tertiary">Item Preview</p>
                 </div>
               </div>)}
           </div>

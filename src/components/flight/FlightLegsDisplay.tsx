@@ -49,7 +49,7 @@ const FlightLegsDisplay: React.FC<FlightLegsDisplayProps> = ({ legs }) => {
 
   useEffect(() => {
     fetchLoadingPlans();
-  }, []);
+  }, [fetchLoadingPlans]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

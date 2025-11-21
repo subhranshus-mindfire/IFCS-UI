@@ -221,7 +221,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           {!hideRoute && fullPairRoute}
         </td>
         <td className="text-left text-sm 3xl:text-lg font-bold text-text-primary py-2 px-3">
-          {flight.flightNumber}{flight.flightNumberSuffix}
+          {flight.airline.designator}{flight.flightNumber}
         </td>
         <td className="text-left font-semibold text-sm 3xl:text-lg py-2 px-3 text-text-primary">
           {flight.flightTypeIataCode || flight.flightType}

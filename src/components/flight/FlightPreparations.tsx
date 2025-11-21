@@ -21,7 +21,7 @@ import type { PromptModalState } from "../../types/Flight";
 import SignatureModal from "./delivery/SignatureModal";
 import SealNumberModal from "./SealNumberModal";
 import QRCodeModal from "./QRCodeModal";
-
+import pdfUrl from "../../assets/label.pdf";
 type CompletedActionsState = {
   [key: string]: number[];
 };
@@ -265,8 +265,9 @@ function FlightPreparations({ flightId }: { flightId: string }) {
       <QRCodeModal
         isOpen={isQRCodeModalOpen}
         onClose={() => setIsQRCodeModalOpen(false)}
-        qrCodeUrl={selectedQRCodeUrl}
-        title="Scan QR Code"
+        // qrCodeUrl={selectedQRCodeUrl}
+        pdfUrl={pdfUrl}
+
       />
       {/* Header */}
       <div className="font-rubik flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">

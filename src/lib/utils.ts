@@ -104,22 +104,25 @@ const IGNORED_PAX_KEYS = ['totalCount', 'id', 'fmId'];
  * metadata (id, fmId) and null/zero counts.
  */
 export const getDynamicCabinCounts = (paxCounts: FlightList['passengers']) => {
-  return Object.entries(paxCounts)
-    .filter(([key, count]) => {
-      // 1. Ignore metadata keys: id, fmId, and totalCount
-      if (IGNORED_PAX_KEYS.includes(key)) {
-        return false;
-      }
+  console.log(paxCounts, "pax")
+  if (paxCounts) {
+    return Object.entries(paxCounts)
+      .filter(([key, count]) => {
+        // 1. Ignore metadata keys: id, fmId, and totalCount
+        if (IGNORED_PAX_KEYS.includes(key)) {
+          return false;
+        }
 
-      // 2. Ignore null, undefined, or zero counts
-      return count !== null && count !== undefined && count > 0;
-    })
-    .map(([key, count]) => ({
-      // Cast 'count' to number since it passed the checks
-      label: getCabinLabel(key),
-      count: count as number,
-      key: key
-    }));
+        // 2. Ignore null, undefined, or zero counts
+        return count !== null && count !== undefined && count > 0;
+      })
+      .map(([key, count]) => ({
+        // Cast 'count' to number since it passed the checks
+        label: getCabinLabel(key),
+        count: count as number,
+        key: key
+      }));
+  }
 };
 /**
  * GENERIC UTILITY: Converts a camelCase/PascalCase key to a readable label.

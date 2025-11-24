@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState, type JSX } from "react";
-import Button from "../Button";
-import { Field, FieldLabel, FieldContent } from "../Field";
-import type { FlightData } from "../../types/Flight";
-import { formatDateToDDMonYYYY, formatLocalTimeFromISO } from "../../lib/utils";
-import { getAirlines, getAirports, getAircrafts } from "../../services/flightLookups";
-import SearchableDropdown from "../common/SearchableDropdown";
+import Button from "../../Button";
+import { Field, FieldLabel, FieldContent } from "../../Field";
+import type { FlightData } from "../../../types/Flight";
+import { formatDateToDDMonYYYY, formatLocalTimeFromISO } from "../../../lib/utils";
+import { getAirlines, getAirports, getAircrafts } from "../../../services/flightLookups";
+import SearchableDropdown from "../../common/SearchableDropdown";
 
 interface EditFlightModalProps {
   isEditFlightModalOpen: boolean;

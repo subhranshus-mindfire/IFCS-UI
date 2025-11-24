@@ -1,6 +1,6 @@
 import React from "react";
-import { Breadcrumb } from "../BreadCrumb";
-import type { FlightFilters } from "../../types/Flight";
+import { Breadcrumb } from "../../BreadCrumb";
+import type { FlightFilters } from "../../../types/Flight";
 import {
   AirPlaneTakeOffThin,
   CalendarIcon,
@@ -8,7 +8,7 @@ import {
   ClockClockWise,
   PlayCircleThin,
   PlusCircle,
-} from "../../assets/icons";
+} from "../../../assets/icons";
 
 
 interface FlightHeaderProps {

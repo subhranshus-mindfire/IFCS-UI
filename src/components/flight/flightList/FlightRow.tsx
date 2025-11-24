@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import Dropdown from "../Dropdown";
+import Dropdown from "../../Dropdown";
 import {
   CheckCircleIcon,
   ClipboardTextIcon,
@@ -18,11 +18,11 @@ import {
   HistoryIcon,
   ThermometerIcon,
   TruckIcon
-} from "../../assets/icons";
-import type { FlightRowProps, PDFConfig } from "../../types/Flight";
-import { Tooltip } from "../common/Tooltip";
-import { PDFConfigModal } from "./PDFConfigModal";
-import { formatDate, formatTimeInHHMM, getArrivalType, getDepartureType, getDynamicCabinCounts, getPaxCount } from "../../lib/utils";
+} from "../../../assets/icons";
+import type { FlightRowProps, PDFConfig } from "../../../types/Flight";
+import { Tooltip } from "../../common/Tooltip";
+import { PDFConfigModal } from "../PDFConfigModal";
+import { formatDate, formatTimeInHHMM, getArrivalType, getDepartureType, getDynamicCabinCounts, getPaxCount } from "../../../lib/utils";
 
 
 

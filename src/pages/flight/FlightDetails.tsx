@@ -1,17 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import FlightPreparations from "../../components/flight/FlightPreparations";
+import FlightPreparations from "../../components/flight/preparation/FlightPreparations";
 import FlightFoodOrder from "../../components/flight/FlightFoodOrder";
 import FlightGalleys from "../../components/flight/FlightGalleys";
 import FlightContLoc from "../../components/flight/FlightContLoc";
 import FlightDeliveries from "../../components/flight/delivery/FlightDeliveries";
 import FlightLabels from "../../components/flight/FlightLabels";
-import FlightLegsDisplay from "../../components/flight/FlightLegsDisplay";
+import FlightLegsDisplay from "../../components/flight/flightInfo/FlightLegsDisplay";
 import { Breadcrumb } from "../../components/BreadCrumb";
 // import { useTranslation } from "react-i18next";
 import Navbar from "../../components/Navbar";
-import { useFlightStore } from "../../store/useFlightStore";
+// import { useFlightStore } from "../../store/useFlightStore";
 import { formatDateToDDMonYYYY } from "../../lib/utils";
+import { useFlightStore } from "../../store/flight";
 
 const tabKeys = [
   "Flight Info",

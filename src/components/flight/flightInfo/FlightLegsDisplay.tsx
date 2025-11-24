@@ -3,12 +3,12 @@ import {
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import Dropdown from "../Dropdown";
-import { CogIcon, NoteBookIcon, WarningIcon, ForkKnifeIcon, DatabaseIcon, AirplaneIcon } from "../../assets/icons";
+import Dropdown from "../../Dropdown";
+import { CogIcon, NoteBookIcon, WarningIcon, ForkKnifeIcon, DatabaseIcon, AirplaneIcon } from "../../../assets/icons";
 import { EditFlightModal } from "./EditFlightModal";
-import type { FlightData } from "../../types/Flight";
-import { formatDateToDDMonYYYY, formatLocalTimeFromISO } from "../../lib/utils";
-import { useLoadingPlanStore } from "../../store/useLoadingPlanStore";
+import type { FlightData } from "../../../types/Flight";
+import { formatDateToDDMonYYYY, formatLocalTimeFromISO } from "../../../lib/utils";
+import { useLoadingPlanStore } from "../../../store/useLoadingPlanStore";
 
 interface FlightLegsDisplayProps {
   legs: FlightData[];

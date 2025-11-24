@@ -10,13 +10,13 @@ import {
   // useState, 
   type FC
 } from "react";
-import { StatusRow } from "../StatusRow";
-import img1 from "../../assets/icons/preparations_details/image 192.png";
-import img2 from "../../assets/icons/preparations_details/Frame 1000008128.png";
-import galaryLogo from "../../assets/icons/preparations_details/GalleryLogo.svg";
+import { StatusRow } from "../../StatusRow";
+import img1 from "../../../assets/icons/preparations_details/image 192.png";
+import img2 from "../../../assets/icons/preparations_details/Frame 1000008128.png";
+import galaryLogo from "../../../assets/icons/preparations_details/GalleryLogo.svg";
 
 
-import ToogleSwitch from "../ToggleButton";
+import ToogleSwitch from "../../ToggleButton";
 // import { Canvas } from "@react-three/fiber";
 // import { DrawerCart, Lighting } from "./3D-Drawer";
 // import { OrbitControls } from "@react-three/drei";

@@ -62,6 +62,19 @@ export async function fetchFlightStats(
     return response.data.data || [];
 }
 
+export const flightDetailsService = {
+    async getFlightById(flightId: string) {
+        try {
+            const response = await axiosInstance.get(`/flights/${flightId}`);
+            return response.data?.data;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.error("Flight API Error:", error);
+            throw error;
+        }
+    }
+};
+
 export async function fetchFlightHistory(
     flightId: string
 ): Promise<FlightHistoryEntry[]> {
@@ -148,3 +161,13 @@ export async function fetchFlightOptions(): Promise<FlightOptions> {
 
     return options;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const updateFlight = async (flightId: string, payload: any) => {
+  const { data } = await axiosInstance.patch(`/flights/${flightId}`, payload, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+    },
+  });
+  return data;
+};

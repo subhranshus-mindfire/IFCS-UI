@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
-import DynamicLoadingModal from "./AddDynamicLoadingModal";
+import DynamicLoadingModal from "../AddDynamicLoadingModal";
 import { FlightPreparationDetailsModal } from "./FlightPreparationDetailsModal";
-import RedirectBtn from "../common/RedirectBtn";
+import RedirectBtn from "../../common/RedirectBtn";
 import {
   AddIcon,
   PrintIcon,
@@ -14,14 +14,14 @@ import {
   PrepTruckIcon,
   PrepInfoIcon,
   PrepQRIcon
-} from "../../assets/icons";
+} from "../../../assets/icons";
 import { PromptModal } from "./PromptModal";
-import { usePreparationStore } from "../../store/preparation";
-import type { PromptModalState } from "../../types/Flight";
-import SignatureModal from "./delivery/SignatureModal";
+import { usePreparationStore } from "../../../store/preparation";
+import type { PromptModalState } from "../../../types/Flight";
+import SignatureModal from "../SignatureModal";
 import SealNumberModal from "./SealNumberModal";
 import QRCodeModal from "./QRCodeModal";
-import pdfUrl from "../../assets/label.pdf";
+import pdfUrl from "../../../assets/label.pdf";
 type CompletedActionsState = {
   [key: string]: number[];
 };

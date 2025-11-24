@@ -1,17 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import FlightPreparations from "../../components/flight/FlightPreparations";
+import FlightPreparations from "../../components/flight/preparation/FlightPreparations";
 import FlightFoodOrder from "../../components/flight/FlightFoodOrder";
 import FlightGalleys from "../../components/flight/FlightGalleys";
 import FlightContLoc from "../../components/flight/FlightContLoc";
 import FlightDeliveries from "../../components/flight/delivery/FlightDeliveries";
 import FlightLabels from "../../components/flight/FlightLabels";
-import FlightLegsDisplay from "../../components/flight/FlightLegsDisplay";
+import FlightLegsDisplay from "../../components/flight/flightInfo/FlightLegsDisplay";
 import { Breadcrumb } from "../../components/BreadCrumb";
 // import { useTranslation } from "react-i18next";
 import Navbar from "../../components/Navbar";
-import { useFlightStore } from "../../store/useFlightStore";
+// import { useFlightStore } from "../../store/useFlightStore";
 import { formatDateToDDMonYYYY } from "../../lib/utils";
+import { useFlightStore } from "../../store/flight";
 
 const tabKeys = [
   "Flight Info",
@@ -161,11 +162,11 @@ function FlightDetails() {
                     className={`relative w-full h-full px-2 py-3 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden
                   ${activeTab === tab
                         ? "text-bg-button"
-                        : tab === "Invoice" || tab === "Invoice" || tab === "Labels/Reports" || tab === "Deliveries" || tab === "Galleys"
+                        : tab === "Invoice"
                           ? "text-gray-400 cursor-not-allowed"
                           : "text-text-secondary hover:text-bg-button/80"
                       }`}
-                    disabled={tab === "Invoice" || tab === "Galleys" || tab === "Deliveries" || tab === "Labels/Reports"}
+                    disabled={tab === "Invoice"}
                   >
                     <span
                       className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-medium

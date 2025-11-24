@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import FlightHeader from "../../components/flight/FlightListHeader";
-import { AddFlightModal } from "../../components/flight/AddFlightModal";
-import { FlightHistoryModal } from "../../components/flight/FlightHistoryModal";
-import { FlightRow } from "../../components/flight/FlightRow";
+import FlightHeader from "../../components/flight/flightList/FlightListHeader";
+import { AddFlightModal } from "../../components/flight/flightList/AddFlightModal";
+import { FlightHistoryModal } from "../../components/flight/flightList/FlightHistoryModal";
+import { FlightRow } from "../../components/flight/flightList/FlightRow";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import {

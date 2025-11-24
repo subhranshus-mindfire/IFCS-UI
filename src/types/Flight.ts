@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Label } from "../components/Label";
 
 export interface Flight {
@@ -276,6 +277,7 @@ export interface FlightOptions {
 
 
 export interface FlightStoreState {
+  flightData: FlightData[] | null;
   flights: FlightList[][];
   flightStats: FlightStats;
   filters: FlightFilters,
@@ -284,12 +286,15 @@ export interface FlightStoreState {
   aircraftRegOptions: AircraftOption[];
   isLoading: boolean;
   error: string | null;
+  fetchFlight: (flightId: string) => Promise<void>;
   fetchFlights: (filters?: FlightFilters) => Promise<void>;
   fetchFlightStats: (filters?: FlightFilters) => Promise<void>;
   addFlight: (payload: AddFlightPayload) => Promise<AddFlightResponse>;
   addBulkFlight: (payload: AddFlightPayload[]) => Promise<AddFlightResponse[]>
   setFilters: (newFilters: FlightFilters) => void;
   fetchFlightOptions: () => Promise<void>;
+  updateFlight: (flightId: string, payload: any) => Promise<void>;
+  clearFlight: () => void;
 }
 export interface FlightRowProps {
   flight: FlightList;

@@ -1,13 +1,11 @@
 import { create } from "zustand";
 import type {
   FlightStoreState, FlightFilters,
-  //  FlightList,
   AddFlightPayload, AddFlightResponse
 } from "../types/Flight";
-// import { flightList as mockFlights } from "../const/flightData";
-import { addBulkFlight, addFlight, fetchFlightOptions, fetchFlights, fetchFlightStats } from "../services/flight";
+import { addBulkFlight, addFlight, fetchFlightOptions, fetchFlights, fetchFlightStats, flightDetailsService, updateFlight } from "../services/flight";
 import { AxiosError } from "axios";
-// import { fetchFlights } from "../services/flight";
+import type { } from "../types/Flight";
 
 const calculateDefaultDate = () => {
   const currentDate = new Date();
@@ -27,93 +25,9 @@ const INITIAL_FILTERS: FlightFilters = {
   client: "Oman Air"
 };
 
-// const extractDate = (isoString: string | null | undefined): string | undefined =>
-//   isoString ? isoString.substring(0, 10) : undefined;
-
-// const filterFlights = (flightPair: FlightList[], filters: FlightFilters): boolean => {
-//   return flightPair.some(flight => {
-//     let match = true;
-
-//     if (filters.date) {
-//       const flightDate = extractDate(flight.scheduledDeparture);
-//       if (flightDate !== filters.date) {
-//         match = false;
-//       }
-//     }
-//     if (!match) return false;
-//     if (filters.client && filters.client !== 'All') {
-//       const filterClientLower = filters.client.toLowerCase();
-
-//       // Ensure the flight's client data exists
-//       const flightClient = flight.ifcsClient; // Assuming this property is correctly defined in FlightList/Flight interface
-
-//       if (!flightClient || flightClient.toLowerCase() !== filterClientLower) {
-//         match = false;
-//       }
-//     }
-//     if (!match) return false;
-//     if (filters.station) {
-//       const stationLower = filters.station.toLowerCase();
-//       const depMatch = flight.departureDestination?.toLowerCase().includes(stationLower);
-//       const arrMatch = flight.arrivalDestination?.toLowerCase().includes(stationLower);
-//       if (!depMatch && !arrMatch) {
-//         match = false;
-//       }
-//     }
-//     if (!match) return false;
-
-//     if (filters.flight) {
-//       const flightLower = filters.flight.toLowerCase();
-//       if (!flight.flightNumber?.toLowerCase().includes(flightLower)) {
-//         match = false;
-//       }
-//     }
-//     if (!match) return false;
-
-//     if (filters.acReg) {
-//       const acRegLower = filters.acReg.toLowerCase();
-//       if (!flight.aircraft?.registration?.toLowerCase().includes(acRegLower)) {
-//         match = false;
-//       }
-//     }
-//     if (!match) return false;
-
-//     if (filters.acType) {
-//       const acTypeLower = filters.acType.toLowerCase();
-//       if (!flight.aircraft?.type?.toLowerCase().includes(acTypeLower)) {
-//         match = false;
-//       }
-//     }
-//     if (!match) return false;
-
-//     if (filters.route) {
-//       const routeLower = filters.route.toLowerCase();
-//       if (!flight.pairRoute?.toLowerCase().includes(routeLower)) {
-//         match = false;
-//       }
-//     }
-//     if (!match) return false;
-
-//     if (filters.status) {
-//       const statusLower = filters.status.toLowerCase();
-//       if (!flight.status?.toLowerCase().includes(statusLower)) {
-//         match = false;
-//       }
-//     }
-//     if (!match) return false;
-
-//     // if (filters.client) {
-//     //   const clientLower = filters.client.toLowerCase();
-//     //   if (!flight.ifcsClient?.toLowerCase().includes(clientLower)) {
-//     //     match = false;
-//     //   }
-//     // }
-//     return match;
-//   });
-// };
-
 
 export const useFlightStore = create<FlightStoreState>((set, get) => ({
+  flightData: null,
   flights: [],
   flightStats: {
     total: 0,
@@ -128,6 +42,25 @@ export const useFlightStore = create<FlightStoreState>((set, get) => ({
   filters: INITIAL_FILTERS,
   setFilters: (newFilters: FlightFilters) => {
     set({ filters: newFilters });
+  },
+  fetchFlight: async (flightId: string) => {
+    try {
+      set({ isLoading: true, error: null });
+
+      const data = await flightDetailsService.getFlightById(flightId);
+
+      set({
+        flightData: data,
+        isLoading: false,
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({
+          error: error?.response?.data?.message || "Something went wrong",
+          isLoading: false,
+        });
+      }
+    }
   },
 
   fetchFlights: async (filters: FlightFilters = {
@@ -251,4 +184,36 @@ export const useFlightStore = create<FlightStoreState>((set, get) => ({
       console.error("Failed to fetch flight options:", err);
     }
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateFlight: async (flightId: string, payload: any) => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const updatedFlight = await updateFlight(flightId, payload);
+
+      // Refresh list + stats after update
+      const currentFilters = get().filters;
+      await get().fetchFlights(currentFilters);
+      await get().fetchFlightStats(currentFilters);
+
+      set({ isLoading: false });
+      return updatedFlight;
+
+    } catch (err) {
+      console.error("Failed to update flight:", err);
+      let errorMessage = "Failed to update flight.";
+
+      if (err instanceof AxiosError) {
+        errorMessage = err.response?.data?.message || err.response?.statusText;
+      }
+
+      set({ error: errorMessage, isLoading: false });
+      throw err;
+    }
+  },
+
+  clearFlight: () => set({ flightData: null, error: null }),
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 }));

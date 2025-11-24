@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { TSACompliance } from "../../../types/delivery";
-import SignatureModal from "./SignatureModal";
+import SignatureModal from "../SignatureModal";
 
 interface TSAComplianceTabProps {
   tsaCompliance: TSACompliance | null;
@@ -176,11 +176,10 @@ const TSAComplianceTab: React.FC<TSAComplianceTabProps> = ({
           <button
             onClick={handleAddPreparer}
             disabled={!fullName.trim() || !raicNumber.trim()}
-            className={`px-6 py-2 rounded-2xl transition-colors ${
-              fullName.trim() && raicNumber.trim()
+            className={`px-6 py-2 rounded-2xl transition-colors ${fullName.trim() && raicNumber.trim()
                 ? "bg-bg-button text-white hover:opacity-90"
                 : "bg-gray-300 text-text-tertiary cursor-not-allowed"
-            }`}
+              }`}
           >
             Add
           </button>
@@ -205,58 +204,58 @@ const TSAComplianceTab: React.FC<TSAComplianceTabProps> = ({
           </label>
         </div>
 
-          <div className="space-y-4">
-            <div className="flex items-start gap-3 border border-border-muted p-3 rounded-2xl">
-              <input
-                type="checkbox"
-                checked={true}
-                readOnly
-                className="mt-1 w-4 h-4 text-bg-button accent-bg-button rounded"
-              />
-              <p className="text-sm text-text-primary">
-                I confirm that all TSA catering security measures are compliant
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm text-text-secondary mb-2">Signature</label>
-              {tsaCompliance?.signature ? (
-                <div className="space-y-3">
-                  <div className="border-2 border-border-muted rounded-2xl overflow-hidden bg-white p-4 inline-block">
-                    <img
-                      src={tsaCompliance.signature}
-                      alt="TSA Compliance Signature"
-                      className="h-82"
-                    />
-                  </div>
-                  {tsaCompliance.signedAt && (
-                    <p className="text-sm text-text-tertiary flex justify-end">
-                      Signed on Date & Time:{" "}
-                      <span className="font-medium">
-                        {new Date(tsaCompliance.signedAt).toLocaleString('en-US', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: true,
-                          month: 'short',
-                          day: '2-digit',
-                          year: 'numeric'
-                        })}
-                      </span>
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <div className="border-2 border-border-muted rounded-2xl bg-bg-secondary h-82 flex items-center justify-center cursor-pointer"
-                onClick={() => setShowSignatureModal(true)}>
-                  <button
-                    className="text-sm text-text-tertiary hover:text-text-primary transition-colors cursor-pointer"
-                  >
-                    Click here to sign
-                  </button>
-                </div>
-              )}
-            </div>
+        <div className="space-y-4">
+          <div className="flex items-start gap-3 border border-border-muted p-3 rounded-2xl">
+            <input
+              type="checkbox"
+              checked={true}
+              readOnly
+              className="mt-1 w-4 h-4 text-bg-button accent-bg-button rounded"
+            />
+            <p className="text-sm text-text-primary">
+              I confirm that all TSA catering security measures are compliant
+            </p>
           </div>
+
+          <div>
+            <label className="block text-sm text-text-secondary mb-2">Signature</label>
+            {tsaCompliance?.signature ? (
+              <div className="space-y-3">
+                <div className="border-2 border-border-muted rounded-2xl overflow-hidden bg-white p-4 inline-block">
+                  <img
+                    src={tsaCompliance.signature}
+                    alt="TSA Compliance Signature"
+                    className="h-82"
+                  />
+                </div>
+                {tsaCompliance.signedAt && (
+                  <p className="text-sm text-text-tertiary flex justify-end">
+                    Signed on Date & Time:{" "}
+                    <span className="font-medium">
+                      {new Date(tsaCompliance.signedAt).toLocaleString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                        month: 'short',
+                        day: '2-digit',
+                        year: 'numeric'
+                      })}
+                    </span>
+                  </p>
+                )}
+              </div>
+            ) : (
+              <div className="border-2 border-border-muted rounded-2xl bg-bg-secondary h-82 flex items-center justify-center cursor-pointer"
+                onClick={() => setShowSignatureModal(true)}>
+                <button
+                  className="text-sm text-text-tertiary hover:text-text-primary transition-colors cursor-pointer"
+                >
+                  Click here to sign
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       <SignatureModal

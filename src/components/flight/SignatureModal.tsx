@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import Button from "../../Button";
+import Button from "../Button";
+
 
 interface SignatureModalProps {
   isOpen: boolean;
@@ -138,8 +139,8 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
             onClick={saveSignature}
             disabled={!hasSignature}
             className={`px-6 py-2 rounded-2xl transition-colors ${hasSignature
-                ? "bg-bg-button text-white hover:opacity-90"
-                : "bg-gray-300 text-text-tertiary cursor-not-allowed"
+              ? "bg-bg-button text-white hover:opacity-90"
+              : "bg-gray-300 text-text-tertiary cursor-not-allowed"
               }`}
           >
             Save

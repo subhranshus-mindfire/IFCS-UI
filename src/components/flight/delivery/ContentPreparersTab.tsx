@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ContentPreparer } from "../../../types/delivery";
-import SignatureModal from "./SignatureModal";
+import SignatureModal from "../SignatureModal";
 import { DeleteIcon } from "../../../assets/icons";
 
 interface ContentPreparersTabProps {

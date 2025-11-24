@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import Dropdown from "../Dropdown";
+import Dropdown from "../../Dropdown";
 import {
   CheckCircleIcon,
   ClipboardTextIcon,
@@ -18,11 +18,11 @@ import {
   HistoryIcon,
   ThermometerIcon,
   TruckIcon
-} from "../../assets/icons";
-import type { FlightRowProps, PDFConfig } from "../../types/Flight";
-import { Tooltip } from "../common/Tooltip";
-import { PDFConfigModal } from "./PDFConfigModal";
-import { formatDate, formatTimeInHHMM, getArrivalType, getDepartureType, getDynamicCabinCounts, getPaxCount } from "../../lib/utils";
+} from "../../../assets/icons";
+import type { FlightRowProps, PDFConfig } from "../../../types/Flight";
+import { Tooltip } from "../../common/Tooltip";
+import { PDFConfigModal } from "../PDFConfigModal";
+import { formatDate, formatTimeInHHMM, getArrivalType, getDepartureType, getDynamicCabinCounts, getPaxCount } from "../../../lib/utils";
 
 
 
@@ -221,7 +221,8 @@ export const FlightRow: React.FC<FlightRowProps> = ({
           {!hideRoute && fullPairRoute}
         </td>
         <td className="text-left text-sm 3xl:text-lg font-bold text-text-primary py-2 px-3">
-          {flight.airline.designator}{flight.flightNumber}
+          {/* {flight.airline.designator} */}
+          {flight.flightNumber}
         </td>
         <td className="text-left font-semibold text-sm 3xl:text-lg py-2 px-3 text-text-primary">
           {flight.flightTypeIataCode || flight.flightType}
@@ -280,10 +281,10 @@ export const FlightRow: React.FC<FlightRowProps> = ({
 
         <td className="text-center py-2 px-3 text-sm relative">
           <div className="font-medium text-text-primary">
-            {flight.aircraft.designator || flight.aircraft.type}
+            {/* {flight.aircraft.designator || flight.aircraft.type} */}
           </div>
           <div className="text-text-tertiary">
-            {flight.aircraft.registration}
+            {/* {flight.aircraft.registration} */}
           </div>
           <div className="absolute right-0 top-0 bottom-0 w-px bg-border-secondary"></div>
         </td>

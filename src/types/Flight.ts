@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Label } from "../components/Label";
 
 export interface Flight {
@@ -292,6 +293,7 @@ export interface FlightStoreState {
   addBulkFlight: (payload: AddFlightPayload[]) => Promise<AddFlightResponse[]>
   setFilters: (newFilters: FlightFilters) => void;
   fetchFlightOptions: () => Promise<void>;
+  updateFlight: (flightId: string, payload: any) => Promise<void>;
   clearFlight: () => void;
 }
 export interface FlightRowProps {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { DriversDeclaration } from "../../../types/delivery";
-import SignatureModal from "./SignatureModal";
+import SignatureModal from "../SignatureModal";
 
 interface DriversDeclarationTabProps {
   driversDeclaration: DriversDeclaration | null;

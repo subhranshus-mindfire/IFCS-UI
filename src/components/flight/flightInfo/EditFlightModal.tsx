@@ -3,9 +3,12 @@ import { useEffect, useState, type JSX } from "react";
 import Button from "../../Button";
 import { Field, FieldLabel, FieldContent } from "../../Field";
 import type { FlightData } from "../../../types/Flight";
-import { formatDateToDDMonYYYY, formatLocalTimeFromISO } from "../../../lib/utils";
+import { formatDateToDDMonYYYY, formatLocalTimeFromISO, getTodayString } from "../../../lib/utils";
 import { getAirlines, getAirports, getAircrafts } from "../../../services/flightLookups";
 import SearchableDropdown from "../../common/SearchableDropdown";
+import { useFlightStore } from "../../../store/flight";
+import { CalendarIcon } from "../../../assets/icons";
+
 
 interface EditFlightModalProps {
   isEditFlightModalOpen: boolean;
@@ -23,6 +26,10 @@ export const EditFlightModal = ({
   if (!isEditFlightModalOpen) return null;
 
 
+
+  const [date, setDate] = useState(legData ? formatDateToDDMonYYYY(legData.scheduledDepartureUtc) : "");
+  const [departureTime, setDepartureTime] = useState(legData ? formatLocalTimeFromISO(legData.scheduledDepartureUtc) : "");
+  const [arrivalTime, setArrivalTime] = useState(legData ? formatLocalTimeFromISO(legData.scheduledArrivalUtc) : "");
   const [airlines, setAirlines] = useState([]);
   const [airports, setAirports] = useState([]);
   const [aircrafts, setAircrafts] = useState([]);
@@ -42,6 +49,35 @@ export const EditFlightModal = ({
     setSelectedArrival(legData.arrivalDestination);
     setSelectedAircraft(legData.aircraft?.registration || "");
   }, [legData]);
+
+  const updateFlightFn = useFlightStore(state => state.updateFlight);
+
+  const handleSave = async () => {
+    const payload = {
+      flightNumber: selectedAirline + legData.flightNumber.substring(2),
+      departureDestination: selectedDeparture,
+      arrivalDestination: selectedArrival,
+      aircraftRegistration: selectedAircraft,
+      pairRoute: `${selectedDeparture}-${selectedArrival}`,
+
+      // You can include date/time if editable
+      scheduledDeparture: legData.scheduledDepartureUtc,
+      scheduledArrival: legData.scheduledArrivalUtc,
+
+      // If your airlines/airports/aircraft options contain IDs:
+      airlineId: selectedAirline,
+      aircraftId: selectedAircraft
+    };
+
+    try {
+      await updateFlightFn(legData.id, payload);
+      setIsEditFlightModalOpen(false);
+
+    } catch (err) {
+      console.error("Failed to update flight:", err);
+    }
+  };
+
 
 
 
@@ -64,7 +100,7 @@ export const EditFlightModal = ({
               <FieldContent>
                 <SearchableDropdown
                   id="airport"
-                  label="code"
+                  label="designator"
                   options={airlines}
                   selectedVal={selectedAirline}
                   handleChange={(value) => setSelectedAirline(value)}
@@ -114,45 +150,49 @@ export const EditFlightModal = ({
           </div>
 
           {/* Row 2: Date, Departure Time, Arrival Time */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-4">
             <Field>
-              <FieldLabel className="text-sm text-text-tertiary">
-                Date
-              </FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary">Date</FieldLabel>
               <FieldContent>
-                <div className="relative">
+                <label className="relative cursor-pointer">
                   <input
-                    type="text"
-                    defaultValue={formatDateToDDMonYYYY(legData.scheduledDepartureUtc)}
-                    className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                    type="date"
+                    name="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    min={getTodayString()}
+                    className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none focus:border-bg-button appearance-none hide-date-icon cursor-pointer"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary">
-                    📅
-                  </span>
-                </div>
+                  <img
+                    src={CalendarIcon}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
+                  />
+                </label>
               </FieldContent>
             </Field>
+
             <Field>
-              <FieldLabel className="text-sm text-text-tertiary">
-                Departure Time
-              </FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary">Departure Time</FieldLabel>
               <FieldContent>
                 <input
-                  type="text"
-                  defaultValue={formatLocalTimeFromISO(legData.scheduledDepartureUtc)}
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                  type="time"
+                  name="departureTime"
+                  value={departureTime}
+                  onChange={(e) => { setDepartureTime(e.target.value) }}
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none focus:border-bg-button"
                 />
               </FieldContent>
             </Field>
+
             <Field>
-              <FieldLabel className="text-sm text-text-tertiary">
-                Arrival Time
-              </FieldLabel>
+              <FieldLabel require={true} className="text-sm text-text-secondary">Arrival Time</FieldLabel>
               <FieldContent>
                 <input
-                  type="text"
-                  defaultValue={formatLocalTimeFromISO(legData.scheduledArrivalUtc)}
-                  className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
+                  type="time"
+                  name="arrivalTime"
+                  value={arrivalTime}
+                  onChange={(e) => { setArrivalTime(e.target.value) }}
+                  className="w-full border border-border-secondary rounded px-3 py-2 text-text-secondary bg-bg-surface focus:outline-none focus:border-bg-button"
                 />
               </FieldContent>
             </Field>
@@ -167,7 +207,7 @@ export const EditFlightModal = ({
               <FieldContent>
                 <input
                   type="text"
-                  defaultValue={legData?.flightNumber.substring(2)}
+                  defaultValue={legData?.flightNumber || "N/A"}
                   className="w-full border border-border-muted rounded px-3 py-2 text-text-primary bg-bg-surface focus:outline-none focus:ring-2 focus:ring-border-accent"
                 />
               </FieldContent>
@@ -303,7 +343,7 @@ export const EditFlightModal = ({
           </Button>
           <Button
             onClick={() => {
-              console.log("Save clicked");
+              handleSave()
               setIsEditFlightModalOpen(false);
             }}
             className="px-6 py-2 bg-bg-button text-white rounded hover:opacity-90 transition-opacity"

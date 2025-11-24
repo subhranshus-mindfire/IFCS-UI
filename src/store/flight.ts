@@ -3,7 +3,7 @@ import type {
   FlightStoreState, FlightFilters,
   AddFlightPayload, AddFlightResponse
 } from "../types/Flight";
-import { addBulkFlight, addFlight, fetchFlightOptions, fetchFlights, fetchFlightStats, flightDetailsService } from "../services/flight";
+import { addBulkFlight, addFlight, fetchFlightOptions, fetchFlights, fetchFlightStats, flightDetailsService, updateFlight } from "../services/flight";
 import { AxiosError } from "axios";
 import type { } from "../types/Flight";
 
@@ -184,6 +184,36 @@ export const useFlightStore = create<FlightStoreState>((set, get) => ({
       console.error("Failed to fetch flight options:", err);
     }
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateFlight: async (flightId: string, payload: any) => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const updatedFlight = await updateFlight(flightId, payload);
+
+      // Refresh list + stats after update
+      const currentFilters = get().filters;
+      await get().fetchFlights(currentFilters);
+      await get().fetchFlightStats(currentFilters);
+
+      set({ isLoading: false });
+      return updatedFlight;
+
+    } catch (err) {
+      console.error("Failed to update flight:", err);
+      let errorMessage = "Failed to update flight.";
+
+      if (err instanceof AxiosError) {
+        errorMessage = err.response?.data?.message || err.response?.statusText;
+      }
+
+      set({ error: errorMessage, isLoading: false });
+      throw err;
+    }
+  },
 
   clearFlight: () => set({ flightData: null, error: null }),
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 }));

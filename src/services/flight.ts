@@ -161,3 +161,13 @@ export async function fetchFlightOptions(): Promise<FlightOptions> {
 
     return options;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const updateFlight = async (flightId: string, payload: any) => {
+  const { data } = await axiosInstance.patch(`/flights/${flightId}`, payload, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+    },
+  });
+  return data;
+};

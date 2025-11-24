@@ -88,10 +88,10 @@ export interface FlightList {
   departureGate: string | null;
 
   scheduledDeparture: string;
-  estimatedDeparture: string | null;
+  scheduledDepartureUtc: string | null;
   actualDeparture: string | null;
   scheduledArrival: string;
-  estimatedArrival: string | null;
+  scheduledArrivalUtc: string | null;
   actualArrival: string | null;
 
   arrivalDestination: string; // IATA code
@@ -116,11 +116,11 @@ export interface FlightList {
   updatedAt: string;
   updatedBy: string | null;
 
-  scheduledDepartureUtc?: string;
-  estimatedDepartureUtc?: string | null;
+  // scheduledDepartureUtc?: string;
+  scheduledDepartureUtcUtc?: string | null;
   actualDepartureUtc?: string | null;
-  scheduledArrivalUtc?: string;
-  estimatedArrivalUtc?: string | null;
+  // scheduledArrivalUtc?: string;
+  scheduledArrivalUtcUtc?: string | null;
   actualArrivalUtc?: string | null;
 
 
@@ -195,12 +195,12 @@ export interface AddFlightResponse {
   departureDestination: string;
   departureGate: string | null;
   scheduledDeparture: string;
-  estimatedDeparture: string | null;
+  scheduledDepartureUtc: string | null;
   actualDeparture: string | null;
   arrivalDestination: string;
   arrivalGate: string | null;
   scheduledArrival: string;
-  estimatedArrival: string | null;
+  scheduledArrivalUtc: string | null;
   actualArrival: string | null;
   flightType: string;
   flightTypeIataCode: string | null;
@@ -276,6 +276,7 @@ export interface FlightOptions {
 
 
 export interface FlightStoreState {
+  flightData: FlightData[] | null;
   flights: FlightList[][];
   flightStats: FlightStats;
   filters: FlightFilters,
@@ -284,12 +285,14 @@ export interface FlightStoreState {
   aircraftRegOptions: AircraftOption[];
   isLoading: boolean;
   error: string | null;
+  fetchFlight: (flightId: string) => Promise<void>;
   fetchFlights: (filters?: FlightFilters) => Promise<void>;
   fetchFlightStats: (filters?: FlightFilters) => Promise<void>;
   addFlight: (payload: AddFlightPayload) => Promise<AddFlightResponse>;
   addBulkFlight: (payload: AddFlightPayload[]) => Promise<AddFlightResponse[]>
   setFilters: (newFilters: FlightFilters) => void;
   fetchFlightOptions: () => Promise<void>;
+  clearFlight: () => void;
 }
 export interface FlightRowProps {
   flight: FlightList;
@@ -332,9 +335,9 @@ export interface FlightHistoryEntry {
   syncKeyWithDestination: string | null;
   sourceData: string | null;
   status: string | null;
-  estimatedDeparture: string | null;
+  scheduledDepartureUtc: string | null;
   actualDeparture: string | null;
-  estimatedArrival: string | null;
+  scheduledArrivalUtc: string | null;
   actualArrival: string | null;
   departureDestination: string | null;
   arrivalDestination: string | null;
@@ -460,14 +463,14 @@ export interface FlightData {
   departureGate: string;
 
   scheduledDeparture: string;
-  estimatedDeparture: string | null;
+  scheduledDepartureUtc: string | null;
   actualDeparture: string | null;
 
   arrivalDestination: string;
   arrivalGate: string;
 
   scheduledArrival: string;
-  estimatedArrival: string | null;
+  scheduledArrivalUtc: string | null;
   actualArrival: string | null;
 
   flightType: string;
@@ -498,12 +501,12 @@ export interface FlightData {
   updatedAt: string;
   updatedBy: string | null;
 
-  scheduledDepartureUtc: string;
-  estimatedDepartureUtc: string | null;
+  // scheduledDepartureUtc: string;
+  scheduledDepartureUtcUtc: string | null;
   actualDepartureUtc: string | null;
 
-  scheduledArrivalUtc: string;
-  estimatedArrivalUtc: string | null;
+  // scheduledArrivalUtc: string;
+  scheduledArrivalUtcUtc: string | null;
   actualArrivalUtc: string | null;
 
   aircraft: {
@@ -554,6 +557,32 @@ export interface FlightData {
   };
 
   selectedFlight: boolean;
+}
+
+
+
+export interface FoodOrderItem {
+  id: string;
+  fmId: string;
+  flightId: string;
+  mealId: string;
+  mealName: string;
+  orderCount1: number;
+  orderCount2: number;
+  isDynamicLoadingIncomplete: boolean;
+  seatNumber: string;
+  passengerName: string;
+  cabinClass: string;
+  loadedStatus: string;
+  arrivalDate: string;
+  departureDate: string;
+  arrivalTime: string;
+  departureTime: string;
+  createdAt: string;
+  updatedAt: string;
+  flightNumber: string;
+  departureStation: string;
+  mealCode: string;
 }
 
 

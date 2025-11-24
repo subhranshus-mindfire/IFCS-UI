@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import Dropdown from "../Dropdown";
+import Dropdown from "../../Dropdown";
 import {
   CheckCircleIcon,
   ClipboardTextIcon,
@@ -18,11 +18,11 @@ import {
   HistoryIcon,
   ThermometerIcon,
   TruckIcon
-} from "../../assets/icons";
-import type { FlightRowProps, PDFConfig } from "../../types/Flight";
-import { Tooltip } from "../common/Tooltip";
-import { PDFConfigModal } from "./PDFConfigModal";
-import { formatDate, formatTimeInHHMM, getArrivalType, getDepartureType, getDynamicCabinCounts, getPaxCount } from "../../lib/utils";
+} from "../../../assets/icons";
+import type { FlightRowProps, PDFConfig } from "../../../types/Flight";
+import { Tooltip } from "../../common/Tooltip";
+import { PDFConfigModal } from "../PDFConfigModal";
+import { formatDate, formatTimeInHHMM, getArrivalType, getDepartureType, getDynamicCabinCounts, getPaxCount } from "../../../lib/utils";
 
 
 
@@ -137,7 +137,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               {formatTimeInHHMM(flight.scheduledDeparture || flight.scheduledDepartureUtc)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTimeInHHMM(flight.estimatedDeparture || flight.estimatedDepartureUtc)}
+              {formatTimeInHHMM(flight.scheduledDepartureUtc || flight.scheduledDepartureUtcUtc)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
               {formatTimeInHHMM(flight.actualDeparture || flight.actualDepartureUtc)}
@@ -150,7 +150,7 @@ export const FlightRow: React.FC<FlightRowProps> = ({
               {formatTimeInHHMM(flight.scheduledArrivalUtc || flight.scheduledArrival)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
-              {formatTimeInHHMM(flight.estimatedArrivalUtc)}
+              {formatTimeInHHMM(flight.scheduledArrivalUtcUtc)}
             </td>
             <td className="py-1 px-2 font-medium text-center">
               {formatTimeInHHMM(flight.actualArrivalUtc)}

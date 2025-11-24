@@ -5,10 +5,10 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
-import { generateHistoryDisplay } from "../../utils/flightHistoryUtils";
-import { useFlightHistoryStore } from "../../store/flightHistory";
-import type { HistoryEntryDisplay } from "../../types/Flight";
-import { TimerIcon } from "../../assets/icons";
+import { generateHistoryDisplay } from "../../../utils/flightHistoryUtils";
+import { useFlightHistoryStore } from "../../../store/flightHistory";
+import type { HistoryEntryDisplay } from "../../../types/Flight";
+import { TimerIcon } from "../../../assets/icons";
 
 const formatDate = (isoString: string | undefined): string | null => {
   if (!isoString) return null;
